@@ -1,6 +1,40 @@
+import { getAppName } from '@/utils/appConfig';
+
 export default {
-  // App metadata
+  // Métadonnées de l'application
   appDescription: "Une solution bancaire moderne pour tous vos besoins financiers",
+  app: {
+    logoAlt: `Logo ${getAppName()}`
+  },
+
+  common: {
+    errorAlertTitle: "Erreur",
+    successAlertTitle: "Succès",
+    showPassword: "Afficher le mot de passe",
+    hidePassword: "Masquer le mot de passe",
+    verifying: "Vérification en cours...",
+    loading: "Chargement en cours...",
+    success: "Opération reussie",
+    error: "Une erreur est survenue",
+    dismiss: "Fermer",
+    seconds: "secondes",
+  },
+
+  otp: {
+    title: "Vérifiez votre email",
+    subtitle: "Nous avons envoyé un code de vérification à votre adresse email",
+    codeLabel: "Code de vérification",
+    codePlaceholder: "Entrez le code à 6 chiffres",
+    verifyButton: "Vérifier",
+    resendCode: "Renvoyer le code",
+    resendIn: "Renvoyer le code dans",
+    seconds: "secondes",
+    didntReceiveCode: "Vous n'avez pas reçu de code ?",
+    errorInvalidCode: "Code de vérification invalide",
+    errorExpiredCode: "Le code de vérification a expiré",
+    successMessage: "Email vérifié avec succès !",
+    resendSuccess: "Nouveau code envoyé avec succès !"
+  },
 
   // Navigation
   nav: {
@@ -12,11 +46,239 @@ export default {
   },
 
   hello: "Bonjour",
-  welcome: "Bienvenue à SolidBank",
+  welcome: `Bienvenue chez ${getAppName()}`,
   getStarted: "Commencer",
   learnMore: "En savoir plus",
-  toggleTheme: "Changer le thème",
-  forgotPassword: "Mot de passe oublié ?",
+  toggleTheme: "Changer de thème",
+  forgotPassword: "Mot de passe oublié",
   resetPassword: "Réinitialiser le mot de passe",
   backToSignIn: "Retour à la connexion",
+
+  // Page de connexion
+  signIn: {
+    // Messages d'erreur
+    invalidCredentials: "Email ou mot de passe incorrect",
+    accountNotActive: "Votre compte n'est pas actif. Veuillez contacter le support.",
+    tooManyAttempts: "Trop de tentatives de connexion. Veuillez réessayer plus tard.",
+    errorGeneric: "Une erreur est survenue lors de la connexion. Veuillez réessayer.",
+    successMessage: "Connexion réussie !",
+    noResponse: "Pas de réponse du serveur. Veuillez vérifier votre connexion.",
+    
+    rememberMe: "Se souvenir de moi",
+    title: "Bon retour !",
+    subtitle: `Connectez-vous pour accéder à votre compte ${getAppName()}.`,
+    emailLabel: "Adresse e-mail",
+    emailPlaceholder: "vous@exemple.com",
+    passwordLabel: "Mot de passe",
+    passwordPlaceholder: "Entrez votre mot de passe",
+    submitButton: "Se connecter",
+    submitting: "Connexion en cours...",
+    forgotPasswordLink: "Mot de passe oublié ?",
+    noAccount: "Pas encore de compte ?",
+    signUpLink: "S'inscrire",
+    // Messages de validation
+    emailInvalid: "Veuillez entrer une adresse e-mail valide.", // Correspond à signUp.emailInvalid
+    passwordRequired: "Le mot de passe est requis.",
+    // Messages d'erreur API/Formulaire
+    sessionCheckFailed: "Une erreur est survenue lors de la vérification de votre session. Veuillez réessayer.",
+  
+  },
+
+  // Page d'inscription
+  signUp: {
+    alreadySubmitted: "Votre inscription est en cours de traitement",
+    submissionError: "Une erreur s'est produite lors de l'inscription. Veuillez réessayer.",
+    successTitle: "Compte créé avec succès !",
+    successMessage: "Votre demande de création de compte a été reçue et est en cours de traitement.",
+    redirectMessage: "Vous serez redirigé vers la page de connexion dans :",
+    goToSignIn: "Aller à la page de connexion",
+    successMessageOnboarding: "Votre compte a été vérifié. Redirection pour commencer...",
+    buttons: {
+      previous: "Précédent",
+      next: "Suivant",
+      submit: "Soumettre la demande",
+      submitting: "Soumission en cours...",
+      submitted: "Soumis !",
+      signIn: "Se connecter",
+      continue: "Continuer",
+      goBack: "Retour",
+      resendCode: "Renvoyer le code",
+      dismissError: "Fermer l'erreur"
+    },
+    // Keys used by sign-up/page.tsx UI text
+    title: "Créez votre compte",
+    subtitle: `Rejoignez ${getAppName()} et prenez le contrôle de vos finances.`,
+    step: "Étape",
+    of: "sur",
+    steps: {
+      step1Title: "Détails Personnels",
+      step1Subtitle: "Dites-nous en un peu plus sur vous.",
+      step2Title: "Informations d'Adresse",
+      step2Subtitle: "Où habitez-vous ?",
+      step3Title: "Configuration du Compte",
+      step3Subtitle: "Configurez votre nouveau compte.",
+    },
+    fields: {
+      firstName: "Prénom",
+      lastName: "Nom de famille",
+      birthDate: "Date de naissance",
+      gender: "Genre",
+      maritalStatus: "Situation matrimoniale",
+      profession: "Profession",
+      address: "Adresse postale",
+      country: "Pays",
+      city: "Ville",
+      postalCode: "Code postal",
+      accountType: "Type de compte",
+      currency: "Devise du compte",
+      phone: "Numéro de téléphone",
+      email: "Adresse e-mail",
+      password: "Mot de passe",
+      identityDocument: "Pièce d'identité (Carte d'identité, Passeport)",
+      regionOptional: "Region/Département (Optionel)",
+      region: "Region/Département",
+      phoneNumber: "Numéro de téléphone",
+      identityDocumentUrl: "URL de la pièce d'identité",
+      addressDocumentUrl: "URL de la pièce d'identité",
+      addressDocument: "Justificatif d'adresse (Facture d'électricité, Relevé bancaire, etc.)",
+    },
+    placeholders: {
+      firstName: "Entrez votre prénom",
+      lastName: "Entrez votre nom de famille",
+      birthDate: "Sélectionnez votre date de naissance",
+      gender: "Sélectionnez votre genre",
+      maritalStatus: "ex: Célibataire, Marié(e)",
+      profession: "ex: Ingénieur, Enseignant",
+      address: "ex: 123 Rue Principale, Appt 4B",
+      country: "Sélectionnez votre pays",
+      city: "Entrez votre ville",
+      postalCode: "Entrez votre code postal",
+      accountType: "Sélectionnez le type de compte",
+      currency: "Sélectionnez la devise",
+      phone: "ex: +33123456789",
+      email: "vous@exemple.com",
+      password: "Créez un mot de passe robuste",
+      selectCountry: "Sélectionnez votre pays",
+      region: "Entrez votre region",
+      selectRegion: "Sélectionnez votre region",
+      phoneNumber: "Entrez votre numéro de téléphone",
+    },
+    genders: {
+      male: "Homme",
+      female: "Femme",
+      other: "Autre",
+    },
+    accountTypes: {
+      checking: "Compte Courant",
+      savings: "Compte Épargne",
+    },
+    currencies: {
+      eur: "EUR (Euro)",
+      usd: "USD (Dollar américain)",
+    },
+
+    passwordStrength: {
+      title: "Force du mot de passe :",
+      tooShort: "Trop court (minimum {count} caractères)",
+      weak: "Faible",
+      medium: "Moyen",
+      strong: "Fort",
+      veryStrong: "Très fort",
+      criteria: {
+        minLength: "Au moins {count} caractères",
+        uppercase: "Inclure une majuscule",
+        lowercase: "Inclure une minuscule",
+        number: "Inclure un chiffre",
+        symbol: "Inclure un symbole (ex: !@#$%^&*)",
+      }
+    },
+    optional: "(Optionnel)",
+    fileUploaded: "Fichier téléversé avec succès",
+    formError: {
+      generic: "Une erreur inattendue s'est produite. Veuillez vérifier vos informations et réessayer."
+    },
+    errors: {
+      emailAlreadyExists: "Un compte avec cet email existe déjà. Veuillez utiliser un autre email ou vous connecter.",
+      firstNameRequired: "Le prénom est requis.",
+      lastNameRequired: "Le nom de famille est requis.",
+      birthDateRequired: "La date de naissance est requise.",
+      genderRequired: "Le genre est requis.",
+      genderInvalid: "Genre sélectionné invalide.",
+      addressRequired: "L'adresse est requise.",
+      countryRequired: "Le pays est requis.",
+      cityRequired: "La ville est requise.",
+      postalCodeRequired: "Le code postal est requis.",
+      accountTypeRequired: "Le type de compte est requis.",
+      currencyRequired: "La devise est requise.",
+      emailRequired: "L'adresse e-mail est requise.",
+      emailInvalid: "Veuillez entrer une adresse e-mail valide.",
+      passwordRequired: "Le mot de passe est requis.",
+      passwordMinLength: "Le mot de passe doit comporter au moins {count} caractères.",
+      fileUploadFailed: "Le téléversement du fichier a échoué. Veuillez réessayer.",
+      phoneNumberInvalid: "Veuillez entrer un numéro de téléphone valide (chiffres, espaces, parenthèses, +, -)",
+      phoneNumberMinLength: "Le numéro de téléphone doit contenir au moins 8 chiffres",
+      submissionFailed: "Une erreur s'est produite lors de la soumission du formulaire. Veuillez réessayer.",
+      tryAgain: "Veuillez réessayer.",
+      loading: "Chargement...",
+      alreadySubmitted: "Vous êtes déjà inscrit",
+      fileUploaded: "Fichier téléversé avec succès",
+    },
+    passwordLabel: "Mot de passe",
+    passwordPlaceholder: "Créez un mot de passe robuste",
+    submitButton: "Créer le compte",
+    alreadyHaveAccount: "Vous avez déjà un compte ?",
+    signInLink: "Se connecter",
+    uploadingFile: "Téléversement en cours...",
+    redirecting: "Redirection en cours...",
+
+    // Keys used by Zod schema in sign-up/page.tsx
+    usernameMinLength: "Le nom d'utilisateur doit comporter au moins 3 caractères",
+    usernameMaxLength: "Le nom d'utilisateur ne doit pas dépasser 30 caractères.",
+    usernameInvalidChars: "Le nom d'utilisateur ne peut contenir que des lettres, des chiffres, des tirets bas (_) et des traits d'union (-).",
+    emailInvalid: "Veuillez entrer une adresse e-mail valide",
+    passwordMinLength: "Le mot de passe doit comporter au moins {count} caractères",
+    passwordComplexity: "Le mot de passe doit comporter au moins 8 caractères et inclure une majuscule, une minuscule, un chiffre et un caractère spécial.",
+
+    // Other existing useful keys
+    createAccount: "Créer un compte", // Original generic key
+    withGoogle: "S'inscrire avec Google",
+    orContinueWith: "ou continuer avec",
+    usernameRequired: "Le nom d'utilisateur est requis",
+    emailRequired: "L'e-mail est requis",
+    passwordRequired: "Le mot de passe est requis",
+    submitting: "Soumission...",
+
+    // Old Clerk specific ones / OTP flow - can be pruned later if not needed
+    signIn: "Se connecter", // Original generic key, distinct from signInLink if needed
+    fillMissingFields: "Remplir les champs manquants",
+    continue: "Continuer",
+    goBack: "Retourner",
+    checkEmail: "Vérifiez votre e-mail",
+    emailVerificationSent: "Nous avons envoyé un code de vérification à votre e-mail",
+    emailCode: "Code e-mail",
+    verify: "Vérifier",
+    resendCode: "Renvoyer le code",
+    resendCodeIn: "Renvoyer le code dans",
+    seconds: "seconde(s)",
+    clerkErrorPasswordPwned: "Ce mot de passe a été exposé lors d'une violation de données. Veuillez choisir un mot de passe différent.",
+    clerkErrorPasswordInvalid: "Le mot de passe ne respecte pas les exigences de complexité (par exemple, nécessite une majuscule, un chiffre ou un symbole).",
+    clerkErrorEmailExists: "Cette adresse e-mail est déjà utilisée. Essayez de vous connecter ou utilisez une autre adresse e-mail.",
+    clerkErrorUsernameExists: "Ce nom d'utilisateur est déjà pris. Veuillez en choisir un autre.",
+    clerkErrorIdentificationExists: "Un compte avec cet e-mail ou ce nom d'utilisateur existe déjà. Essayez de vous connecter.",
+    clerkErrorGeneric: "Une erreur inattendue s'est produite. Veuillez réessayer ou contacter le support.",
+    errorVerificationSession: "La vérification a réussi, mais n'a pas pu démarrer de session. Veuillez essayer de vous connecter.",
+    errorSetActiveUnavailable: "Impossible de définir la session active. Veuillez réessayer ou contacter le support.",
+    errorVerificationNetwork: "Une erreur réseau s'est produite lors de la vérification de votre compte. Veuillez vérifier votre connexion et réessayer.",
+    errorVerificationProcess: "Une erreur s'est produite lors du processus de vérification. Veuillez réessayer.",
+    errorVerificationUnknown: "Une erreur inconnue s'est produite lors de la vérification. Veuillez réessayer ou contacter le support.",
+    errorCaptchaRequired: "La vérification CAPTCHA est requise. Veuillez actualiser la page ou réessayer. Si le problème persiste, CAPTCHA n'est peut-être pas configuré pour ce formulaire.",
+    errorMissingRequirements: "Votre inscription n'est pas encore terminée. Certaines informations requises sont encore manquantes. Veuillez vérifier vos informations ou contacter le support si cela persiste."
+  },
+  onboarding: {
+    title: `Bienvenue chez ${getAppName()} !`,
+    welcomeMessage: `Configurons votre compte ${getAppName()} et préparons-le.`,
+    placeholder: "C'est ici que commence votre parcours d'intégration.",
+    stepsComingSoon: "Les étapes et formulaires d'intégration apparaîtront bientôt ici.",
+    continueToDashboard: "Continuer vers le tableau de bord"
+  },
 } as const;

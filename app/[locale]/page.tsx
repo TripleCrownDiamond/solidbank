@@ -3,7 +3,7 @@
 import { useI18n } from "../../locales/client"; // Assuming this path is correct
 import { Skeleton } from "@/components/ui/skeleton"; // Import Skeleton
 import { useState, useEffect } from "react"; // For loading state simulation
-import { Navbar } from "@/components/navbar";
+import { Navbar } from "@/components/shared/NavBar";
 import Link from "next/link";
 
 const Home = () => {

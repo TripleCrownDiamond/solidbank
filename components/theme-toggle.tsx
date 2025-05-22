@@ -40,9 +40,9 @@ export function ThemeToggle() {
       aria-label={t("toggleTheme")}
     >
       {currentTheme === "light" ? (
-        <SunIcon className="h-5 w-5" />
-      ) : (
         <MoonIcon className="h-5 w-5" />
+      ) : (
+        <SunIcon className="h-5 w-5" />
       )}
     </Button>
   );

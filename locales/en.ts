@@ -1,6 +1,41 @@
+import { getAppName } from '@/utils/appConfig';
+
 export default {
   // App metadata
-  appDescription: "A modern banking solution for all your financial needs",
+  appDescription: `A modern banking solution for all your financial needs`,
+  app: {
+    logoAlt: `${getAppName()} Logo`
+  },
+
+  common: {
+    seconds: 'seconds',
+    errorAlertTitle: "Error",
+    successAlertTitle: "Success",
+    showPassword: "Show password",
+    hidePassword: "Hide password",
+    verifying: "Verifying...",
+    loading: "Loading...",
+    success: "Operation successful",
+    error: "An error occurred",
+    dismiss: "Dismiss",
+ 
+  },
+
+  otp: {
+    title: "Verify Your Email",
+    subtitle: "We've sent a verification code to your email",
+    codeLabel: "Verification Code",
+    codePlaceholder: "Enter 6-digit code",
+    verifyButton: "Verify",
+    resendCode: "Resend Code",
+    resendIn: "Resend code in",
+    seconds: "seconds",
+    didntReceiveCode: "Didn't receive a code?",
+    errorInvalidCode: "Invalid verification code",
+    errorExpiredCode: "Verification code has expired",
+    successMessage: "Email verified successfully!",
+    resendSuccess: "New code sent successfully!"
+  },
 
   // Navigation
   nav: {
@@ -12,11 +47,234 @@ export default {
   },
 
   hello: "Hello",
-  welcome: "Welcome to SolidBank",
+  welcome: `Welcome to ${getAppName()}`,
   getStarted: "Get Started",
   learnMore: "Learn More",
   toggleTheme: "Toggle Theme",
   forgotPassword: "Forgot Password",
   resetPassword: "Reset Password",
   backToSignIn: "Back to Sign In",
+
+  // Sign-in page
+  signIn: {
+    // Error messages
+    invalidCredentials: "Invalid email or password",
+    accountNotActive: "Your account is not active. Please contact support.",
+    tooManyAttempts: "Too many login attempts. Please try again later.",
+    errorGeneric: "An error occurred during sign in. Please try again.",
+    successMessage: "Successfully signed in!",
+    noResponse: "No response from server. Please check your connection.",
+    
+    rememberMe: "Remember me",
+    title: "Welcome Back!",
+    subtitle: `Sign in to access your ${getAppName()} account.`,
+    emailLabel: "Email Address",
+    emailPlaceholder: "you@example.com",
+    passwordLabel: "Password",
+    passwordPlaceholder: "Enter your password",
+    submitButton: "Sign In",
+    submitting: "Signing In...",
+    forgotPasswordLink: "Forgot password?",
+    noAccount: "Don't have an account?",
+    signUpLink: "Sign Up",
+    // Validation messages (can reuse from signUp or be specific)
+    emailInvalid: "Please enter a valid email address.", // Matches signUp.emailInvalid
+    passwordRequired: "Password is required.",
+    sessionCheckFailed: "An error occurred during sign in. Please try again.",
+
+  },
+
+  // Sign-up page
+  signUp: {
+    alreadySubmitted: "Your submission is being processed",
+    submissionError: "An error occurred during sign-up. Please try again.",
+    successTitle: "Account Created Successfully!",
+    successMessage: "Your account creation request has been received and is being processed.",
+    redirectMessage: "You will be redirected to the sign-in page in :",
+    goToSignIn: "Go to Sign In",
+    successMessageOnboarding: "Your account has been verified. Redirecting you to get started...",
+    buttons: {
+      previous: "Previous",
+      next: "Next",
+      submit: "Submit Application",
+      submitting: "Submitting...",
+      submitted: "Submitted!",
+      signIn: "Sign in",
+      continue: "Continue",
+      goBack: "Go back",
+      resendCode: "Resend code",
+      dismissError: "Dismiss error"
+    },
+    // Keys used by sign-up/page.tsx UI text
+    title: "Create Your Account",
+    subtitle: `Join ${getAppName()} and take control of your finances.`,
+    step: "Step",
+    of: "of",
+    steps: {
+      step1Title: "Personal Details",
+      step1Subtitle: "Tell us a bit about yourself.",
+      step2Title: "Address Information",
+      step2Subtitle: "Where do you live?",
+      step3Title: "Account Setup",
+      step3Subtitle: "Configure your new account.",
+    },
+    fields: {
+      firstName: "First Name",
+      lastName: "Last Name",
+      birthDate: "Date of Birth",
+      gender: "Gender",
+      maritalStatus: "Marital Status",
+      profession: "Profession",
+      address: "Street Address",
+      country: "Country",
+      city: "City",
+      postalCode: "Postal Code",
+      accountType: "Account Type",
+      currency: "Account Currency",
+      phone: "Phone Number",
+      email: "Email Address",
+      password: "Password",
+      identityDocument: "Identity Document (ID Card, Passport)",
+      regionOptional: "Region/Department (Optional)",
+      region: "Region/Department",
+      phoneNumber: "Phone Number",
+      identityDocumentUrl: "Identity Document URL",
+      addressDocumentUrl: "Address Document URL",
+      addressDocument: "Proof of address (electricity bill, bank statement, etc.)"
+    },
+    placeholders: {
+      firstName: "Enter your first name",
+      lastName: "Enter your last name",
+      birthDate: "Select your date of birth",
+      gender: "Select your gender",
+      maritalStatus: "e.g., Single, Married",
+      profession: "e.g., Engineer, Teacher",
+      address: "e.g., 123 Main St, Apt 4B",
+      country: "Select your country",
+      city: "Enter your city",
+      postalCode: "Enter your postal code",
+      accountType: "Select account type",
+      currency: "Select currency",
+      phone: "e.g., +1234567890",
+      email: "you@example.com",
+      password: "Create a strong password",
+      selectCountry: "Select your country",
+      region: "Enter your region",
+      selectRegion: "Select your region",
+      phoneNumber: "Enter your phone number",
+    },
+    genders: {
+      male: "Male",
+      female: "Female",
+      other: "Other",
+    },
+    accountTypes: {
+      checking: "Checking Account",
+      savings: "Savings Account",
+    },
+    currencies: {
+      xof: "XOF (West African CFA franc)",
+      eur: "EUR (Euro)",
+      usd: "USD (United States Dollar)",
+    },
+
+    passwordStrength: {
+      title: "Password strength:",
+      tooShort: "Too short (minimum {count} characters)",
+      weak: "Weak",
+      medium: "Medium",
+      strong: "Strong",
+      veryStrong: "Very Strong",
+      criteria: {
+        minLength: "At least {count} characters",
+        uppercase: "Include an uppercase letter",
+        lowercase: "Include a lowercase letter",
+        number: "Include a number",
+        symbol: "Include a symbol (e.g., !@#$%^&*)",
+      }
+    },
+    optional: "(Optional)",
+    fileUploaded: "File uploaded successfully",
+    formError: {
+      generic: "An unexpected error occurred. Please review your information and try again."
+    },
+    errors: {
+      emailAlreadyExists: "An account with this email already exists. Please use a different email or sign in.",
+      firstNameRequired: "First name is required.",
+      lastNameRequired: "Last name is required.",
+      birthDateRequired: "Date of birth is required.",
+      genderRequired: "Gender is required.",
+      genderInvalid: "Invalid gender selected.",
+      addressRequired: "Address is required.",
+      countryRequired: "Country is required.",
+      cityRequired: "City is required.",
+      postalCodeRequired: "Postal code is required.",
+      accountTypeRequired: "Account type is required.",
+      currencyRequired: "Currency is required.",
+      emailRequired: "Email address is required.",
+      emailInvalid: "Please enter a valid email address.",
+      passwordRequired: "Password is required.",
+      passwordMinLength: "Password must be at least {count} characters.",
+      fileUploadFailed: "File upload failed. Please try again.",
+      phoneNumberInvalid: "Please enter a valid phone number (digits, spaces, parentheses, +, -)",
+      phoneNumberMinLength: "Phone number must contain at least 8 digits",
+      submissionFailed: "An error occurred while submitting the form. Please try again.",
+      tryAgain: "Please try again.",
+      loading: "Loading...",
+      fileUploaded: "File uploaded successfully",
+      alreadySubmitted: "You are already registered",      
+    },
+    usernameLabel: "Username",
+    usernamePlaceholder: "Choose a unique username",
+    emailLabel: "Email Address",
+    emailPlaceholder: "you@example.com",
+    passwordLabel: "Password",
+    passwordPlaceholder: "Create a strong password",
+    submitButton: "Create Account",
+    alreadyHaveAccount: "Already have an account?",
+    signInLink: "Sign In",
+    uploadingFile: "Uploading file...",
+    redirecting: "Redirecting...",
+
+    // Keys used by Zod schema in sign-up/page.tsx
+    usernameMinLength: "Username must be at least 3 characters",
+    usernameMaxLength: "Username must be 30 characters or less.",
+    usernameInvalidChars: "Username can only contain letters, numbers, underscores (_), and hyphens (-).",
+    emailInvalid: "Please enter a valid email address",
+    passwordMinLength: "Password must be at least {count} characters",
+    passwordComplexity: "Password must be at least 8 characters and include uppercase, lowercase, a number, and a special character.",
+
+    // Other existing useful keys
+    createAccount: "Create an account", // Original generic key
+    withGoogle: "Sign up with Google",
+    orContinueWith: "or continue with",
+    usernameRequired: "Username is required",
+    emailRequired: "Email is required",
+    passwordRequired: "Password is required",
+    submitting: "Submitting...",
+    
+    // Old Clerk specific ones / OTP flow - can be pruned later if not needed
+    signIn: "Sign in", // Original generic key, distinct from signInLink if needed
+    fillMissingFields: "Fill in missing fields",
+    continue: "Continue",
+    goBack: "Go back",
+    checkEmail: "Check your email",
+    emailVerificationSent: "We've sent a verification code to your email",
+    emailCode: "Email Code",
+    verify: "Verify",
+    resendCode: "Resend code",
+    resendCodeIn: "Resend code in",
+    seconds: "second(s)",
+    clerkErrorPasswordPwned: "This password has been exposed in a data breach. Please choose a different password.",
+    clerkErrorPasswordInvalid: "Password does not meet complexity requirements (e.g., needs uppercase, number, or symbol).",
+    clerkErrorEmailExists: "This email address is already in use. Try signing in or use a different email.",
+    clerkErrorUsernameExists: "This username is already taken. Please choose a different one.",
+    clerkErrorIdentificationExists: "An account with this email or username already exists. Try signing in.",
+    clerkErrorGeneric: "An unexpected error occurred. Please try again or contact support.",
+    errorVerificationSession: "Verification succeeded, but failed to start a session. Please try signing in.",
+    errorSetActiveUnavailable: "Could not set active session. Please try again or contact support.",
+    placeholder: "This is where your onboarding journey begins.",
+    stepsComingSoon: "Onboarding steps and forms will appear here soon.",
+    continueToDashboard: "Continue to Dashboard"
+  },
 } as const;

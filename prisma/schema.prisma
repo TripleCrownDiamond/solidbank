@@ -1,0 +1,101 @@
+// This is your Prisma schema file.
+// Learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  // Output defaults to ./node_modules/.prisma/client
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+}
+
+enum AccountType {
+  CHECKING
+  SAVINGS
+}
+
+enum UserStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model User {
+  id                  String           @id @default(cuid())
+  firstName           String
+  lastName            String
+  email               String           @unique
+  emailVerified       DateTime?
+  password            String // Will be hashed
+  role                String           @default("user")
+  status              UserStatus       @default(PENDING) // Replaces 'approved'
+  balance             Float            @default(0.0)
+  currency            String           // Form will provide this, e.g., "XOF", "EUR", "USD"
+  createdAt           DateTime         @default(now())
+  updatedAt           DateTime         @updatedAt
+
+  // Personal Details from form
+  birthDate           DateTime?
+  gender              Gender?
+  maritalStatus       String?
+  profession          String?
+
+  // Address fields from form (already mostly present)
+  address             String?          // Street address
+  city                String?
+  postalCode          String?
+  country             String?          // Country code e.g., US, FR
+  region              String?          // State, province, or region e.g., CA, IDF
+  phoneNumber         String?          // Phone number
+
+  // Account Details from form
+  accountType         AccountType?
+  identityDocumentUrl String?          // URL from Cloudinary for ID document
+  addressDocumentUrl  String?          // URL from Cloudinary for address proof
+
+  // Relations
+  rib                 Rib?
+  cryptoBalances      CryptoBalance[]
+  cards               Card[]
+}
+
+model Rib {
+  id         String   @id @default(cuid())
+  iban       String
+  swift      String
+  bankName   String
+  userId     String   @unique
+  user       User     @relation(fields: [userId], references: [id])
+  createdAt  DateTime @default(now())
+}
+
+model CryptoBalance {
+  id        String   @id @default(cuid())
+  coin      String
+  balance   Float    @default(0.0)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+}
+
+model Card {
+  id             String   @id @default(cuid())
+  type           String   // ex: "VISA", "MASTERCARD"
+  cardNumber     String   @unique
+  expiryMonth    Int
+  expiryYear     Int
+  cvv            String
+  cardHolderName String
+
+  userId         String
+  user           User     @relation(fields: [userId], references: [id])
+  createdAt      DateTime @default(now())
+}

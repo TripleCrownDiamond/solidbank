@@ -2,7 +2,7 @@ import { Inter, Poppins } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
 import { ThemeProvider } from "@/components/theme-provider";
-import { ClerkClientProvider } from "@/components/clerk-client-provider";
+import { Toaster } from "@/components/ui/sonner";
 
 const inter = Inter({
   variable: "--font-sans",
@@ -45,9 +45,10 @@ export default async function RootLayout({
         suppressHydrationWarning
       >
         <ThemeProvider>
-          <ClerkClientProvider locale={locale}>
-            <Providers locale={locale}>{children}</Providers>
-          </ClerkClientProvider>
+            <Providers locale={locale}>
+            {children}
+            <Toaster position="top-center" richColors />
+          </Providers>
         </ThemeProvider>
       </body>
     </html>
