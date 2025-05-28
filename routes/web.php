@@ -1,11 +1,11 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Route;
 
 // Redirection vers la langue par défaut si aucune langue n'est spécifiée
 Route::get('/', function () {
-    $defaultLocale = 'fr'; // Langue par défaut
+    $defaultLocale = 'fr';  // Langue par défaut
     return redirect("$defaultLocale");
 });
 
@@ -18,7 +18,11 @@ Route::prefix('{locale}')->group(function () {
             return view('welcome');
         })->name('home');
 
-        // Dashboard (protégé par authentification)
+        // Ceci inclut bien les routes Jetstream
+        require __DIR__ . '/auth.php';
+        require __DIR__ . '/jetstream.php';
+
+        // Route personnalisée pour le dashboard
         Route::middleware([
             'auth:sanctum',
             config('jetstream.auth_session'),
@@ -28,8 +32,6 @@ Route::prefix('{locale}')->group(function () {
                 return view('dashboard');
             })->name('dashboard');
         });
-
-        // Autres routes principales ici...
     });
 });
 
@@ -44,5 +46,5 @@ Route::get('/set-locale/{locale}', function ($locale) {
         return redirect()->back();
     }
 
-    abort(404); // Langue non valide
+    abort(404);  // Langue non valide
 })->name('set.locale');

@@ -2,37 +2,46 @@
 
 namespace App\Http\Middleware;
 
+use Illuminate\Support\Facades\App;
 use Closure;
-use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
-use App\Http\Controllers\LanguageController;
 
 class SetLocale
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
-     */
-    public function handle(Request $request, Closure $next): Response
+    public function handle($request, Closure $next)
     {
-        // Instancier le contrôleur
-        $languageController = new LanguageController();
+        // Liste des langues disponibles dans le dossier `lang/`
+        $availableLocales = config('app.available_locales');  // Dynamique via `config/app.php`
+        $defaultLocale = config('app.fallback_locale');  // Locale de secours
 
-        // Récupérer les langues disponibles
-        $availableLocales = $languageController->getAvailableLanguages();
+        // Récupérer la locale depuis l'URL ou les paramètres de requête
+        $localeFromUrl = $request->segment(1);  // Première partie de l'URL ({locale})
+        $localeFromQuery = $request->query('locale');  // Paramètre de requête (?locale=fr)
 
-        // Extraire la locale depuis l'URL ou utiliser la langue par défaut
-        $localeFromUrl = $request->segment(1); // Première partie de l'URL (e.g., 'fr', 'en')
-        $defaultLocale = config('app.fallback_locale'); // Locale par défaut depuis `config/app.php`
+        // Déterminer la locale à utiliser
+        $locale = null;
 
-        // Vérifier si la locale extraite est valide
         if (in_array($localeFromUrl, $availableLocales)) {
-            app()->setLocale($localeFromUrl);
-            session(['locale' => $localeFromUrl]); // Stocker la locale dans la session
-        } else {
-            // Si la locale n'est pas valide, rediriger vers la locale par défaut
-            return redirect($defaultLocale . '/' . $request->path());
+            // Prioriser la locale dans l'URL
+            $locale = $localeFromUrl;
+        } elseif (in_array($localeFromQuery, $availableLocales)) {
+            // Sinon, utiliser la locale dans les paramètres de requête
+            $locale = $localeFromQuery;
+        }
+
+        // Si aucune locale valide n'est trouvée, utiliser la locale par défaut
+        if (!$locale) {
+            $locale = $defaultLocale;
+        }
+
+        // Définir la locale dans l'application
+        App::setLocale($locale);
+        session(['locale' => $locale]);  // Stocker la locale dans la session
+
+        // Rediriger vers la version préfixée `{locale}` si nécessaire
+        if ($localeFromQuery && !$localeFromUrl) {
+            // Si la locale est uniquement dans les paramètres de requête, rediriger vers l'URL préfixée
+            $path = $request->path();
+            return redirect("/$locale/$path");
         }
 
         return $next($request);
