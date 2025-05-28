@@ -99,8 +99,12 @@ document.addEventListener("DOMContentLoaded", function () {
             document.documentElement.classList.remove("dark");
             localStorage.setItem("theme", "light");
         } else {
-            document.documentElement.classList.remove("dark");
-            localStorage.removeItem("theme");
+            if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+                document.documentElement.classList.add("dark");
+            } else {
+                document.documentElement.classList.remove("dark");
+            }
+            localStorage.setItem("theme", "system");
         }
 
         updateThemeIcon(nextTheme);
