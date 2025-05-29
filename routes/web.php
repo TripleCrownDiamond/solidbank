@@ -14,9 +14,13 @@ Route::prefix('{locale}')->group(function () {
     // Middleware pour définir la locale en fonction de l'URL
     Route::middleware('set.locale')->group(function () {
         // Page d'accueil
-        Route::get('/', function () {
-            return view('welcome');
-        })->name('home');
+        Route::get('/', \App\Livewire\Home::class)->name('home');
+        
+        // Page À propos
+        Route::get('/about', \App\Livewire\About::class)->name('about');
+        
+        // Page Contact
+        Route::get('/contact', \App\Livewire\Contact::class)->name('contact');
 
         // Dashboard (protégé par authentification)
         Route::middleware([

@@ -7,14 +7,19 @@ use Illuminate\Support\Facades\File;
 
 class LanguageController extends Controller
 {
+    /**
+     * Get all available languages from the lang directory
+     *
+     * @return array
+     */
     public function getAvailableLanguages()
     {
-        // Liste des dossiers dans `lang/`
-        $languages = File::directories(lang_path());
-        
-        // Extraire uniquement les codes de langue (noms des dossiers)
-        return array_map(function ($path) {
-            return basename($path);
-        }, $languages);
+        $langPath = lang_path();
+        if (!File::exists($langPath)) {
+            return ['en']; // Retourne l'anglais par défaut si le dossier n'existe pas
+        }
+
+        $directories = File::directories($langPath);
+        return array_map('basename', $directories);
     }
 }
