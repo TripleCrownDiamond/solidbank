@@ -9,6 +9,9 @@ Route::get('/', function () {
     return redirect("$defaultLocale");
 });
 
+// Ceci inclut bien les routes Jetstream
+// require __DIR__ . '/auth.php'; // Removed duplicate inclusion
+
 // Groupe de routes avec préfixe {locale}
 Route::prefix('{locale}')->group(function () {
     // Middleware pour définir la locale en fonction de l'URL
@@ -18,7 +21,6 @@ Route::prefix('{locale}')->group(function () {
             return view('welcome');
         })->name('home');
 
-        // Ceci inclut bien les routes Jetstream
         require __DIR__ . '/auth.php';
         require __DIR__ . '/jetstream.php';
 

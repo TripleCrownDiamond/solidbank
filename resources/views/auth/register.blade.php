@@ -3,58 +3,14 @@
         <x-slot name="logo">
             <x-authentication-card-logo />
         </x-slot>
-
-        <x-validation-errors class="mb-4" />
-
-        <form method="POST" action="{{ route('register', ['locale' => app()->getLocale()]) }}">
-            @csrf
-
-            <div>
-                <x-label for="name" value="{{ __('register.name') }}" />
-                <x-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
-            </div>
-
-            <div class="mt-4">
-                <x-label for="email" value="{{ __('register.email') }}" />
-                <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
-            </div>
-
-            <div class="mt-4">
-                <x-label for="password" value="{{ __('register.password') }}" />
-                <x-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" />
-            </div>
-
-            <div class="mt-4">
-                <x-label for="password_confirmation" value="{{ __('register.confirm_password') }}" />
-                <x-input id="password_confirmation" class="block mt-1 w-full" type="password" name="password_confirmation" required autocomplete="new-password" />
-            </div>
-
-            @if (Laravel\Jetstream\Jetstream::hasTermsAndPrivacyPolicyFeature())
-                <div class="mt-4">
-                    <x-label for="terms">
-                        <div class="flex items-center">
-                            <x-checkbox name="terms" id="terms" required />
-
-                            <div class="ms-2">
-                                {!! __('register.i_agree_to_the', [
-                                        'terms_of_service' => '<a target="_blank" href="'.route('terms.show', ['locale' => app()->getLocale()]).'" class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800">'.__('register.terms_of_service').'</a>',
-                                        'privacy_policy' => '<a target="_blank" href="'.route('policy.show', ['locale' => app()->getLocale()]).'" class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800">'.__('register.privacy_policy').'</a>',
-                                ]) !!}
-                            </div>
-                        </div>
-                    </x-label>
-                </div>
-            @endif
-
-            <div class="flex items-center justify-end mt-4">
-                <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('login', ['locale' => app()->getLocale()]) }}">
-                    {{ __('register.already_registered') }}
+        @livewire('auth.register-form')
+        <div class="mt-4 text-center">
+            <p class="text-sm text-gray-600 dark:text-gray-400">
+                {{ __('register.already_have_account') }}
+                <a href="{{ route('login', ['locale' => app()->getLocale()]) }}" class="text-blue-600 hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-300">
+                    {{ __('register.sign_in') }}
                 </a>
-
-                <x-button class="ms-4">
-                    {{ __('register.register') }}
-                </x-button>
-            </div>
-        </form>
+            </p>
+        </div>
     </x-authentication-card>
 </x-guest-layout>

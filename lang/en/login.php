@@ -1,0 +1,27 @@
+<?php
+
+return [
+    'login_title' => 'Welcome Back!',
+    'login_subtitle' => 'Sign in to your account',
+    'no_account' => "Don't have an account?",
+    'register_now' => 'Register now',
+    'email' => 'Email',
+    'password' => 'Password',
+    'remember_me' => 'Remember me',
+    'forgot_password' => 'Forgot your password?',
+    'log_in' => 'Log in',
+    'logging_in' => 'Logging in...',
+    'email_required' => 'The email field is required.',
+    'email_invalid' => 'The email format is invalid.',
+    'password_required' => 'The password field is required.',
+    'failed' => 'These credentials do not match our records.',
+    'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
+    'two_factor_challenge_title' => 'Two Factor Challenge',
+    'two_factor_challenge_subtitle' => 'Please confirm access to your account by entering the authentication code provided by your authenticator application.',
+    'code' => 'Code',
+    'recovery_code' => 'Recovery Code',
+    'use_recovery_code' => 'Use a recovery code',
+    'use_authentication_code' => 'Use an authentication code',
+    'provided_code_invalid' => 'The provided code is invalid.',
+    'recovery_code_invalid' => 'The provided recovery code is invalid.',
+];

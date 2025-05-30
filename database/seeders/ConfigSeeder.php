@@ -14,7 +14,6 @@ class ConfigSeeder extends Seeder
 
         if (!$admin) {
             $admin = User::factory()->create([
-                'name' => 'Admin',
                 'email' => 'admin@example.com',
                 'password' => bcrypt('password'),
                 'email_verified_at' => now(),

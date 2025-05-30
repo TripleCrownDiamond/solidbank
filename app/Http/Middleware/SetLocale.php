@@ -3,46 +3,44 @@
 namespace App\Http\Middleware;
 
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\File;
 use Closure;
 
 class SetLocale
 {
     public function handle($request, Closure $next)
     {
-        // Liste des langues disponibles dans le dossier `lang/`
-        $availableLocales = config('app.available_locales');  // Dynamique via `config/app.php`
-        $defaultLocale = config('app.fallback_locale');  // Locale de secours
+        // Récupérer dynamiquement les langues disponibles dans le dossier lang/
+        $availableLocales = collect(File::directories(base_path('lang')))
+            ->map(fn($dir) => basename($dir))
+            ->toArray();
+
+        $defaultLocale = config('app.locale', 'fr');
 
         // Récupérer la locale depuis l'URL ou les paramètres de requête
-        $localeFromUrl = $request->segment(1);  // Première partie de l'URL ({locale})
-        $localeFromQuery = $request->query('locale');  // Paramètre de requête (?locale=fr)
+        $localeFromUrl = $request->segment(1);
+        $localeFromQuery = $request->query('locale');
 
         // Déterminer la locale à utiliser
         $locale = null;
 
         if (in_array($localeFromUrl, $availableLocales)) {
-            // Prioriser la locale dans l'URL
             $locale = $localeFromUrl;
         } elseif (in_array($localeFromQuery, $availableLocales)) {
-            // Sinon, utiliser la locale dans les paramètres de requête
             $locale = $localeFromQuery;
-        }
-
-        // Si aucune locale valide n'est trouvée, utiliser la locale par défaut
-        if (!$locale) {
+        } else {
             $locale = $defaultLocale;
         }
 
         // Définir la locale dans l'application
         App::setLocale($locale);
-        session(['locale' => $locale]);  // Stocker la locale dans la session
 
-        // Rediriger vers la version préfixée `{locale}` si nécessaire
-        if ($localeFromQuery && !$localeFromUrl) {
-            // Si la locale est uniquement dans les paramètres de requête, rediriger vers l'URL préfixée
-            $path = $request->path();
-            return redirect("/$locale/$path");
-        }
+        // Stocker dans la session
+        session(['locale' => $locale]);
+
+        // Stocker aussi dans la configuration pour un accès global
+        Config::set('app.current_locale', $locale);
 
         return $next($request);
     }

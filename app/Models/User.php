@@ -10,15 +10,23 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
 
+/**
+ * @method bool isRecoveryCodeValid(string $code)
+ * @method void replaceRecoveryCodes(array $codes)
+ * @method bool isTwoFactorAuthCodeValid(string $code)
+ */
 class User extends Authenticatable
 {
     use HasApiTokens;
-
-    /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory;
     use HasProfilePhoto;
     use Notifiable;
     use TwoFactorAuthenticatable;
+
+    public function getLocale()
+    {
+        return app()->getLocale();
+    }
 
     /**
      * The attributes that are mass assignable.
@@ -26,9 +34,22 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
         'email',
         'password',
+        'first_name',
+        'last_name',
+        'gender',
+        'birth_date',
+        'marital_status',
+        'profession',
+        'phone_number',
+        'country_id',
+        'region',
+        'city',
+        'postal_code',
+        'address',
+        'identity_document_url',
+        'address_document_url',
     ];
 
     /**
@@ -65,9 +86,8 @@ class User extends Authenticatable
         ];
     }
 
-        public function country()
+    public function country()
     {
         return $this->belongsTo(Country::class);
     }
-
 }
