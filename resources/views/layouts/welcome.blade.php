@@ -14,15 +14,11 @@
 
     <!-- Contenu principal -->
     <main class="container mx-auto px-4 py-8">
-        @yield('content')
+        {{ $slot }}
     </main>
 
-    <!-- Footer (optionnel) -->
-    <footer class="bg-gray-800 text-white py-6 mt-8">
-        <div class="container mx-auto text-center">
-            <p>&copy; {{ date('Y') }} {{ config('app.name') }}. {{ __('All rights reserved.') }}</p>
-        </div>
-    </footer>
+    <!-- Footer -->
+    <x-welcome-footer />
 </body>
 
 </html>
