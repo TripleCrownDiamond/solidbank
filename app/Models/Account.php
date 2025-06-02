@@ -9,6 +9,18 @@ class Account extends Model
 {
     use HasFactory;
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($account) {
+            $account->rib()->delete();
+            $account->cards()->delete();
+            $account->sentTransactions()->delete();
+            $account->receivedTransactions()->delete();
+        });
+    }
+
     protected $fillable = [
         'user_id',
         'account_number',

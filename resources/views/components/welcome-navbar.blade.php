@@ -23,10 +23,8 @@
                     <a href="{{ route('dashboard', ['locale' => app()->getLocale()]) }}"
                         class="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">{{ __('nav.dashboard') }}</a>
                 @else
-                    <a href="{{ route('login', ['locale' => app()->getLocale()]) }}"
-                        class="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">{{ __('nav.login') }}</a>
-                    <a href="{{ route('register', ['locale' => app()->getLocale()]) }}"
-                        class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">{{ __('nav.register') }}</a>
+                    <a href="{{ route('locale.login', ['locale' => app()->getLocale()]) }}" class="text-sm text-gray-700 dark:text-gray-500 underline">{{ __('auth.login') }}</a>
+                <a href="{{ route('locale.register', ['locale' => app()->getLocale()]) }}" class="ml-4 inline-flex items-center px-4 py-2 bg-brand-primary text-white rounded-md hover:bg-brand-primary-hover transition text-sm">{{ __('auth.register') }}</a>
                 @endauth
             </div>
 
@@ -64,10 +62,10 @@
                 <a href="{{ route('dashboard', ['locale' => app()->getLocale()]) }}"
                     class="block text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-center">{{ __('nav.dashboard') }}</a>
             @else
-                <a href="{{ route('login', ['locale' => app()->getLocale()]) }}"
+                <a href="{{ route('locale.login', ['locale' => app()->getLocale()]) }}"
                     class="block text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-center">{{ __('nav.login') }}</a>
-                <a href="{{ route('register', ['locale' => app()->getLocale()]) }}"
-                    class="block w-full bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-center">{{ __('nav.register') }}</a>
+                <a href="{{ route('locale.register', ['locale' => app()->getLocale()]) }}"
+                    class="block w-full bg-brand-primary text-white px-4 py-2 rounded hover:bg-brand-primary-hover text-center">{{ __('nav.register') }}</a>
             @endauth
 
             <!-- Language Switcher for Mobile -->

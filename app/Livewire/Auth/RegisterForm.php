@@ -3,6 +3,7 @@
 namespace App\Livewire\Auth;
 
 use App\Models\Account;
+use App\Models\Config;
 use App\Models\Country;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
@@ -325,6 +326,7 @@ class RegisterForm extends Component
 
             // Créer l'utilisateur
             $user = User::create([
+                'name' => $this->first_name . ' ' . $this->last_name,
                 'first_name' => $this->first_name,
                 'last_name' => $this->last_name,
                 'gender' => $this->gender,
@@ -338,18 +340,31 @@ class RegisterForm extends Component
                 'postal_code' => $this->postal_code,
                 'address' => $this->address,
                 'email' => $this->email,
+                'email_verified_at' => now(),
                 'password' => Hash::make($this->password),
                 'identity_document_url' => $identityPath,
                 'address_document_url' => $addressPath,
-                'email_verified_at' => now(),  // Force la vérification immédiate
+                'is_admin' => false,
             ]);
 
             // Créer le compte utilisateur
+            // Get config for account number generation
+            $config = Config::first();
+            $prefix = $config ? $config->account_prefix : 'ACC';
+            $length = $config ? $config->account_length : 10;
+
+            // Generate unique account number with prefix and random digits
+            $numberLength = $length - strlen($prefix);
+            do {
+                $accountNumber = $prefix . str_pad(rand(0, pow(10, $numberLength) - 1), $numberLength, '0', STR_PAD_LEFT);
+            } while (Account::where('account_number', $accountNumber)->exists());
+
             $account = Account::create([
                 'user_id' => $user->id,
-                'account_number' => Str::random(10),
+                'account_number' => $accountNumber,
+                'balance' => 0,
                 'type' => $this->type,
-                'currency' => $this->currency,
+                'currency' => 'EUR',
                 'status' => 'INACTIVE',
             ]);
 

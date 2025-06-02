@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\TestMailController;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
 
@@ -8,9 +9,6 @@ Route::get('/', function () {
     $defaultLocale = 'fr';  // Langue par défaut
     return redirect("$defaultLocale");
 });
-
-// Ceci inclut bien les routes Jetstream
-// require __DIR__ . '/auth.php'; // Removed duplicate inclusion
 
 // Groupe de routes avec préfixe {locale}
 Route::prefix('{locale}')->group(function () {
@@ -21,6 +19,9 @@ Route::prefix('{locale}')->group(function () {
             return view('welcome');
         })->name('home');
 
+        // Route pour le formulaire de connexion
+
+        // Jetstream and authentication routes
         require __DIR__ . '/auth.php';
         require __DIR__ . '/jetstream.php';
 
@@ -49,4 +50,7 @@ Route::get('/set-locale/{locale}', function ($locale) {
     }
 
     abort(404);  // Langue non valide
-})->name('set.locale');
+});
+
+// Route de test pour l'envoi d'emails
+Route::get('/test-email', [TestMailController::class, 'sendTestEmail']);

@@ -1,27 +1,29 @@
 <?php
 
+use App\Http\Controllers\Auth\NewPasswordResetController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 use Laravel\Fortify\Http\Controllers\EmailVerificationNotificationController;
 use Laravel\Fortify\Http\Controllers\EmailVerificationPromptController;
 use Laravel\Fortify\Http\Controllers\NewPasswordController;
-use Laravel\Fortify\Http\Controllers\PasswordResetLinkController;
 use Laravel\Fortify\Http\Controllers\RegisteredUserController;
 use Laravel\Fortify\Http\Controllers\TwoFactorAuthenticatedSessionController;
 use Laravel\Fortify\Http\Controllers\VerifyEmailController;
 
 Route::middleware(['guest'])->group(function () {
-    Route::get('login', [AuthenticatedSessionController::class, 'create'])->name('login');
+    Route::get('login', [AuthenticatedSessionController::class, 'create'])->name('locale.login');
     Route::post('login', [AuthenticatedSessionController::class, 'store']);
 
-    Route::get('register', [RegisteredUserController::class, 'create'])->name('register');
+    Route::get('register', [RegisteredUserController::class, 'create'])->name('locale.register');
     Route::post('register', [RegisteredUserController::class, 'store']);
 
-    Route::get('forgot-password', [PasswordResetLinkController::class, 'create'])->name('password.request');
-    Route::post('forgot-password', [PasswordResetLinkController::class, 'store'])->name('password.email');
+    // Use custom password reset controller
+    Route::get('forgot-password', [NewPasswordResetController::class, 'create'])->name('locale.password.request');
+    Route::post('forgot-password', [NewPasswordResetController::class, 'sendResetLinkEmail'])->name('locale.password.email');
 
-    Route::get('reset-password/{token}', [NewPasswordController::class, 'create'])->name('password.reset');
-    Route::post('reset-password', [NewPasswordController::class, 'store'])->name('password.update');
+    // Disable the default password reset routes since we're sending the password directly
+    // Route::get('reset-password/{token}', [NewPasswordController::class, 'create'])->name('password.reset');
+    // Route::post('reset-password', [NewPasswordController::class, 'store'])->name('password.update');
 });
 
 Route::middleware(['auth'])->group(function () {

@@ -5,9 +5,12 @@ namespace App\Providers;
 use App\Mail\VerifyEmail as VerifyEmailMailable;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\ServiceProvider;
 
@@ -26,6 +29,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Configuration de la vérification d'email
         VerifyEmail::toMailUsing(function ($notifiable) {
             // Forcer la locale à 'fr' si elle n'est pas disponible
             $locale = $this->getCurrentLocale();
@@ -43,6 +47,36 @@ class AppServiceProvider extends ServiceProvider
 
             return new \App\Mail\VerifyEmail($notifiable, $verificationUrl);
         });
+
+        // Enregistrer les composants mail personnalisés
+        $this->registerMailComponents();
+    }
+
+    /**
+     * Enregistre les composants mail personnalisés
+     */
+    protected function registerMailComponents(): void
+    {
+        // Enregistrer le chemin des composants mail
+        Blade::componentNamespace('Mail\Components', 'mail');
+
+        // Ajouter le chemin des vues mail
+        View::addNamespace('mail', resource_path('views/vendor/mail'));
+
+        // Définir le thème mail par défaut
+        Mail::alwaysFrom(env('MAIL_FROM_ADDRESS', 'hello@example.com'), env('MAIL_FROM_NAME', 'Example'));
+
+        // Définir le chemin des composants mail
+        $this->loadViewsFrom(resource_path('views/vendor/mail'), 'mail');
+
+        // Définir le chemin des composants mail pour Laravel
+        $this->loadViewsFrom(resource_path('views/vendor/mail/html'), 'mail.html');
+        $this->loadViewsFrom(resource_path('views/vendor/mail/text'), 'mail.text');
+
+        // Publier les vues mail si nécessaire
+        $this->publishes([
+            __DIR__ . '/../../../vendor/laravel/framework/src/Illuminate/Mail/resources/views' => resource_path('views/vendor/mail'),
+        ], 'laravel-mail');
     }
 
     /**

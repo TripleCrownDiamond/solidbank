@@ -10,15 +10,7 @@ class ConfigSeeder extends Seeder
 {
     public function run(): void
     {
-        $admin = User::where('email', 'admin@example.com')->first();
-
-        if (!$admin) {
-            $admin = User::factory()->create([
-                'email' => 'admin@example.com',
-                'password' => bcrypt('password'),
-                'email_verified_at' => now(),
-            ]);
-        }
+        $admin = User::where('is_admin', true)->first();
 
         Config::updateOrCreate(
             ['user_id' => $admin->id],
@@ -37,6 +29,8 @@ class ConfigSeeder extends Seeder
                 'bank_website' => 'https://www.solidbank.fr',
                 'notification_email' => true,
                 'two_factor_auth' => true,
+                'account_prefix' => 'ACC',
+                'account_length' => 10,
             ]
         );
     }

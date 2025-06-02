@@ -28,7 +28,7 @@
                         {{ __('login.recovery_code') }}
                     </label>
                     <input type="text" id="recovery_code" wire:model.defer="recovery_code"
-                        class="mt-1 block w-full rounded-md shadow-sm border-gray-300 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:border-blue-500 focus:ring-blue-500" required autofocus autocomplete="one-time-code" />
+                        class="mt-1 block w-full rounded-md shadow-sm border-gray-300 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:border-brand-primary focus:ring-brand-primary" required autofocus autocomplete="one-time-code" />
                 </div>
             @else
                 <!-- Code -->
@@ -37,7 +37,7 @@
                         {{ __('login.code') }}
                     </label>
                     <input type="text" id="code" wire:model.defer="code"
-                        class="mt-1 block w-full rounded-md shadow-sm border-gray-300 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:border-blue-500 focus:ring-blue-500" required autofocus inputmode="numeric" autocomplete="one-time-code" />
+                        class="mt-1 block w-full rounded-md shadow-sm border-gray-300 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:border-brand-primary focus:ring-brand-primary" required autofocus inputmode="numeric" autocomplete="one-time-code" />
                 </div>
             @endif
 
@@ -55,7 +55,7 @@
 
             <!-- Login Button -->
             <div class="flex items-center justify-end mt-4">
-                <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition flex items-center" wire:loading.attr="disabled">
+                <button type="submit" class="px-4 py-2 bg-brand-primary text-white rounded-md hover:bg-brand-primary-hover transition flex items-center" wire:loading.attr="disabled">
                     <span wire:loading.remove>{{ __('login.log_in') }}</span>
                     <span wire:loading>{{ __('login.logging_in') }}</span>
                 </button>
@@ -71,7 +71,7 @@
                     {{ __('login.email') }}
                 </label>
                 <input type="email" id="email" wire:model.defer="email"
-                    class="mt-1 block w-full rounded-md shadow-sm border-gray-300 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:border-blue-500 focus:ring-blue-500" required autofocus autocomplete="username" />
+                    class="mt-1 block w-full rounded-md shadow-sm border-gray-300 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:border-brand-primary focus:ring-brand-primary" required autofocus autocomplete="username" />
             </div>
 
             <!-- Password -->
@@ -79,15 +79,29 @@
                 <label for="password" class="block text-sm font-medium text-gray-900 dark:text-white">
                     {{ __('login.password') }}
                 </label>
-                <input type="password" id="password" wire:model.defer="password"
-                    class="mt-1 block w-full rounded-md shadow-sm border-gray-300 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:border-blue-500 focus:ring-blue-500" required autocomplete="current-password" />
+                <div class="relative">
+                    <input
+                        type="{{ $showPassword ? 'text' : 'password' }}"
+                        id="password"
+                        wire:model.defer="password"
+                        class="mt-1 block w-full rounded-md shadow-sm border-gray-300 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:border-brand-primary focus:ring-brand-primary pr-10" required autocomplete="current-password" />
+                    <button
+                        type="button"
+                        wire:click="$toggle('showPassword')"
+                        class="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5"
+                    >
+                        <span class="text-brand-primary hover:text-brand-primary-hover dark:text-brand-primary dark:hover:text-brand-primary-hover text-sm">
+                            {{ $showPassword ? __('login.hide') : __('login.show') }}
+                        </span>
+                    </button>
+                </div>
             </div>
 
             <!-- Remember Me -->
             <div class="block">
                 <label for="remember" class="flex items-center">
                     <input type="checkbox" id="remember" wire:model.defer="remember"
-                        class="rounded border-gray-300 text-blue-600 shadow-sm focus:ring-blue-500 dark:bg-gray-900 dark:border-gray-700 dark:checked:bg-blue-600 dark:checked:border-blue-600" />
+                        class="rounded border-gray-300 text-brand-primary shadow-sm focus:ring-brand-primary dark:bg-gray-900 dark:border-gray-700 dark:checked:bg-brand-primary dark:checked:border-brand-primary" />
                     <span class="ms-2 text-sm text-gray-600 dark:text-gray-400">{{ __('login.remember_me') }}</span>
                 </label>
             </div>
@@ -95,12 +109,12 @@
             <!-- Forgot Password & Login Button -->
             <div class="flex items-center justify-between mt-4">
                 @if (Route::has('password.request'))
-                    <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('password.request', ['locale' => app()->getLocale()]) }}">
+                    <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('locale.password.request', app()->getLocale()) }}">
                         {{ __('login.forgot_password') }}
                     </a>
                 @endif
 
-                <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition flex items-center" wire:loading.attr="disabled">
+                <button type="submit" class="px-4 py-2 bg-brand-primary text-white rounded-md hover:bg-brand-primary-hover transition flex items-center" wire:loading.attr="disabled">
                     <span wire:loading.remove>{{ __('login.log_in') }}</span>
                     <span wire:loading>{{ __('login.logging_in') }}</span>
                 </button>
@@ -111,7 +125,7 @@
     <div class="mt-4 text-center">
         <p class="text-sm text-gray-600 dark:text-gray-400">
             {{ __('login.no_account') }}
-            <a href="{{ route('register', ['locale' => app()->getLocale()]) }}" class="text-blue-600 hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-300">
+            <a href="{{ route('locale.register', ['locale' => app()->getLocale()]) }}" class="text-brand-primary hover:text-brand-primary-hover dark:text-brand-primary dark:hover:text-brand-primary-hover">
                 {{ __('login.register_now') }}
             </a>
         </p>

@@ -26,4 +26,7 @@ return [
     'recovery_code_invalid' => 'Le code de récupération fourni est invalide.',
     'login_title' => 'Bienvenue !',
     'login_subtitle' => 'Connectez-vous à votre compte',
+    'show' => 'Afficher',
+    'hide' => 'Cacher',
+    'verify' => 'Vérifier',
 ];

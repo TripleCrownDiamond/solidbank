@@ -4,14 +4,13 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
     public function up(): void
     {
-         Schema::create('configs', function (Blueprint $table) {
+        Schema::create('configs', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
 
@@ -34,6 +33,10 @@ return new class extends Migration
             // Preferences
             $table->boolean('notification_email')->default(true);
             $table->boolean('two_factor_auth')->default(false);
+
+            // Account Number Configuration
+            $table->string('account_prefix')->default('ACC');
+            $table->unsignedTinyInteger('account_length')->default(10);
 
             $table->timestamps();
         });

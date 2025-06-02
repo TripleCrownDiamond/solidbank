@@ -25,6 +25,8 @@ class Config extends Model
         'bank_website',
         'notification_email',
         'two_factor_auth',
+        'account_prefix',
+        'account_length',
     ];
 
     public function user()

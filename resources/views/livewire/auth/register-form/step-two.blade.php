@@ -1,7 +1,7 @@
 <!-- Step Header with Number and Title -->
 <div class="text-center mb-8">
-    <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-900 mb-3">
-        <span class="text-xl font-bold text-blue-600 dark:text-blue-300">2</span>
+    <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-brand-primary dark:bg-brand-primary mb-3">
+        <span class="text-xl font-bold text-black dark:text-white">2</span>
     </div>
     <h2 class="text-xl font-semibold text-gray-900 dark:text-white">{{ __('register.step2') }}</h2>
     <p class="text-sm text-gray-500 dark:text-gray-400">{{ __('register.step', ['step' => 2]) }}</p>
@@ -14,7 +14,7 @@
             {{ __('register.country') }}
         </label>
         <select id="country_id" wire:model.live="country_id"
-            class="mt-1 block w-full rounded-md shadow-sm border-gray-300 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:border-blue-500 focus:ring-blue-500">
+            class="mt-1 block w-full rounded-md shadow-sm border-gray-300 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:border-brand-primary focus:ring-brand-primary">
             <option value="">{{ __('register.select_country') }}</option>
             @foreach ($countries as $country)
                 <option value="{{ $country->id }}">{{ $country->name }}</option>
@@ -37,11 +37,11 @@
                 </span>
                 <input type="text" id="phone_number" wire:model.defer="phone_number"
                     placeholder="123456789"
-                    class="flex-1 rounded-r-md rounded-l-none border-gray-300 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 shadow-sm focus:border-blue-500 focus:ring-blue-500" />
+                    class="flex-1 rounded-r-md rounded-l-none border-gray-300 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 shadow-sm focus:border-brand-primary focus:ring-brand-primary" />
             @else
                 <input type="text" id="phone_number" wire:model.defer="phone_number"
                     placeholder="{{ __('register.phone_placeholder') }}"
-                    class="flex-1 rounded-md border-gray-300 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 shadow-sm focus:border-blue-500 focus:ring-blue-500" />
+                    class="flex-1 rounded-md border-gray-300 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 shadow-sm focus:border-brand-primary focus:ring-brand-primary" />
             @endif
         </div>
         @if ($this->selectedCountry && !empty($this->selectedCountry->dial_code))
@@ -62,7 +62,7 @@
                 {{ __('register.region') }}
             </label>
             <input type="text" id="region" wire:model.defer="region"
-                class="mt-1 block w-full rounded-md shadow-sm border-gray-300 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:border-blue-500 focus:ring-blue-500" />
+                class="mt-1 block w-full rounded-md shadow-sm border-gray-300 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:border-brand-primary focus:ring-brand-primary" />
             @error('region')
                 <span class="text-red-500 text-xs">{{ $message }}</span>
             @enderror
@@ -74,7 +74,7 @@
                 {{ __('register.city') }}
             </label>
             <input type="text" id="city" wire:model.defer="city"
-                class="mt-1 block w-full rounded-md shadow-sm border-gray-300 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:border-blue-500 focus:ring-blue-500" />
+                class="mt-1 block w-full rounded-md shadow-sm border-gray-300 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:border-brand-primary focus:ring-brand-primary" />
             @error('city')
                 <span class="text-red-500 text-xs">{{ $message }}</span>
             @enderror
@@ -86,7 +86,7 @@
                 {{ __('register.postal_code') }}
             </label>
             <input type="text" id="postal_code" wire:model.defer="postal_code"
-                class="mt-1 block w-full rounded-md shadow-sm border-gray-300 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:border-blue-500 focus:ring-blue-500" />
+                class="mt-1 block w-full rounded-md shadow-sm border-gray-300 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:border-brand-primary focus:ring-brand-primary" />
             @error('postal_code')
                 <span class="text-red-500 text-xs">{{ $message }}</span>
             @enderror
@@ -98,7 +98,7 @@
                 {{ __('register.address') }}
             </label>
             <input type="text" id="address" wire:model.defer="address"
-                class="mt-1 block w-full rounded-md shadow-sm border-gray-300 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:border-blue-500 focus:ring-blue-500" />
+                class="mt-1 block w-full rounded-md shadow-sm border-gray-300 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:border-brand-primary focus:ring-brand-primary" />
             @error('address')
                 <span class="text-red-500 text-xs">{{ $message }}</span>
             @enderror
@@ -117,7 +117,7 @@
         </button>
 
         <button type="submit"
-            class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition flex items-center"
+            class="px-4 py-2 bg-brand-primary text-white rounded-md hover:bg-brand-primary-hover transition flex items-center"
             wire:loading.attr="disabled">
             <span wire:loading.remove wire:target="nextStep">{{ __('register.next') }}</span>
             <span wire:loading wire:target="nextStep">{{ __('register.submitting') }}</span>

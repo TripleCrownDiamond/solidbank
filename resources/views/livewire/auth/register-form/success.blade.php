@@ -8,8 +8,8 @@
     <h2 class="mt-4 text-2xl font-bold text-gray-900 dark:text-white">{{ __('register.success_title') }}</h2>
     <p class="mt-2 text-gray-600 dark:text-gray-300">{{ __('register.success_message') }}</p>
     <div class="mt-8">
-        <a href="{{ route('login', ['locale' => app()->getLocale()]) }}" 
-           class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition">
+        <a href="{{ route('locale.login', ['locale' => app()->getLocale()]) }}" 
+           class="inline-flex items-center px-4 py-2 bg-brand-primary border border-transparent rounded-md font-semibold text-white hover:bg-brand-primary-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-primary transition">
             {{ __('register.go_to_login') }}
         </a>
     </div>

@@ -144,3 +144,128 @@ document.addEventListener("DOMContentLoaded", function () {
         .getElementById("mobile-theme-toggle")
         ?.addEventListener("click", () => setTheme());
 });
+
+// Livewire Alert Listener
+import Swal from "sweetalert2";
+
+if (window.Livewire) {
+    document.addEventListener("livewire:initialized", () => {
+        Livewire.on("alert", (event) => {
+            console.log("Livewire alert event:", event);
+            // Livewire events dispatched from backend often come as an array with the payload as the first element
+            const payload = event[0] || event;
+
+            if (payload && payload.message) {
+                const type = payload.type || "info"; // Default to 'info' if type is not provided
+                const message = payload.message;
+                const theme = document.documentElement.classList.contains(
+                    "dark"
+                )
+                    ? "dark"
+                    : "light";
+
+                Swal.fire({
+                    icon: type,
+                    title: message,
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    background: theme === "dark" ? "#333" : "#fff",
+                    color: theme === "dark" ? "#fff" : "#333",
+                });
+            } else {
+                console.error(
+                    "Livewire alert event detail or message is undefined:",
+                    event
+                );
+                Swal.fire({
+                    icon: "error",
+                    title: "An unknown alert occurred.",
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    background: document.documentElement.classList.contains(
+                        "dark"
+                    )
+                        ? "#333"
+                        : "#fff",
+                    color: document.documentElement.classList.contains("dark")
+                        ? "#fff"
+                        : "#333",
+                });
+            }
+        });
+
+        Livewire.on("copy-to-clipboard", (event) => {
+            console.log("Livewire copy-to-clipboard event:", event);
+            // Livewire events dispatched from backend often come as an array with the payload as the first element
+            const payload = event[0] || event;
+
+            if (payload && payload.accountNumber) {
+                const accountNumber = payload.accountNumber;
+                const message = payload.message || "Account number copied!";
+                const theme = document.documentElement.classList.contains(
+                    "dark"
+                )
+                    ? "dark"
+                    : "light";
+
+                navigator.clipboard
+                    .writeText(accountNumber)
+                    .then(() => {
+                        Swal.fire({
+                            icon: "success",
+                            title: message,
+                            toast: true,
+                            position: "top-end",
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            background: theme === "dark" ? "#333" : "#fff",
+                            color: theme === "dark" ? "#fff" : "#333",
+                        });
+                    })
+                    .catch((err) => {
+                        console.error("Failed to copy: ", err);
+                        Swal.fire({
+                            icon: "error",
+                            title: "Failed to copy account number.",
+                            toast: true,
+                            position: "top-end",
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            background: theme === "dark" ? "#333" : "#fff",
+                            color: theme === "dark" ? "#fff" : "#333",
+                        });
+                    });
+            } else {
+                console.error(
+                    "Livewire copy-to-clipboard event detail or accountNumber is undefined:",
+                    event
+                );
+                Swal.fire({
+                    icon: "error",
+                    title: "An unknown clipboard copy error occurred.",
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    background: document.documentElement.classList.contains(
+                        "dark"
+                    )
+                        ? "#333"
+                        : "#fff",
+                    color: document.documentElement.classList.contains("dark")
+                        ? "#fff"
+                        : "#333",
+                });
+            }
+        });
+    });
+}

@@ -1,7 +1,7 @@
 <!-- Step Header with Number and Title -->
 <div class="text-center mb-8">
-    <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-900 mb-3">
-        <span class="text-xl font-bold text-blue-600 dark:text-blue-300">1</span>
+    <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-brand-primary dark:bg-brand-primary mb-3">
+        <span class="text-xl font-bold text-black dark:text-white">1</span>
     </div>
     <h2 class="text-xl font-semibold text-gray-900 dark:text-white">{{ __('register.step1') }}</h2>
     <p class="text-sm text-gray-500 dark:text-gray-400">{{ __('register.step', ['step' => 1]) }}</p>
@@ -96,7 +96,7 @@
 
     <!-- Submit Button -->
     <div class="flex justify-end pt-4">
-        <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition flex items-center" wire:loading.attr="disabled">
+        <button type="submit" class="px-4 py-2 bg-brand-primary text-white rounded-md hover:bg-brand-primary-hover transition flex items-center" wire:loading.attr="disabled">
             <span wire:loading.remove>{{ __('register.next') }}</span>
             <span wire:loading wire:target="nextStep">
                 {{ __('register.submitting') }}

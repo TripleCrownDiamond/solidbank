@@ -11,7 +11,7 @@ return [
      * | other UI elements where an application name needs to be displayed.
      * |
      */
-    'name' => env('APP_NAME', 'Laravel'),
+    'name' => env('APP_NAME', 'SolidBank'),
 
     /*
      * |--------------------------------------------------------------------------
@@ -134,6 +134,8 @@ return [
         /*
          * Package Service Providers...
          */
+        Illuminate\Mail\MailServiceProvider::class,
+        Illuminate\View\ViewServiceProvider::class,
 
         /*
          * Application Service Providers...

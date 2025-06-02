@@ -28,4 +28,6 @@ return [
     'verification_link_sent' => 'A new verification link has been sent to the email address you provided in your profile settings.',
     'resend_verification_email' => 'Resend Verification Email',
     'log_out' => 'Log Out',
+    'login' => 'Login',
+    'register' => 'Register'
 ];

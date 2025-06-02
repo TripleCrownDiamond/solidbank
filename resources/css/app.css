@@ -2,6 +2,74 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Brand Colors */
+:root {
+    --brand-primary: #2563eb; /* blue-600 */
+    --brand-primary-hover: #1d4ed8; /* blue-700 */
+    --brand-primary-light: #3b82f6; /* blue-500 */
+    --brand-primary-dark: #1e40af; /* blue-800 */
+    --brand-secondary: #64748b; /* slate-500 */
+    --brand-accent: #10b981; /* emerald-500 */
+    --brand-success: #059669; /* emerald-600 */
+    --brand-warning: #d97706; /* amber-600 */
+    --brand-error: #dc2626; /* red-600 */
+}
+
+/* Brand Color Utility Classes */
+.bg-brand-primary {
+    background-color: var(--brand-primary);
+}
+.bg-brand-primary-hover {
+    background-color: var(--brand-primary-hover);
+}
+.text-brand-primary {
+    color: var(--brand-primary);
+}
+.text-brand-primary-hover {
+    color: var(--brand-primary-hover);
+}
+.border-brand-primary {
+    border-color: var(--brand-primary);
+}
+.focus\:border-brand-primary:focus {
+    border-color: var(--brand-primary);
+}
+.focus\:ring-brand-primary:focus {
+    --tw-ring-color: var(--brand-primary);
+}
+.hover\:bg-brand-primary-hover:hover {
+    background-color: var(--brand-primary-hover);
+}
+.hover\:text-brand-primary-hover:hover {
+    color: var(--brand-primary-hover);
+}
+
+/* Email Styles */
+.email-container {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+}
+
+.email-button {
+    display: inline-block;
+    padding: 12px 24px;
+    background-color: var(--brand-primary);
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: 600;
+    margin: 20px 0;
+}
+
+.email-button:hover {
+    background-color: var(--brand-primary-hover);
+}
+
 [x-cloak] {
     display: none;
 }

@@ -1,6 +1,6 @@
 <div class="text-center mb-8">
-    <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-900 mb-3">
-        <span class="text-xl font-bold text-blue-600 dark:text-blue-300">3</span>
+    <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-brand-primary dark:bg-brand-primary mb-3">
+        <span class="text-xl font-bold text-black dark:text-white">3</span>
     </div>
     <h2 class="text-xl font-semibold text-gray-900 dark:text-white">{{ __('register.step3') }}</h2>
     <p class="text-sm text-gray-500 dark:text-gray-400">{{ __('register.step', ['step' => 3]) }}</p>
@@ -13,7 +13,7 @@
             {{ __('register.email') }}
         </label>
         <input type="email" id="email" wire:model.defer="email"
-            class="mt-1 block w-full rounded-md shadow-sm border-gray-300 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:border-blue-500 focus:ring-blue-500" />
+            class="mt-1 block w-full rounded-md shadow-sm border-gray-300 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:border-brand-primary focus:ring-brand-primary" />
         @error('email')
             <span class="text-red-500 text-xs">{{ $message }}</span>
         @enderror
@@ -29,14 +29,14 @@
                 type="{{ $showPassword ? 'text' : 'password' }}"
                 id="password"
                 wire:model.defer="password"
-                class="mt-1 block w-full rounded-md shadow-sm border-gray-300 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:border-blue-500 focus:ring-blue-500 pr-10"
+                class="mt-1 block w-full rounded-md shadow-sm border-gray-300 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:border-brand-primary focus:ring-brand-primary pr-10"
             />
             <button
                 type="button"
                 wire:click="$toggle('showPassword')"
                 class="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5"
             >
-                <span class="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 text-sm">
+                <span class="text-brand-primary hover:text-brand-primary-hover dark:text-brand-primary dark:hover:text-brand-primary-hover text-sm">
                     {{ $showPassword ? __('register.hide') : __('register.show') }}
                 </span>
             </button>
@@ -57,14 +57,14 @@
                 type="{{ $showPasswordConfirmation ? 'text' : 'password' }}"
                 id="password_confirmation"
                 wire:model.defer="password_confirmation"
-                class="mt-1 block w-full rounded-md shadow-sm border-gray-300 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:border-blue-500 focus:ring-blue-500 pr-10"
+                class="mt-1 block w-full rounded-md shadow-sm border-gray-300 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:border-brand-primary focus:ring-brand-primary pr-10"
             />
             <button
                 type="button"
                 wire:click="$toggle('showPasswordConfirmation')"
                 class="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5"
             >
-                <span class="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 text-sm">
+                <span class="text-brand-primary hover:text-brand-primary-hover dark:text-brand-primary dark:hover:text-brand-primary-hover text-sm">
                     {{ $showPasswordConfirmation ? __('register.hide') : __('register.show') }}
                 </span>
             </button>
@@ -82,7 +82,7 @@
                 {{ __('register.currency') }}
             </label>
             <select id="currency" wire:model.defer="currency"
-                class="mt-1 block w-full rounded-md shadow-sm border-gray-300 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:border-blue-500 focus:ring-blue-500">
+                class="mt-1 block w-full rounded-md shadow-sm border-gray-300 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:border-brand-primary focus:ring-brand-primary">
                 <option value="">{{ __('register.select') }}</option>
                 <option value="EUR">{{ __('register.eur') }}</option>
                 <option value="USD">{{ __('register.usd') }}</option>
@@ -101,7 +101,7 @@
                 {{ __('register.account_type') }}
             </label>
             <select id="type" wire:model.defer="type"
-                class="mt-1 block w-full rounded-md shadow-sm border-gray-300 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:border-blue-500 focus:ring-blue-500">
+                class="mt-1 block w-full rounded-md shadow-sm border-gray-300 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:border-brand-primary focus:ring-brand-primary">
                 <option value="">{{ __('register.select') }}</option>
                 <option value="SAVINGS">{{ __('register.savings') }}</option>
                 <option value="CHECKING">{{ __('register.checking') }}</option>
@@ -122,7 +122,7 @@
         <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">{{ __('register.help.identity_document') }}</p>
         @if ($identity_document)
             <div class="mt-2 flex items-center justify-between align-center">
-                <a href="{{ $identity_document->temporaryUrl() }}" target="_blank" class="text-blue-600 hover:underline text-sm">{{ __('register.download') }}</a>
+                <a href="{{ $identity_document->temporaryUrl() }}" target="_blank" class="text-brand-primary hover:underline text-sm">{{ __('register.download') }}</a>
                 <button type="button" wire:click="removeIdentityDocument" class="text-red-600 hover:underline text-sm">{{ __('register.cancel') }}</button>
             </div>
         @endif
@@ -140,7 +140,7 @@
         <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">{{ __('register.help.address_document') }}</p>
         @if ($address_document)
             <div class="mt-2 flex items-center justify-between align-center">
-                <a href="{{ $address_document->temporaryUrl() }}" target="_blank" class="text-blue-600 hover:underline text-sm">{{ __('register.download') }}</a>
+                <a href="{{ $address_document->temporaryUrl() }}" target="_blank" class="text-brand-primary hover:underline text-sm">{{ __('register.download') }}</a>
                 <button type="button" wire:click="removeAddressDocument" class="text-red-600 hover:underline text-sm">{{ __('register.cancel') }}</button>
             </div>
         @endif
@@ -155,7 +155,7 @@
             <span wire:loading.remove>{{ __('register.previous') }}</span>
             <span wire:loading>{{ __('register.loading') }}</span>
         </button>
-        <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition" wire:loading.attr="disabled">
+        <button type="submit" class="px-4 py-2 bg-brand-primary text-white rounded-md hover:bg-brand-primary-hover transition" wire:loading.attr="disabled">
             <span wire:loading.remove>{{ __('register.submit') }}</span>
             <span wire:loading>{{ __('register.loading') }}</span>
         </button>

@@ -12,6 +12,10 @@ use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
+use Laravel\Fortify\Actions\AttemptToAuthenticate;
+use Laravel\Fortify\Actions\EnsureLoginIsNotThrottled;
+use Laravel\Fortify\Actions\PrepareAuthenticatedSession;
+use Laravel\Fortify\Actions\RedirectIfTwoFactorAuthenticatable;
 use Laravel\Fortify\Fortify;
 
 class FortifyServiceProvider extends ServiceProvider
@@ -35,6 +39,15 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::updateUserPasswordsUsing(UpdateUserPassword::class);
         Fortify::resetUserPasswordsUsing(ResetUserPassword::class);
 
+        Fortify::authenticateThrough(function (Request $request) {
+            return array_filter([
+                config('fortify.limiters.login') ? null : EnsureLoginIsNotThrottled::class,
+                AttemptToAuthenticate::class,
+                RedirectIfTwoFactorAuthenticatable::class,
+                PrepareAuthenticatedSession::class,
+            ]);
+        });
+
         // Limiteurs de connexion
         RateLimiter::for('login', function (Request $request) {
             $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())) . '|' . $request->ip());
@@ -53,6 +66,12 @@ class FortifyServiceProvider extends ServiceProvider
         // 🔽 Ajoute cette partie pour la vue de vérification d’email
         Fortify::verifyEmailView(function () {
             return view('auth.verify-email');  // crée ce fichier si ce n’est pas encore fait
+        });
+
+        // Redirection après connexion pour inclure la locale
+        Fortify::redirects('login', function () {
+            $locale = app()->getLocale() ?? 'fr';  // Default to 'fr' if locale is not yet set
+            return route('dashboard', ['locale' => $locale]);
         });
     }
 }

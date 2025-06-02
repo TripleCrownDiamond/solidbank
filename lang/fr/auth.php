@@ -28,4 +28,6 @@ return [
     'verification_link_sent' => "Un nouveau lien de vérification a été envoyé à l'adresse e-mail que vous avez fournie dans les paramètres de votre profil.",
     'resend_verification_email' => "Renvoyer l'e-mail de vérification",
     'log_out' => 'Se déconnecter',
+    'login' => 'Connexion',
+    'register' => 'Inscription',
 ];

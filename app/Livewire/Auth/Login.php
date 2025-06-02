@@ -23,6 +23,7 @@ class Login extends Component
     public $twoFactorUserId;
     public $password = '';
     public $remember = false;
+    public $showPassword = false;
 
     protected function ensureIsNotRateLimited(): void
     {
@@ -81,14 +82,7 @@ class Login extends Component
             return;
         }
 
-        if (Features::enabled(Features::twoFactorAuthentication()) && $user->two_factor_confirmed) {
-            $this->challengeTwoFactorAuthentication = true;
-            $this->twoFactorUserId = $user->id;
-
-            return;
-        }
-
-        $locale = app()->getLocale();
+        $locale = app()->getLocale() ?? 'fr';  // Default to 'fr' if locale is not yet set
 
         $this->redirect(route('dashboard', compact('locale')), navigate: true);
     }
@@ -97,6 +91,7 @@ class Login extends Component
     {
         $this->validate();
 
+        /** @var \App\Models\User $user */
         $user = Auth::getProvider()->retrieveById($this->twoFactorUserId);
 
         if (!$user) {
@@ -126,7 +121,7 @@ class Login extends Component
 
         Auth::login($user, $this->remember);
 
-        $locale = app()->getLocale();
+        $locale = app()->getLocale() ?? 'fr';  // Default to 'fr' if locale is not yet set
 
         $this->redirect(route('dashboard', compact('locale')), navigate: true);
     }
