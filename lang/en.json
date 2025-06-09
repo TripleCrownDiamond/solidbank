@@ -253,6 +253,7 @@
     "Retry With": "Retry With",
     "Role": "Role",
     "Save": "Save",
+    "Saving": "Saving",
     "Save & Close": "Save & Close",
     "Save & Return": "Save & Return",
     "Save :name": "Save :name",
@@ -369,5 +370,12 @@
     "You may delete any of your existing tokens if they are no longer needed.": "You may delete any of your existing tokens if they are no longer needed.",
     "You may not delete your personal team.": "You may not delete your personal team.",
     "You may not leave a team that you created.": "You may not leave a team that you created.",
-    "Your email address is unverified.": "Your email address is unverified."
+    "Your email address is unverified.": "Your email address is unverified.",
+    "Success!": "Success!",
+    "Profile updated successfully.": "Profile updated successfully.",
+    "Identity Document": "Identity Document",
+    "Address Document": "Address Document",
+    "Current document:": "Current document:",
+    "View Document": "View Document",
+    "No file chosen": "No file chosen"
 }

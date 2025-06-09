@@ -71,7 +71,15 @@ class FortifyServiceProvider extends ServiceProvider
         // Redirection après connexion pour inclure la locale
         Fortify::redirects('login', function () {
             $locale = app()->getLocale() ?? 'fr';  // Default to 'fr' if locale is not yet set
-            return route('dashboard', ['locale' => $locale]);
+            return '/' . $locale . '/dashboard';
         });
+
+        // Redirection après déconnexion pour préserver la locale
+        Fortify::redirects('logout', function () {
+            $locale = app()->getLocale() ?? 'fr';  // Default to 'fr' if locale is not yet set
+            return '/' . $locale;
+        });
+
+        // Email verification redirect is now handled in config/fortify.php
     }
 }

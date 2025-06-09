@@ -59,13 +59,13 @@ class UserFactory extends Factory
             'marital_status' => fake()->randomElement(['single', 'married', 'divorced', 'widowed']),
             'profession' => fake()->jobTitle(),
             'phone_number' => fake()->phoneNumber(),
-            'country_id' => Country::inRandomOrder()->first()->id,
+            'country_id' => Country::inRandomOrder()->first()?->id ?? Country::factory()->create()->id,
             'region' => fake()->state(),
             'city' => fake()->city(),
             'postal_code' => fake()->postcode(),
             'address' => fake()->address(),
-            'identity_document_url' => null,
-            'address_document_url' => null,
+            'identity_document_url' => 'documents/id.png',
+            'address_document_url' => 'documents/address.png',
             'is_admin' => false,
         ];
     }

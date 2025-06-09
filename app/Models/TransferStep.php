@@ -7,18 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 class TransferStep extends Model
 {
     protected $fillable = [
-        'user_id',
+        'transfer_step_group_id',
         'title',
         'description',
         'code',
         'order',
-        'progress_percentage',
         'type',
     ];
 
-    public function user()
+    public function transferStepGroup()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(TransferStepGroup::class);
     }
 }
-

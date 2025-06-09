@@ -14,6 +14,7 @@ class CreateNewUser implements CreatesNewUsers
 
     /**
      * Validate and create a newly registered user.
+     * Note: This class is not used when custom RegisterForm component is active.
      *
      * @param  array<string, string>  $input
      */

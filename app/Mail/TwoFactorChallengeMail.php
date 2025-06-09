@@ -31,7 +31,7 @@ class TwoFactorChallengeMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: __('Two-Factor Authentication Challenge'),
+            subject: __('login.otp_email_subject'),
         );
     }
 
@@ -41,7 +41,8 @@ class TwoFactorChallengeMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            markdown: 'emails.two-factor-challenge',
+            html: 'emails.otp-challenge',
+            text: 'emails.otp-challenge-text',
             with: [
                 'user' => $this->user,
                 'otp' => $this->otp,

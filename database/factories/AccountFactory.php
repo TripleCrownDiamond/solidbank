@@ -28,7 +28,7 @@ class AccountFactory extends Factory
             'balance' => 0,
             'currency' => 'EUR',
             'type' => $this->faker->randomElement(['CHECKING', 'SAVINGS']),
-            'status' => $this->faker->randomElement(['ACTIVE', 'INACTIVE', 'SUSPENDED']),
+            'status' => 'INACTIVE',
         ];
     }
 }

@@ -7,6 +7,9 @@
 
         <title>{{ config('app.name', 'Laravel') }}</title>
 
+        <!-- Favicon -->
+        <link rel="icon" type="image/x-icon" href="{{ getFaviconUrl() }}">
+
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
@@ -42,32 +45,19 @@
             </main>
 
         @stack('modals')
+        
+        <!-- Alert Manager -->
+        @livewire('alert-manager')
 
         <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                // Set SweetAlert2 theme based on current theme
-                const currentTheme = localStorage.getItem('theme');
-                if (currentTheme === 'dark' || (currentTheme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-                    document.documentElement.classList.add('dark');
-                    document.body.setAttribute('data-theme', 'dark');
-                } else {
-                    document.documentElement.classList.remove('dark');
-                    document.body.setAttribute('data-theme', 'light');
-                }
-
-                // Listen for theme changes and update SweetAlert2 theme
-                window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
-                    if (localStorage.getItem('theme') === 'system') {
-                        if (event.matches) {
-                            document.documentElement.classList.add('dark');
-                            document.body.setAttribute('data-theme', 'dark');
-                        } else {
-                            document.documentElement.classList.remove('dark');
-                            document.body.setAttribute('data-theme', 'light');
-                        }
-                    }
+            document.addEventListener('livewire:init', () => {
+                Livewire.on('refresh-page', () => {
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 100);
                 });
             });
         </script>
+
     </body>
 </html>

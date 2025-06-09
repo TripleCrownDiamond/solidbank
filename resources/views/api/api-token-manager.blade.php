@@ -81,7 +81,7 @@
                                         </button>
                                     @endif
 
-                                    <button class="cursor-pointer ms-6 text-sm text-red-500" wire:click="confirmApiTokenDeletion({{ $token->id }})">
+                                    <button class="cursor-pointer ms-6 text-sm text-red-500" wire:click="deleteApiToken({{ $token->id }})" wire:confirm="{{ __('Are you sure you would like to delete this API token?') }}">
                                         {{ __('Delete') }}
                                     </button>
                                 </div>
@@ -146,24 +146,5 @@
         </x-slot>
     </x-dialog-modal>
 
-    <!-- Delete Token Confirmation Modal -->
-    <x-confirmation-modal wire:model.live="confirmingApiTokenDeletion">
-        <x-slot name="title">
-            {{ __('Delete API Token') }}
-        </x-slot>
 
-        <x-slot name="content">
-            {{ __('Are you sure you would like to delete this API token?') }}
-        </x-slot>
-
-        <x-slot name="footer">
-            <x-secondary-button wire:click="$toggle('confirmingApiTokenDeletion')" wire:loading.attr="disabled">
-                {{ __('Cancel') }}
-            </x-secondary-button>
-
-            <x-danger-button class="ms-3" wire:click="deleteApiToken" wire:loading.attr="disabled">
-                {{ __('Delete') }}
-            </x-danger-button>
-        </x-slot>
-    </x-confirmation-modal>
 </div>

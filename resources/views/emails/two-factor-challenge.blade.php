@@ -10,5 +10,5 @@ You are attempting to log in to your account. Please use the following code to c
 If you did not attempt to log in, please ignore this email.
 
 Thanks,
-{{ config('app.name') }}
+{{ getAppName() }}
 </x-mail::message>

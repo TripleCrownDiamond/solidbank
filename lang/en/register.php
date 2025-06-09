@@ -7,13 +7,15 @@ return [
     'step2' => 'Contact Information',
     'step3' => 'Account Information',
     'submitting' => 'Submitting...',
-    'success_message' => 'Registration successful! Your account has been created and is currently under review for activation. You will receive an email once your account is active.',
     'error_message' => 'An error occurred. Please try again.',
     'already_have_account' => 'You already have an account?',
     'sign_in' => 'Sign in',
-    'success_title' => 'Registration successful',
-    'success_message' => 'Registration successful! Your account has been created and is currently under review for activation. You will receive an email once your account is active.',
+    'success_title' => 'Registration successful!',
+    'success_message' => 'Your account has been successfully created and is under verification. You will receive an email once your account is activated.',
     'go_to_login' => 'Go to login',
+    // Email verification messages
+    'email_verification_required' => 'Email verification required',
+    'email_verification_message' => 'A verification email has been sent to your email address just now. Please check your inbox and click the link to activate your account. This link will expire in 60 minutes.',
     // Step 1 - Personal Information
     'first_name' => 'First Name',
     'last_name' => 'Last Name',

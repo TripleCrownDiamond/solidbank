@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Auth;
 
+use App\Mail\AccountStatusNotification;
 use App\Models\Account;
 use App\Models\Config;
 use App\Models\Country;
@@ -9,6 +10,7 @@ use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
@@ -115,23 +117,35 @@ class RegisterForm extends Component
         // Sauvegarder les fichiers temporairement si ils existent
         if ($this->identity_document) {
             try {
+                // Vérifier la taille du fichier (10MB = 10240KB)
+                if ($this->identity_document->getSize() > 10485760) {  // 10MB en bytes
+                    $this->addError('identity_document', __('register.field_errors.identity_document.max'));
+                    return;
+                }
                 $tempPath = 'temp/identity_' . session()->getId() . '_' . time() . '.' . $this->identity_document->getClientOriginalExtension();
                 $this->identity_document->storeAs('', $tempPath, 'local');
                 $data['identity_document_temp'] = $tempPath;
                 $data['identity_document_name'] = $this->identity_document->getClientOriginalName();
             } catch (\Exception $e) {
                 Log::warning('Failed to save identity document to temp: ' . $e->getMessage());
+                $this->addError('identity_document', __('register.field_errors.identity_document.upload_failed'));
             }
         }
 
         if ($this->address_document) {
             try {
+                // Vérifier la taille du fichier (10MB = 10240KB)
+                if ($this->address_document->getSize() > 10485760) {  // 10MB en bytes
+                    $this->addError('address_document', __('register.field_errors.address_document.max'));
+                    return;
+                }
                 $tempPath = 'temp/address_' . session()->getId() . '_' . time() . '.' . $this->address_document->getClientOriginalExtension();
                 $this->address_document->storeAs('', $tempPath, 'local');
                 $data['address_document_temp'] = $tempPath;
                 $data['address_document_name'] = $this->address_document->getClientOriginalName();
             } catch (\Exception $e) {
                 Log::warning('Failed to save address document to temp: ' . $e->getMessage());
+                $this->addError('address_document', __('register.field_errors.address_document.upload_failed'));
             }
         }
 
@@ -173,12 +187,14 @@ class RegisterForm extends Component
             'password.min' => __('register.validation.min'),
             'currency.required' => __('register.validation.required'),
             'type.required' => __('register.validation.required'),
-            'identity_document.required' => __('register.validation.required'),
-            'identity_document.file' => __('register.validation.file'),
-            'identity_document.mimes' => __('register.validation.mimes', ['values' => 'PDF, JPG, PNG']),
-            'address_document.required' => __('register.validation.required'),
-            'address_document.file' => __('register.validation.file'),
-            'address_document.mimes' => __('register.validation.mimes', ['values' => 'PDF, JPG, PNG']),
+            'identity_document.required' => __('register.field_errors.identity_document.required'),
+            'identity_document.file' => __('register.field_errors.identity_document.file'),
+            'identity_document.mimes' => __('register.field_errors.identity_document.mimes'),
+            'identity_document.max' => __('register.field_errors.identity_document.max'),
+            'address_document.required' => __('register.field_errors.address_document.required'),
+            'address_document.file' => __('register.field_errors.address_document.file'),
+            'address_document.mimes' => __('register.field_errors.address_document.mimes'),
+            'address_document.max' => __('register.field_errors.address_document.max'),
         ];
     }
 
@@ -199,7 +215,6 @@ class RegisterForm extends Component
             $this->validateStep();
             $this->step++;
             $this->saveToSession();
-            $this->dispatch('$refresh');
         } catch (\Illuminate\Validation\ValidationException $e) {
             $this->validationErrors = $e->errors();
             $this->generalError = __('register.validation_error_message');
@@ -219,7 +234,6 @@ class RegisterForm extends Component
     {
         $this->resetErrors();
         $this->step--;
-        $this->dispatch('$refresh');
     }
 
     public function updatedCountryId($value)
@@ -321,8 +335,21 @@ class RegisterForm extends Component
             $addressPath = 'documents/' . $addressFilename;
 
             // Compression et sauvegarde des fichiers
-            $this->processAndSaveFile($this->identity_document, $identityPath);
-            $this->processAndSaveFile($this->address_document, $addressPath);
+            try {
+                $this->processAndSaveFile($this->identity_document, $identityPath);
+            } catch (\Exception $e) {
+                Log::error('Failed to process identity document: ' . $e->getMessage());
+                $this->addError('identity_document', __('register.field_errors.identity_document.upload_failed'));
+                return;
+            }
+
+            try {
+                $this->processAndSaveFile($this->address_document, $addressPath);
+            } catch (\Exception $e) {
+                Log::error('Failed to process address document: ' . $e->getMessage());
+                $this->addError('address_document', __('register.field_errors.address_document.upload_failed'));
+                return;
+            }
 
             // Créer l'utilisateur
             $user = User::create([
@@ -340,12 +367,15 @@ class RegisterForm extends Component
                 'postal_code' => $this->postal_code,
                 'address' => $this->address,
                 'email' => $this->email,
-                'email_verified_at' => now(),
+                'email_verified_at' => null,
                 'password' => Hash::make($this->password),
                 'identity_document_url' => $identityPath,
                 'address_document_url' => $addressPath,
                 'is_admin' => false,
             ]);
+
+            // Envoyer l'email de bienvenue avec vérification
+            Mail::to($user->email)->send(new AccountStatusNotification($user, null, 'welcome_verification'));
 
             // Créer le compte utilisateur
             // Get config for account number generation
@@ -376,6 +406,7 @@ class RegisterForm extends Component
             // event(new Registered($user));
             $this->step = 4;
             session()->flash('success', __('register.success_message'));
+            session()->flash('email_verification_needed', true);
         } catch (\Illuminate\Validation\ValidationException $e) {
             $this->validationErrors = $e->errors();
             $this->generalError = __('register.validation_error_message');

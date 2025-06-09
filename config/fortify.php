@@ -70,6 +70,19 @@ return [
 
     /*
      * |--------------------------------------------------------------------------
+     * | Fortify Redirects
+     * |--------------------------------------------------------------------------
+     * |
+     * | Here you may configure the redirects for various Fortify actions.
+     * | These will be used by Fortify::redirects() method.
+     * |
+     */
+    'redirects' => [
+        'email-verification' => '/fr/dashboard',
+    ],
+
+    /*
+     * |--------------------------------------------------------------------------
      * | Fortify Routes Prefix / Subdomain
      * |--------------------------------------------------------------------------
      * |
@@ -133,7 +146,7 @@ return [
     'features' => [
         Features::registration(),
         // Features::resetPasswords(), // Disabled - using custom password reset
-        // Features::emailVerification(),
+        Features::emailVerification(),
         Features::updateProfileInformation(),
         Features::updatePasswords(),
         Features::twoFactorAuthentication([

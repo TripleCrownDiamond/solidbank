@@ -1,6 +1,6 @@
 <div class="text-center mb-8">
     <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-brand-primary dark:bg-brand-primary mb-3">
-        <span class="text-xl font-bold text-black dark:text-white">3</span>
+        <span class="text-xl font-bold text-white dark:text-white">3</span>
     </div>
     <h2 class="text-xl font-semibold text-gray-900 dark:text-white">{{ __('register.step3') }}</h2>
     <p class="text-sm text-gray-500 dark:text-gray-400">{{ __('register.step', ['step' => 3]) }}</p>
@@ -123,7 +123,7 @@
         @if ($identity_document)
             <div class="mt-2 flex items-center justify-between align-center">
                 <a href="{{ $identity_document->temporaryUrl() }}" target="_blank" class="text-brand-primary hover:underline text-sm">{{ __('register.download') }}</a>
-                <button type="button" wire:click="removeIdentityDocument" class="text-red-600 hover:underline text-sm">{{ __('register.cancel') }}</button>
+                <button type="button" wire:click="removeIdentityDocument" wire:confirm="{{ __('register.confirm_remove_document') }}" class="text-red-600 hover:underline text-sm">{{ __('register.cancel') }}</button>
             </div>
         @endif
         @error('identity_document')
@@ -141,7 +141,7 @@
         @if ($address_document)
             <div class="mt-2 flex items-center justify-between align-center">
                 <a href="{{ $address_document->temporaryUrl() }}" target="_blank" class="text-brand-primary hover:underline text-sm">{{ __('register.download') }}</a>
-                <button type="button" wire:click="removeAddressDocument" class="text-red-600 hover:underline text-sm">{{ __('register.cancel') }}</button>
+                <button type="button" wire:click="removeAddressDocument" wire:confirm="{{ __('register.confirm_remove_document') }}" class="text-red-600 hover:underline text-sm">{{ __('register.cancel') }}</button>
             </div>
         @endif
         @error('address_document')
@@ -155,7 +155,7 @@
             <span wire:loading.remove>{{ __('register.previous') }}</span>
             <span wire:loading>{{ __('register.loading') }}</span>
         </button>
-        <button type="submit" class="px-4 py-2 bg-brand-primary text-white rounded-md hover:bg-brand-primary-hover transition" wire:loading.attr="disabled">
+        <button type="submit" class="px-4 py-2 bg-brand-primary hover:bg-brand-primary-hover dark:bg-brand-primary dark:hover:bg-brand-primary-hover text-white rounded-md transition" wire:loading.attr="disabled">
             <span wire:loading.remove>{{ __('register.submit') }}</span>
             <span wire:loading>{{ __('register.loading') }}</span>
         </button>

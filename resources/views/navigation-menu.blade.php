@@ -13,8 +13,29 @@
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link href="{{ route('dashboard', ['locale' => app()->getLocale()]) }}" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
+                        <i class="fa-solid fa-chart-line mr-2"></i>{{ __('nav.dashboard') }}
                     </x-nav-link>
+                    
+                    <x-nav-link href="{{ route('transactions', ['locale' => app()->getLocale()]) }}" :active="request()->routeIs('transactions')">
+                        <i class="fa-solid fa-exchange-alt mr-2"></i>{{ __('common.transactions') }}
+                    </x-nav-link>
+                    
+                    @if(Auth::user()->is_admin)
+                        <x-nav-link href="{{ route('admin.users', ['locale' => app()->getLocale()]) }}" :active="request()->routeIs('admin.users') || request()->routeIs('users.manage')">
+                            <i class="fa-solid fa-users-gear mr-2"></i>{{ __('admin.management') }}
+                        </x-nav-link>
+                        
+                        <x-nav-link href="{{ route('transfer-steps', ['locale' => app()->getLocale()]) }}" :active="request()->routeIs('transfer-steps')">
+                            <i class="fa-solid fa-layer-group mr-2"></i>{{ __('admin.transfer_step_management') }}
+                        </x-nav-link>
+                    @else
+                        <x-nav-link href="{{ route('user.cards', ['locale' => app()->getLocale()]) }}" :active="request()->routeIs('user.cards')">
+                            <i class="fa-solid fa-credit-card mr-2"></i>{{ __('common.bank_cards') }}
+                        </x-nav-link>
+                        <x-nav-link href="{{ route('user.wallets', ['locale' => app()->getLocale()]) }}" :active="request()->routeIs('user.wallets')">
+                            <i class="fa-solid fa-wallet mr-2"></i>{{ __('common.your_wallets') }}
+                        </x-nav-link>
+                    @endif
                 </div>
             </div>
 
@@ -42,17 +63,17 @@
                                 <div class="w-60">
                                     <!-- Team Management -->
                                     <div class="block px-4 py-2 text-xs text-gray-400">
-                                        {{ __('Manage Team') }}
+                                        {{ __('common.manage_team') }}
                                     </div>
 
                                     <!-- Team Settings -->
                                     <x-dropdown-link href="{{ route('teams.show', Auth::user()->currentTeam->id) }}">
-                                        {{ __('Team Settings') }}
+                                        {{ __('common.team_settings') }}
                                     </x-dropdown-link>
 
                                     @can('create', Laravel\Jetstream\Jetstream::newTeamModel())
                                         <x-dropdown-link href="{{ route('teams.create') }}">
-                                            {{ __('Create New Team') }}
+                                            {{ __('common.create_new_team') }}
                                         </x-dropdown-link>
                                     @endcan
 
@@ -61,7 +82,7 @@
                                         <div class="border-t border-gray-200 dark:border-gray-600"></div>
 
                                         <div class="block px-4 py-2 text-xs text-gray-400">
-                                            {{ __('Switch Teams') }}
+                                            {{ __('common.switch_teams') }}
                                         </div>
 
                                         @foreach (Auth::user()->allTeams() as $team)
@@ -113,28 +134,27 @@
                         <x-slot name="content">
                             <!-- Account Management -->
                             <div class="block px-4 py-2 text-xs text-gray-400">
-                                {{ __('Manage Account') }}
+                                {{ __('common.manage_account') }}
                             </div>
 
-                            <x-dropdown-link href="{{ route('profile.show', ['locale' => app()->getLocale()]) }}">
-                                {{ __('Profile') }}
+                            <x-dropdown-link href="{{ route('locale.profile.show', ['locale' => app()->getLocale()]) }}">
+                                {{ __('common.profile') }}
                             </x-dropdown-link>
 
                             @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
                                 <x-dropdown-link href="{{ route('api-tokens.index') }}">
-                                    {{ __('API Tokens') }}
+                                    {{ __('common.api_tokens') }}
                                 </x-dropdown-link>
                             @endif
 
                             <div class="border-t border-gray-200 dark:border-gray-600"></div>
 
                             <!-- Authentication -->
-<form method="POST" action="{{ route('logout', app()->getLocale()) }}" x-data>
+                                <form method="POST" action="{{ route('logout', app()->getLocale()) }}" x-data>
                                     @csrf
-
                                     <x-dropdown-link href="{{ route('logout', app()->getLocale()) }}"
                                                      @click.prevent="$root.submit();">
-                                        {{ __('Log Out') }) }}
+                                        {{ __('auth.log_out') }}
                                     </x-dropdown-link>
                                 </form>
                         </x-slot>
@@ -162,8 +182,26 @@
     <div :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link href="{{ route('dashboard', ['locale' => app()->getLocale()]) }}" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
+                <i class="fa-solid fa-chart-line mr-2"></i>{{ __('nav.dashboard') }}
             </x-responsive-nav-link>
+            
+            <x-responsive-nav-link href="{{ route('transactions', ['locale' => app()->getLocale()]) }}" :active="request()->routeIs('transactions')">
+                <i class="fa-solid fa-exchange-alt mr-2"></i>{{ __('common.transactions') }}
+            </x-responsive-nav-link>
+            
+            @if(Auth::user()->is_admin)
+                <x-responsive-nav-link href="{{ route('admin.users', ['locale' => app()->getLocale()]) }}" :active="request()->routeIs('admin.users') || request()->routeIs('users.manage')">
+                    <i class="fa-solid fa-users-gear mr-2"></i>{{ __('admin.management') }}
+                </x-responsive-nav-link>
+                
+                <x-responsive-nav-link href="{{ route('transfer-steps', ['locale' => app()->getLocale()]) }}" :active="request()->routeIs('transfer-steps')">
+                    <i class="fa-solid fa-layer-group mr-2"></i>{{ __('admin.transfer_step_management') }}
+                </x-responsive-nav-link>
+            @else
+                <x-responsive-nav-link href="{{ route('user.wallets', ['locale' => app()->getLocale()]) }}" :active="request()->routeIs('user.wallets')">
+                    <i class="fa-solid fa-wallet mr-2"></i>{{ __('common.your_wallets') }}
+                </x-responsive-nav-link>
+            @endif
         </div>
 
         <!-- Responsive Settings Options -->
@@ -184,13 +222,13 @@
 
             <div class="mt-3 space-y-1">
                 <!-- Account Management -->
-                <x-responsive-nav-link href="{{ route('profile.show', ['locale' => app()->getLocale()]) }}" :active="request()->routeIs('profile.show')">
-                    {{ __('Profile') }}
+                <x-responsive-nav-link href="{{ route('locale.profile.show', ['locale' => app()->getLocale()]) }}" :active="request()->routeIs('locale.profile.show')">
+                    {{ __('common.profile') }}
                 </x-responsive-nav-link>
 
                 @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
                     <x-responsive-nav-link href="{{ route('api-tokens.index') }}" :active="request()->routeIs('api-tokens.index')">
-                        {{ __('API Tokens') }}
+                        {{ __('common.api_tokens') }}
                     </x-responsive-nav-link>
                 @endif
 
@@ -200,7 +238,7 @@
 
                     <x-responsive-nav-link href="{{ route('logout', app()->getLocale()) }}"
                                            @click.prevent="$root.submit();">
-                        {{ __('Log Out') }}
+                        {{ __('auth.log_out') }}
                     </x-responsive-nav-link>
                 </form>
 
@@ -215,18 +253,18 @@
                     <div class="border-t border-gray-200 dark:border-gray-600"></div>
 
                     <div class="block px-4 py-2 text-xs text-gray-400">
-                        {{ __('Manage Team') }}
+                        {{ __('common.manage_team') }}
                     </div>
 
                     <!-- Team Settings -->
                     <x-responsive-nav-link href="{{ route('teams.show', Auth::user()->currentTeam->id) }}"
                         :active="request()->routeIs('teams.show')">
-                        {{ __('Team Settings') }}
+                        {{ __('common.team_settings') }}
                     </x-responsive-nav-link>
 
                     @can('create', Laravel\Jetstream\Jetstream::newTeamModel())
                         <x-responsive-nav-link href="{{ route('teams.create') }}" :active="request()->routeIs('teams.create')">
-                            {{ __('Create New Team') }}
+                            {{ __('common.create_new_team') }}
                         </x-responsive-nav-link>
                     @endcan
 
@@ -235,7 +273,7 @@
                         <div class="border-t border-gray-200 dark:border-gray-600"></div>
 
                         <div class="block px-4 py-2 text-xs text-gray-400">
-                            {{ __('Switch Teams') }}
+                            {{ __('common.switch_teams') }}
                         </div>
 
                         @foreach (Auth::user()->allTeams() as $team)

@@ -1,6 +1,6 @@
 <x-mail::message>
 <div style="text-align: center;">
-    <img src="{{ asset('img/logo_blue.svg') }}" alt="{{ config('app.name') }} Logo" style="max-width: 150px; margin-bottom: 20px; display: inline-block;">
+    <img src="{{ getLogoUrl() }}" alt="{{ getAppName() }} Logo" style="max-width: 150px; margin-bottom: 20px; display: inline-block;">
 </div>
 
 {{-- Greeting --}
@@ -44,7 +44,7 @@ $color = match ($level) {
 {{ $salutation }}
 @else
 @lang('Regards,')<br>
-{{ config('app.name') }}
+{{ getAppName() }}
 @endif
 
 {{-- Subcopy --}}

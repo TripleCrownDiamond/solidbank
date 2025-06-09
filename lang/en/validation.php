@@ -279,5 +279,10 @@ return [
         'winner'                   => 'winner',
         'work'                     => 'work',
         'year'                     => 'year',
+        'stepOrder'                => 'step order',
+        'stepTitle'                => 'step title',
+        'stepDescription'          => 'step description',
+        'stepCode'                 => 'step code',
+        'stepType'                 => 'step type',
     ],
 ];

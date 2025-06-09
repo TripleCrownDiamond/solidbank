@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -14,12 +13,16 @@ return new class extends Migration
         Schema::create('wallets', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->string('address')->unique();
-            $table->string('coin'); // ex: BTC, ETH, USDT
+            $table->foreignId('cryptocurrency_id')->constrained()->onDelete('cascade');
+            $table->string('address');
+            $table->string('coin');  // ex: BTC, ETH, USDT
+            $table->string('network');  // ex: Bitcoin, Ethereum, Polygon
             $table->float('balance')->default(0.0);
             $table->timestamps();
-        });
 
+            // Ensure unique wallet per user per cryptocurrency
+            $table->unique(['user_id', 'cryptocurrency_id']);
+        });
     }
 
     /**

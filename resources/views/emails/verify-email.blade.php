@@ -10,5 +10,5 @@
 {{ __('If you did not create an account, no further action is required.') }}
 
 Thanks,<br>
-{{ config('app.name') }}
+{{ getAppName() }}
 </x-mail::message>

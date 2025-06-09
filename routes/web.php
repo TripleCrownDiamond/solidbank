@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\TestMailController;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 
 // Redirection vers la langue par défaut si aucune langue n'est spécifiée
@@ -32,8 +33,58 @@ Route::prefix('{locale}')->group(function () {
             'verified',
         ])->group(function () {
             Route::get('/dashboard', function () {
-                return view('dashboard');
+                return view('dashboard.index');
             })->name('dashboard');
+
+            // Route pour les cartes bancaires (utilisateurs non-admin uniquement)
+            Route::middleware('user')->get('/cards', function () {
+                return view('dashboard.user-cards');
+            })->name('user.cards');
+
+            // Route pour les portefeuilles (utilisateurs non-admin uniquement)
+            Route::middleware('user')->get('/wallets', function () {
+                return view('dashboard.user-wallets-page');
+            })->name('user.wallets');
+
+            // Route pour les transactions (accessible à tous les utilisateurs connectés)
+            Route::get('/transactions', function () {
+                return view('dashboard.transactions');
+            })->name('transactions');
+
+            // Routes admin (accessible uniquement aux administrateurs)
+            Route::middleware('admin')->group(function () {
+                Route::get('/users', function () {
+                    return view('dashboard.account-management');
+                })->name('admin.users');
+
+                Route::get('/users/{user}/manage', function ($locale, $user) {
+                    Log::info('Route users.manage accessed', ['locale' => $locale, 'user_id' => $user]);
+
+                    try {
+                        $user = \App\Models\User::findOrFail($user);
+                        Log::info('User found', ['user' => $user->toArray()]);
+
+                        Log::info('Attempting to load view dashboard.user-detail-management');
+
+                        try {
+                            $view = view('dashboard.user-detail-management', compact('user'));
+                            Log::info('View loaded successfully');
+                            return $view;
+                        } catch (\Exception $e) {
+                            Log::error('Error loading view: ' . $e->getMessage());
+                            Log::error('Stack trace: ' . $e->getTraceAsString());
+                            throw $e;
+                        }
+                    } catch (\Exception $e) {
+                        Log::error('Error in users.manage route', ['error' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
+                        throw $e;
+                    }
+                })->name('users.manage');
+
+                Route::get('/transfer-steps', function () {
+                    return view('dashboard.transfer-step-management');
+                })->name('transfer-steps');
+            });
         });
     });
 });

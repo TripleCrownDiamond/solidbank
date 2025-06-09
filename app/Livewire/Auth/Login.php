@@ -2,7 +2,11 @@
 
 namespace App\Livewire\Auth;
 
+use App\Mail\TwoFactorChallengeMail;
+use App\Models\Config;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
@@ -24,6 +28,9 @@ class Login extends Component
     public $password = '';
     public $remember = false;
     public $showPassword = false;
+    public $showOtpChallenge = false;
+    public $otpCode = '';
+    public $pendingUserId;
 
     protected function ensureIsNotRateLimited(): void
     {
@@ -53,6 +60,7 @@ class Login extends Component
         'recovery_code' => ['nullable', 'string'],
         'email' => ['required', 'string', 'email'],
         'password' => ['required', 'string'],
+        'otpCode' => ['nullable', 'string', 'size:6'],
     ];
 
     public function messages()
@@ -63,6 +71,8 @@ class Login extends Component
             'password.required' => __('login.password_required'),
             'code.required' => __('login.provided_code_invalid'),
             'recovery_code.required' => __('login.recovery_code_invalid'),
+            'otpCode.required' => __('login.otp_required'),
+            'otpCode.size' => __('login.otp_invalid_length'),
         ];
     }
 
@@ -76,14 +86,68 @@ class Login extends Component
 
         $user = Auth::getProvider()->retrieveByCredentials($credentials);
 
-        if (!$user || !Auth::attempt($credentials, $this->remember)) {
+        if (!$user || !Auth::getProvider()->validateCredentials($user, $credentials)) {
             $this->addError('email', __('login.failed'));
-
             return;
         }
 
-        $locale = app()->getLocale() ?? 'fr';  // Default to 'fr' if locale is not yet set
+        // Check if 2FA is enabled in config
+        $config = Config::first();
+        if ($config && $config->two_factor_auth) {
+            // Generate and send OTP
+            $otp = str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT);
 
+            // Store OTP in cache for 10 minutes
+            Cache::put('otp_' . $user->id, $otp, 600);
+
+            // Send OTP email
+            Mail::to($user->email)->send(new TwoFactorChallengeMail($user, $otp));
+
+            // Set up OTP challenge
+            $this->pendingUserId = $user->id;
+            $this->showOtpChallenge = true;
+
+            session()->flash('message', __('login.otp_sent'));
+            return;
+        }
+
+        // Login without 2FA
+        Auth::login($user, $this->remember);
+        $locale = app()->getLocale() ?? 'fr';
+        $this->redirect(route('dashboard', compact('locale')), navigate: true);
+    }
+
+    public function verifyOtp(): void
+    {
+        $this->validate(['otpCode' => 'required|string|size:6']);
+
+        if (!$this->pendingUserId) {
+            $this->addError('otpCode', __('login.session_expired'));
+            return;
+        }
+
+        $storedOtp = Cache::get('otp_' . $this->pendingUserId);
+
+        if (!$storedOtp || $storedOtp !== $this->otpCode) {
+            $this->addError('otpCode', __('login.otp_invalid'));
+            return;
+        }
+
+        // OTP is valid, log in the user
+        $user = Auth::getProvider()->retrieveById($this->pendingUserId);
+
+        if (!$user) {
+            $this->addError('otpCode', __('login.user_not_found'));
+            return;
+        }
+
+        // Clear the OTP from cache
+        Cache::forget('otp_' . $this->pendingUserId);
+
+        // Login the user
+        Auth::login($user, $this->remember);
+
+        $locale = app()->getLocale() ?? 'fr';
         $this->redirect(route('dashboard', compact('locale')), navigate: true);
     }
 

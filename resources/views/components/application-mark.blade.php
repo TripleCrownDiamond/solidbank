@@ -1,1 +1,1 @@
-<img src="{{ asset('img/icon_blue.svg') }}" alt="{{ config('app.name') }}" class="h-8">
+<img src="{{ getIconUrl() }}" alt="{{ getAppName() }}" class="h-8">

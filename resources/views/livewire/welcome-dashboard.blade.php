@@ -1,8 +1,16 @@
 <div>
+
         @if (Auth::user()->is_admin)
-            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                {{ __('common.welcome_name', ['name' => Auth::user()->name]) }}
-            </h2>
+            <div class="flex items-center justify-between">
+                <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+                    {{ __('common.welcome_name', ['name' => Auth::user()->name]) }}
+                </h2>
+                <div class="text-sm text-gray-600 dark:text-gray-400">
+                    <i class="fa-solid fa-shield-halved mr-1"></i>
+                    {{ __('admin.administrator_space') }}
+                </div>
+            </div>
+            
         @else
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
                 {{ __('common.welcome_name', ['name' => Auth::user()->name]) }}
@@ -22,7 +30,7 @@
                     <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
                         {{ __('common.suspended') }}
                     </span>
-                    @endif
+                @endif
                 </div>
             @else
                 <div class="mt-4 text-gray-600 dark:text-gray-400">

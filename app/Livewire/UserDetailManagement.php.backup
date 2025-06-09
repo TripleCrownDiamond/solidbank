@@ -1,0 +1,248 @@
+<?php
+
+namespace App\Livewire;
+
+use App\Models\Account;
+use App\Models\Card;
+use App\Models\TransferStepGroup;
+use App\Models\User;
+use App\Models\Wallet;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Livewire\Component;
+use Livewire\WithFileUploads;
+
+class UserDetailManagement extends Component
+{
+    use WithFileUploads;
+
+    public $user;
+    public $selectedAccount = null;
+    public $selectedWallet = null;
+    // Modal states
+    public $showAddWalletModal = false;
+    public $showAddCardModal = false;
+    public $showApplyTransferGroupModal = false;
+    // Form data for new wallet
+    public $newWalletAddress = '';
+    public $newWalletCoin = '';
+    public $newWalletBalance = 0;
+    // Form data for new card
+    public $newCardType = 'debit';
+    public $newCardAccountId = null;
+    public $newCardHolderName = '';
+    public $newCardBalance = 0;
+    public $newCardCurrency = 'EUR';
+    // Transfer group application
+    public $transferGroupId = null;
+    public $applyToType = 'account';  // 'account' or 'wallet'
+    public $applyToId = null;
+
+    public function mount($user)
+    {
+        // Vérifier que l'utilisateur est admin
+        if (!Auth::check() || !Auth::user()->is_admin) {
+            abort(403, 'Accès non autorisé');
+        }
+
+        $this->user = User::with([
+            'accounts.rib',
+            'accounts.transferStepGroups',
+            'wallets',
+            'cards.account'
+        ])->findOrFail($user);
+
+        if ($this->user->accounts->isNotEmpty()) {
+            $this->selectedAccount = $this->user->accounts->first()->id;
+        }
+    }
+
+    public function render()
+    {
+        $transferGroups = TransferStepGroup::where('is_active', true)->get();
+
+        return view('livewire.user-detail-management', [
+            'transferGroups' => $transferGroups
+        ]);
+    }
+
+    public function downloadFile($type, $id)
+    {
+        // Logic to download files (RIB, account documents, etc.)
+        // This would depend on how files are stored in your system
+        $this->dispatch('alert', ['type' => 'info', 'message' => 'Téléchargement du fichier ' . $type]);
+    }
+
+    public function openAddWalletModal()
+    {
+        $this->showAddWalletModal = true;
+        $this->resetWalletForm();
+    }
+
+    public function closeAddWalletModal()
+    {
+        $this->showAddWalletModal = false;
+        $this->resetWalletForm();
+    }
+
+    public function resetWalletForm()
+    {
+        $this->newWalletAddress = '';
+        $this->newWalletCoin = '';
+        $this->newWalletBalance = 0;
+    }
+
+    public function addWallet()
+    {
+        $this->validate([
+            'newWalletAddress' => 'required|string|max:255',
+            'newWalletCoin' => 'required|string|max:10',
+            'newWalletBalance' => 'required|numeric|min:0',
+        ]);
+
+        Wallet::create([
+            'user_id' => $this->user->id,
+            'address' => $this->newWalletAddress,
+            'coin' => strtoupper($this->newWalletCoin),
+            'balance' => $this->newWalletBalance,
+        ]);
+
+        $this->user->refresh();
+        $this->closeAddWalletModal();
+        $this->dispatch('alert', ['type' => 'success', 'message' => 'Wallet ajouté avec succès']);
+    }
+
+    public function openAddCardModal()
+    {
+        $this->showAddCardModal = true;
+        $this->resetCardForm();
+    }
+
+    public function closeAddCardModal()
+    {
+        $this->showAddCardModal = false;
+        $this->resetCardForm();
+    }
+
+    public function resetCardForm()
+    {
+        $this->newCardType = 'debit';
+        $this->newCardAccountId = $this->user->accounts->first()->id ?? null;
+        $this->newCardHolderName = $this->user->name;
+        $this->newCardBalance = 0;
+        $this->newCardCurrency = 'EUR';
+    }
+
+    public function addCard()
+    {
+        $this->validate([
+            'newCardType' => 'required|in:debit,credit',
+            'newCardAccountId' => 'required|exists:accounts,id',
+            'newCardHolderName' => 'required|string|max:255',
+            'newCardBalance' => 'required|numeric|min:0',
+            'newCardCurrency' => 'required|string|size:3',
+        ]);
+
+        // Generate card number (simplified)
+        $cardNumber = '4000' . str_pad(rand(0, 999999999999), 12, '0', STR_PAD_LEFT);
+
+        Card::create([
+            'user_id' => $this->user->id,
+            'account_id' => $this->newCardAccountId,
+            'type' => $this->newCardType,
+            'card_number' => $cardNumber,
+            'expiry_month' => 12,
+            'expiry_year' => date('Y') + 3,
+            'cvv' => str_pad(rand(0, 999), 3, '0', STR_PAD_LEFT),
+            'card_holder_name' => $this->newCardHolderName,
+            'balance' => $this->newCardBalance,
+            'currency' => $this->newCardCurrency,
+        ]);
+
+        $this->user->refresh();
+        $this->closeAddCardModal();
+        $this->dispatch('alert', ['type' => 'success', 'message' => 'Carte ajoutée avec succès']);
+    }
+
+    public function openApplyTransferGroupModal()
+    {
+        $this->showApplyTransferGroupModal = true;
+        $this->resetTransferGroupForm();
+    }
+
+    public function closeApplyTransferGroupModal()
+    {
+        $this->showApplyTransferGroupModal = false;
+        $this->resetTransferGroupForm();
+    }
+
+    public function resetTransferGroupForm()
+    {
+        $this->transferGroupId = null;
+        $this->applyToType = 'account';
+        $this->applyToId = $this->user->accounts->first()->id ?? null;
+    }
+
+    public function applyTransferGroup()
+    {
+        $this->validate([
+            'transferGroupId' => 'required|exists:transfer_step_groups,id',
+            'applyToType' => 'required|in:account,wallet',
+            'applyToId' => 'required',
+        ]);
+
+        if ($this->applyToType === 'account') {
+            $account = Account::where('id', $this->applyToId)
+                ->where('user_id', $this->user->id)
+                ->firstOrFail();
+
+            // Détacher les groupes existants et attacher le nouveau
+            $account->transferStepGroups()->sync([$this->transferGroupId]);
+
+            $this->dispatch('alert', ['type' => 'success', 'message' => 'Groupe de transfert appliqué au compte avec succès']);
+        } else {
+            // Pour les wallets, vous pourriez avoir besoin d'une table de liaison similaire
+            // ou d'ajouter une colonne transfer_step_group_id à la table wallets
+            $this->dispatch('alert', ['type' => 'info', 'message' => 'Application aux wallets non implémentée']);
+        }
+
+        $this->user->refresh();
+        $this->closeApplyTransferGroupModal();
+    }
+
+    public function removeTransferGroup($accountId, $groupId)
+    {
+        $account = Account::where('id', $accountId)
+            ->where('user_id', $this->user->id)
+            ->firstOrFail();
+
+        $account->transferStepGroups()->detach($groupId);
+        $this->user->refresh();
+
+        $this->dispatch('alert', ['type' => 'success', 'message' => 'Groupe de transfert retiré avec succès']);
+    }
+
+    public function deleteWallet($walletId)
+    {
+        $wallet = Wallet::where('id', $walletId)
+            ->where('user_id', $this->user->id)
+            ->firstOrFail();
+
+        $wallet->delete();
+        $this->user->refresh();
+
+        $this->dispatch('alert', ['type' => 'success', 'message' => 'Wallet supprimé avec succès']);
+    }
+
+    public function deleteCard($cardId)
+    {
+        $card = Card::where('id', $cardId)
+            ->where('user_id', $this->user->id)
+            ->firstOrFail();
+
+        $card->delete();
+        $this->user->refresh();
+
+        $this->dispatch('alert', ['type' => 'success', 'message' => 'Carte supprimée avec succès']);
+    }
+}

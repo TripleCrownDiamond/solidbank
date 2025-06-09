@@ -17,7 +17,7 @@ return new class extends Migration
 
             $table->enum('type', ['DEPOSIT', 'WITHDRAWAL', 'TRANSFER_BANK', 'TRANSFER_CRYPTO', 'TRANSFER_EXTERNAL']);
 
-            $table->enum('status', ['PENDING', 'COMPLETED', 'FAILED']);
+            $table->enum('status', ['PENDING', 'COMPLETED', 'FAILED', 'CANCELLED', 'BLOCKED']);
 
             $table->string('description')->nullable();
             $table->string('reference')->unique();

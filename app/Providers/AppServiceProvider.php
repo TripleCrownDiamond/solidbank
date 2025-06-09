@@ -31,8 +31,8 @@ class AppServiceProvider extends ServiceProvider
     {
         // Configuration de la vérification d'email
         VerifyEmail::toMailUsing(function ($notifiable) {
-            // Forcer la locale à 'fr' si elle n'est pas disponible
-            $locale = $this->getCurrentLocale();
+            // Récupérer la locale depuis la requête actuelle
+            $locale = request()->route('locale') ?? app()->getLocale() ?? 'fr';
 
             // Créer l'URL avec tous les paramètres requis
             $verificationUrl = URL::temporarySignedRoute(

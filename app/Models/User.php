@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
+use Laravel\Jetstream\HasTeams;
 use Laravel\Sanctum\HasApiTokens;
 
 /**
@@ -16,7 +17,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @method void replaceRecoveryCodes(array $codes)
  * @method bool isTwoFactorAuthCodeValid(string $code)
  */
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     protected static function boot()
     {
@@ -32,9 +33,9 @@ class User extends Authenticatable
             }
 
             // Delete related models
-            $user->account()->delete();
+            $user->accounts()->delete();
             $user->wallets()->delete();
-            $user->transferSteps()->delete();
+            // Note: transferSteps are not deleted as transfers can apply to multiple accounts
         });
     }
 
@@ -123,7 +124,13 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_admin' => 'boolean',
         ];
+    }
+
+    public function accounts()
+    {
+        return $this->hasMany(Account::class);
     }
 
     public function account()
@@ -136,9 +143,16 @@ class User extends Authenticatable
         return $this->hasMany(Wallet::class);
     }
 
-    public function transferSteps()
+    public function cards()
     {
-        return $this->hasMany(TransferStep::class);
+        return $this->hasMany(Card::class);
+    }
+
+    public function cardRequests()
+    {
+        return $this
+            ->hasManyThrough(CardRequest::class, Account::class)
+            ->select('card_requests.*');
     }
 
     public function country()

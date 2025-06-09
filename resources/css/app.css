@@ -2,9 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Brand Colors */
+/* Brand Colors - Centralized Static Values */
 :root {
-    --brand-primary: #2563eb; /* blue-600 */
+    --brand-primary: #2563eb; /* blue-600 - Couleur principale centralisée */
     --brand-primary-hover: #1d4ed8; /* blue-700 */
     --brand-primary-light: #3b82f6; /* blue-500 */
     --brand-primary-dark: #1e40af; /* blue-800 */
@@ -15,9 +15,22 @@
     --brand-error: #dc2626; /* red-600 */
 }
 
+/* Financial Cards Dark Mode Styles */
+.financial-card {
+    background-color: #F9FAFB;
+}
+
+.dark .financial-card {
+    background-color: #374151 !important;
+}
+
 /* Brand Color Utility Classes */
+/* Primary Colors */
 .bg-brand-primary {
     background-color: var(--brand-primary);
+}
+.bg-brand-primary\/5 {
+    background-color: rgb(37 99 235 / 0.05);
 }
 .bg-brand-primary-hover {
     background-color: var(--brand-primary-hover);
@@ -37,11 +50,107 @@
 .focus\:ring-brand-primary:focus {
     --tw-ring-color: var(--brand-primary);
 }
+.ring-brand-primary {
+    --tw-ring-color: var(--brand-primary);
+}
+.ring-2 {
+    --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0
+        var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+    --tw-ring-shadow: var(--tw-ring-inset) 0 0 0
+        calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+    box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow),
+        var(--tw-shadow, 0 0 #0000);
+}
 .hover\:bg-brand-primary-hover:hover {
     background-color: var(--brand-primary-hover);
 }
 .hover\:text-brand-primary-hover:hover {
     color: var(--brand-primary-hover);
+}
+
+/* Secondary Colors */
+.bg-brand-secondary {
+    background-color: var(--brand-secondary);
+}
+.text-brand-secondary {
+    color: var(--brand-secondary);
+}
+.text-brand-secondary-hover {
+    color: var(--brand-secondary);
+}
+.border-brand-secondary {
+    border-color: var(--brand-secondary);
+}
+.hover\:text-brand-secondary-hover:hover {
+    color: var(--brand-secondary);
+}
+
+/* Accent Colors */
+.bg-brand-accent {
+    background-color: var(--brand-accent);
+}
+.text-brand-accent {
+    color: var(--brand-accent);
+}
+.text-brand-accent-hover {
+    color: var(--brand-accent);
+}
+.border-brand-accent {
+    border-color: var(--brand-accent);
+}
+.hover\:text-brand-accent-hover:hover {
+    color: var(--brand-accent);
+}
+
+/* Warning Colors */
+.bg-brand-warning {
+    background-color: var(--brand-warning);
+}
+.text-brand-warning {
+    color: var(--brand-warning);
+}
+.text-brand-warning-hover {
+    color: var(--brand-warning);
+}
+.border-brand-warning {
+    border-color: var(--brand-warning);
+}
+.hover\:text-brand-warning-hover:hover {
+    color: var(--brand-warning);
+}
+
+/* Success Colors */
+.bg-brand-success {
+    background-color: var(--brand-success);
+}
+.text-brand-success {
+    color: var(--brand-success);
+}
+.text-brand-success-hover {
+    color: var(--brand-success);
+}
+.border-brand-success {
+    border-color: var(--brand-success);
+}
+.hover\:text-brand-success-hover:hover {
+    color: var(--brand-success);
+}
+
+/* Error Colors */
+.bg-brand-error {
+    background-color: var(--brand-error);
+}
+.text-brand-error {
+    color: var(--brand-error);
+}
+.text-brand-error-hover {
+    color: var(--brand-error);
+}
+.border-brand-error {
+    border-color: var(--brand-error);
+}
+.hover\:text-brand-error-hover:hover {
+    color: var(--brand-error);
 }
 
 /* Email Styles */

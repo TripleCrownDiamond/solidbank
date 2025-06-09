@@ -9,11 +9,13 @@ return [
     'submitting' => 'Envoi en cours...',
     'already_have_account' => 'Vous avez déjà un compte ?',
     'sign_in' => 'Se connecter',
-    'success_message' => "Inscription réussie ! Votre compte a été créé et est actuellement en cours d'examen pour activation. Vous recevrez un e-mail une fois votre compte actif.",
     'error_message' => 'Une erreur est survenue. Veuillez réessayer.',
-    'success_title' => 'Inscription réussie',
-    'success_message' => "Inscription réussie ! Votre compte a été créé et est actuellement en cours d'examen pour activation. Vous recevrez un e-mail une fois votre compte actif.",
-    'go_to_login' => 'Se connecter',
+    'success_title' => 'Inscription réussie !',
+    'success_message' => 'Votre compte a été créé avec succès et est en cours de vérification. Vous recevrez un e-mail une fois votre compte activé.',
+    'go_to_login' => 'Aller à la connexion',
+    // Messages de vérification d'email
+    'email_verification_required' => "Vérification d'email requise",
+    'email_verification_message' => "Un email de vérification a été envoyé à l'instant à votre adresse email. Veuillez vérifier votre boîte de réception et cliquer sur le lien pour activer votre compte. Ce lien expirera dans 60 minutes.",
     // Étape 1 - Informations personnelles
     'first_name' => 'Prénom',
     'last_name' => 'Nom',
@@ -56,9 +58,9 @@ return [
     'hide' => 'Masquer',
     'help' => [
         'password' => 'Le mot de passe doit contenir au moins 8 caractères.',
-        'identity_document' => "Téléchargez une copie de votre carte d'identité, passeport ou permis de conduire.",
-        'address_document' => 'Téléchargez une facture récente (électricité, gaz, téléphone) ou un justificatif de domicile.',
-        'file_formats' => 'Formats acceptés : PDF, JPG, PNG (maximum 2 Mo)',
+        'identity_document' => "Téléchargez une copie de votre carte d'identité, passeport ou permis de conduire. Formats acceptés : PDF, JPG, PNG (maximum 10 Mo).",
+        'address_document' => 'Téléchargez une facture récente (électricité, gaz, téléphone) ou un justificatif de domicile. Formats acceptés : PDF, JPG, PNG (maximum 10 Mo).',
+        'file_formats' => 'Formats acceptés : PDF, JPG, PNG (maximum 10 Mo)',
     ],
     // Types de comptes
     'savings' => 'Compte épargne',
@@ -160,23 +162,25 @@ return [
         ],
         'identity_document' => [
             'required' => "Le document d'identité est obligatoire.",
-            'file' => 'Veuillez télécharger un fichier valide.',
+            'file' => "Le fichier du document d'identité n'a pu être téléversé. Veuillez vérifier que le fichier n'est pas corrompu et réessayer.",
             'mimes' => "Le document d'identité doit être un fichier PDF, JPG ou PNG.",
-            'max' => 'Le fichier ne doit pas dépasser 2 Mo.',
+            'max' => "Le document d'identité ne doit pas dépasser 10 Mo.",
+            'upload_failed' => "Échec du téléversement du document d'identité. Le fichier est peut-être trop volumineux (maximum 10 Mo) ou dans un format non supporté (PDF, JPG, PNG uniquement).",
         ],
         'address_document' => [
             'required' => 'Le justificatif de domicile est obligatoire.',
-            'file' => 'Veuillez télécharger un fichier valide.',
+            'file' => "Le fichier du justificatif de domicile n'a pu être téléversé. Veuillez vérifier que le fichier n'est pas corrompu et réessayer.",
             'mimes' => 'Le justificatif de domicile doit être un fichier PDF, JPG ou PNG.',
-            'max' => 'Le fichier ne doit pas dépasser 2 Mo.',
+            'max' => 'Le justificatif de domicile ne doit pas dépasser 10 Mo.',
+            'upload_failed' => 'Échec du téléversement du justificatif de domicile. Le fichier est peut-être trop volumineux (maximum 10 Mo) ou dans un format non supporté (PDF, JPG, PNG uniquement).',
         ],
     ],
     // Instructions et aide
     'help' => [
         'password' => 'Le mot de passe doit contenir au moins 8 caractères.',
-        'identity_document' => "Téléchargez une copie de votre carte d'identité, passeport ou permis de conduire.",
-        'address_document' => 'Téléchargez une facture récente (électricité, gaz, téléphone) ou un justificatif de domicile.',
-        'file_formats' => 'Formats acceptés : PDF, JPG, PNG (maximum 2 Mo)',
+        'identity_document' => "Téléchargez une copie de votre carte d'identité, passeport ou permis de conduire. Formats acceptés : PDF, JPG, PNG (maximum 10 Mo).",
+        'address_document' => 'Téléchargez une facture récente (électricité, gaz, téléphone) ou un justificatif de domicile. Formats acceptés : PDF, JPG, PNG (maximum 10 Mo).',
+        'file_formats' => 'Formats acceptés : PDF, JPG, PNG (maximum 10 Mo)',
     ],
     // Messages de succès
     'success' => [

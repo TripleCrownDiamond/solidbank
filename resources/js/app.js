@@ -65,6 +65,20 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
+// Early theme initialization to prevent flash
+(() => {
+    const savedTheme = localStorage.getItem("theme");
+    if (
+        savedTheme === "dark" ||
+        (savedTheme === "system" &&
+            window.matchMedia("(prefers-color-scheme: dark)").matches)
+    ) {
+        document.documentElement.classList.add("dark");
+    } else {
+        document.documentElement.classList.remove("dark");
+    }
+})();
+
 // Theme Toggle Logic
 document.addEventListener("DOMContentLoaded", function () {
     const themeIcons = {
@@ -124,8 +138,8 @@ document.addEventListener("DOMContentLoaded", function () {
             ?.classList.remove("hidden");
     };
 
-    // Initialize theme on page load
-    (() => {
+    // Initialize theme immediately
+    const initializeTheme = () => {
         const savedTheme = localStorage.getItem("theme");
         if (savedTheme) {
             setTheme(savedTheme);
@@ -134,7 +148,17 @@ document.addEventListener("DOMContentLoaded", function () {
         } else {
             setTheme("light");
         }
-    })();
+    };
+
+    // Run theme initialization immediately
+    initializeTheme();
+
+    // Also run on page visibility change (for browser back/forward)
+    document.addEventListener("visibilitychange", () => {
+        if (!document.hidden) {
+            initializeTheme();
+        }
+    });
 
     // Add event listeners for theme toggle buttons
     document
@@ -145,126 +169,27 @@ document.addEventListener("DOMContentLoaded", function () {
         ?.addEventListener("click", () => setTheme());
 });
 
-// Livewire Alert Listener
-import Swal from "sweetalert2";
+// Livewire Alert Listener (SweetAlert2 removed)
 
 if (window.Livewire) {
     document.addEventListener("livewire:initialized", () => {
-        Livewire.on("alert", (event) => {
-            console.log("Livewire alert event:", event);
-            // Livewire events dispatched from backend often come as an array with the payload as the first element
-            const payload = event[0] || event;
-
-            if (payload && payload.message) {
-                const type = payload.type || "info"; // Default to 'info' if type is not provided
-                const message = payload.message;
-                const theme = document.documentElement.classList.contains(
-                    "dark"
-                )
-                    ? "dark"
-                    : "light";
-
-                Swal.fire({
-                    icon: type,
-                    title: message,
-                    toast: true,
-                    position: "top-end",
-                    showConfirmButton: false,
-                    timer: 3000,
-                    timerProgressBar: true,
-                    background: theme === "dark" ? "#333" : "#fff",
-                    color: theme === "dark" ? "#fff" : "#333",
-                });
-            } else {
-                console.error(
-                    "Livewire alert event detail or message is undefined:",
-                    event
-                );
-                Swal.fire({
-                    icon: "error",
-                    title: "An unknown alert occurred.",
-                    toast: true,
-                    position: "top-end",
-                    showConfirmButton: false,
-                    timer: 3000,
-                    timerProgressBar: true,
-                    background: document.documentElement.classList.contains(
-                        "dark"
-                    )
-                        ? "#333"
-                        : "#fff",
-                    color: document.documentElement.classList.contains("dark")
-                        ? "#fff"
-                        : "#333",
-                });
-            }
-        });
-
         Livewire.on("copy-to-clipboard", (event) => {
             console.log("Livewire copy-to-clipboard event:", event);
-            // Livewire events dispatched from backend often come as an array with the payload as the first element
             const payload = event[0] || event;
 
             if (payload && payload.accountNumber) {
                 const accountNumber = payload.accountNumber;
                 const message = payload.message || "Account number copied!";
-                const theme = document.documentElement.classList.contains(
-                    "dark"
-                )
-                    ? "dark"
-                    : "light";
 
                 navigator.clipboard
                     .writeText(accountNumber)
                     .then(() => {
-                        Swal.fire({
-                            icon: "success",
-                            title: message,
-                            toast: true,
-                            position: "top-end",
-                            showConfirmButton: false,
-                            timer: 3000,
-                            timerProgressBar: true,
-                            background: theme === "dark" ? "#333" : "#fff",
-                            color: theme === "dark" ? "#fff" : "#333",
-                        });
+                        // Show success message using session flash instead of SweetAlert
+                        console.log(message);
                     })
                     .catch((err) => {
                         console.error("Failed to copy: ", err);
-                        Swal.fire({
-                            icon: "error",
-                            title: "Failed to copy account number.",
-                            toast: true,
-                            position: "top-end",
-                            showConfirmButton: false,
-                            timer: 3000,
-                            timerProgressBar: true,
-                            background: theme === "dark" ? "#333" : "#fff",
-                            color: theme === "dark" ? "#fff" : "#333",
-                        });
                     });
-            } else {
-                console.error(
-                    "Livewire copy-to-clipboard event detail or accountNumber is undefined:",
-                    event
-                );
-                Swal.fire({
-                    icon: "error",
-                    title: "An unknown clipboard copy error occurred.",
-                    toast: true,
-                    position: "top-end",
-                    showConfirmButton: false,
-                    timer: 3000,
-                    timerProgressBar: true,
-                    background: document.documentElement.classList.contains(
-                        "dark"
-                    )
-                        ? "#333"
-                        : "#fff",
-                    color: document.documentElement.classList.contains("dark")
-                        ? "#fff"
-                        : "#333",
-                });
             }
         });
     });

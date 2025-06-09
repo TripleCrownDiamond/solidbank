@@ -6,7 +6,7 @@
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100 text-center">
                     <h2 class="text-4xl font-bold mb-4">
-                        {{ __('welcome.welcome', ['app' => config('app.name')]) }}
+                        {{ __('welcome.welcome', ['app' => getAppName()]) }}
                     </h2>
                     <p class="text-xl text-gray-600 dark:text-gray-300 mb-8">
                         {{ __('welcome.subtitle') }}

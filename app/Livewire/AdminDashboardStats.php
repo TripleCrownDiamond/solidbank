@@ -6,6 +6,7 @@ use App\Models\Account;
 use App\Models\Country;
 use App\Models\User;
 use Livewire\Component;
+use Livewire\Attributes\On;
 
 class AdminDashboardStats extends Component
 {
@@ -19,7 +20,12 @@ class AdminDashboardStats extends Component
     public $usersIncrease;
     public $topCountryUsers;
 
-    public function render()
+    public function mount()
+    {
+        $this->loadStats();
+    }
+
+    public function loadStats()
     {
         $this->totalAccounts = Account::count();
         $this->activeAccounts = Account::where('status', 'ACTIVE')->count();
@@ -40,7 +46,12 @@ class AdminDashboardStats extends Component
         $this->activeAccountsIncrease = 0;
         $this->inactiveAccountsDecrease = 0;
         $this->usersIncrease = 0;
+    }
 
+
+
+    public function render()
+    {
         return view('livewire.admin-dashboard-stats', [
             'totalAccounts' => $this->totalAccounts,
             'accountsIncrease' => $this->accountsIncrease,

@@ -14,5 +14,5 @@
 {{ __('forgot-password.new_password_email.no_action_required') }}
 
 {{ str_repeat('=', 50) }}
-{{ str_pad(__('common.thanks'), 50, ' ', STR_PAD_RIGHT) }}{{ config('app.name') }}
+{{ str_pad(__('common.thanks'), 50, ' ', STR_PAD_RIGHT) }}{{ getAppName() }}
 {{ str_repeat('=', 50) }}

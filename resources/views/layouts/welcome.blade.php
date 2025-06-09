@@ -20,7 +20,7 @@
     <!-- Footer (optionnel) -->
     <footer class="bg-gray-800 text-white py-6 mt-8">
         <div class="container mx-auto text-center">
-            <p>&copy; {{ date('Y') }} {{ config('app.name') }}. {{ __('All rights reserved.') }}</p>
+            <p>&copy; {{ date('Y') }} {{ getAppName() }}. {{ __('All rights reserved.') }}</p>
         </div>
     </footer>
 </body>

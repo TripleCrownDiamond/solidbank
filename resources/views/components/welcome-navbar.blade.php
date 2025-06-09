@@ -2,7 +2,7 @@
     <div class="container mx-auto px-4 py-4 flex justify-between items-center">
         <!-- Logo -->
         <a href="{{ url(app()->getLocale()) }}" class="flex items-center">
-            <img src="{{ asset('img/logo_blue.svg') }}" alt="{{ config('app.name') }}" class="h-8">
+            <img src="{{ getLogoUrl() }}" alt="{{ getAppName() }}" class="h-8">
         </a>
 
         <!-- Menu Principal (Visible sur Desktop) -->

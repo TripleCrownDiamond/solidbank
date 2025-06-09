@@ -27,10 +27,14 @@ class ConfigSeeder extends Seeder
                 'bank_phone' => '+33123456789',
                 'bank_email' => 'support@solidbank.com',
                 'bank_website' => 'https://www.solidbank.fr',
+                'logo_url' => 'img/logo_blue.svg',
+                'icon_url' => 'img/icon_blue.svg',
+                'favicon_url' => 'favicon.ico',
                 'notification_email' => true,
                 'two_factor_auth' => true,
                 'account_prefix' => 'ACC',
                 'account_length' => 10,
+                'transaction_validation_method' => 'manual',
             ]
         );
     }
