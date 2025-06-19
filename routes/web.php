@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\TestMailController;
+use App\Livewire\DepositManagement\TransferProgress;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
@@ -50,6 +51,19 @@ Route::prefix('{locale}')->group(function () {
             Route::get('/transactions', function () {
                 return view('dashboard.transactions');
             })->name('transactions');
+
+            // Route pour la progression de transfert
+            Route::get('/transfer-progress', function () {
+                return view('dashboard.transfer-progress');
+            })->name('dashboard.transfer-progress');
+
+            // Routes pour les transferts
+            Route::get('/transfers/create', function () {
+                return redirect()->route('dashboard'); // Or to the actual transfer creation page
+            })->name('transfers.create');
+            
+            Route::get('/transfers/progress', TransferProgress::class)->name('transfers.progress');
+            Route::get('/transfers/progress/{transferId}', TransferProgress::class)->name('transfers.progress.resume');
 
             // Routes admin (accessible uniquement aux administrateurs)
             Route::middleware('admin')->group(function () {

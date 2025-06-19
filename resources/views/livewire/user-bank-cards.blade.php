@@ -169,8 +169,13 @@
             <div class="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-md mx-4" wire:click.stop>
                 <div class="flex items-center justify-between mb-4">
                     <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100">{{ __('common.request_new_card') }}</h3>
-                    <button wire:click="closeModal()" class="text-gray-400 hover:text-gray-600">
-                        <i class="fa-solid fa-times"></i>
+                    <button wire:click="closeModal()" class="text-gray-400 hover:text-gray-600 disabled:opacity-50 disabled:cursor-not-allowed" wire:loading.attr="disabled" wire:target="closeModal">
+                        <span wire:loading.remove wire:target="closeModal">
+                            <i class="fa-solid fa-times"></i>
+                        </span>
+                        <span wire:loading wire:target="closeModal">
+                            <i class="fa-solid fa-spinner fa-spin text-gray-800 dark:text-white"></i>
+                        </span>
                     </button>
                 </div>
                     

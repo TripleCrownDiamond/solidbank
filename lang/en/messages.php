@@ -143,6 +143,6 @@ return [
     'confirm_transaction_confirmation' => 'Are you sure you want to confirm this transaction?',
     'confirm_transaction_cancellation' => 'Are you sure you want to cancel this transaction?',
     'user_deleted_successfully' => 'User deleted successfully',
-    'processing_deposit' => 'Processing deposit...', 
-    'processing_withdrawal' => 'Processing withdrawal...'
+    'invalid_otp' => 'Invalid OTP',
+    'otp_sent_successfully' => 'OTP sent successfully',
 ];

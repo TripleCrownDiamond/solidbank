@@ -154,6 +154,10 @@ return [
     'url'                    => 'The :attribute field must be a valid URL.',
     'uuid'                   => 'The :attribute field must be a valid UUID.',
     'attributes'             => [
+        'account_number'           => 'account number',
+        'wallet_address'           => 'wallet address',
+        'selectedAccountId'        => 'selected account',
+        'selectedWalletId'         => 'selected wallet',
         'address'                  => 'address',
         'affiliate_url'            => 'affiliate URL',
         'age'                      => 'age',

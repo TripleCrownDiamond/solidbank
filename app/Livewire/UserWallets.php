@@ -64,21 +64,21 @@ class UserWallets extends Component
 
             // Vérifier que le portefeuille appartient à l'utilisateur connecté
             if ($wallet->user_id !== Auth::id()) {
-                session()->flash('error', __('messages.unauthorized_wallet_deletion'));
+                $this->dispatch('alert', ['type' => 'error', 'message' => __('messages.unauthorized_wallet_deletion')]);
                 return;
             }
 
             // Vérifier que le solde est à zéro
             if ($wallet->balance > 0) {
-                session()->flash('error', __('messages.cannot_delete_wallet_with_balance'));
+                $this->dispatch('alert', ['type' => 'error', 'message' => __('messages.cannot_delete_wallet_with_balance')]);
                 return;
             }
 
             $wallet->delete();
 
-            session()->flash('success', __('messages.wallet_deleted_successfully'));
+            $this->dispatch('alert', ['type' => 'success', 'message' => __('messages.wallet_deleted_successfully')]);
         } catch (\Exception $e) {
-            session()->flash('error', __('messages.wallet_deletion_error'));
+            $this->dispatch('alert', ['type' => 'error', 'message' => __('messages.wallet_deletion_error')]);
         }
 
         $this->loadingAction = null;

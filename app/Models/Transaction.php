@@ -23,6 +23,7 @@ class Transaction extends Model
     ];
 
     protected $casts = [
+        'amount' => 'float',
         'external_crypto_info' => 'array',
         'external_bank_info' => 'array',
         'blocked_at' => 'datetime',
@@ -68,6 +69,21 @@ class Transaction extends Model
     public function processedByAdmin()
     {
         return $this->belongsTo(User::class, 'processed_by_admin_id');
+    }
+
+    public function transferStepCompletions()
+    {
+        return $this->hasMany(TransferStepCompletion::class);
+    }
+
+    public function getCompletedStepsCount()
+    {
+        return $this->transferStepCompletions()->count();
+    }
+
+    public function isStepCompleted($stepId)
+    {
+        return $this->transferStepCompletions()->where('transfer_step_id', $stepId)->exists();
     }
 
     /**

@@ -143,6 +143,6 @@ return [
     'confirm_transaction_confirmation' => 'Êtes-vous sûr de vouloir confirmer cette transaction ?',
     'confirm_transaction_cancellation' => 'Êtes-vous sûr de vouloir annuler cette transaction ?',
     'user_deleted_successfully' => 'Utilisateur supprimé avec succès',
-    'processing_deposit' => 'Traitement du dépôt...', 
-    'processing_withdrawal' => 'Traitement du retrait...'
+    'invalid_otp' => 'OTP invalide',
+    'otp_sent_successfully' => 'OTP envoyé avec succès',
 ];

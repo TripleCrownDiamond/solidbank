@@ -283,9 +283,9 @@ class UserManagement extends Component
             $user->save();
 
             $status = $user->is_suspended ? __('messages.suspended') : __('messages.reactivated');
-            session()->flash('success', __('messages.user_status_updated', ['status' => $status]));
+            $this->dispatch('alert', ['type' => 'success', 'message' => __('messages.user_status_updated', ['status' => $status])]);
         } catch (\Exception $e) {
-            session()->flash('error', __('messages.user_status_update_error'));
+            $this->dispatch('alert', ['type' => 'error', 'message' => __('messages.user_status_update_error')]);
         }
 
         $this->loadingAction = null;

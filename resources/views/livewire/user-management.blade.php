@@ -312,8 +312,13 @@
                         <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">
                             {{ $suspensionUserId === 'bulk' ? __('admin.suspend_selected_users') : __('admin.suspend_user') }}
                         </h3>
-                        <button wire:click="cancelSuspension" class="text-gray-400 hover:text-gray-600">
-                            <i class="fa-solid fa-times"></i>
+                        <button wire:click="cancelSuspension" class="text-gray-400 hover:text-gray-600 disabled:opacity-50 disabled:cursor-not-allowed" wire:loading.attr="disabled" wire:target="cancelSuspension">
+                            <span wire:loading.remove wire:target="cancelSuspension">
+                                <i class="fa-solid fa-times"></i>
+                            </span>
+                            <span wire:loading wire:target="cancelSuspension">
+                                <i class="fa-solid fa-spinner fa-spin text-gray-800 dark:text-white"></i>
+                            </span>
                         </button>
                     </div>
                     

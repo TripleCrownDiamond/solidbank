@@ -23,6 +23,8 @@
             <p>&copy; {{ date('Y') }} {{ getAppName() }}. {{ __('All rights reserved.') }}</p>
         </div>
     </footer>
+     <!-- Alert Manager -->
+     @livewire('alert-manager')
 </body>
 
 </html>

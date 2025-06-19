@@ -2,7 +2,7 @@
 
 namespace App\Listeners;
 
-use App\Mail\TwoFactorChallengeMail;
+use App\Mail\TransferOtpMail;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Log;
@@ -39,7 +39,7 @@ class SendTwoFactorChallengeNotification implements ShouldQueue
             $provider = app(TwoFactorAuthenticationProvider::class);
             $otp = $event->user->two_factor_code;
 
-            Mail::to($event->user->email)->send(new TwoFactorChallengeMail($event->user, $otp));
+            Mail::to($event->user->email)->send(new TransferOtpMail($event->user, $otp));
             Log::info('Two-factor challenge email sent to: ' . $event->user->email);
         } catch (\Exception $e) {
             Log::error('Failed to send two-factor challenge email to ' . $event->user->email . ': ' . $e->getMessage());

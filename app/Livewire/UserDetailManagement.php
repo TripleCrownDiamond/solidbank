@@ -204,7 +204,7 @@ class UserDetailManagement extends Component
             });
 
             // Dispatch success message before redirect
-            session()->flash('alert', ['type' => 'success', 'message' => __('messages.user_deleted_successfully')]);
+            $this->dispatch('alert', ['type' => 'success', 'message' => __('messages.user_deleted_successfully')]);
             
             $locale = app()->getLocale();
             return redirect()->route('admin.users', ['locale' => $locale]);
@@ -461,7 +461,7 @@ class UserDetailManagement extends Component
 
             // Vérifier que la carte appartient à l'utilisateur actuel
             if ($card->user_id !== $this->user->id) {
-                session()->flash('error', __('messages.unauthorized_access'));
+                $this->dispatch('alert', ['type' => 'error', 'message' => __('messages.unauthorized_access')]);
                 return;
             }
 
@@ -478,13 +478,13 @@ class UserDetailManagement extends Component
 
             $card->delete();
 
-            session()->flash('success', __('messages.card_deleted_successfully'));
+            $this->dispatch('alert', ['type' => 'success', 'message' => __('messages.card_deleted_successfully')]);
 
             // Rafraîchir la vue
             $this->user = $this->user->fresh();
         } catch (\Exception $e) {
             Log::error('Card deletion failed: ' . $e->getMessage());
-            session()->flash('error', __('messages.card_deletion_error'));
+            $this->dispatch('alert', ['type' => 'error', 'message' => __('messages.card_deletion_error')]);
         }
         
         $this->loadingAction = null;
@@ -567,19 +567,19 @@ class UserDetailManagement extends Component
                 ->first();
 
             if (!$wallet) {
-                session()->flash('error', __('messages.wallet_not_found'));
+                $this->dispatch('alert', ['type' => 'error', 'message' => __('messages.wallet_not_found')]);
                 return;
             }
             
             // Vérifier que le solde est à zéro
             if ($wallet->balance > 0) {
-                session()->flash('error', __('messages.cannot_delete_wallet_with_balance'));
+                $this->dispatch('alert', ['type' => 'error', 'message' => __('messages.cannot_delete_wallet_with_balance')]);
                 return;
             }
 
             $wallet->delete();
 
-            session()->flash('success', __('messages.wallet_deleted_successfully'));
+            $this->dispatch('alert', ['type' => 'success', 'message' => __('messages.wallet_deleted_successfully')]);
 
             // Send email notification
             Mail::to($this->user->email)->send(new AccountStatusNotification($this->user, $this->user->accounts->first(), 'wallet_deleted'));
@@ -591,7 +591,7 @@ class UserDetailManagement extends Component
             unset($this->showWalletDetails[$walletId]);
         } catch (\Exception $e) {
             Log::error('Wallet deletion failed: ' . $e->getMessage());
-            session()->flash('error', __('messages.wallet_deletion_error'));
+            $this->dispatch('alert', ['type' => 'error', 'message' => __('messages.wallet_deletion_error')]);
         }
         
         $this->loadingAction = null;
@@ -611,20 +611,20 @@ class UserDetailManagement extends Component
             $cardRequest = \App\Models\CardRequest::find($requestId);
 
             if (!$cardRequest) {
-                session()->flash('error', __('messages.card_request_not_found'));
+                $this->dispatch('alert', ['type' => 'error', 'message' => __('messages.card_request_not_found')]);
                 return;
             }
 
             // Vérifier que la demande appartient bien à cet utilisateur
             $userAccountIds = $this->user->accounts->pluck('id')->toArray();
             if (!in_array($cardRequest->account_id, $userAccountIds)) {
-                session()->flash('error', __('messages.unauthorized_access'));
+                $this->dispatch('alert', ['type' => 'error', 'message' => __('messages.unauthorized_access')]);
                 return;
             }
 
             // Vérifier que la demande est encore en attente
             if ($cardRequest->status !== 'PENDING') {
-                session()->flash('error', __('messages.only_pending_requests_can_be_deleted'));
+                $this->dispatch('alert', ['type' => 'error', 'message' => __('messages.only_pending_requests_can_be_deleted')]);
                 return;
             }
 
@@ -649,13 +649,13 @@ class UserDetailManagement extends Component
 
             $cardRequest->delete();
 
-            session()->flash('success', __('messages.card_request_deleted_successfully'));
+            $this->dispatch('alert', ['type' => 'success', 'message' => __('messages.card_request_deleted_successfully')]);
 
             // Refresh user data
             $this->user = $this->user->fresh();
         } catch (\Exception $e) {
             Log::error('Card request deletion failed: ' . $e->getMessage());
-            session()->flash('error', __('messages.card_request_deletion_error'));
+            $this->dispatch('alert', ['type' => 'error', 'message' => __('messages.card_request_deletion_error')]);
         }
         
         $this->loadingAction = null;

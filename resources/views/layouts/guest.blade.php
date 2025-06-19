@@ -28,6 +28,8 @@
     </div>
 
     @livewireScripts
+     <!-- Alert Manager -->
+     @livewire('alert-manager')
 </body>
 
 </html>

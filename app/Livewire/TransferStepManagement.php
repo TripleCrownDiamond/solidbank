@@ -179,17 +179,9 @@ class TransferStepManagement extends Component
             $group->update(['is_active' => !$group->is_active]);
 
             $message = $group->is_active ? __('messages.group_activated_successfully') : __('messages.group_deactivated_successfully');
-            $this->dispatch('swal', [
-                'type' => 'success',
-                'title' => __('messages.success'),
-                'text' => $message
-            ]);
+            $this->dispatch('alert', ['type' => 'success', 'message' => $message]);
         } catch (\Exception $e) {
-            $this->dispatch('swal', [
-                'type' => 'error',
-                'title' => __('messages.error'),
-                'text' => __('messages.group_status_change_error')
-            ]);
+            $this->dispatch('alert', ['type' => 'error', 'message' => __('messages.group_status_change_error')]);
         } finally {
             $this->isTogglingGroupStatus = null;
         }

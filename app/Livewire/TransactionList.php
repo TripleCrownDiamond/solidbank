@@ -221,7 +221,11 @@ class TransactionList extends Component
     public $typeFilter = 'all';
     public $perPage = 10;
 
-    protected $listeners = ['transactionCreated' => 'refreshTransactions', 'execute-method' => 'executeMethod'];
+    protected $listeners = [
+        'transactionCreated' => 'refreshTransactions',
+        'transaction-created' => 'refreshTransactions',
+        'execute-method' => 'executeMethod'
+    ];
 
     public function updatingSearch()
     {
@@ -240,6 +244,8 @@ class TransactionList extends Component
 
     public function refreshTransactions()
     {
+        $this->resetPage();
+        $this->reset(['search', 'statusFilter', 'typeFilter']);
         $this->resetPage();
     }
 
@@ -303,18 +309,18 @@ class TransactionList extends Component
     public function confirmTransaction($transactionId)
     {
         if (!Auth::user()->is_admin) {
-            session()->flash('error', __('messages.unauthorized_access'));
+            $this->dispatch('alert', ['type' => 'error', 'message' => __('messages.unauthorized_access')]);
             return;
         }
 
         $transaction = Transaction::find($transactionId);
         if (!$transaction) {
-            session()->flash('error', __('messages.transaction_not_found'));
+            $this->dispatch('alert', ['type' => 'error', 'message' => __('messages.transaction_not_found')]);
             return;
         }
 
         if (!$transaction->isPending()) {
-            session()->flash('error', __('messages.only_pending_transactions_can_be_confirmed'));
+            $this->dispatch('alert', ['type' => 'error', 'message' => __('messages.only_pending_transactions_can_be_confirmed')]);
             return;
         }
 
@@ -332,9 +338,9 @@ class TransactionList extends Component
             // Utiliser la méthode confirm du modèle (qui gère automatiquement la mise à jour du solde et l'envoi d'email)
             $transaction->confirm(Auth::id());
 
-            session()->flash('success', __('messages.transaction_confirmed_successfully'));
+            $this->dispatch('alert', ['type' => 'success', 'message' => __('messages.transaction_confirmed_successfully')]);
         } catch (\Exception $e) {
-            session()->flash('error', __('messages.transaction_confirmation_error', ['error' => $e->getMessage()]));
+            $this->dispatch('alert', ['type' => 'error', 'message' => __('messages.transaction_confirmation_error', ['error' => $e->getMessage()])]);
         }
 
         $this->dispatch('action-completed');
@@ -343,18 +349,18 @@ class TransactionList extends Component
     public function cancelTransaction($transactionId)
     {
         if (!Auth::user()->is_admin) {
-            session()->flash('error', __('messages.unauthorized_access'));
+            $this->dispatch('alert', ['type' => 'error', 'message' => __('messages.unauthorized_access')]);
             return;
         }
 
         $transaction = Transaction::find($transactionId);
         if (!$transaction) {
-            session()->flash('error', __('messages.transaction_not_found'));
+            $this->dispatch('alert', ['type' => 'error', 'message' => __('messages.transaction_not_found')]);
             return;
         }
 
         if (!$transaction->isPending()) {
-            session()->flash('error', __('messages.only_pending_transactions_can_be_cancelled'));
+            $this->dispatch('alert', ['type' => 'error', 'message' => __('messages.only_pending_transactions_can_be_cancelled')]);
             return;
         }
 
@@ -372,9 +378,9 @@ class TransactionList extends Component
             // Utiliser la méthode cancel du modèle (qui gère automatiquement l'envoi d'email)
             $transaction->cancel(Auth::id(), "Annulée par l'administrateur");
 
-            session()->flash('success', __('messages.transaction_cancelled_successfully'));
+            $this->dispatch('alert', ['type' => 'success', 'message' => __('messages.transaction_cancelled_successfully')]);
         } catch (\Exception $e) {
-            session()->flash('error', __('messages.transaction_cancellation_error', ['error' => $e->getMessage()]));
+            $this->dispatch('alert', ['type' => 'error', 'message' => __('messages.transaction_cancellation_error', ['error' => $e->getMessage()])]);
         }
 
         $this->dispatch('action-completed');
@@ -386,24 +392,24 @@ class TransactionList extends Component
     public function blockTransaction($transactionId, $transferStepId, $transferStepGroupId = null, $reason = null)
     {
         if (!Auth::user()->is_admin) {
-            session()->flash('error', __('messages.unauthorized_access'));
+            $this->dispatch('alert', ['type' => 'error', 'message' => __('messages.unauthorized_access')]);
             return;
         }
 
         $transaction = Transaction::find($transactionId);
         if (!$transaction) {
-            session()->flash('error', __('messages.transaction_not_found'));
+            $this->dispatch('alert', ['type' => 'error', 'message' => __('messages.transaction_not_found')]);
             return;
         }
 
         if (!$transaction->isPending()) {
-            session()->flash('error', __('messages.only_pending_transactions_can_be_blocked'));
+            $this->dispatch('alert', ['type' => 'error', 'message' => __('messages.only_pending_transactions_can_be_blocked')]);
             return;
         }
 
         $transaction->blockAtTransferStep($transferStepId, $transferStepGroupId, $reason);
 
-        session()->flash('success', __('messages.transaction_blocked_successfully'));
+        $this->dispatch('alert', ['type' => 'success', 'message' => __('messages.transaction_blocked_successfully')]);
     }
 
     /**
@@ -412,24 +418,24 @@ class TransactionList extends Component
     public function unblockTransaction($transactionId)
     {
         if (!Auth::user()->is_admin) {
-            session()->flash('error', __('messages.unauthorized_access'));
+            $this->dispatch('alert', ['type' => 'error', 'message' => __('messages.unauthorized_access')]);
             return;
         }
 
         $transaction = Transaction::find($transactionId);
         if (!$transaction) {
-            session()->flash('error', __('messages.transaction_not_found'));
+            $this->dispatch('alert', ['type' => 'error', 'message' => __('messages.transaction_not_found')]);
             return;
         }
 
         if (!$transaction->isBlocked()) {
-            session()->flash('error', __('messages.transaction_not_blocked'));
+            $this->dispatch('alert', ['type' => 'error', 'message' => __('messages.transaction_not_blocked')]);
             return;
         }
 
         $transaction->unblock(Auth::id());
 
-        session()->flash('success', __('messages.transaction_unblocked_successfully'));
+        $this->dispatch('alert', ['type' => 'success', 'message' => __('messages.transaction_unblocked_successfully')]);
     }
 
     public function render()

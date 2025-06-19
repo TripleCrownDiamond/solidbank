@@ -113,6 +113,55 @@
                         @endif
                     </div>
                 @else
+                    @php
+                        $blockedTransactions = Auth::user()->transactions()
+                            ->where('status', 'BLOCKED')
+                            ->get();
+                    @endphp
+                    
+                    @if($blockedTransactions->count() > 0)
+                        <div class="max-w-3xl mx-auto bg-gradient-to-br from-orange-50 to-red-50 dark:from-orange-900/20 dark:to-red-900/20 border border-orange-200 dark:border-orange-700 p-6 rounded-xl shadow-lg mb-8">
+                            <div class="flex items-start space-x-4">
+                                <div class="flex-shrink-0">
+                                    <div class="w-12 h-12 bg-gradient-to-br from-orange-500 to-red-500 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-exclamation-triangle text-white text-xl"></i>
+                                    </div>
+                                </div>
+                                <div class="flex-1">
+                                    <h3 class="text-lg font-bold text-orange-900 dark:text-orange-100 mb-2">
+                                        {{ __('transfers.blocked_transactions_alert') }}
+                                    </h3>
+                                    <p class="text-orange-800 dark:text-orange-200 mb-4">
+                                        @if($blockedTransactions->count() == 1)
+                                            Vous avez une transaction bloquée qui nécessite votre attention.
+                                        @else
+                                            Vous avez {{ $blockedTransactions->count() }} transactions bloquées qui nécessitent votre attention.
+                                        @endif
+                                    </p>
+                                    <div class="space-y-2">
+                                        @foreach($blockedTransactions as $transaction)
+                                            <div class="flex items-center justify-between bg-white dark:bg-gray-800 p-3 rounded-lg border border-orange-200 dark:border-orange-700">
+                                                <div>
+                                                    <p class="font-medium text-gray-900 dark:text-white">
+                                                        {{ $transaction->reference }}
+                                                    </p>
+                                                    <p class="text-sm text-gray-600 dark:text-gray-300">
+                                                        {{ number_format($transaction->amount, 2) }} {{ $transaction->currency }}
+                                                    </p>
+                                                </div>
+                                                <a href="{{ route('dashboard.transfer-progress', ['locale' => app()->getLocale(), 'ref' => $transaction->reference]) }}" 
+                                                   class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-medium rounded-lg transition-all duration-200">
+                                                    <i class="fas fa-arrow-right mr-2"></i>
+                                                    Continuer
+                                                </a>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
+                    
                     @livewire('user-dashboard-stats')
                     <div class="mt-8">
                         @livewire('user-account-ribs')

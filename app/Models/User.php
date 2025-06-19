@@ -16,6 +16,10 @@ use Laravel\Sanctum\HasApiTokens;
  * @method bool isRecoveryCodeValid(string $code)
  * @method void replaceRecoveryCodes(array $codes)
  * @method bool isTwoFactorAuthCodeValid(string $code)
+ * @method bool save(array $options = [])
+ * @method bool update(array $attributes = [], array $options = [])
+ * @method void generateTwoFactorCode()
+ * @method void resetTwoFactorCode()
  */
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -73,6 +77,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'password',
         'two_factor_secret',
         'two_factor_recovery_codes',
+        'two_factor_code',
+        'two_factor_expires_at',
         'profile_photo_path',
         'current_team_id',
         'name',
@@ -158,5 +164,31 @@ class User extends Authenticatable implements MustVerifyEmail
     public function country()
     {
         return $this->belongsTo(Country::class);
+    }
+    
+    /**
+     * Get all transactions for the user.
+     */
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class);
+    }
+
+    /**
+     * Generate a new two-factor authentication code.
+     */
+    public function generateTwoFactorCode()
+    {
+        $this->two_factor_code = str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT);
+        $this->two_factor_expires_at = now()->addMinutes(10);
+    }
+
+    /**
+     * Reset the two-factor authentication code.
+     */
+    public function resetTwoFactorCode()
+    {
+        $this->two_factor_code = null;
+        $this->two_factor_expires_at = null;
     }
 }

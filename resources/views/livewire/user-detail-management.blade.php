@@ -703,8 +703,13 @@
                 <div class="p-6">
                     <div class="flex justify-between items-center mb-4">
                         <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">{{ __('admin.apply_transfer_group') }}</h3>
-                        <button wire:click="closeTransferGroupModal" class="text-gray-400 hover:text-gray-600">
-                            <i class="fa-solid fa-times"></i>
+                        <button wire:click="closeTransferGroupModal" class="text-gray-400 hover:text-gray-600 disabled:opacity-50 disabled:cursor-not-allowed" wire:loading.attr="disabled" wire:target="closeTransferGroupModal">
+                            <span wire:loading.remove wire:target="closeTransferGroupModal">
+                                <i class="fa-solid fa-times"></i>
+                            </span>
+                            <span wire:loading wire:target="closeTransferGroupModal">
+                                <i class="fa-solid fa-spinner fa-spin text-gray-800 dark:text-white"></i>
+                            </span>
                         </button>
                     </div>
                     
@@ -854,8 +859,13 @@
             <div class="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-md mx-4">
                 <div class="flex justify-between items-center mb-4">
                     <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">{{ __('admin.add_card') }}</h3>
-                    <button wire:click="closeAddCardModal" class="text-gray-400 hover:text-gray-600">
-                        <i class="fa-solid fa-times"></i>
+                    <button wire:click="closeAddCardModal" class="text-gray-400 hover:text-gray-600 disabled:opacity-50 disabled:cursor-not-allowed" wire:loading.attr="disabled" wire:target="closeAddCardModal">
+                        <span wire:loading.remove wire:target="closeAddCardModal">
+                            <i class="fa-solid fa-times"></i>
+                        </span>
+                        <span wire:loading wire:target="closeAddCardModal">
+                            <i class="fa-solid fa-spinner fa-spin text-gray-800 dark:text-white"></i>
+                        </span>
                     </button>
                 </div>
                 
@@ -930,8 +940,13 @@
             <div class="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-md mx-4">
                 <div class="flex justify-between items-center mb-4">
                     <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">{{ __('admin.add_wallet') }}</h3>
-                    <button wire:click="closeAddWalletModal" class="text-gray-400 hover:text-gray-600">
-                        <i class="fa-solid fa-times"></i>
+                    <button wire:click="closeAddWalletModal" class="text-gray-400 hover:text-gray-600 disabled:opacity-50 disabled:cursor-not-allowed" wire:loading.attr="disabled" wire:target="closeAddWalletModal">
+                        <span wire:loading.remove wire:target="closeAddWalletModal">
+                            <i class="fa-solid fa-times"></i>
+                        </span>
+                        <span wire:loading wire:target="closeAddWalletModal">
+                            <i class="fa-solid fa-spinner fa-spin text-gray-800 dark:text-white"></i>
+                        </span>
                     </button>
                 </div>
                 

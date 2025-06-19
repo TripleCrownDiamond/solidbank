@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Auth;
 
-use App\Mail\TwoFactorChallengeMail;
+use App\Mail\LoginOtpMail;
 use App\Models\Config;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
@@ -101,13 +101,13 @@ class Login extends Component
             Cache::put('otp_' . $user->id, $otp, 600);
 
             // Send OTP email
-            Mail::to($user->email)->send(new TwoFactorChallengeMail($user, $otp));
+            Mail::to($user->email)->send(new LoginOtpMail($user, $otp));
 
             // Set up OTP challenge
             $this->pendingUserId = $user->id;
             $this->showOtpChallenge = true;
 
-            session()->flash('message', __('login.otp_sent'));
+            $this->dispatch('alert', ['type' => 'success', 'message' => __('login.otp_sent')]);
             return;
         }
 

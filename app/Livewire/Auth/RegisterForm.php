@@ -405,8 +405,8 @@ class RegisterForm extends Component
             // Passer à l'étape de succès
             // event(new Registered($user));
             $this->step = 4;
-            session()->flash('success', __('register.success_message'));
-            session()->flash('email_verification_needed', true);
+            $this->dispatch('alert', ['type' => 'success', 'message' => __('register.success_message')]);
+            $this->dispatch('email-verification-needed');
         } catch (\Illuminate\Validation\ValidationException $e) {
             $this->validationErrors = $e->errors();
             $this->generalError = __('register.validation_error_message');
