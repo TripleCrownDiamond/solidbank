@@ -120,43 +120,47 @@
                     @endphp
                     
                     @if($blockedTransactions->count() > 0)
-                        <div class="max-w-3xl mx-auto bg-gradient-to-br from-orange-50 to-red-50 dark:from-orange-900/20 dark:to-red-900/20 border border-orange-200 dark:border-orange-700 p-6 rounded-xl shadow-lg mb-8">
-                            <div class="flex items-start space-x-4">
-                                <div class="flex-shrink-0">
-                                    <div class="w-12 h-12 bg-gradient-to-br from-orange-500 to-red-500 rounded-full flex items-center justify-center">
-                                        <i class="fas fa-exclamation-triangle text-white text-xl"></i>
+                        <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg mb-8">
+                            <div class="p-6">
+                                <div class="flex items-center justify-between mb-4">
+                                    <div class="flex items-center space-x-3">
+                                        <div class="w-10 h-10 bg-red-100 dark:bg-red-900 rounded-full flex items-center justify-center">
+                                            <i class="fas fa-exclamation-triangle text-red-600 dark:text-red-400"></i>
+                                        </div>
+                                        <div>
+                                            <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100">
+                                                {{ __('transfers.blocked_transactions_alert') }}
+                                            </h3>
+                                            <p class="text-sm text-gray-600 dark:text-gray-400">
+                                                {{ trans_choice('transfers.blocked_transactions_message', $blockedTransactions->count(), ['count' => $blockedTransactions->count()]) }}
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="flex-1">
-                                    <h3 class="text-lg font-bold text-orange-900 dark:text-orange-100 mb-2">
-                                        {{ __('transfers.blocked_transactions_alert') }}
-                                    </h3>
-                                    <p class="text-orange-800 dark:text-orange-200 mb-4">
-                                        @if($blockedTransactions->count() == 1)
-                                            Vous avez une transaction bloquée qui nécessite votre attention.
-                                        @else
-                                            Vous avez {{ $blockedTransactions->count() }} transactions bloquées qui nécessitent votre attention.
-                                        @endif
-                                    </p>
-                                    <div class="space-y-2">
-                                        @foreach($blockedTransactions as $transaction)
-                                            <div class="flex items-center justify-between bg-white dark:bg-gray-800 p-3 rounded-lg border border-orange-200 dark:border-orange-700">
+
+                                <div class="space-y-3">
+                                    @foreach($blockedTransactions as $transaction)
+                                        <div class="bg-gray-50 dark:bg-gray-700/50 p-4 rounded-lg border border-gray-200 dark:border-gray-700 flex items-center justify-between">
+                                            <div class="flex items-center space-x-4">
+                                                <div class="w-8 h-8 rounded-full bg-red-100 dark:bg-red-800/50 flex-shrink-0 flex items-center justify-center">
+                                                    <i class="fas fa-hourglass-half text-red-600 dark:text-red-400 text-sm"></i>
+                                                </div>
                                                 <div>
-                                                    <p class="font-medium text-gray-900 dark:text-white">
+                                                    <p class="font-semibold text-gray-900 dark:text-white">
                                                         {{ $transaction->reference }}
                                                     </p>
                                                     <p class="text-sm text-gray-600 dark:text-gray-300">
                                                         {{ number_format($transaction->amount, 2) }} {{ $transaction->currency }}
                                                     </p>
                                                 </div>
-                                                <a href="{{ route('dashboard.transfer-progress', ['locale' => app()->getLocale(), 'ref' => $transaction->reference]) }}" 
-                                                   class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-medium rounded-lg transition-all duration-200">
-                                                    <i class="fas fa-arrow-right mr-2"></i>
-                                                    Continuer
-                                                </a>
                                             </div>
-                                        @endforeach
-                                    </div>
+                                            <a href="{{ route('transfers.progress.resume', ['locale' => app()->getLocale(), 'transferId' => $transaction->id]) }}" 
+                                               class="inline-flex items-center px-4 py-2 bg-brand-primary hover:bg-brand-primary-dark text-white font-medium rounded-lg transition-all duration-200 text-sm">
+                                                {{__('transfers.continue')}}
+                                                <i class="fas fa-arrow-right ml-2"></i>
+                                            </a>
+                                        </div>
+                                    @endforeach
                                 </div>
                             </div>
                         </div>

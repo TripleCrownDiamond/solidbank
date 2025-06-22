@@ -232,49 +232,66 @@ class TransferModal extends Component
 
     public function showProgressAndSubmitTransfer()
     {
-        // Prepare transaction data for transfer management
-        $transactionData = [
-            'sourceType' => $this->sourceType,
-            'selectedSourceId' => $this->selectedSourceId,
-            'transferAmount' => $this->transferAmount,
-            'transferCurrency' => $this->transferCurrency,
-            'transferReason' => $this->transferReason,
-            'recipientName' => $this->recipientName,
-            'recipientCountry' => $this->recipientCountry,
-            'recipientIban' => $this->recipientIban,
-            'recipientBank' => $this->recipientBank,
-            'cryptoNetwork' => $this->cryptoNetwork,
-            'cryptoAddress' => $this->cryptoAddress,
-        ];
+        try {
+            // Créer la transaction avec le statut BLOCKED
+            $transaction = Transaction::create([
+                'user_id' => Auth::id(),
+                'type' => 'TRANSFER',
+                'amount' => $this->transferAmount,
+                'currency' => $this->transferCurrency,
+                'status' => Transaction::STATUS_BLOCKED,
+                'description' => $this->transferReason ?? 'Transfert',
+                'reference' => 'TRF-' . strtoupper(uniqid()),
+                'account_id' => $this->sourceType === 'account' ? $this->selectedSourceId : null,
+                'wallet_id' => $this->sourceType === 'wallet' ? $this->selectedSourceId : null,
+                'external_bank_info' => $this->sourceType === 'account' ? [
+                    'recipient_name' => $this->recipientName,
+                    'recipient_iban' => $this->recipientIban,
+                    'recipient_bank' => $this->recipientBank,
+                    'recipient_country' => $this->recipientCountry
+                ] : null,
+                'external_crypto_info' => $this->sourceType === 'wallet' ? [
+                    'crypto_address' => $this->cryptoAddress,
+                    'crypto_network' => $this->cryptoNetwork
+                ] : null,
+                'is_blocked' => true,
+                'blocked_at' => now()
+            ]);
 
-        // Close transfer modal
-        $this->showTransferModal = false;
+            Log::info('Transaction créée avec statut BLOCKED', ['transaction_id' => $transaction->id]);
 
-        // dd($transactionData);
-        // Show transfer progress with transaction data
-        $this->dispatch('show-transfer-progress', $transactionData);
+            // Stocker les données de transfert en session pour TransferProgress
+            session([
+                'transfer_data' => [
+                    'transaction_id' => $transaction->id,
+                    'source_type' => $this->sourceType,
+                    'selected_source_id' => $this->selectedSourceId,
+                    'recipient_name' => $this->recipientName,
+                    'recipient_country' => $this->recipientCountry,
+                    'recipient_iban' => $this->recipientIban,
+                    'recipient_bank' => $this->recipientBank,
+                    'crypto_network' => $this->cryptoNetwork,
+                    'crypto_address' => $this->cryptoAddress,
+                    'transfer_amount' => $this->transferAmount,
+                    'transfer_currency' => $this->transferCurrency,
+                    'transfer_reason' => $this->transferReason,
+                    'available_balance' => $this->availableBalance
+                ]
+            ]);
 
-        // Reset the modal state after starting the progress
-        $this->reset([
-            'transferStep',
-            'availableBalance',
-            'transferCurrency',
-            'sourceType',
-            'selectedSourceId',
-            'recipientName',
-            'recipientCountry',
-            'recipientIban',
-            'recipientBank',
-            'cryptoNetwork',
-            'cryptoAddress',
-            'transferAmount',
-            'transferReason',
-            'sourceStepValid',
-            'recipientStepValid',
-            'amountStepValid',
-            'otpVerified',
-            'canGoBack',
-        ]);
+            // Close transfer modal
+            $this->showTransferModal = false;
+
+            // Rediriger vers la page de progression avec l'ID de la transaction
+            return redirect()->route('transfers.progress.resume', [
+                'locale' => app()->getLocale(),
+                'transferId' => $transaction->id
+            ]);
+
+        } catch (\Exception $e) {
+            Log::error('Erreur lors de la création de la transaction: ' . $e->getMessage());
+            session()->flash('error', 'Une erreur est survenue lors de la création du transfert.');
+        }
     }
 
     /*

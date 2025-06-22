@@ -372,6 +372,18 @@
     "You may not leave a team that you created.": "You may not leave a team that you created.",
     "Your email address is unverified.": "Your email address is unverified.",
     "Success!": "Success!",
+    "transfers": {
+        "transfer_blocked": "Transfer Blocked",
+        "step_blocked": "Step Blocked",
+        "step_blocked_description": "This step requires additional verification to continue.",
+        "enter_unlock_code": "Enter Unlock Code",
+        "enter_code_placeholder": "Enter the code to continue",
+        "unlock_step": "Unlock Step",
+        "unlock_code_required": "Please enter the unlock code.",
+        "invalid_unlock_code": "The unlock code is invalid.",
+        "invalid_step": "Invalid step.",
+        "step_x_of_y": "Step :current of :total"
+    },
     "Profile updated successfully.": "Profile updated successfully.",
     "Identity Document": "Identity Document",
     "Address Document": "Address Document",

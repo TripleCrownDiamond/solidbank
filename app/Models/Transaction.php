@@ -19,7 +19,7 @@ class Transaction extends Model
         'user_id', 'account_id', 'wallet_id', 'currency',
         'blocked_at_transfer_step_id', 'blocked_at_transfer_step_group_id',
         'is_blocked', 'blocked_reason', 'blocked_at',
-        'processed_by_admin_id', 'processed_at'
+        'processed_by_admin_id', 'processed_at', 'progress_percentage'
     ];
 
     protected $casts = [

@@ -1,4 +1,14 @@
 import "./bootstrap";
+import Alpine from 'alpinejs';
+
+// Make Alpine available globally before starting
+window.Alpine = Alpine;
+
+// Import transfer progress component
+import "./transfer-progress";
+
+// Start Alpine.js after components are loaded
+Alpine.start();
 
 // Language Switcher Logic
 document.addEventListener("DOMContentLoaded", function () {

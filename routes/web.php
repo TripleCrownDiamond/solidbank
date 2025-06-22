@@ -64,6 +64,8 @@ Route::prefix('{locale}')->group(function () {
             
             Route::get('/transfers/progress', TransferProgress::class)->name('transfers.progress');
             Route::get('/transfers/progress/{transferId}', TransferProgress::class)->name('transfers.progress.resume');
+            Route::get('/transfers/unlock/{transactionId}/{stepId?}', \App\Livewire\DepositManagement\UnlockProgress::class)->name('transfers.unlock');
+            Route::get('/transfer/progress/{transferId}', TransferProgress::class)->name('transfer.progress');
 
             // Routes admin (accessible uniquement aux administrateurs)
             Route::middleware('admin')->group(function () {

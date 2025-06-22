@@ -58,6 +58,8 @@ class TransferManagement extends Component
                 'transfer_amount' => $this->transactionData['transferAmount'] ?? $this->transactionData['amount'] ?? 0,
                 'transfer_currency' => $this->transactionData['transferCurrency'] ?? $this->transactionData['currency'] ?? 'EUR',
                 'transfer_reason' => $this->transactionData['transferReason'] ?? $this->transactionData['reason'] ?? __('transfers.transfer'),
+                'recipient_name' => $this->transactionData['recipientName'] ?? 'N/A',
+                'recipient_account' => $this->transactionData['recipientAccount'] ?? 'N/A',
                 'source_type' => $sourceType,
                 'selected_source_id' => $sourceId,
                 'destination_type' => $this->transactionData['destinationType'] ?? null,
@@ -67,6 +69,7 @@ class TransferManagement extends Component
                 'created_at' => now()->toDateTimeString()
             ];
 
+            Log::info('Données de transfert préparées pour la session', ['session_data' => $sessionData]);
             // Stocker les données en session
             session(['transfer_data' => $sessionData]);
             

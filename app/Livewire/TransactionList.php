@@ -221,6 +221,9 @@ class TransactionList extends Component
     public $typeFilter = 'all';
     public $perPage = 10;
 
+    public $showBlockedDetailsModal = false;
+    public $selectedTransaction;
+
     protected $listeners = [
         'transactionCreated' => 'refreshTransactions',
         'transaction-created' => 'refreshTransactions',
@@ -304,6 +307,26 @@ class TransactionList extends Component
         }
 
         return $query->paginate($this->perPage);
+    }
+
+    public function showBlockedTransactionDetails($transactionId)
+    {
+        $transaction = Transaction::find($transactionId);
+
+        if ($transaction && $transaction->status === 'BLOCKED') {
+            $this->selectedTransaction = Transaction::with([
+                'user', 
+                'account.rib', 
+                'toAccount.rib.user',
+                'toAccount.user',
+                'blockedAtTransferStep.group.transferSteps', 
+                'transferStepCompletions'
+            ])->find($transactionId);
+        } else {
+            $this->selectedTransaction = $transaction;
+        }
+
+        $this->showBlockedDetailsModal = true;
     }
 
     public function confirmTransaction($transactionId)

@@ -217,9 +217,11 @@
                                             </button>
                                         </div>
                                     @elseif($transaction->status === 'BLOCKED')
-                                        <span class="text-orange-600 dark:text-orange-400 text-sm font-medium">
-                                            <i class="fas fa-lock mr-1"></i>{{ __('common.status_blocked') }}
-                                        </span>
+                                        <button wire:click="showBlockedTransactionDetails({{ $transaction->id }})" 
+                                                class="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 font-medium text-xs inline-flex items-center">
+                                            <i class="fas fa-info-circle mr-1"></i>
+                                            {{ __('common.view_details') }}
+                                        </button>
                                     @else
                                         <span class="text-gray-500 dark:text-gray-400 text-sm font-medium">
                                             {{ __('common.processed') }}
@@ -248,4 +250,167 @@
             </div>
         @endif
     </div>
+
+    <!-- Modal for Blocked Transaction Details -->
+    @if($showBlockedDetailsModal && $selectedTransaction)
+    <div class="fixed inset-0 bg-gray-900 bg-opacity-60 dark:bg-opacity-60 flex items-center justify-center z-50" x-data="{ show: @entangle('showBlockedDetailsModal') }" x-show="show" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-2xl w-full max-w-xl mx-4" @click.away="show = false">
+            <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                    <i class="fas fa-info-circle mr-2"></i>{{ __('common.transaction_details') }}
+                </h3>
+                <button @click="show = false" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
+                    <i class="fas fa-times fa-lg"></i>
+                </button>
+            </div>
+            <div class="p-6 space-y-6 max-h-[70vh] overflow-y-auto">
+                <!-- Transaction Info -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-900 dark:text-gray-100">
+                    <div><strong>{{ __('common.date') }}:</strong> <span class="text-gray-700 dark:text-gray-300">{{ $selectedTransaction->created_at->format('d/m/Y H:i') }}</span></div>
+                    <div><strong>{{ __('common.status') }}:</strong> <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200"><i class="fas fa-lock mr-1"></i>{{ __('common.status_blocked') }}</span></div>
+                    <div><strong>{{ __('common.amount_label') }}:</strong> <span class="font-mono text-gray-700 dark:text-gray-300">{{ number_format($selectedTransaction->amount, 2) }} {{ $selectedTransaction->currency }}</span></div>
+                    <div><strong>{{ __('common.user') }}:</strong> <span class="text-gray-700 dark:text-gray-300">{{ $selectedTransaction->user->name }} ({{ $selectedTransaction->user->email }})</span></div>
+                </div>
+
+                <!-- RIB Details - Source Account -->
+                @if($selectedTransaction->account && $selectedTransaction->account->rib)
+                <div>
+                    <h4 class="font-semibold text-md text-gray-900 dark:text-gray-100 mb-2 border-t pt-4">{{ __('common.source_account_rib') }}</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm bg-gray-50 dark:bg-gray-700 p-4 rounded-lg text-gray-900 dark:text-gray-100">
+                        <div><strong>{{ __('common.bank') }}:</strong> <span class="text-gray-700 dark:text-gray-300">{{ $selectedTransaction->account->rib->bank_name }}</span></div>
+                        <div><strong>IBAN:</strong> <span class="font-mono text-gray-700 dark:text-gray-300">{{ $selectedTransaction->account->rib->iban }}</span></div>
+                        <div><strong>BIC/SWIFT:</strong> <span class="font-mono text-gray-700 dark:text-gray-300">{{ $selectedTransaction->account->rib->swift_code }}</span></div>
+                    </div>
+                </div>
+                @endif
+
+                <!-- RIB Details - Destination Account -->
+                @if($selectedTransaction->toAccount && $selectedTransaction->toAccount->rib)
+                <div>
+                    <h4 class="font-semibold text-md text-gray-900 dark:text-gray-100 mb-2 border-t pt-4">{{ __('common.destination_account_rib') }}</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm bg-blue-50 dark:bg-blue-900 p-4 rounded-lg text-gray-900 dark:text-gray-100">
+                        <div><strong>{{ __('common.bank') }}:</strong> <span class="text-gray-700 dark:text-gray-300">{{ $selectedTransaction->toAccount->rib->bank_name }}</span></div>
+                        <div><strong>IBAN:</strong> <span class="font-mono text-gray-700 dark:text-gray-300">{{ $selectedTransaction->toAccount->rib->iban }}</span></div>
+                        <div><strong>BIC/SWIFT:</strong> <span class="font-mono text-gray-700 dark:text-gray-300">{{ $selectedTransaction->toAccount->rib->swift_code }}</span></div>
+                        <div><strong>{{ __('common.account_holder') }}:</strong> <span class="text-gray-700 dark:text-gray-300">{{ $selectedTransaction->toAccount->user->name }}</span></div>
+                    </div>
+                </div>
+                @elseif($selectedTransaction->external_bank_info)
+                <div>
+                    <h4 class="font-semibold text-md text-gray-900 dark:text-gray-100 mb-2 border-t pt-4">{{ __('common.destination_bank_info') }}</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm bg-blue-50 dark:bg-blue-900 p-4 rounded-lg text-gray-900 dark:text-gray-100">
+                        <!-- Champs standard -->
+                        @if(isset($selectedTransaction->external_bank_info['bank_name']))
+                        <div><strong>{{ __('common.bank') }}:</strong> <span class="text-gray-700 dark:text-gray-300">{{ $selectedTransaction->external_bank_info['bank_name'] }}</span></div>
+                        @endif
+                        @if(isset($selectedTransaction->external_bank_info['iban']))
+                        <div><strong>IBAN:</strong> <span class="font-mono text-gray-700 dark:text-gray-300">{{ $selectedTransaction->external_bank_info['iban'] }}</span></div>
+                        @endif
+                        @if(isset($selectedTransaction->external_bank_info['swift_code']))
+                        <div><strong>BIC/SWIFT:</strong> <span class="font-mono text-gray-700 dark:text-gray-300">{{ $selectedTransaction->external_bank_info['swift_code'] }}</span></div>
+                        @endif
+                        @if(isset($selectedTransaction->external_bank_info['account_holder']))
+                        <div><strong>{{ __('common.account_holder') }}:</strong> <span class="text-gray-700 dark:text-gray-300">{{ $selectedTransaction->external_bank_info['account_holder'] }}</span></div>
+                        @endif
+                        
+                        <!-- Nouveaux champs pour les informations du destinataire -->
+                        @if(isset($selectedTransaction->external_bank_info['recipient_name']))
+                        <div><strong>{{ __('common.recipient_name') }}:</strong> <span class="text-gray-700 dark:text-gray-300">{{ $selectedTransaction->external_bank_info['recipient_name'] }}</span></div>
+                        @endif
+                        @if(isset($selectedTransaction->external_bank_info['recipient_iban']))
+                        <div><strong>{{ __('common.recipient_iban') }}:</strong> <span class="font-mono text-gray-700 dark:text-gray-300">{{ $selectedTransaction->external_bank_info['recipient_iban'] }}</span></div>
+                        @endif
+                        @if(isset($selectedTransaction->external_bank_info['recipient_bank']))
+                        <div><strong>{{ __('common.recipient_bank') }}:</strong> <span class="text-gray-700 dark:text-gray-300">{{ $selectedTransaction->external_bank_info['recipient_bank'] }}</span></div>
+                        @endif
+                        @if(isset($selectedTransaction->external_bank_info['recipient_country']))
+                        <div><strong>{{ __('common.recipient_country') }}:</strong> <span class="text-gray-700 dark:text-gray-300">{{ $selectedTransaction->external_bank_info['recipient_country'] }}</span></div>
+                        @endif
+                    </div>
+                </div>
+                @endif
+
+                <!-- Transfer Steps -->
+                <div>
+                    <h4 class="font-semibold text-md text-gray-900 dark:text-gray-100 mb-2 border-t pt-4">{{ __('common.transfer_progress') }}</h4>
+                    @if($selectedTransaction && $selectedTransaction->blockedAtTransferStep)
+                        <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                            <!-- Informations sur l'étape bloquée -->
+                            <div class="mb-4 p-3 bg-orange-100 dark:bg-orange-900 rounded-lg border-l-4 border-orange-500">
+                                <div class="flex items-center mb-2">
+                                    <i class="fas fa-lock text-orange-600 mr-2"></i>
+                                    <span class="font-semibold text-orange-800 dark:text-orange-200">{{ __('transfers.currently_blocked_at') }}</span>
+                                </div>
+                                <div class="text-sm text-orange-700 dark:text-orange-300">
+                                    <div><strong>{{ __('transfers.step') }}:</strong> {{ $selectedTransaction->blockedAtTransferStep->title }}</div>
+                                    <div><strong>{{ __('transfers.step_description') }}:</strong> {{ $selectedTransaction->blockedAtTransferStep->description }}</div>
+                                    <div><strong>{{ __('transfers.step_type') }}:</strong> {{ ucfirst($selectedTransaction->blockedAtTransferStep->type) }}</div>
+                                    <div><strong>{{ __('transfers.step_code') }}:</strong> <span class="font-mono">{{ $selectedTransaction->blockedAtTransferStep->code }}</span></div>
+                                    @if($selectedTransaction->blocked_reason)
+                                    <div><strong>{{ __('common.reason') }}:</strong> {{ $selectedTransaction->blocked_reason }}</div>
+                                    @endif
+                                    <div><strong>{{ __('common.blocked_at') }}:</strong> {{ $selectedTransaction->blocked_at->format('d/m/Y H:i') }}</div>
+                                </div>
+                            </div>
+                            
+                            <!-- Liste des étapes avec progression -->
+                            <ul class="space-y-3">
+                                @foreach($selectedTransaction->blockedAtTransferStep->group->transferSteps->sortBy('order') as $step)
+                                    <li class="flex items-start text-sm border-l-2 pl-4 py-2 
+                                        @if($selectedTransaction->isStepCompleted($step->id)) border-green-500 bg-green-50 dark:bg-green-900
+                                        @elseif($selectedTransaction->blocked_at_transfer_step_id == $step->id) border-orange-500 bg-orange-50 dark:bg-orange-900
+                                        @else border-gray-300 dark:border-gray-600 @endif">
+                                        <div class="flex-shrink-0 mr-3 mt-0.5">
+                                            @if($selectedTransaction->isStepCompleted($step->id))
+                                                <i class="fas fa-check-circle text-green-500"></i>
+                                            @elseif($selectedTransaction->blocked_at_transfer_step_id == $step->id)
+                                                <i class="fas fa-lock text-orange-500"></i>
+                                            @else
+                                                <i class="far fa-circle text-gray-400"></i>
+                                            @endif
+                                        </div>
+                                        <div class="flex-grow">
+                                            <div class="font-medium 
+                                                @if($selectedTransaction->isStepCompleted($step->id)) text-green-700 dark:text-green-300 line-through
+                                                @elseif($selectedTransaction->blocked_at_transfer_step_id == $step->id) text-orange-800 dark:text-orange-200
+                                                @else text-gray-500 dark:text-gray-400 @endif">
+                                                {{ $step->order }}. {{ $step->title }}
+                                            </div>
+                                            <div class="text-xs text-gray-600 dark:text-gray-400 mt-1">
+                                                {{ $step->description }}
+                                            </div>
+                                            <div class="text-xs text-gray-500 dark:text-gray-500 mt-1">
+                                                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium 
+                                                    @if($step->type === 'verification') bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200
+                                                    @else bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200 @endif">
+                                                    {{ ucfirst($step->type) }}
+                                                </span>
+                                                @if($selectedTransaction->isStepCompleted($step->id))
+                                                    @php
+                                                        $completion = $selectedTransaction->transferStepCompletions->where('transfer_step_id', $step->id)->first();
+                                                    @endphp
+                                                    @if($completion)
+                                                        <span class="ml-2 text-green-600 dark:text-green-400">
+                                                            <i class="fas fa-clock mr-1"></i>{{ $completion->completed_at->format('d/m/Y H:i') }}
+                                                        </span>
+                                                    @endif
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @else
+                        <p class="text-sm text-gray-500 dark:text-gray-400">{{ __('common.no_transfer_progress_info') }}</p>
+                    @endif
+                </div>
+
+            </div>
+            <div class="px-6 py-4 bg-gray-50 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 text-right">
+                <button @click="show = false" class="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700">{{ __('common.close') }}</button>
+            </div>
+        </div>
+    </div>
+    @endif
 </div>

@@ -43,24 +43,11 @@
             <main>
                 {{ $slot }}
             </main>
+        </div>
 
         @stack('modals')
         
         <!-- Alert Manager -->
         @livewire('alert-manager')
-        
-        <!-- Custom Scripts -->
-        @stack('scripts')
-
-        <script>
-            document.addEventListener('livewire:init', () => {
-                Livewire.on('refresh-page', () => {
-                    setTimeout(() => {
-                        window.location.reload();
-                    }, 100);
-                });
-            });
-        </script>
-
     </body>
 </html>
