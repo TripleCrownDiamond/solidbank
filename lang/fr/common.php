@@ -171,6 +171,7 @@ return [
     'no_wallets_found' => 'Aucun portefeuille trouvé',
     'account_deleted_email_message' => 'Bonjour, votre compte a été définitivement supprimé de notre système.',
     'processing' => 'Traitement...',
+    'verifying' => 'Vérification en cours...',
     'deposit_confirmed_email_subject' => 'Nouveau dépôt confirmé',
     'deposit_confirmed_email_message' => 'Nous avons le plaisir de vous informer que votre dépôt de :amount a été confirmé et crédité sur votre compte.',
     'withdrawal_confirmed_email_subject' => 'Nouveau retrait confirmé',

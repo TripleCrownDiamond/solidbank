@@ -29,10 +29,23 @@ class TransferProgress extends Component
     public $showUnlockButton = false;
     public $unlockTransactionId = null;
     public $unlockStepId = null;
-    public $transferStatus = 'ready'; // ready, starting, in_progress, blocked, completed
+    public $transferStatus = 'ready';  // ready, starting, in_progress, blocked, completed
     public $isTransferBlocked = false;
     public $showStartButton = true;
     public $showProgressBar = false;
+    // Propriétés pour la modal de déblocage
+    public $showStepModal = false;
+    public $currentStepData = null;
+    public $stepCode = '';
+    public $stepCodeError = '';
+    public $stepsWithPercentages = [];
+    public $currentStepIndex = 0;
+    // Propriétés pour le code de déblocage
+    public $unlockCode = '';
+    public $unlockError = '';
+
+    // Propriétés calculées pour éviter les erreurs
+    protected $computed = ['accountTransferSteps', 'overallProgress'];
 
     public function mount($transferId = null)
     {
@@ -85,12 +98,14 @@ class TransferProgress extends Component
                         ? json_decode($this->transaction->external_bank_info, true)
                         : $this->transaction->external_bank_info;
 
-                    $this->transferData = array_merge($this->transferData, [
-                        'recipient_name' => $bankInfo['recipient_name'] ?? '',
-                        'recipient_iban' => $bankInfo['recipient_iban'] ?? '',
-                        'recipient_bank' => $bankInfo['recipient_bank'] ?? '',
-                        'recipient_country' => $bankInfo['recipient_country'] ?? '',
-                    ]);
+                    if (is_array($bankInfo)) {
+                        $this->transferData = array_merge($this->transferData, [
+                            'recipient_name' => $bankInfo['recipient_name'] ?? '',
+                            'recipient_iban' => $bankInfo['recipient_iban'] ?? '',
+                            'recipient_bank' => $bankInfo['recipient_bank'] ?? '',
+                            'recipient_country' => $bankInfo['recipient_country'] ?? '',
+                        ]);
+                    }
                 }
 
                 if ($this->transaction->external_crypto_info) {
@@ -98,12 +113,13 @@ class TransferProgress extends Component
                         ? json_decode($this->transaction->external_crypto_info, true)
                         : $this->transaction->external_crypto_info;
 
-                    $this->transferData = array_merge($this->transferData, [
-                        'crypto_address' => $cryptoInfo['crypto_address'] ?? '',
-                        'crypto_network' => $cryptoInfo['crypto_network'] ?? '',
-                    ]);
+                    if (is_array($cryptoInfo)) {
+                        $this->transferData = array_merge($this->transferData, [
+                            'crypto_address' => $cryptoInfo['crypto_address'] ?? '',
+                            'crypto_network' => $cryptoInfo['crypto_network'] ?? '',
+                        ]);
+                    }
                 }
-
             } else {
                 Log::warning('Transaction non trouvée ou non autorisée', ['transfer_id' => $this->transferId]);
             }
@@ -171,23 +187,78 @@ class TransferProgress extends Component
         $this->maxSteps = 0;
     }
 
-    // Propriétés pour la modal de déblocage
-    public $showStepModal = false;
-    public $currentStepData = null;
-    public $stepCode = '';
-    public $stepCodeError = '';
-    public $stepsWithPercentages = [];
-    public $currentStepIndex = 0;
-    
-    // Propriétés pour le code de déblocage
-    public $unlockCode = '';
-    public $unlockError = '';
-
     public function startTransfer()
     {
-        // 1. Récupérer les steps liés au compte ou wallet via les groupes
+        // Vérifier que les données de transfert sont disponibles
+        if (empty($this->transferData)) {
+            $this->statusMessage = __('common.error_occurred');
+            return;
+        }
+
+        // Créer la transaction si elle n'existe pas
+        if (!$this->transaction) {
+            try {
+                $this->transaction = Transaction::create([
+                    'user_id' => Auth::id(),
+                    'type' => 'TRANSFER',
+                    'amount' => $this->transferData['transfer_amount'],
+                    'currency' => $this->transferData['transfer_currency'],
+                    'status' => Transaction::STATUS_PENDING,
+                    'description' => $this->transferData['transfer_reason'] ?? 'Transfert',
+                    'reference' => 'TRF-' . strtoupper(uniqid()),
+                    'account_id' => $this->transferData['source_type'] === 'account' ? $this->transferData['selected_source_id'] : null,
+                    'wallet_id' => $this->transferData['source_type'] === 'wallet' ? $this->transferData['selected_source_id'] : null,
+                    'external_bank_info' => $this->transferData['source_type'] === 'account' && isset($this->transferData['recipient_name']) ? [
+                        'recipient_name' => $this->transferData['recipient_name'],
+                        'recipient_iban' => $this->transferData['recipient_iban'],
+                        'recipient_bank' => $this->transferData['recipient_bank'],
+                        'recipient_country' => $this->transferData['recipient_country']
+                    ] : null,
+                    'external_crypto_info' => $this->transferData['source_type'] === 'wallet' && isset($this->transferData['crypto_address']) ? [
+                        'crypto_address' => $this->transferData['crypto_address'],
+                        'crypto_network' => $this->transferData['crypto_network']
+                    ] : null
+                ]);
+            } catch (\Exception $e) {
+                Log::error('Erreur lors de la création de la transaction: ' . $e->getMessage());
+                $this->statusMessage = __('common.error_occurred');
+                return;
+            }
+        }
+
+        // Préparer les étapes avec pourcentages
+        $this->prepareStepsWithPercentages();
+
+        // Changer l'état du transfert
+        $this->transferStatus = 'starting';
+        $this->showStartButton = false;
+        $this->showProgressBar = true;
+        $this->isTransferStarted = true;
+        $this->progress = 0;
+        $this->currentStepIndex = 0;
+        $this->statusMessage = __('transfers.transfer_starting');
+
+        // Programmer le démarrage de la progression après un court délai
+        $this->dispatch('start-transfer-progression', 
+            delay: 1500  // 1.5 secondes
+        );
+    }
+
+    private function prepareStepsWithPercentages()
+    {
+        Log::info('Début de prepareStepsWithPercentages', [
+            'transferData' => $this->transferData,
+            'transaction_id' => $this->transaction ? $this->transaction->id : null
+        ]);
+
+        // Récupérer les étapes de transfert
         $sourceType = $this->transferData['source_type'] ?? null;
         $sourceId = $this->transferData['selected_source_id'] ?? null;
+
+        Log::info('Données source', [
+            'sourceType' => $sourceType,
+            'sourceId' => $sourceId
+        ]);
 
         $transferSteps = collect();
 
@@ -195,12 +266,12 @@ class TransferProgress extends Component
             $transferStepGroups = collect();
 
             if ($sourceType === 'account') {
-                $account = \App\Models\Account::find($sourceId);
+                $account = Account::find($sourceId);
                 if ($account) {
                     $transferStepGroups = $account->transferStepGroups()->where('is_active', true)->get();
                 }
             } elseif ($sourceType === 'wallet') {
-                $wallet = \App\Models\Wallet::find($sourceId);
+                $wallet = Wallet::find($sourceId);
                 if ($wallet) {
                     $transferStepGroups = $wallet->transferStepGroups()->where('is_active', true)->get();
                 }
@@ -217,16 +288,27 @@ class TransferProgress extends Component
             $transferSteps = $allSteps->sortBy('order');
         }
 
-        // 2. Compter les steps liés au compte/wallet
+        Log::info('Étapes récupérées', [
+            'transferSteps_count' => $transferSteps->count(),
+            'transferSteps' => $transferSteps->map(function($step) {
+                return [
+                    'id' => $step->id,
+                    'title' => $step->title,
+                    'order' => $step->order
+                ];
+            })->toArray()
+        ]);
+
+        // Compter les steps liés au compte/wallet
         $stepsCount = $transferSteps->count();
 
-        // 3. Ajouter +1 au count
+        // Ajouter +1 au count pour la finalisation
         $totalSteps = $stepsCount + 1;
 
-        // 4. Calculer le pourcentage par step (100 / totalSteps)
+        // Calculer le pourcentage par step
         $percentagePerStep = $totalSteps > 0 ? 100 / $totalSteps : 0;
 
-        // 5. Attribuer les pourcentages dans l'ordre
+        // Attribuer les pourcentages dans l'ordre
         $this->stepsWithPercentages = [];
         foreach ($transferSteps as $index => $step) {
             $stepPercentage = ($index + 1) * $percentagePerStep;
@@ -234,11 +316,11 @@ class TransferProgress extends Component
                 'step' => $step,
                 'order' => $step->order,
                 'percentage' => round($stepPercentage, 2),
-                'is_completed' => false  // sera mis à jour ci-dessous
+                'is_completed' => false
             ];
         }
 
-        // 6. Vérifier dans TransferStepCompletion quels steps sont complétés pour cette transaction
+        // Vérifier les étapes déjà complétées
         if ($this->transaction) {
             $completedSteps = \App\Models\TransferStepCompletion::where('transaction_id', $this->transaction->id)
                 ->with('transferStep')
@@ -253,382 +335,302 @@ class TransferProgress extends Component
             }
         }
 
-        // Changer l'état du transfert
-        $this->transferStatus = 'starting';
-        $this->showStartButton = false;
-        $this->showProgressBar = true;
-        $this->isTransferStarted = true;
-        $this->progress = 0;
-        $this->currentStepIndex = 0;
-        $this->statusMessage = __('transfers.transfer_starting');
-        
-        // Programmer le démarrage de la progression après un court délai
-        $this->dispatch('start-transfer-progression', [
-            'delay' => 1000 // 1 seconde
+        Log::info('Fin de prepareStepsWithPercentages', [
+            'stepsWithPercentages_count' => count($this->stepsWithPercentages),
+            'stepsWithPercentages' => array_map(function($stepData) {
+                return [
+                    'step_id' => $stepData['step']->id,
+                    'step_title' => $stepData['step']->title,
+                    'percentage' => $stepData['percentage'],
+                    'is_completed' => $stepData['is_completed']
+                ];
+            }, $this->stepsWithPercentages)
         ]);
     }
-    
+
     public function beginTransferProgression()
     {
         // Cette méthode sera appelée après le délai pour commencer la vraie progression
         $this->transferStatus = 'in_progress';
         $this->statusMessage = __('transfers.transfer_in_progress');
-        
-        // Charger immédiatement la progression vers la première étape
-        if (count($this->stepsWithPercentages) > 0) {
-            $firstStep = $this->stepsWithPercentages[0];
-            $this->progress = $firstStep['percentage'];
-            
-            // Démarrer le processus étape par étape
-            $this->processNextStep();
+
+        // S'assurer que les étapes sont préparées
+        if (empty($this->stepsWithPercentages)) {
+            $this->prepareStepsWithPercentages();
+        }
+
+        // Vérifier qu'il y a des étapes à traiter
+        if (empty($this->stepsWithPercentages)) {
+            Log::warning('Aucune étape de transfert trouvée', [
+                'transferData' => $this->transferData,
+                'transaction_id' => $this->transaction ? $this->transaction->id : null
+            ]);
+            $this->statusMessage = __('transfers.no_steps_found');
+            return;
+        }
+
+        // Trouver la prochaine étape non complétée
+        $nextStepIndex = $this->findNextIncompleteStep();
+
+        $this->currentStepIndex = $nextStepIndex;
+
+        // S'il y a des étapes à traiter
+        if ($nextStepIndex !== null && isset($this->stepsWithPercentages[$nextStepIndex])) {
+            $nextStep = $this->stepsWithPercentages[$nextStepIndex];
+
+            // Vérifier que la structure de l'étape est correcte
+            if (!isset($nextStep['step']) || !$nextStep['step']) {
+                Log::error('Structure d\'étape invalide', [
+                    'nextStepIndex' => $nextStepIndex,
+                    'nextStep' => $nextStep,
+                    'stepsWithPercentages' => $this->stepsWithPercentages
+                ]);
+                $this->statusMessage = __('transfers.step_structure_error');
+                return;
+            }
+
+            // Animer la progression vers l'étape suivante
+            $this->animateProgressToStep($nextStep['percentage']);
+
+            // Log des données avant dispatch
+            Log::info('Dispatch delayed-block-transfer', [
+                'transactionId' => $this->transaction->id,
+                'stepId' => $nextStep['step']->id,
+                'stepTitle' => $nextStep['step']->title,
+                'nextStep_structure' => $nextStep
+            ]);
+
+            // Programmer le blocage après l'animation
+            $this->dispatch('delayed-block-transfer', 
+                transactionId: $this->transaction->id,
+                stepId: $nextStep['step']->id,
+                stepTitle: $nextStep['step']->title,
+                delay: 2000  // 2 secondes après l'animation
+            );
+        } else {
+            // Aucune étape à traiter, compléter le transfert
+            $this->progress = 100;
+            $this->statusMessage = __('transfers.transfer_completed_successfully');
+            $this->isCompleted = true;
         }
     }
 
-    // Méthode de progression automatique supprimée - progression manuelle uniquement
-
     public function processNextStep()
     {
-        // Si toutes les étapes sont terminées
-        if ($this->currentStepIndex >= count($this->stepsWithPercentages)) {
+        // Trouver la prochaine étape non complétée
+        $nextStepIndex = $this->findNextIncompleteStep();
+        
+        // Si aucune étape non complétée trouvée, le transfert est terminé
+        if ($nextStepIndex === null) {
             $this->progress = 100;
             $this->statusMessage = __('transfers.transfer_completed_successfully');
             $this->isCompleted = true;
             return;
         }
 
-        // Vérifier que l'index est valide
-        if (!isset($this->stepsWithPercentages[$this->currentStepIndex])) {
+        // Mettre à jour l'index de l'étape courante
+        $this->currentStepIndex = $nextStepIndex;
+        $currentStep = $this->stepsWithPercentages[$nextStepIndex];
+
+        // Vérifier que l'étape est valide
+        if (!isset($currentStep['step'])) {
+            Log::error('Étape invalide', ['stepData' => $currentStep]);
             return;
         }
 
-        $currentStep = $this->stepsWithPercentages[$this->currentStepIndex];
+        // Mettre à jour le message de statut pour montrer la progression
+        $this->statusMessage = __('transfers.processing_step', [
+            'title' => $currentStep['step']->title ?? 'Étape inconnue'
+        ]);
 
-        // Si l'étape est déjà complétée, passer à la suivante
-        if ($currentStep['is_completed']) {
-            $this->progress = $currentStep['percentage'];
-            $this->statusMessage = __('transfers.step_already_completed', ['title' => $currentStep['step']->title]);
-            $this->currentStepIndex++;
+        // Animation de progression vers le pourcentage de l'étape
+        $targetPercentage = $currentStep['percentage'] ?? 0;
+        $this->progress = $targetPercentage;
+        $this->updateTransactionProgress($targetPercentage);
 
-            // Passer à l'étape suivante après un délai
-            $this->dispatch('step-completed');
-            return;
-        }
-
-        // Charger la progression vers le pourcentage exact de l'étape
-        $this->progress = $currentStep['percentage'];
-        
-        // Log pour tracer l'étape atteinte
-        Log::info('Étape atteinte: ' . $currentStep['step']->title . ' (' . $currentStep['percentage'] . '%)', [
-            'step_id' => $currentStep['step']->id,
-            'step_title' => $currentStep['step']->title,
-            'percentage' => $currentStep['percentage'],
+        // Journaliser l'étape atteinte
+        Log::info('Étape atteinte', [
+            'step_id' => $currentStep['step']->id ?? 'inconnu',
+            'step_title' => $currentStep['step']->title ?? 'inconnu',
+            'percentage' => $targetPercentage,
             'step_index' => $this->currentStepIndex
         ]);
-        
-        // Programmer le changement de message et l'affichage de la modal après un délai
-        $this->dispatch('show-modal-after-delay', [
-            'stepData' => $currentStep,
-            'delay' => 3000 // 3 secondes
-        ]);
-        
-        // Programmer le changement de message après 1 seconde (quand la progression se bloque)
-        $stepTitle = isset($currentStep['step']) && isset($currentStep['step']->title) ? $currentStep['step']->title : 'Étape inconnue';
-        $statusMessage = __('transfers.step_in_progress') . ': ' . $stepTitle;
-        
-        $this->dispatch('change-status-message-after-delay', [
-            'message' => $statusMessage,
-            'delay' => 1000 // 1 seconde
-        ]);
-        
-        // Programmer le blocage du transfert après un délai
-        $this->dispatch('block-transfer-after-delay', [
-            'transactionId' => $this->transaction->id,
-            'stepId' => $currentStep['step']->id,
-            'stepTitle' => $currentStep['step']->title,
-            'delay' => 3000 // 3 secondes
-        ]);
+
+        // Bloquer le transfert et afficher la modale après un court délai
+        $this->dispatch('delayed-block-transfer',
+            transactionId: $this->transaction->id,
+            stepId: $currentStep['step']->id,
+            stepTitle: $currentStep['step']->title,
+            delay: 2000  // 2 secondes avant de bloquer
+        );
     }
 
-    public function updateProgressToPercentage($targetPercentage, $stepData)
+    /**
+     * Anime la progression vers une étape spécifique
+     */
+    public function animateProgressToStep($targetPercentage)
     {
-        // Cette méthode sera appelée depuis JavaScript pour mettre à jour la progression
         $this->progress = $targetPercentage;
-        
-        // Mettre à jour le pourcentage de progression dans la transaction
-        $this->updateTransactionProgress($targetPercentage);
+        $this->updateTransactionProgress($this->progress);
+        $this->dispatch('progress-updated', progress: $this->progress);
     }
-    
+
     public function blockTransfer($transactionId, $stepId, $stepTitle)
     {
-        // Trouver les données de l'étape actuelle
-        $currentStepData = null;
-        foreach ($this->stepsWithPercentages as $stepData) {
-            if ($stepData['step']->id == $stepId) {
-                $currentStepData = $stepData;
-                break;
-            }
-        }
-        
-        // Stocker les données de l'étape actuelle pour l'affichage
-        $this->currentStepData = $currentStepData;
-        
-        // Changer l'état du transfert
-        $this->transferStatus = 'blocked';
-        $this->isTransferBlocked = true;
-        $this->showUnlockButton = true;
-        $this->isTransferStarted = false; // Arrêter l'animation de progression
-        $this->showProgressBar = false; // Cacher la barre de progression
-        $this->unlockTransactionId = $transactionId;
-        $this->unlockStepId = $stepId;
-        $this->statusMessage = ''; // Effacer le message de progression
-        
-        // Réinitialiser le code de déblocage et les erreurs
-        $this->unlockCode = '';
-        $this->unlockError = '';
-    }
-    
-    public function verifyUnlockCode()
-    {
-        $this->resetErrorBag();
-        $this->unlockError = '';
-        
-        // Valider le code de déblocage
-        if (empty($this->unlockCode)) {
-            $this->unlockError = __('transfers.unlock_code_required');
-            return;
-        }
-        
-        // Vérifier si l'étape actuelle nécessite un code de déblocage
-        if (!$this->currentStepData) {
-            $this->unlockError = __('transfers.invalid_step');
-            return;
-        }
-        
-        $step = $this->currentStepData['step'];
-        
-        // Vérifier le code de déblocage (remplacer par votre logique de validation)
-        if ($this->unlockCode !== $step->unlock_code) {
-            $this->unlockError = __('transfers.invalid_unlock_code');
-            return;
-        }
-        
-        // Si le code est valide, marquer l'étape comme complétée
-        $this->markStepAsCompleted($step->id);
-        
-        // Réinitialiser l'état de blocage
-        $this->isTransferBlocked = false;
-        $this->showUnlockButton = false;
-        $this->unlockCode = '';
-        
-        // Passer à l'étape suivante
-        $this->currentStepIndex++;
-        $this->processNextStep();
-    }
-    
-    protected function markStepAsCompleted($stepId)
-    {
-        // Marquer l'étape comme complétée dans la base de données
-        if ($this->transaction) {
-            \App\Models\TransferStepCompletion::updateOrCreate(
-                [
-                    'transaction_id' => $this->transaction->id,
-                    'transfer_step_id' => $stepId
-                ],
-                [
-                    'completed_at' => now(),
-                    'status' => 'completed'
-                ]
-            );
-            
-            // Mettre à jour le statut dans stepsWithPercentages
-            foreach ($this->stepsWithPercentages as &$stepData) {
-                if ($stepData['step']->id === $stepId) {
-                    $stepData['is_completed'] = true;
+        try {
+            Log::info('Début de blockTransfer', [
+                'transactionId' => $transactionId,
+                'stepId' => $stepId,
+                'stepTitle' => $stepTitle,
+                'currentTransferStatus' => $this->transferStatus
+            ]);
+
+            // Trouver les données de l'étape actuelle
+            $currentStepData = null;
+            foreach ($this->stepsWithPercentages as $stepData) {
+                if (isset($stepData['step']) && $stepData['step']->id == $stepId) {
+                    $currentStepData = $stepData;
                     break;
                 }
             }
-        }
-    }
-    
-    public function redirectToUnlockPage($transactionId = null, $stepId = null)
-    {
-        // Utiliser les paramètres fournis ou ceux stockés
-        $transactionId = $transactionId ?? $this->unlockTransactionId;
-        $stepId = $stepId ?? $this->unlockStepId;
-        
-        \Log::info('Executing Livewire redirect to unlock page', [
-            'transactionId' => $transactionId,
-            'stepId' => $stepId
-        ]);
-        
-        $locale = app()->getLocale();
-        return $this->redirect(route('transfers.unlock', [
-            'locale' => $locale,
-            'transactionId' => $transactionId,
-            'stepId' => $stepId
-        ]));
-    }
-    
-    public function unlockTransfer()
-    {
-        // Réinitialiser l'état de blocage
-        $this->isTransferBlocked = false;
-        $this->showUnlockButton = false;
-        $this->transferStatus = 'in_progress';
-        
-        // Continuer avec l'étape suivante
-        $this->currentStepIndex++;
-        
-        // Programmer la prochaine étape après un délai
-        $this->dispatch('process-next-step-after-delay', [
-            'delay' => 1000 // 1 seconde
-        ]);
-    }
-    
-    public function updateTransactionProgress($percentage)
-    {
-        if ($this->transaction) {
-            $this->transaction->update([
-                'progress_percentage' => $percentage
-            ]);
-        }
-    }
 
-    public function showModalAtPercentage($stepData)
-    {
-        // Vérifier que $stepData est valide
-        if (!$stepData || !isset($stepData['step'])) {
-            \Log::error('Invalid stepData provided to showModalAtPercentage', [
-                'stepData' => $stepData
-            ]);
-            return;
-        }
+            if (!$currentStepData) {
+                throw new \Exception('Étape non trouvée pour le blocage: ' . $stepId);
+            }
 
-        \Log::info('Showing modal at target percentage', [
-            'currentProgress' => $this->progress,
-            'stepTitle' => $stepData['step']->title
-        ]);
+            // Mettre à jour l'état du composant
+            $this->transferStatus = 'blocked';
+            $this->isTransferBlocked = true;
+            $this->showUnlockButton = true;
+            $this->isTransferStarted = false;
+            $this->showProgressBar = true;
+            $this->unlockTransactionId = $transactionId;
+            $this->unlockStepId = $stepId;
+            $this->statusMessage = __('transfers.transfer_blocked') . ' - ' . ($currentStepData['step']->title ?? __('transfers.unknown_step'));
 
-        // Afficher la modal de déblocage
-        $this->currentStepData = $stepData;
-        $this->stepCode = '';
-        $this->stepCodeError = '';
-        $this->showStepModal = true;
-        $this->statusMessage = __('transfers.transfer_blocked');
-    }
+            // Préparer les données de l'étape pour la modale
+            $this->currentStepData = [
+                'step' => $currentStepData['step'],
+                'percentage' => $currentStepData['percentage'] ?? 0,
+                'is_completed' => false
+            ];
 
-    public function changeStatusMessage($message)
-    {
-        \Log::info('Changing status message', [
-            'old_message' => $this->statusMessage,
-            'new_message' => $message
-        ]);
-        $this->statusMessage = $message;
-    }
-
-    public function showCardAfterLoading()
-    {
-        \Log::info('Showing modal after loading delay (deprecated - use showModalAtPercentage)');
-
-        if ($this->currentStepIndex < count($this->stepsWithPercentages)) {
-            $currentStep = $this->stepsWithPercentages[$this->currentStepIndex];
-
-            // Afficher la modal de déblocage après le chargement
-            $this->currentStepData = $currentStep;
-            $this->stepCode = '';
-            $this->stepCodeError = '';
+            // Afficher la modale
             $this->showStepModal = true;
-            $this->statusMessage = __('transfers.transfer_blocked');
 
-            \Log::info('Modal data set', [
-                'stepTitle' => $currentStep['step']->title,
-                'currentStepData' => $this->currentStepData ? 'set' : 'null'
-            ]);
-        }
-    }
-
-    public function showStepModalAfterDelay($currentStep)
-    {
-        \Log::info('Programming modal display after delay (deprecated method)');
-
-        // Utiliser JavaScript pour afficher la modal après 2 secondes
-        $this->dispatch('show-modal-after-delay', [
-            'stepData' => $currentStep,
-            'delay' => 2000
-        ]);
-    }
-
-    public function showStepModalAfterProgress()
-    {
-        \Log::info('showStepModalAfterProgress called', [
-            'currentStepIndex' => $this->currentStepIndex,
-            'stepsCount' => count($this->stepsWithPercentages),
-            'showStepModal' => $this->showStepModal
-        ]);
-
-        if ($this->currentStepIndex < count($this->stepsWithPercentages)) {
-            $currentStep = $this->stepsWithPercentages[$this->currentStepIndex];
-
-            \Log::info('Setting modal data', [
-                'stepTitle' => $currentStep['step']->title,
-                'stepPercentage' => $currentStep['percentage']
-            ]);
-
-            // Afficher la modal de déblocage après la progression
-            $this->currentStepData = $currentStep;
-            $this->showStepModal = true;
-            $this->stepCode = '';
-            $this->stepCodeError = '';
-            $this->statusMessage = 'Transfert Bloqué';
-
-            \Log::info('Modal should be visible now', [
+            Log::info('Transfert bloqué avec succès', [
+                'stepTitle' => $currentStepData['step']->title ?? 'Inconnu',
                 'showStepModal' => $this->showStepModal,
-                'currentStepData' => $this->currentStepData ? 'set' : 'null'
+                'transferStatus' => $this->transferStatus
             ]);
-        } else {
-            \Log::warning('Cannot show modal - currentStepIndex out of bounds', [
-                'currentStepIndex' => $this->currentStepIndex,
-                'stepsCount' => count($this->stepsWithPercentages)
+        } catch (\Exception $e) {
+            Log::error('Erreur lors du blocage du transfert: ' . $e->getMessage(), [
+                'exception' => $e,
+                'trace' => $e->getTraceAsString()
             ]);
+
+            $this->statusMessage = __('common.error_occurred');
         }
     }
 
     public function verifyStepCode()
     {
+        Log::info('Vérification du code de déblocage', [
+            'hasStepData' => !empty($this->currentStepData),
+            'hasStepCode' => !empty($this->stepCode),
+            'currentStepIndex' => $this->currentStepIndex,
+            'transferStatus' => $this->transferStatus
+        ]);
+
         if (!$this->currentStepData || !$this->stepCode) {
             $this->stepCodeError = __('transfers.unlock_code_required');
             return;
         }
 
         $step = $this->currentStepData['step'];
+        $isCodeValid = $this->stepCode === ($step->code ?? '');
 
-        // Vérifier si le code correspond
-        if ($this->stepCode === $step->code) {
+        Log::info('Validation du code', [
+            'stepId' => $step->id,
+            'stepTitle' => $step->title,
+            'codeProvided' => !empty($this->stepCode),
+            'codeValid' => $isCodeValid
+        ]);
+
+        if ($isCodeValid) {
             // Marquer l'étape comme complétée
-            if ($this->transaction) {
-                \App\Models\TransferStepCompletion::create([
-                    'transaction_id' => $this->transaction->id,
-                    'transfer_step_id' => $step->id,
-                    'entered_code' => $this->stepCode,
-                    'completed_at' => now()
-                ]);
-            }
+            $this->markStepAsCompleted($step->id);
 
-            // Mettre à jour le statut local
-            $this->stepsWithPercentages[$this->currentStepIndex]['is_completed'] = true;
-
-            // Fermer la modal
+            // Fermer la modale
             $this->showStepModal = false;
-            $this->currentStepData = null;
+            $this->stepCode = '';
+            $this->stepCodeError = '';
+
+            // Réinitialiser l'état de blocage
+            $this->isTransferBlocked = false;
+            $this->showUnlockButton = false;
+            $this->transferStatus = 'in_progress';
 
             // Passer à l'étape suivante
             $this->currentStepIndex++;
-            $this->statusMessage = __('transfers.step_completed_successfully', ['title' => $step->title]);
 
-            // Continuer avec l'étape suivante
-            $this->processNextStep();
+            // Continuer avec la prochaine étape ou terminer
+            if ($this->currentStepIndex >= count($this->stepsWithPercentages)) {
+                // Toutes les étapes sont terminées
+                $this->progress = 100;
+                $this->statusMessage = __('transfers.transfer_completed_successfully');
+                $this->isCompleted = true;
+                $this->transferStatus = 'completed';
+            } else {
+                // Programmer la prochaine étape
+                $this->dispatch('process-next-step-after-delay', 
+                    delay: 1000  // 1 seconde
+                );
+            }
         } else {
             $this->stepCodeError = __('transfers.incorrect_unlock_code');
+            Log::warning('Code de déblocage incorrect', [
+                'stepId' => $step->id,
+                'stepTitle' => $step->title
+            ]);
+        }
+    }
+
+    protected function markStepAsCompleted($stepId)
+    {
+        // Marquer l'étape comme complétée dans la base de données
+        if ($this->transaction) {
+            try {
+                \App\Models\TransferStepCompletion::updateOrCreate(
+                    [
+                        'transaction_id' => $this->transaction->id,
+                        'transfer_step_id' => $stepId
+                    ],
+                    [
+                        'entered_code' => $this->stepCode,
+                        'completed_at' => now()
+                    ]
+                );
+
+                // Mettre à jour le statut dans stepsWithPercentages
+                foreach ($this->stepsWithPercentages as &$stepData) {
+                    if ($stepData['step']->id === $stepId) {
+                        $stepData['is_completed'] = true;
+                        break;
+                    }
+                }
+
+                Log::info('Étape marquée comme complétée', [
+                    'transactionId' => $this->transaction->id,
+                    'stepId' => $stepId
+                ]);
+            } catch (\Exception $e) {
+                Log::error("Erreur lors de la mise à jour de l'étape dans la base de données", [
+                    'error' => $e->getMessage(),
+                    'transactionId' => $this->transaction->id ?? null,
+                    'stepId' => $stepId ?? null
+                ]);
+            }
         }
     }
 
@@ -638,142 +640,18 @@ class TransferProgress extends Component
         $this->currentStepData = null;
         $this->stepCode = '';
         $this->stepCodeError = '';
-
-        // Remettre le message de statut à l'état précédent
-        if ($this->currentStepIndex < count($this->stepsWithPercentages)) {
-            $currentStep = $this->stepsWithPercentages[$this->currentStepIndex];
-            $stepTitle = isset($currentStep['step']) && isset($currentStep['step']->title) ? $currentStep['step']->title : 'Étape inconnue';
-            $this->statusMessage = __('transfers.step_in_progress') . ': ' . $stepTitle;
-        }
     }
 
-    public function nextStep()
+    public function updateTransactionProgress($percentage)
     {
-        if ($this->currentStep < $this->maxSteps) {
-            $this->currentStep++;
-            $this->statusMessage = $this->steps[$this->currentStep] ?? 'Étape en cours';
-
-            $progressPercentage = ($this->currentStep / $this->maxSteps) * 100;
-            $this->updateProgress($this->currentStep, $progressPercentage);
-
-            // Si c'est l'avant-dernière étape, traiter le transfert
-            if ($this->currentStep === $this->maxSteps - 1) {
-                $this->processTransfer();
-            }
-            // Si c'est la dernière étape, terminer le transfert
-            elseif ($this->currentStep === $this->maxSteps) {
-                $this->completeTransfer();
-            }
-            // Sinon, passer à l'étape suivante
-            else {
-                $this->dispatch('next-step');
-            }
-        }
-    }
-
-    private function updateProgress($step, $percentage)
-    {
-        $this->currentStep = $step;
-        $this->progress = $percentage;
-        $this->statusMessage = $this->steps[$step];
-    }
-
-    private function determineCurrentStep()
-    {
-        // Déterminer l'étape actuelle basée sur le statut de la transaction
-        if ($this->transaction->status === Transaction::STATUS_COMPLETED) {
-            $this->currentStep = $this->maxSteps;
-            $this->progress = 100;
-            $this->isCompleted = true;
-            $this->statusMessage = 'Transfert terminé avec succès';
-        } elseif ($this->transaction->status === Transaction::STATUS_PENDING) {
-            // Transaction en cours - reprendre à l'avant-dernière étape
-            $this->currentStep = max(1, $this->maxSteps - 1);
-            $this->progress = ($this->currentStep / $this->maxSteps) * 100;
-            $this->statusMessage = $this->steps[$this->currentStep] ?? 'Traitement en cours';
-        } else {
-            // Transaction créée mais pas encore traitée
-            $this->currentStep = 1;
-            $this->progress = $this->maxSteps > 0 ? (100 / $this->maxSteps) : 25;
-            $this->statusMessage = $this->steps[$this->currentStep] ?? 'Initialisation';
-        }
-
-        Log::info('Étape actuelle déterminée', [
-            'transaction_status' => $this->transaction->status,
-            'current_step' => $this->currentStep,
-            'progress' => $this->progress
-        ]);
-    }
-
-    private function processTransfer()
-    {
-        try {
-            // Si la transaction n'existe pas encore, la créer
-            if (!$this->transaction) {
-                $this->transaction = Transaction::create([
-                    'user_id' => Auth::id(),
-                    'type' => 'TRANSFER',
-                    'amount' => $this->transferData['transfer_amount'],
-                    'currency' => $this->transferData['transfer_currency'],
-                    'status' => Transaction::STATUS_PENDING,
-                    'description' => $this->transferData['transfer_reason'] ?? 'Transfert',
-                    'reference' => 'TRF-' . strtoupper(uniqid()),
-                    'account_id' => $this->transferData['source_type'] === 'account' ? $this->transferData['selected_source_id'] : null,
-                    'wallet_id' => $this->transferData['source_type'] === 'wallet' ? $this->transferData['selected_source_id'] : null,
-                    'external_bank_info' => $this->transferData['source_type'] === 'account' ? [
-                        'recipient_name' => $this->transferData['recipient_name'],
-                        'recipient_iban' => $this->transferData['recipient_iban'],
-                        'recipient_bank' => $this->transferData['recipient_bank'],
-                        'recipient_country' => $this->transferData['recipient_country']
-                    ] : null,
-                    'external_crypto_info' => $this->transferData['source_type'] === 'wallet' ? [
-                        'crypto_address' => $this->transferData['crypto_address'],
-                        'crypto_network' => $this->transferData['crypto_network']
-                    ] : null
-                ]);
-
-                Log::info('Transaction créée avec succès', ['transaction_id' => $this->transaction->id]);
-            } else {
-                // Mettre à jour le statut de la transaction existante
-                $this->transaction->update(['status' => Transaction::STATUS_PENDING]);
-                Log::info('Transaction mise à jour', ['transaction_id' => $this->transaction->id]);
-            }
-
-            // Passer à l'étape suivante après un délai
-            $this->dispatch('next-step');
-        } catch (\Exception $e) {
-            Log::error('Erreur lors du traitement de la transaction: ' . $e->getMessage());
-            $this->statusMessage = 'Erreur lors du traitement du transfert';
-        }
-    }
-
-    private function completeTransfer()
-    {
-        $this->isCompleted = true;
-        $this->statusMessage = 'Transfert enregistré avec succès';
-
-        // Mettre à jour le statut de la transaction à COMPLETED
         if ($this->transaction) {
-            $this->transaction->update(['status' => Transaction::STATUS_COMPLETED]);
-            Log::info('Transaction marquée comme terminée', ['transaction_id' => $this->transaction->id]);
-        }
-
-        // Nettoyer les données de session seulement si c'est un nouveau transfert
-        if (!$this->transferId) {
-            session()->forget('transfer_data');
-        }
-
-        // Envoyer un email de notification (optionnel)
-        try {
-            if ($this->transaction && Auth::user()) {
-                Mail::to(Auth::user()->email)->send(new TransferNotification(
-                    Auth::user(),
-                    $this->transaction,
-                    'transfer_completed'
-                ));
+            try {
+                $this->transaction->update([
+                    'progress_percentage' => $percentage
+                ]);
+            } catch (\Exception $e) {
+                Log::error('Erreur lors de la mise à jour du pourcentage de progression: ' . $e->getMessage());
             }
-        } catch (\Exception $e) {
-            Log::error("Erreur lors de l'envoi de l'email de notification: " . $e->getMessage());
         }
     }
 
@@ -806,6 +684,9 @@ class TransferProgress extends Component
             !$this->isCompleted;
     }
 
+    /**
+     * Propriété calculée pour les étapes de transfert du compte
+     */
     public function getAccountTransferStepsProperty()
     {
         if (empty($this->transferSteps)) {
@@ -849,6 +730,9 @@ class TransferProgress extends Component
         return $steps;
     }
 
+    /**
+     * Propriété calculée pour la progression globale
+     */
     public function getOverallProgressProperty()
     {
         $accountSteps = $this->getAccountTransferStepsProperty();
@@ -861,6 +745,96 @@ class TransferProgress extends Component
         $totalSteps = count($accountSteps);
 
         return $totalSteps > 0 ? round(($completedSteps / $totalSteps) * 100) : 0;
+    }
+
+    /**
+     * Trouver la prochaine étape non complétée dans l'ordre
+     */
+    protected function findNextIncompleteStep()
+    {
+        foreach ($this->stepsWithPercentages as $index => $step) {
+            if (!$step['is_completed']) {
+                return $index;
+            }
+        }
+        return null; // Toutes les étapes sont complétées
+    }
+
+    /**
+     * Bloquer le transfert à la prochaine étape non complétée
+     */
+    public function blockAtFirstStep($stepId = null, $stepTitle = null)
+    {
+        try {
+            Log::info('Début de blockAtFirstStep', [
+                'stepId' => $stepId,
+                'stepTitle' => $stepTitle,
+                'currentTransferStatus' => $this->transferStatus
+            ]);
+
+            // Si aucun stepId fourni, trouver la prochaine étape non complétée
+            if (!$stepId) {
+                // S'assurer que les étapes sont préparées
+                if (empty($this->stepsWithPercentages)) {
+                    $this->prepareStepsWithPercentages();
+                }
+
+                // Vérifier qu'il y a des étapes à traiter
+                if (empty($this->stepsWithPercentages)) {
+                    Log::warning('Aucune étape de transfert trouvée dans blockAtFirstStep', [
+                        'transferData' => $this->transferData,
+                        'transaction_id' => $this->transaction ? $this->transaction->id : null
+                    ]);
+                    throw new \Exception('Aucune étape de transfert configurée');
+                }
+
+                $nextStepIndex = $this->findNextIncompleteStep();
+                if ($nextStepIndex !== null && isset($this->stepsWithPercentages[$nextStepIndex])) {
+                    $nextStep = $this->stepsWithPercentages[$nextStepIndex];
+                    $stepId = $nextStep['step']->id;
+                    $stepTitle = $nextStep['step']->title;
+                }
+            }
+
+            if (!$stepId) {
+                Log::warning('Aucune étape à bloquer trouvée');
+                return;
+            }
+
+            // Trouver l'étape dans stepsWithPercentages
+            $currentStepData = null;
+            foreach ($this->stepsWithPercentages as $stepData) {
+                if ($stepData['step']->id == $stepId) {
+                    $currentStepData = $stepData;
+                    break;
+                }
+            }
+
+            if (!$currentStepData) {
+                throw new \Exception("Étape non trouvée pour le blocage: " . $stepId);
+            }
+
+            // Mettre à jour l'état du composant
+            $this->transferStatus = 'blocked';
+            $this->statusMessage = __('transfers.transfer_blocked_for_verification', [
+                'step' => $stepTitle ?? $currentStepData['step']->title
+            ]);
+
+            // Préparer les données de l'étape pour la modale
+            $this->currentStepData = $currentStepData;
+            $this->showStepModal = true;
+
+            Log::info('Transfert bloqué avec succès', [
+                'stepId' => $stepId,
+                'stepTitle' => $stepTitle
+            ]);
+
+        } catch (\Exception $e) {
+            Log::error('Erreur lors du blocage du transfert: ' . $e->getMessage(), [
+                'exception' => $e
+            ]);
+            $this->statusMessage = __('transfers.error_blocking_transfer');
+        }
     }
 
     public function render()
