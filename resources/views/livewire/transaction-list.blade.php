@@ -355,7 +355,7 @@
                             
                             <!-- Liste des étapes avec progression -->
                             <ul class="space-y-3">
-                                @foreach($selectedTransaction->blockedAtTransferStep->group->transferSteps->sortBy('order') as $step)
+                                @foreach($selectedTransaction->blockedAtTransferStep->transferStepGroup->transferSteps->sortBy('order') as $step)
                                     <li class="flex items-start text-sm border-l-2 pl-4 py-2 
                                         @if($selectedTransaction->isStepCompleted($step->id)) border-green-500 bg-green-50 dark:bg-green-900
                                         @elseif($selectedTransaction->blocked_at_transfer_step_id == $step->id) border-orange-500 bg-orange-50 dark:bg-orange-900

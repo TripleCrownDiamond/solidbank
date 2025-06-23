@@ -7,129 +7,63 @@
     'currentStepData' => null
 ])
 
-<div x-data="{
-    showModal: @entangle('showStepModal').live,
-    unlockCode: @entangle('unlockCode').live,
-    unlockError: @entangle('unlockError').live,
-    isVerifying: false,
-    focusTimeout: null,
-    
-    init() {
-        // Optimisation: Observer plus efficace pour la modale
-        this.$watch('showModal', value => {
-            if (value) {
-                this.openModal();
-            } else {
-                this.closeModalCleanup();
+@if($showStepModal)
+<div 
+    x-data="{
+        unlockCode: @entangle('unlockCode').live,
+        unlockError: @entangle('unlockError').live,
+        isVerifying: @entangle('isVerifying').live,
+        
+        closeModal() {
+            $wire.closeStepModal();
+        },
+        
+        async verifyCode() {
+            if (!this.unlockCode?.trim()) {
+                this.unlockError = '{{ __('transfers.unlock_code_required') }}';
+                return;
             }
-        });
-        
-        // Optimisation: Précharger les éléments DOM
-        this.$nextTick(() => {
-            this.cacheElements();
-        });
-    },
-    
-    // Optimisation: Cache des éléments DOM
-    cacheElements() {
-        this.bodyElement = document.body;
-        this.codeInputElement = this.$refs.codeInput;
-    },
-    
-    // Optimisation: Gestion optimisée de l'ouverture
-    openModal() {
-        if (this.bodyElement) {
-            this.bodyElement.style.overflow = 'hidden';
-        }
-        
-        // Focus optimisé avec requestAnimationFrame
-        if (this.focusTimeout) {
-            clearTimeout(this.focusTimeout);
-        }
-        
-        this.focusTimeout = setTimeout(() => {
-            requestAnimationFrame(() => {
-                if (this.codeInputElement) {
-                    this.codeInputElement.focus();
-                    this.codeInputElement.select();
-                }
-            });
-        }, 100);
-    },
-    
-    // Optimisation: Nettoyage efficace à la fermeture
-    closeModalCleanup() {
-        if (this.bodyElement) {
-            this.bodyElement.style.overflow = '';
-        }
-        
-        if (this.focusTimeout) {
-            clearTimeout(this.focusTimeout);
-            this.focusTimeout = null;
-        }
-    },
-    
-    closeModal() {
-        this.showModal = false;
-        this.unlockCode = '';
-        this.unlockError = '';
-        this.isVerifying = false;
-        $wire.closeStepModal();
-    },
-    
-    // Optimisation: Vérification avec gestion d'erreur améliorée
-    async verifyCode() {
-        const code = this.unlockCode?.trim();
-        if (!code) {
-            this.unlockError = '{{ __('transfers.unlock_code_required') }}';
-            return;
-        }
-        
-        this.isVerifying = true;
-        this.unlockError = '';
-        
-        try {
-            await $wire.verifyUnlockCode();
-            // Si pas d'erreur, la modale se fermera automatiquement
-        } catch (error) {
-            console.error('Erreur lors de la vérification:', error);
-            this.unlockError = error.message || '{{ __('transfers.verification_error') }}';
-        } finally {
-            this.isVerifying = false;
-        }
-    },
-    
-    // Optimisation: Gestion des touches avec debouncing
-    handleKeydown(event) {
-        if (event.key === 'Enter' && !this.isVerifying && this.unlockCode?.trim()) {
-            event.preventDefault();
-            this.verifyCode();
-        } else if (event.key === 'Escape') {
-            event.preventDefault();
-            this.closeModal();
-        }
-    },
-    
-    // Optimisation: Clear error avec debouncing
-    clearError() {
-        if (this.unlockError) {
+            
+            this.isVerifying = true;
             this.unlockError = '';
+            
+            try {
+                await $wire.verifyUnlockCode();
+            } catch (error) {
+                console.error('Erreur lors de la vérification:', error);
+                this.unlockError = '{{ __('transfers.verification_error') }}';
+            } finally {
+                this.isVerifying = false;
+            }
+        },
+        
+        handleKeydown(event) {
+            if (event.key === 'Enter' && !this.isVerifying && this.unlockCode?.trim()) {
+                event.preventDefault();
+                this.verifyCode();
+            } else if (event.key === 'Escape') {
+                event.preventDefault();
+                this.closeModal();
+            }
+        },
+        
+        clearError() {
+            if (this.unlockError) {
+                this.unlockError = '';
+            }
         }
-    }
-}" 
-@keydown.window="handleKeydown($event)"
-class="fixed inset-0 z-50 overflow-y-auto"
-x-show="showModal"
-x-transition:enter="ease-out duration-200"
-x-transition:enter-start="opacity-0"
-x-transition:enter-end="opacity-100"
-x-transition:leave="ease-in duration-150"
-x-transition:leave-start="opacity-100"
-x-transition:leave-end="opacity-0"
-style="display: none;"
-x-cloak>
+    }" 
+    @keydown.window="handleKeydown($event)"
+    class="fixed inset-0 z-50 overflow-y-auto"
+    x-transition:enter="ease-out duration-200"
+    x-transition:enter-start="opacity-0"
+    x-transition:enter-end="opacity-100"
+    x-transition:leave="ease-in duration-150"
+    x-transition:leave-start="opacity-100"
+    x-transition:leave-end="opacity-0"
+    x-cloak>
     
-    <!-- Overlay optimisé -->
+    <!-- Overlay -->
     <div class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm transition-opacity duration-200"
          @click="closeModal()"></div>
     
@@ -144,7 +78,7 @@ x-cloak>
              x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
              @click.stop>
             
-            <!-- Header optimisé -->
+            <!-- Header -->
             <div class="bg-gradient-to-r from-blue-600 to-blue-700 dark:from-blue-500 dark:to-blue-600 px-6 py-4">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center space-x-3">
@@ -174,7 +108,7 @@ x-cloak>
                 </div>
             </div>
             
-            <!-- Body optimisé -->
+            <!-- Body -->
             <div class="px-6 py-6">
                 <!-- Step Description -->
                 <div class="mb-6">
@@ -187,7 +121,7 @@ x-cloak>
                     </p>
                 </div>
                 
-                <!-- Progress Indicator optimisé -->
+                <!-- Progress Indicator -->
                 @if($currentStepData && isset($currentStepData['percentage']))
                 <div class="mb-6">
                     <div class="flex justify-between items-center mb-2">
@@ -205,7 +139,7 @@ x-cloak>
                 </div>
                 @endif
                 
-                <!-- Code Input optimisé -->
+                <!-- Code Input -->
                 <div class="mb-6">
                     <label for="unlock-code" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                         {{ __('transfers.unlock_code') }}
@@ -228,7 +162,7 @@ x-cloak>
                         </div>
                     </div>
                     
-                    <!-- Error Message optimisé -->
+                    <!-- Error Message -->
                     <div x-show="unlockError" 
                          x-transition:enter="ease-out duration-150"
                          x-transition:enter-start="opacity-0 transform scale-95"
@@ -244,7 +178,7 @@ x-cloak>
                 </div>
             </div>
             
-            <!-- Footer optimisé -->
+            <!-- Footer -->
             <div class="bg-gray-50 dark:bg-gray-700 px-6 py-4 flex flex-col sm:flex-row sm:justify-end space-y-2 sm:space-y-0 sm:space-x-3">
                 <button @click="closeModal()" 
                         :disabled="isVerifying"
@@ -265,6 +199,7 @@ x-cloak>
         </div>
     </div>
 </div>
+@endif
 
 <!-- Scripts optimisés pour l'expérience utilisateur -->
 <script>

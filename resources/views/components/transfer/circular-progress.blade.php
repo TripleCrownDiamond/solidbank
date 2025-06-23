@@ -12,7 +12,7 @@
                     if (window.gsap) {
                         gsap.to(progressCircle, {
                             'stroke-dashoffset': targetOffset,
-                            duration: 0.5,
+                            duration: 2,
                             ease: 'power2.out',
                             onUpdate: function() {
                                 progress = event.progress;
@@ -21,12 +21,12 @@
                     } else if (progressCircle.animate) {
                         progressCircle.animate(
                             [{ 'stroke-dashoffset': currentOffset }, { 'stroke-dashoffset': targetOffset }],
-                            { duration: 500, easing: 'ease-out', fill: 'forwards' }
+                            { duration: 2000, easing: 'ease-out', fill: 'forwards' }
                         );
                         progress = event.progress;
                     } else {
                         // Fallback pour les navigateurs plus anciens
-                        progressCircle.style.transition = 'stroke-dashoffset 0.5s ease-out';
+                        progressCircle.style.transition = 'stroke-dashoffset 2s ease-out';
                         progressCircle.style.strokeDashoffset = targetOffset;
                         progress = event.progress;
                     }

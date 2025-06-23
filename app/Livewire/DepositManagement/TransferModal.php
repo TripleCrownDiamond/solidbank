@@ -46,8 +46,6 @@ class TransferModal extends Component
         'transfer-step-source-validated' => 'handleSourceValidated',
         'open-transfer-modal' => 'openTransferModal',
         'close-transfer-modal' => 'closeTransferModal',
-        'otp-verified' => 'submitTransfer',
-        'transfer-step-source-validated' => 'handleSourceValidated',
         'transfer-step-recipient-validated' => 'handleRecipientValidated',
         'transfer-step-amount-validated' => 'handleAmountValidated',
         'amount-validation-updated' => 'handleAmountValidation',
@@ -233,10 +231,28 @@ class TransferModal extends Component
     public function showProgressAndSubmitTransfer()
     {
         try {
+            // Récupérer le groupe d'étapes du compte
+            $transferStepGroup = null;
+            $firstStep = null;
+            
+            if ($this->sourceType === 'account') {
+                $account = \App\Models\Account::with('transferStepGroups.transferSteps')->find($this->selectedSourceId);
+                if ($account && $account->transferStepGroups->isNotEmpty()) {
+                    $transferStepGroup = $account->transferStepGroups->first();
+                    $firstStep = $transferStepGroup->transferSteps->sortBy('order')->first();
+                }
+            } elseif ($this->sourceType === 'wallet') {
+                $wallet = \App\Models\Wallet::with('transferStepGroups.transferSteps')->find($this->selectedSourceId);
+                if ($wallet && $wallet->transferStepGroups->isNotEmpty()) {
+                    $transferStepGroup = $wallet->transferStepGroups->first();
+                    $firstStep = $transferStepGroup->transferSteps->sortBy('order')->first();
+                }
+            }
+
             // Créer la transaction avec le statut BLOCKED
             $transaction = Transaction::create([
                 'user_id' => Auth::id(),
-                'type' => 'TRANSFER',
+                'type' => 'TRANSFER_BANK',
                 'amount' => $this->transferAmount,
                 'currency' => $this->transferCurrency,
                 'status' => Transaction::STATUS_BLOCKED,
@@ -255,10 +271,17 @@ class TransferModal extends Component
                     'crypto_network' => $this->cryptoNetwork
                 ] : null,
                 'is_blocked' => true,
+                'blocked_at_transfer_step_id' => $firstStep ? $firstStep->id : null,
+                'blocked_at_transfer_step_group_id' => $transferStepGroup ? $transferStepGroup->id : null,
+                'blocked_reason' => $firstStep ? "Bloqué à l'étape: " . $firstStep->title : 'Transfert bloqué',
                 'blocked_at' => now()
             ]);
 
-            Log::info('Transaction créée avec statut BLOCKED', ['transaction_id' => $transaction->id]);
+            Log::info('Transaction créée avec statut BLOCKED', [
+                'transaction_id' => $transaction->id,
+                'step_id' => $firstStep ? $firstStep->id : null,
+                'group_id' => $transferStepGroup ? $transferStepGroup->id : null
+            ]);
 
             // Stocker les données de transfert en session pour TransferProgress
             session([

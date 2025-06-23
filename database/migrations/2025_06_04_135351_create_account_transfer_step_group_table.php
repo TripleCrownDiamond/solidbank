@@ -22,8 +22,8 @@ return new class extends Migration {
                 ->onDelete('cascade');
             $table->timestamps();
 
-            // Ensure unique combination
-            $table->unique(['account_id', 'transfer_step_group_id']);
+            // Ensure unique combination with a shorter index name
+            $table->unique(['account_id', 'transfer_step_group_id'], 'acc_trf_step_grp_unique');
         });
     }
 

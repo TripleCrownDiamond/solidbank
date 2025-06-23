@@ -43,6 +43,7 @@ class TransferProgress extends Component
     // Propriétés pour le code de déblocage
     public $unlockCode = '';
     public $unlockError = '';
+    public $isVerifying = false;
 
     // Propriétés calculées pour éviter les erreurs
     protected $computed = ['accountTransferSteps', 'overallProgress'];
@@ -200,7 +201,7 @@ class TransferProgress extends Component
             try {
                 $this->transaction = Transaction::create([
                     'user_id' => Auth::id(),
-                    'type' => 'TRANSFER',
+                    'type' => 'TRANSFER_BANK',
                     'amount' => $this->transferData['transfer_amount'],
                     'currency' => $this->transferData['transfer_currency'],
                     'status' => Transaction::STATUS_PENDING,
@@ -217,7 +218,7 @@ class TransferProgress extends Component
                     'external_crypto_info' => $this->transferData['source_type'] === 'wallet' && isset($this->transferData['crypto_address']) ? [
                         'crypto_address' => $this->transferData['crypto_address'],
                         'crypto_network' => $this->transferData['crypto_network']
-                    ] : null
+                    ] : null,
                 ]);
             } catch (\Exception $e) {
                 Log::error('Erreur lors de la création de la transaction: ' . $e->getMessage());
@@ -560,39 +561,16 @@ class TransferProgress extends Component
         if ($isCodeValid) {
             // Marquer l'étape comme complétée
             $this->markStepAsCompleted($step->id);
-
+            
             // Fermer la modale
             $this->showStepModal = false;
             $this->stepCode = '';
             $this->stepCodeError = '';
-
-            // Réinitialiser l'état de blocage
-            $this->isTransferBlocked = false;
-            $this->showUnlockButton = false;
-            $this->transferStatus = 'in_progress';
-
+            
             // Passer à l'étape suivante
-            $this->currentStepIndex++;
-
-            // Continuer avec la prochaine étape ou terminer
-            if ($this->currentStepIndex >= count($this->stepsWithPercentages)) {
-                // Toutes les étapes sont terminées
-                $this->progress = 100;
-                $this->statusMessage = __('transfers.transfer_completed_successfully');
-                $this->isCompleted = true;
-                $this->transferStatus = 'completed';
-            } else {
-                // Programmer la prochaine étape
-                $this->dispatch('process-next-step-after-delay', 
-                    delay: 1000  // 1 seconde
-                );
-            }
+            $this->processNextStep();
         } else {
-            $this->stepCodeError = __('transfers.incorrect_unlock_code');
-            Log::warning('Code de déblocage incorrect', [
-                'stepId' => $step->id,
-                'stepTitle' => $step->title
-            ]);
+            $this->stepCodeError = __('transfers.invalid_unlock_code');
         }
     }
 
@@ -637,9 +615,47 @@ class TransferProgress extends Component
     public function closeStepModal()
     {
         $this->showStepModal = false;
-        $this->currentStepData = null;
         $this->stepCode = '';
         $this->stepCodeError = '';
+        $this->unlockCode = '';
+        $this->unlockError = '';
+        $this->isVerifying = false;
+    }
+
+    public function verifyUnlockCode()
+    {
+        $this->isVerifying = true;
+        $this->unlockError = '';
+
+        try {
+            if (!$this->currentStepData || !$this->unlockCode) {
+                $this->unlockError = __('transfers.unlock_code_required');
+                return;
+            }
+
+            $step = $this->currentStepData['step'];
+            $isCodeValid = $this->unlockCode === ($step->code ?? '');
+
+            if ($isCodeValid) {
+                // Marquer l'étape comme complétée
+                $this->markStepAsCompleted($step->id);
+                
+                // Fermer la modale
+                $this->showStepModal = false;
+                $this->unlockCode = '';
+                $this->unlockError = '';
+                
+                // Passer à l'étape suivante
+                $this->processNextStep();
+            } else {
+                $this->unlockError = __('transfers.invalid_unlock_code');
+            }
+        } catch (\Exception $e) {
+            $this->unlockError = __('transfers.verification_error');
+            Log::error('Erreur lors de la vérification du code: ' . $e->getMessage());
+        } finally {
+            $this->isVerifying = false;
+        }
     }
 
     public function updateTransactionProgress($percentage)

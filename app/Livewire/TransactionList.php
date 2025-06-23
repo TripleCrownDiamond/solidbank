@@ -319,7 +319,7 @@ class TransactionList extends Component
                 'account.rib', 
                 'toAccount.rib.user',
                 'toAccount.user',
-                'blockedAtTransferStep.group.transferSteps', 
+                'blockedAtTransferStep.transferStepGroup.transferSteps', 
                 'transferStepCompletions'
             ])->find($transactionId);
         } else {

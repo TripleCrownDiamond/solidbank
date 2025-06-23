@@ -27,80 +27,16 @@
     </div>
     
     <!-- Gestionnaire de progression Livewire optimisé -->
-    <div 
-        x-data="{
-            progress: @entangle('progress').live,
-            showModal: @entangle('showStepModal').live,
-            statusMessage: '{{ addslashes($statusMessage) }}',
-            lastProgressUpdate: 0,
-            animationFrame: null,
-
-            updateProgress(newProgress) {
-                const now = performance.now();
-                if (now - this.lastProgressUpdate >= 16) {
-                    this.lastProgressUpdate = now;
-                    if (this.animationFrame) {
-                        cancelAnimationFrame(this.animationFrame);
-                    }
-                    this.animationFrame = requestAnimationFrame(() => {
-                        const progressCircle = document.querySelector('.progress-circle');
-                        if (progressCircle) {
-                            const offset = 282.6 - (newProgress * 2.826);
-                            progressCircle.style.transition = 'stroke-dashoffset 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
-                            progressCircle.style.strokeDashoffset = offset;
-                        }
-                    });
-                }
-            },
-
-            handleModalShow() {
-                this.showModal = true;
-                document.body.style.overflow = 'hidden';
-                this.$nextTick(() => {
-                    const codeInput = document.querySelector('input[wire\\\\:model=&quot;stepCode&quot;]');
-                    if (codeInput) {
-                        requestAnimationFrame(() => {
-                            codeInput.focus();
-                            codeInput.select();
-                        });
-                    }
-                });
-            },
-
-            handleModalClose() {
-                this.showModal = false;
-                document.body.style.overflow = '';
-                $wire.$refresh();
-            }
-        }"
-        x-init="
-            $watch('progress', value => this.updateProgress(value));
-
-            let statusUpdateTimeout;
-            Livewire.on('status-message-updated', (event) => {
-                clearTimeout(statusUpdateTimeout);
-                statusUpdateTimeout = setTimeout(() => {
-                    statusMessage = event.message;
-                    const statusElement = document.querySelector('.status-message');
-                    if (statusElement) {
-                        statusElement.textContent = event.message;
-                    }
-                }, 50);
-            });
-
-            Livewire.on('show-step-modal', () => {
-                this.handleModalShow();
-            });
-
-            Livewire.on('close-step-modal', () => {
-                this.handleModalClose();
-            });
-
-            console.log('Composant de progression initialisé avec optimisations');
-        "
-    >
+    <div>
         <!-- Modal de déblocage d'étape optimisée -->
-        <x-transfer.unlock-modal :currentStepData="$currentStepData" />
+        <x-transfer.unlock-modal 
+            :showStepModal="$showStepModal"
+            :unlockCode="$unlockCode"
+            :unlockError="$unlockError"
+            :stepCode="$stepCode"
+            :isVerifying="$isVerifying"
+            :currentStepData="$currentStepData"
+        />
     </div>
 </div>
 

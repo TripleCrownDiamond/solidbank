@@ -12,11 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('transactions', function (Blueprint $table) {
-            // Add user_id to track which user initiated the transaction
-            $table->foreignId('user_id')->nullable()->after('id')->constrained('users')->nullOnDelete();
-            
             // Add account_id for account-based transactions (separate from from_account_id/to_account_id)
-            $table->foreignId('account_id')->nullable()->after('user_id')->constrained('accounts')->nullOnDelete();
+            $table->foreignId('account_id')->nullable()->after('id')->constrained('accounts')->nullOnDelete();
             
             // Add wallet_id for wallet-based transactions
             $table->foreignId('wallet_id')->nullable()->after('account_id')->constrained('wallets')->nullOnDelete();
@@ -35,9 +32,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('transactions', function (Blueprint $table) {
-            $table->dropForeign(['user_id']);
-            $table->dropColumn('user_id');
-            
             $table->dropForeign(['account_id']);
             $table->dropColumn('account_id');
             
