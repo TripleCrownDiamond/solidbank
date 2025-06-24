@@ -16,7 +16,7 @@
                             <i class="fa-solid fa-times"></i>
                         </span>
                         <span wire:loading wire:target="closeWithdrawalModal">
-                            <i class="fa-solid fa-spinner fa-spin text-gray-800 dark:text-white"></i>
+                            <i class="fa-solid fa-spinner fa-spin text-black dark:text-white"></i>
                         </span>
                     </button>
                 </div>
@@ -27,26 +27,27 @@
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{{ __('common.withdrawal_type') }}</label>
                         <div class="flex space-x-4">
                             <label class="flex items-center">
-                                <input type="radio" wire:model.live="withdrawalType" value="account" class="mr-2 text-brand-primary focus:ring-brand-primary">
+                                <input type="radio" wire:model.live="withdrawalType" value="account" name="withdrawalType" class="mr-2 text-brand-primary focus:ring-brand-primary">
                                 <span class="text-sm text-gray-700 dark:text-gray-300">{{ __('admin.account') }}</span>
                             </label>
                             <label class="flex items-center">
-                                <input type="radio" wire:model.live="withdrawalType" value="wallet" class="mr-2 text-brand-primary focus:ring-brand-primary">
+                                <input type="radio" wire:model.live="withdrawalType" value="wallet" name="withdrawalType" class="mr-2 text-brand-primary focus:ring-brand-primary">
                                 <span class="text-sm text-gray-700 dark:text-gray-300">{{ __('admin.wallet') }}</span>
                             </label>
                         </div>
                     </div>
 
                     <!-- Loading State -->
-                    <div wire:loading wire:target="withdrawalType" class="flex items-center justify-center py-4">
-                        <x-loader-spinner
-                            target="withdrawalType"
-                            text="{{ __('common.processing') }}"
-                            position="left"
-                        >
-                            {{ __('admin.loading') }}...
-                        </x-loader-spinner>
-                    </div>
+                        <!-- Loading State -->
+                        <div wire:loading wire:target="withdrawalType" class="flex items-center justify-center py-4 text-black dark:text-white">
+                            <x-loader-spinner
+                                text="{{ __('admin.loading') }}..."
+                                position="left"
+                                size="md"
+                            >
+                                {{ __('common.processing') }}
+                            </x-loader-spinner>
+                        </div>
 
                     <!-- Account/Wallet Selection -->
                     <div wire:loading.remove wire:target="withdrawalType">
@@ -151,7 +152,7 @@
                                 @if($balanceError) disabled @endif>
                             <x-loader-spinner
                                 target="submitWithdrawal"
-                                text=""
+                                text="{{ __('common.processing') }}..."
                                 position="left"
                             >
                                 <i class="fa-solid fa-minus mr-2"></i>{{ __('common.process_withdrawal') }}

@@ -103,6 +103,24 @@ Route::prefix('{locale}')->group(function () {
                     return view('dashboard.transfer-step-management');
                 })->name('transfer-steps');
             });
+
+            // Route pour télécharger le ticket de transfert
+            Route::get('/transfer/ticket/{transaction}', function (\App\Models\Transaction $transaction) {
+                // Vérifier que l'utilisateur peut accéder à cette transaction
+                if (auth()->user()->id !== $transaction->user_id && !auth()->user()->is_admin) {
+                    abort(403);
+                }
+
+                // Générer le PDF du ticket
+                $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('pdfs.transfer-ticket', [
+                    'transaction' => $transaction,
+                    'user' => $transaction->user,
+                    'account' => $transaction->account,
+                    'wallet' => $transaction->wallet
+                ]);
+
+                return $pdf->download('ticket-transfert-' . $transaction->id . '.pdf');
+            })->name('transfer.ticket');
         });
     });
 });

@@ -7,14 +7,21 @@
         <x-transfer.transaction-details :transaction="$transaction" />
 
         <!-- Start Button -->
+        @php
+            $progressPercentage = $transaction ? $transaction->progress_percentage : 0;
+            $allStepsCompleted = $transaction ? $transaction->areAllStepsCompleted() : false;
+        @endphp
+        @if(!$allStepsCompleted && $progressPercentage < 100)
         <x-transfer.start-button 
             :transferStatus="$transferStatus" 
             :showStartButton="$showStartButton" 
             :isTransferBlocked="$isTransferBlocked" 
+            :transaction="$transaction"
         />
+        @endif
         
         <!-- Progress Card -->
-        @if($showProgressBar)
+        @if($showProgressBar && !$allStepsCompleted && $progressPercentage < 100)
         <x-transfer.progress-card 
             :progress="$progress" 
             :statusMessage="$statusMessage" 
@@ -22,15 +29,17 @@
         />
         @endif
 
-        <!-- Completion Message -->
-        <x-transfer.completion-message :isCompleted="$isCompleted" />
+        <!-- Success Message when all steps completed or at 100% -->
+        @if($allStepsCompleted || $progressPercentage >= 100)
+        <x-transfer.completion-message :isCompleted="true" />
+        @endif
     </div>
     
     <!-- Gestionnaire de progression Livewire optimisé -->
     <div>
         <!-- Modal de déblocage d'étape optimisée -->
         <x-transfer.unlock-modal 
-            :showStepModal="$showStepModal"
+            :showUnlockModal="$showUnlockModal"
             :unlockCode="$unlockCode"
             :unlockError="$unlockError"
             :stepCode="$stepCode"
@@ -57,7 +66,7 @@
                     const progressCircle = document.querySelector('.progress-circle');
                     if (progressCircle) {
                         const offset = 282.6 - (progress * 2.826);
-                        progressCircle.style.transition = 'stroke-dashoffset 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+                        progressCircle.style.transition = 'stroke-dashoffset 2.4s ease-in-out';
                         progressCircle.style.strokeDashoffset = offset;
                         const percentageElement = document.querySelector('.progress-percentage');
                         if (percentageElement) {
@@ -83,7 +92,7 @@
         });
 
         Livewire.on('delayed-block-transfer', (event) => {
-            const delay = Math.min(event.delay || 1000, 1000);
+            const delay = Math.min(event.delay || 250, 250); // Réduit encore de moitié
             setTimeout(() => {
                 @this.call('blockTransfer', event.transactionId, event.stepId, event.stepTitle).then(() => {
                     Livewire.dispatch('show-step-modal');
@@ -92,21 +101,21 @@
         });
 
         Livewire.on('start-transfer-progression', (event) => {
-            const delay = Math.min(event.delay || 300, 500);
+            const delay = Math.min(event.delay || 50, 100); // Démarrage immédiat
             setTimeout(() => {
                 @this.call('beginTransferProgression');
             }, delay);
         });
 
         Livewire.on('block-at-first-step', (event) => {
-            const delay = Math.min(event.delay || 1000, 1000);
+            const delay = Math.min(event.delay || 100, 100); // Démarrage immédiat
             setTimeout(() => {
                 @this.call('blockAtFirstStep', event.stepId, event.stepTitle);
             }, delay);
         });
 
         Livewire.on('process-next-step-after-delay', (event) => {
-            const delay = Math.min(event.delay || 500, 800);
+            const delay = Math.min(event.delay || 100, 200); // Démarrage rapide
             setTimeout(() => {
                 @this.call('processNextStep');
             }, delay);
@@ -121,7 +130,7 @@
         });
 
         Livewire.on('proceed-to-next-step', (event) => {
-            const delay = Math.min(event.delay || 500, 800);
+            const delay = Math.min(event.delay || 100, 200); // Démarrage rapide
             setTimeout(() => {
                 @this.call('processNextStep');
             }, delay);

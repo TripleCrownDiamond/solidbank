@@ -87,6 +87,10 @@ class AccountStatusNotification extends Mailable implements ShouldQueue
                 $this->subject = __('common.deposit_confirmed_email_subject');
                 $this->emailMessage = __('common.deposit_confirmed_email_message', ['amount' => $this->amount]);
                 break;
+            case 'withdrawal_confirmed':
+                $this->subject = __('common.withdrawal_confirmed_email_subject');
+                $this->emailMessage = __('common.withdrawal_confirmed_email_message', ['amount' => $this->amount]);
+                break;
             case 'transaction_cancelled':
                 $this->subject = __('common.transaction_cancelled_email_subject');
                 $this->emailMessage = __('common.transaction_cancelled_email_message', ['amount' => $this->amount]);

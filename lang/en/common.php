@@ -38,6 +38,7 @@ return [
     'suspend' => 'Suspend',
     'delete' => 'Delete',
     'pending' => 'Pending',
+    'recipient_bank' => 'Recipient Bank',
     'active' => 'Active',
     'suspended' => 'Suspended',
     'completed' => 'Completed',
@@ -184,6 +185,7 @@ return [
     'select_source_account_wallet' => 'Select the source account or wallet for the transfer.',
     'source_account' => 'Source Account',
     'source_wallet' => 'Source Wallet',
+    'trusted_financial_partner' => 'Your trusted financial partner',
     'recipient_details' => 'Recipient Details',
     'enter_recipient_information' => "Enter the recipient's information.",
     'recipient_name' => 'Recipient Name',
@@ -384,7 +386,6 @@ return [
     'no_transfer_progress_info' => 'No transfer progress information available for this transaction.',
     // Wallet translations
     'wallet_name' => 'Wallet Name',
-
     // Blocked transaction modal
     'blocked_transaction_details' => 'Blocked Transaction Details',
     'close' => 'Close',
@@ -545,4 +546,5 @@ return [
     'transfer_funds' => 'Transfer Funds',
     'transfer_modal_description' => 'Transfer funds between your accounts or to another user.',
     'verify' => 'Verify',
+    'recipient_iban' => 'Recipient IBAN',
 ];

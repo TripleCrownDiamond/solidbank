@@ -79,7 +79,35 @@ class DepositModal extends Component
 
     public function updatedDepositType()
     {
-        $this->reset(['accountNumber', 'walletAddress', 'detectedUser', 'detectedUserName', 'currency', 'availableBalance', 'balanceError']);
+        $this->reset(['selectedAccountId', 'selectedWalletId', 'accountNumber', 'walletAddress', 'detectedUser', 'detectedUserName', 'availableBalance', 'balanceError', 'amount']);
+        
+        // Initialize currency based on type and first available account/wallet
+        if ($this->depositType === 'account') {
+            $firstAccount = Auth::user()->accounts->first();
+            if ($firstAccount) {
+                $this->currency = $firstAccount->currency;
+                if (!Auth::user()->is_admin) {
+                    $this->selectedAccountId = $firstAccount->id;
+                    $this->availableBalance = $firstAccount->balance;
+                }
+            } else {
+                $this->currency = config('app.default_currency', 'EUR');
+            }
+        } elseif ($this->depositType === 'wallet') {
+            $firstWallet = Auth::user()->wallets->first();
+            if ($firstWallet) {
+                $this->currency = $firstWallet->cryptocurrency->symbol;
+                if (!Auth::user()->is_admin) {
+                    $this->selectedWalletId = $firstWallet->id;
+                    $this->availableBalance = $firstWallet->balance;
+                }
+            } else {
+                $this->currency = config('app.default_currency', 'EUR');
+            }
+        } else {
+            $this->currency = config('app.default_currency', 'EUR');
+        }
+        
         $this->validateOnly('depositType');
     }
 

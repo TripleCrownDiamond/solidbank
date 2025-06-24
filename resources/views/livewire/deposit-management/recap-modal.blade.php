@@ -27,7 +27,7 @@
                                 <i class="fa-solid fa-times" aria-hidden="true"></i>
                             </span>
                             <span wire:loading wire:target="closeRecapModal">
-                                <i class="fa-solid fa-spinner fa-spin text-gray-800 dark:text-white"></i>
+                                <i class="fa-solid fa-spinner fa-spin text-black dark:text-white"></i>
                             </span>
                         </button>
                     </div>
@@ -137,7 +137,7 @@
                                  {{ __('common.cancel') }}
                              </span>
                             <span wire:loading wire:target="closeRecapModal">
-                                <i class="fa-solid fa-spinner fa-spin text-gray-800 dark:text-white"></i>
+                                <i class="fa-solid fa-spinner fa-spin text-black dark:text-white"></i>
                             </span>
                         </button>
                         
@@ -151,7 +151,7 @@
                                 {{ __('common.confirm_transaction') }}
                             </span>
                             <span wire:loading wire:target="confirmTransaction">
-                                <i class="fa-solid fa-spinner fa-spin text-gray-800 dark:text-white"></i>
+                                <i class="fa-solid fa-spinner fa-spin text-black dark:text-white"></i>
                             </span>
                         </button>
                     </div>

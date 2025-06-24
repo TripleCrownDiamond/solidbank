@@ -15,7 +15,7 @@
                             <i class="fa-solid fa-times"></i>
                         </span>
                         <span wire:loading wire:target="closeTransferModal">
-                            <i class="fa-solid fa-spinner fa-spin text-gray-800 dark:text-white"></i>
+                            <i class="fa-solid fa-spinner fa-spin text-black dark:text-white"></i>
                         </span>
                     </button>
                 </div>

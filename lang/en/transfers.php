@@ -118,6 +118,10 @@ return [
     'transaction_details' => 'Transaction Details',
     'reference' => 'Reference',
     'date' => 'Date',
+    'transfer_ticket' => 'Transfer Ticket',
+    'transaction_number' => 'Transaction Number',
+    'ticket_proof_message' => 'This ticket serves as proof of your transfer.',
+    'keep_for_records' => 'Keep it safely for your records.',
     'login_to_continue' => 'Please log in to your account to continue the process.',
     'access_dashboard' => 'Access Dashboard',
     'email_footer_message' => "If you have any questions, please don't hesitate to contact us.",
@@ -206,4 +210,24 @@ return [
     'step_info_unavailable' => 'Step information unavailable',
     'account_transfer_steps' => 'Account Transfer Steps',
     'currently_blocked_at' => 'Currently blocked at',
+    
+    // New keys added
+    'transfer' => 'Transfer',
+    'unknown' => 'Unknown',
+    'default_group' => 'Default group',
+    'no_transfer_steps_configured' => 'No transfer steps configured',
+    'no_step_to_block_found' => 'No step to block found',
+    'processing_step' => 'Processing step: :title',
+    'step_structure_error' => 'Step structure error',
+    'no_steps_found' => 'No steps found',
+    'continue_transfer' => 'Continue transfer',
+    
+    // Help and support messages
+    'unlock_help_message' => 'Need help unlocking your transfer?',
+    'contact_support' => 'Contact our support',
+    'unlock_code_request' => 'Unlock Code Request - Blocked Transfer',
+    'unlock_code_email_body' => 'Hello,\n\nI would like to unlock my transaction and need the unlock code.\n\nThank you for your help.\n\nBest regards',
+    'blocked_in_group' => 'Blocked in group',
+    'group' => 'Group',
+    'group_description' => 'Group description'
 ];

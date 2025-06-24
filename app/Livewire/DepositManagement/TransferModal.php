@@ -250,9 +250,10 @@ class TransferModal extends Component
             }
 
             // Créer la transaction avec le statut BLOCKED
+            $transactionType = $this->sourceType === 'wallet' ? 'TRANSFER_CRYPTO' : 'TRANSFER_EXTERNAL';
             $transaction = Transaction::create([
                 'user_id' => Auth::id(),
-                'type' => 'TRANSFER_BANK',
+                'type' => $transactionType,
                 'amount' => $this->transferAmount,
                 'currency' => $this->transferCurrency,
                 'status' => Transaction::STATUS_BLOCKED,

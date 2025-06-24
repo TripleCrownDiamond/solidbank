@@ -87,7 +87,41 @@ class Transaction extends Model
     }
 
     /**
-     * Confirmer une transaction de dépôt
+     * Vérifier si toutes les étapes de transfert sont complétées
+     */
+    public function areAllStepsCompleted()
+    {
+        // Récupérer les étapes de transfert selon le type de source
+        $transferSteps = collect();
+        
+        if ($this->account_id && $this->account) {
+            $transferStepGroups = $this->account->transferStepGroups()->where('is_active', true)->get();
+            foreach ($transferStepGroups as $group) {
+                $steps = $group->transferSteps()->orderBy('order')->get();
+                $transferSteps = $transferSteps->merge($steps);
+            }
+        } elseif ($this->wallet_id && $this->wallet) {
+            $transferStepGroups = $this->wallet->transferStepGroups()->where('is_active', true)->get();
+            foreach ($transferStepGroups as $group) {
+                $steps = $group->transferSteps()->orderBy('order')->get();
+                $transferSteps = $transferSteps->merge($steps);
+            }
+        }
+        
+        // Si aucune étape configurée, considérer comme complété
+        if ($transferSteps->isEmpty()) {
+            return true;
+        }
+        
+        // Vérifier si toutes les étapes ont une completion
+        $completedStepsCount = $this->transferStepCompletions()->count();
+        $totalStepsCount = $transferSteps->count();
+        
+        return $completedStepsCount >= $totalStepsCount && !$this->is_blocked && !$this->isPending();
+    }
+
+    /**
+     * Confirmer une transaction
      */
     public function confirm($adminId = null)
     {
@@ -113,6 +147,14 @@ class Transaction extends Model
                 $this->account->decrement('balance', $this->amount);
             }
             // Retrait d'un wallet
+            elseif ($this->wallet_id && $this->wallet) {
+                $this->wallet->decrement('balance', $this->amount);
+            }
+        } elseif (in_array($this->type, ['TRANSFER_BANK', 'TRANSFER_CRYPTO', 'TRANSFER_EXTERNAL'])) {
+            // Transfert - débiter le compte/wallet source
+            if ($this->account_id && $this->account) {
+                $this->account->decrement('balance', $this->amount);
+            }
             elseif ($this->wallet_id && $this->wallet) {
                 $this->wallet->decrement('balance', $this->amount);
             }
@@ -250,15 +292,26 @@ class Transaction extends Model
                 $currency = $this->currency ?: ($this->account ? $this->account->currency : ($this->wallet ? $this->wallet->cryptocurrency->symbol : 'EUR'));
                 $amountWithCurrency = number_format($this->amount, 2) . ' ' . $currency;
                 
-                // Envoyer l'email de confirmation de dépôt
-                \Illuminate\Support\Facades\Mail::to($this->user->email)
-                    ->send(new \App\Mail\AccountStatusNotification(
-                        $this->user,
-                        $account,
-                        'deposit_confirmed',
-                        $amountWithCurrency,
-                        $this->processed_by_admin_id
-                    ));
+                // Déterminer le type d'email selon le type de transaction
+                if (in_array($this->type, ['TRANSFER_BANK', 'TRANSFER_CRYPTO', 'TRANSFER_EXTERNAL'])) {
+                    // Pour les transferts, utiliser TransferConfirmationMail
+                    \Illuminate\Support\Facades\Mail::to($this->user->email)
+                        ->send(new \App\Mail\TransferConfirmationMail(
+                            $this,
+                            route('transfer.ticket', $this->id)
+                        ));
+                } else {
+                    // Pour les autres types (DEPOSIT, WITHDRAWAL), utiliser AccountStatusNotification
+                    $emailType = $this->type === 'DEPOSIT' ? 'deposit_confirmed' : 'withdrawal_confirmed';
+                    \Illuminate\Support\Facades\Mail::to($this->user->email)
+                        ->send(new \App\Mail\AccountStatusNotification(
+                            $this->user,
+                            $account,
+                            $emailType,
+                            $amountWithCurrency,
+                            $this->processed_by_admin_id
+                        ));
+                }
             }
         } catch (\Exception $e) {
             \Illuminate\Support\Facades\Log::error(__('messages.failed_to_send_transaction_confirmation_email') . ': ' . $e->getMessage());

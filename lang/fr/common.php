@@ -48,6 +48,7 @@ return [
     'suspend' => 'Suspendre',
     'delete' => 'Supprimer',
     'pending' => 'En attente',
+    'recipient_bank' => 'Banque du Destinataire',
     'active' => 'Actif',
     'suspended' => 'Suspendu',
     'approve' => 'Approuver',
@@ -182,6 +183,7 @@ return [
     'select_source_account_wallet' => 'Sélectionnez le compte ou le portefeuille source pour le transfert.',
     'source_account' => 'Compte Source',
     'source_wallet' => 'Portefeuille Source',
+    'trusted_financial_partner' => 'Votre partenaire financier de confiance',
     'recipient_details' => 'Détails du Bénéficiaire',
     'enter_recipient_information' => 'Entrez les informations du bénéficiaire.',
     'recipient_name' => 'Nom du Bénéficiaire',
@@ -342,7 +344,6 @@ return [
     // Email de bienvenue avec vérification
     'welcome_verification_subject' => 'Bonjour ! Vérifiez votre adresse e-mail',
     'welcome_verification_message' => 'Votre compte a été créé avec succès et est en cours de vérification. Pour commencer à utiliser nos services, veuillez vérifier votre adresse e-mail.',
-
     'blocked_transaction_details' => 'Détails de la transaction bloquée',
     'view_details' => 'Voir les détails',
     'rib_details' => 'Détails du RIB',
@@ -356,7 +357,6 @@ return [
     'step' => 'Étape',
     'completed_at' => 'Terminé le',
     'no_transfer_progress_info' => 'Aucune information sur la progression du transfert disponible pour cette transaction.',
-
     // Modal de transaction bloquée
     'blocked_transaction_details' => 'Détails de la Transaction Bloquée',
     'close' => 'Fermer',
@@ -365,7 +365,7 @@ return [
     'blocked_at' => 'Bloquée le',
     'unlocked_at' => 'Débloquée le',
     'not_unlocked_yet' => 'Pas encore débloquée',
-    'no_transfer_progress_info' => 'Aucune information sur la progression du transfert n\'est disponible pour cette transaction.',
+    'no_transfer_progress_info' => "Aucune information sur la progression du transfert n'est disponible pour cette transaction.",
     'welcome_verification_instructions' => 'Pour finaliser la création de votre compte, veuillez vérifier votre adresse e-mail en cliquant sur le bouton ci-dessous.',
     'welcome_verification_note' => 'Ce lien de vérification expirera dans 60 minutes.',
     'welcome_verification_resend_info' => 'Si le lien a expiré, vous pouvez demander un nouveau lien de vérification depuis la page de connexion.',
@@ -551,4 +551,5 @@ return [
     'transfer_funds' => 'Transférer des fonds',
     'transfer_modal_description' => 'Transférer des fonds entre vos comptes ou vers un autre utilisateur.',
     'verify' => 'Vérifier',
+    'recipient_iban' => 'IBAN du destinataire',
 ];

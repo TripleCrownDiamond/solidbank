@@ -8,7 +8,7 @@
         </svg>
     </div>
     <h3 class="text-xl font-semibold text-green-800 dark:text-green-200 mb-2">
-        {{ __('transfers.transfer_completed_success') }}
+        {{ __('transfers.transaction_unlocked') }}
     </h3>
     <p class="text-green-600 dark:text-green-400 mb-6">
         {{ __('transfers.transfer_processed_successfully') }}

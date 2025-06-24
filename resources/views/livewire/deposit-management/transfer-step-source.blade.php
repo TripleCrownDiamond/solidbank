@@ -15,7 +15,7 @@
     </div>
 
     <!-- Loading State -->
-    <div wire:loading wire:target="sourceType" class="flex items-center justify-center py-4 dark:text-white">
+    <div wire:loading wire:target="sourceType" class="flex items-center justify-center py-4 text-black dark:text-white">
         <x-loader-spinner
             text="{{ __('admin.loading') }}..."
             position="left"

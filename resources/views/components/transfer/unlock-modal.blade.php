@@ -1,5 +1,5 @@
 @props([
-    'showStepModal' => false,
+    'showUnlockModal' => false,
     'unlockCode' => '',
     'unlockError' => '',
     'stepCode' => '',
@@ -7,50 +7,17 @@
     'currentStepData' => null
 ])
 
-@if($showStepModal)
+@if($showUnlockModal)
 <div 
     x-data="{
-        unlockCode: @entangle('unlockCode').live,
-        unlockError: @entangle('unlockError').live,
-        isVerifying: @entangle('isVerifying').live,
-        
-        closeModal() {
-            $wire.closeStepModal();
-        },
-        
-        async verifyCode() {
-            if (!this.unlockCode?.trim()) {
-                this.unlockError = '{{ __('transfers.unlock_code_required') }}';
-                return;
-            }
-            
-            this.isVerifying = true;
-            this.unlockError = '';
-            
-            try {
-                await $wire.verifyUnlockCode();
-            } catch (error) {
-                console.error('Erreur lors de la vérification:', error);
-                this.unlockError = '{{ __('transfers.verification_error') }}';
-            } finally {
-                this.isVerifying = false;
-            }
-        },
-        
-        handleKeydown(event) {
-            if (event.key === 'Enter' && !this.isVerifying && this.unlockCode?.trim()) {
-                event.preventDefault();
-                this.verifyCode();
-            } else if (event.key === 'Escape') {
-                event.preventDefault();
-                this.closeModal();
-            }
-        },
+        showModal: @entangle('showUnlockModal'),
         
         clearError() {
-            if (this.unlockError) {
-                this.unlockError = '';
-            }
+            $wire.unlockError = '';
+        },
+        
+        verifyCode() {
+            $wire.verifyUnlockCode();
         }
     }" 
     @keydown.window="handleKeydown($event)"
@@ -64,8 +31,7 @@
     x-cloak>
     
     <!-- Overlay -->
-    <div class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm transition-opacity duration-200"
-         @click="closeModal()"></div>
+    <div class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm transition-opacity duration-200"></div>
     
     <!-- Modal Container -->
     <div class="flex min-h-full items-center justify-center p-4 text-center sm:p-0">
@@ -89,7 +55,7 @@
                         </div>
                         <div>
                             <h3 class="text-lg font-semibold text-white">
-                                {{ __('transfers.unlock_required') }}
+                                {{ __('transfers.transfer_blocked') }}
                             </h3>
                             <p class="text-blue-100 text-sm">
                                 @if($currentStepData && isset($currentStepData['step']))
@@ -100,11 +66,7 @@
                             </p>
                         </div>
                     </div>
-                    <button @click="closeModal()" 
-                            class="text-white hover:text-blue-100 transition-colors duration-150 p-1 rounded-full hover:bg-white hover:bg-opacity-20 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50"
-                            aria-label="{{ __('transfers.close') }}">
-                        <i class="fa-solid fa-times text-xl" aria-hidden="true"></i>
-                    </button>
+
                 </div>
             </div>
             
@@ -148,10 +110,11 @@
                         <input type="text" 
                                id="unlock-code"
                                x-ref="codeInput"
-                               x-model="unlockCode"
+                               wire:model.live="unlockCode"
                                @input="clearError()"
                                @keydown.enter="verifyCode()"
-                               :disabled="isVerifying"
+                               wire:loading.attr="disabled"
+                               wire:target="verifyUnlockCode"
                                class="w-full px-4 py-3 pr-12 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed"
                                placeholder="{{ __('transfers.enter_code_placeholder') }}"
                                autocomplete="off"
@@ -163,34 +126,44 @@
                     </div>
                     
                     <!-- Error Message -->
-                    <div x-show="unlockError" 
-                         x-transition:enter="ease-out duration-150"
-                         x-transition:enter-start="opacity-0 transform scale-95"
-                         x-transition:enter-end="opacity-100 transform scale-100"
-                         x-transition:leave="ease-in duration-100"
-                         x-transition:leave-start="opacity-100 transform scale-100"
-                         x-transition:leave-end="opacity-0 transform scale-95"
-                         class="mt-2 text-sm text-red-600 dark:text-red-400 flex items-center space-x-1"
+                    @if($unlockError)
+                    <div class="mt-2 text-sm text-red-600 dark:text-red-400 flex items-center space-x-1"
                          role="alert">
                         <i class="fa-solid fa-exclamation-circle flex-shrink-0" aria-hidden="true"></i>
-                        <span x-text="unlockError"></span>
+                        <span>{{ $unlockError }}</span>
+                    </div>
+                    @endif
+                    
+                    <!-- Help Message -->
+                    <div class="mt-3 p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
+                        <div class="flex items-start space-x-2">
+                            <i class="fa-solid fa-info-circle text-blue-500 dark:text-blue-400 mt-0.5 flex-shrink-0" aria-hidden="true"></i>
+                            <div class="text-sm text-blue-700 dark:text-blue-300">
+                                <p class="mb-2">{{ __('transfers.unlock_help_message') }}</p>
+                                @php
+                                    $config = \App\Models\Config::first();
+                                    $supportEmail = $config ? $config->notification_email : 'support@example.com';
+                                @endphp
+                                <a href="mailto:{{ $supportEmail }}?subject={{ urlencode(__('transfers.unlock_code_request')) }}&body={{ urlencode(__('transfers.unlock_code_email_body')) }}" 
+                                   class="inline-flex items-center text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200 font-medium transition-colors duration-150">
+                                    <i class="fa-solid fa-envelope mr-1" aria-hidden="true"></i>
+                                    {{ __('transfers.contact_support') }}
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
             
             <!-- Footer -->
-            <div class="bg-gray-50 dark:bg-gray-700 px-6 py-4 flex flex-col sm:flex-row sm:justify-end space-y-2 sm:space-y-0 sm:space-x-3">
-                <button @click="closeModal()" 
-                        :disabled="isVerifying"
-                        class="w-full sm:w-auto px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-600 border border-gray-300 dark:border-gray-500 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed">
-                    {{ __('transfers.cancel') }}
-                </button>
-                
-                <button @click="verifyCode()" 
-                        :disabled="isVerifying || !unlockCode?.trim()"
+            <div class="bg-gray-50 dark:bg-gray-700 px-6 py-4 flex justify-center">
+                <button wire:click="verifyUnlockCode" 
+                        wire:loading.attr="disabled"
+                        wire:target="verifyUnlockCode"
+                        @disabled(!$unlockCode)
                         class="w-full sm:w-auto px-6 py-2 text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 dark:from-blue-500 dark:to-blue-600 dark:hover:from-blue-600 dark:hover:to-blue-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2">
-                    <span x-show="!isVerifying">{{ __('transfers.verify') }}</span>
-                    <span x-show="isVerifying" class="flex items-center space-x-2">
+                    <span wire:loading.remove wire:target="verifyUnlockCode">{{ __('transfers.verify') }}</span>
+                    <span wire:loading wire:target="verifyUnlockCode" class="flex items-center space-x-2">
                         <i class="fa-solid fa-spinner fa-spin" aria-hidden="true"></i>
                         <span>{{ __('transfers.verifying') }}</span>
                     </span>

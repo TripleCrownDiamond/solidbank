@@ -93,6 +93,33 @@ class WithdrawalModal extends Component
             'availableBalance', 'detectedUserName',
             'balanceError', 'amount'
         ]);
+        
+        // Initialize currency based on type and first available account/wallet
+        if ($this->withdrawalType === 'account') {
+            $firstAccount = $this->userAccounts->first();
+            if ($firstAccount) {
+                $this->currency = $firstAccount->currency;
+                if (!Auth::user()->is_admin) {
+                    $this->selectedAccountId = $firstAccount->id;
+                    $this->availableBalance = $firstAccount->balance;
+                }
+            } else {
+                $this->currency = config('app.default_currency', 'EUR');
+            }
+        } elseif ($this->withdrawalType === 'wallet') {
+            $firstWallet = $this->userWallets->first();
+            if ($firstWallet) {
+                $this->currency = $firstWallet->cryptocurrency->symbol;
+                if (!Auth::user()->is_admin) {
+                    $this->selectedWalletId = $firstWallet->id;
+                    $this->availableBalance = $firstWallet->balance;
+                }
+            } else {
+                $this->currency = config('app.default_currency', 'EUR');
+            }
+        } else {
+            $this->currency = config('app.default_currency', 'EUR');
+        }
     }
 
     public function updatedSelectedAccountId()

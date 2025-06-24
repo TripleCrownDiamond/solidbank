@@ -223,9 +223,26 @@
                                             {{ __('common.view_details') }}
                                         </button>
                                     @else
-                                        <span class="text-gray-500 dark:text-gray-400 text-sm font-medium">
-                                            {{ __('common.processed') }}
-                                        </span>
+                                        <div class="flex items-center space-x-2">
+                                            @if($transaction->type === 'TRF' && $transaction->status === 'COMPLETED')
+                                                <button wire:click="downloadTransferTicket({{ $transaction->id }})" 
+                                                        wire:loading.attr="disabled"
+                                                        wire:target="downloadTransferTicket({{ $transaction->id }})"
+                                                        class="inline-flex items-center px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium rounded-md transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                                                        title="{{ __('transfers.download_ticket') }}">
+                                                    <span wire:loading.remove wire:target="downloadTransferTicket({{ $transaction->id }})">
+                                                        <i class="fas fa-download mr-1"></i>
+                                                        {{ __('transfers.download_ticket') }}
+                                                    </span>
+                                                    <span wire:loading wire:target="downloadTransferTicket({{ $transaction->id }})">
+                                                        <i class="fas fa-spinner fa-spin"></i>
+                                                    </span>
+                                                </button>
+                                            @endif
+                                            <span class="text-gray-500 dark:text-gray-400 text-sm font-medium">
+                                                {{ __('common.processed') }}
+                                            </span>
+                                        </div>
                                     @endif
                                 </td>
                                 @endif
@@ -254,12 +271,12 @@
     <!-- Modal for Blocked Transaction Details -->
     @if($showBlockedDetailsModal && $selectedTransaction)
     <div class="fixed inset-0 bg-gray-900 bg-opacity-60 dark:bg-opacity-60 flex items-center justify-center z-50" x-data="{ show: @entangle('showBlockedDetailsModal') }" x-show="show" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-2xl w-full max-w-xl mx-4" @click.away="show = false">
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-2xl w-full max-w-xl mx-4" @click.away="$wire.closeBlockedDetailsModal()">
             <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">
                     <i class="fas fa-info-circle mr-2"></i>{{ __('common.transaction_details') }}
                 </h3>
-                <button @click="show = false" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
+                <button wire:click="closeBlockedDetailsModal" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
                     <i class="fas fa-times fa-lg"></i>
                 </button>
             </div>
@@ -279,7 +296,7 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm bg-gray-50 dark:bg-gray-700 p-4 rounded-lg text-gray-900 dark:text-gray-100">
                         <div><strong>{{ __('common.bank') }}:</strong> <span class="text-gray-700 dark:text-gray-300">{{ $selectedTransaction->account->rib->bank_name }}</span></div>
                         <div><strong>IBAN:</strong> <span class="font-mono text-gray-700 dark:text-gray-300">{{ $selectedTransaction->account->rib->iban }}</span></div>
-                        <div><strong>BIC/SWIFT:</strong> <span class="font-mono text-gray-700 dark:text-gray-300">{{ $selectedTransaction->account->rib->swift_code }}</span></div>
+                        <div><strong>BIC/SWIFT:</strong> <span class="font-mono text-gray-700 dark:text-gray-300">{{ $selectedTransaction->account->rib->swift }}</span></div>
                     </div>
                 </div>
                 @endif
@@ -291,7 +308,7 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm bg-blue-50 dark:bg-blue-900 p-4 rounded-lg text-gray-900 dark:text-gray-100">
                         <div><strong>{{ __('common.bank') }}:</strong> <span class="text-gray-700 dark:text-gray-300">{{ $selectedTransaction->toAccount->rib->bank_name }}</span></div>
                         <div><strong>IBAN:</strong> <span class="font-mono text-gray-700 dark:text-gray-300">{{ $selectedTransaction->toAccount->rib->iban }}</span></div>
-                        <div><strong>BIC/SWIFT:</strong> <span class="font-mono text-gray-700 dark:text-gray-300">{{ $selectedTransaction->toAccount->rib->swift_code }}</span></div>
+                        <div><strong>BIC/SWIFT:</strong> <span class="font-mono text-gray-700 dark:text-gray-300">{{ $selectedTransaction->toAccount->rib->swift }}</span></div>
                         <div><strong>{{ __('common.account_holder') }}:</strong> <span class="text-gray-700 dark:text-gray-300">{{ $selectedTransaction->toAccount->user->name }}</span></div>
                     </div>
                 </div>
@@ -333,9 +350,10 @@
                 <!-- Transfer Steps -->
                 <div>
                     <h4 class="font-semibold text-md text-gray-900 dark:text-gray-100 mb-2 border-t pt-4">{{ __('common.transfer_progress') }}</h4>
-                    @if($selectedTransaction && $selectedTransaction->blockedAtTransferStep)
+                    @if($selectedTransaction && ($selectedTransaction->blockedAtTransferStep || $selectedTransaction->blockedAtTransferStepGroup || $selectedTransaction->transferStepCompletions->count() > 0))
                         <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
                             <!-- Informations sur l'étape bloquée -->
+                            @if($selectedTransaction->blockedAtTransferStep)
                             <div class="mb-4 p-3 bg-orange-100 dark:bg-orange-900 rounded-lg border-l-4 border-orange-500">
                                 <div class="flex items-center mb-2">
                                     <i class="fas fa-lock text-orange-600 mr-2"></i>
@@ -352,27 +370,66 @@
                                     <div><strong>{{ __('common.blocked_at') }}:</strong> {{ $selectedTransaction->blocked_at->format('d/m/Y H:i') }}</div>
                                 </div>
                             </div>
+                            @elseif($selectedTransaction->blockedAtTransferStepGroup)
+                            <div class="mb-4 p-3 bg-orange-100 dark:bg-orange-900 rounded-lg border-l-4 border-orange-500">
+                                <div class="flex items-center mb-2">
+                                    <i class="fas fa-lock text-orange-600 mr-2"></i>
+                                    <span class="font-semibold text-orange-800 dark:text-orange-200">{{ __('transfers.blocked_in_group') }}</span>
+                                </div>
+                                <div class="text-sm text-orange-700 dark:text-orange-300">
+                                    <div><strong>{{ __('transfers.group') }}:</strong> {{ $selectedTransaction->blockedAtTransferStepGroup->name }}</div>
+                                    <div><strong>{{ __('transfers.group_description') }}:</strong> {{ $selectedTransaction->blockedAtTransferStepGroup->description }}</div>
+                                    @if($selectedTransaction->blocked_reason)
+                                    <div><strong>{{ __('common.reason') }}:</strong> {{ $selectedTransaction->blocked_reason }}</div>
+                                    @endif
+                                    <div><strong>{{ __('common.blocked_at') }}:</strong> {{ $selectedTransaction->blocked_at->format('d/m/Y H:i') }}</div>
+                                </div>
+                            </div>
+                            @endif
                             
                             <!-- Liste des étapes avec progression -->
                             <ul class="space-y-3">
-                                @foreach($selectedTransaction->blockedAtTransferStep->transferStepGroup->transferSteps->sortBy('order') as $step)
+                                @php
+                                    $transferSteps = collect();
+                                    $completedStepIds = $selectedTransaction->transferStepCompletions->pluck('transfer_step_id');
+                                    
+                                    if ($selectedTransaction->blockedAtTransferStepGroup) {
+                                        $transferSteps = $selectedTransaction->blockedAtTransferStepGroup->transferSteps;
+                                    } elseif ($selectedTransaction->blockedAtTransferStep) {
+                                        $transferSteps = $selectedTransaction->blockedAtTransferStep->transferStepGroup->transferSteps;
+                                    } elseif ($selectedTransaction->transferStepCompletions->count() > 0) {
+                                        // Récupérer toutes les étapes du groupe à partir des étapes complétées
+                                        $firstCompletion = $selectedTransaction->transferStepCompletions->first();
+                                        if ($firstCompletion && $firstCompletion->transferStep && $firstCompletion->transferStep->transferStepGroup) {
+                                            $transferSteps = $firstCompletion->transferStep->transferStepGroup->transferSteps;
+                                        }
+                                    }
+                                    
+                                    // Calculer les étapes non complétées
+                                    $nonCompletedStepIds = $transferSteps->pluck('id')->diff($completedStepIds);
+                                @endphp
+                                @foreach($transferSteps->sortBy('order') as $step)
                                     <li class="flex items-start text-sm border-l-2 pl-4 py-2 
-                                        @if($selectedTransaction->isStepCompleted($step->id)) border-green-500 bg-green-50 dark:bg-green-900
+                                        @if($completedStepIds->contains($step->id)) border-green-500 bg-green-50 dark:bg-green-900
                                         @elseif($selectedTransaction->blocked_at_transfer_step_id == $step->id) border-orange-500 bg-orange-50 dark:bg-orange-900
+                                        @elseif($nonCompletedStepIds->contains($step->id)) border-red-300 bg-red-50 dark:bg-red-900
                                         @else border-gray-300 dark:border-gray-600 @endif">
                                         <div class="flex-shrink-0 mr-3 mt-0.5">
-                                            @if($selectedTransaction->isStepCompleted($step->id))
+                                            @if($completedStepIds->contains($step->id))
                                                 <i class="fas fa-check-circle text-green-500"></i>
                                             @elseif($selectedTransaction->blocked_at_transfer_step_id == $step->id)
                                                 <i class="fas fa-lock text-orange-500"></i>
+                                            @elseif($nonCompletedStepIds->contains($step->id))
+                                                <i class="fas fa-times-circle text-red-500"></i>
                                             @else
                                                 <i class="far fa-circle text-gray-400"></i>
                                             @endif
                                         </div>
                                         <div class="flex-grow">
                                             <div class="font-medium 
-                                                @if($selectedTransaction->isStepCompleted($step->id)) text-green-700 dark:text-green-300 line-through
+                                                @if($completedStepIds->contains($step->id)) text-green-700 dark:text-green-300 line-through
                                                 @elseif($selectedTransaction->blocked_at_transfer_step_id == $step->id) text-orange-800 dark:text-orange-200
+                                                @elseif($nonCompletedStepIds->contains($step->id)) text-red-700 dark:text-red-300
                                                 @else text-gray-500 dark:text-gray-400 @endif">
                                                 {{ $step->order }}. {{ $step->title }}
                                             </div>
@@ -385,7 +442,7 @@
                                                     @else bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200 @endif">
                                                     {{ ucfirst($step->type) }}
                                                 </span>
-                                                @if($selectedTransaction->isStepCompleted($step->id))
+                                                @if($completedStepIds->contains($step->id))
                                                     @php
                                                         $completion = $selectedTransaction->transferStepCompletions->where('transfer_step_id', $step->id)->first();
                                                     @endphp
@@ -408,7 +465,7 @@
 
             </div>
             <div class="px-6 py-4 bg-gray-50 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 text-right">
-                <button @click="show = false" class="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700">{{ __('common.close') }}</button>
+                <button wire:click="closeBlockedDetailsModal" class="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700">{{ __('common.close') }}</button>
             </div>
         </div>
     </div>
