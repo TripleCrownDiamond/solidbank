@@ -127,7 +127,7 @@
                     </div>
 
                     <!-- Action Buttons -->
-                    <div class="flex justify-between items-center mt-6">
+                    <div class="flex justify-between items-center mt-6" x-data="{ confirmed: false }">
                         <button type="button"
                                 wire:click="closeRecapModal"
                                 class="px-4 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
@@ -142,6 +142,8 @@
                         </button>
                         
                         <button type="button"
+                                x-show="!confirmed"
+                                x-on:click="confirmed = true"
                                 wire:click="confirmTransaction"
                                 class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                                 wire:loading.attr="disabled"
