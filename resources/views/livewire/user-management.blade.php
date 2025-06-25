@@ -154,7 +154,7 @@
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     @if($user->id !== auth()->id())
                                         <input type="checkbox" wire:model.live="selectedUsers" value="{{ $user->id }}" 
-                                               class="rounded border-gray-300 text-brand-primary focus:ring-brand-primary">
+                                               class="rounded border-gray-300 text-brand-primary focus:ring-brand-primary bg-white dark:bg-gray-700 {{ in_array($user->id, $selectedUsers) ? 'ring-2 ring-brand-primary' : '' }}">
                                     @endif
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">

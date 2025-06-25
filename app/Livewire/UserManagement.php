@@ -106,21 +106,31 @@ class UserManagement extends Component
     public function updatedSearch()
     {
         $this->resetPage();
+        $this->resetSelection();
     }
 
     public function updatedStatusFilter()
     {
         $this->resetPage();
+        $this->resetSelection();
     }
 
     public function updatedAdminFilter()
     {
         $this->resetPage();
+        $this->resetSelection();
     }
 
     public function updatedPerPage()
     {
         $this->resetPage();
+        $this->resetSelection();
+    }
+
+    private function resetSelection()
+    {
+        $this->selectedUsers = [];
+        $this->selectAll = false;
     }
 
     public function sortBy($field)
@@ -137,10 +147,19 @@ class UserManagement extends Component
     public function updatedSelectAll($value)
     {
         if ($value) {
+            // Sélectionner tous les utilisateurs de la page courante
             $this->selectedUsers = $this->getUsers()->pluck('id')->toArray();
         } else {
             $this->selectedUsers = [];
         }
+    }
+
+    public function updatedSelectedUsers()
+    {
+        // Synchroniser l'état de "Sélectionner tout" basé sur les utilisateurs de la page courante
+        $currentPageUserIds = $this->getUsers()->pluck('id')->toArray();
+        $selectedOnCurrentPage = array_intersect($this->selectedUsers, $currentPageUserIds);
+        $this->selectAll = count($selectedOnCurrentPage) === count($currentPageUserIds) && count($currentPageUserIds) > 0;
     }
 
     public function activateUser($userId)
