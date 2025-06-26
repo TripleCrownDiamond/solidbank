@@ -67,8 +67,13 @@ class DepositModal extends Component
 
     public function openDepositModal()
     {
+        \Log::info('openDepositModal called');
+        $this->reset(); // Réinitialiser complètement le composant
+        $this->depositType = 'account'; // Forcer la réinitialisation du type
         $this->resetForm();
         $this->showDepositModal = true;
+        $this->dispatch('$refresh'); // Forcer le rafraîchissement de l'interface
+        \Log::info('showDepositModal set to: ' . ($this->showDepositModal ? 'true' : 'false'));
     }
 
     public function closeDepositModal()
@@ -79,7 +84,13 @@ class DepositModal extends Component
 
     public function updatedDepositType()
     {
-        $this->reset(['accountNumber', 'walletAddress', 'detectedUser', 'detectedUserName', 'currency', 'availableBalance', 'balanceError']);
+        $this->reset(['selectedAccountId', 'selectedWalletId', 'accountNumber', 'walletAddress', 'detectedUser', 'detectedUserName', 'currency', 'availableBalance', 'balanceError']);
+        
+        // Réinitialiser la sélection selon le type et le rôle de l'utilisateur
+        if ($this->depositType === 'account' && !Auth::user()->is_admin) {
+            $this->selectedAccountId = Auth::user()->accounts->first()->id ?? null;
+        }
+        
         $this->validateOnly('depositType');
     }
 
@@ -256,7 +267,8 @@ class DepositModal extends Component
 
     public function resetForm()
     {
-        $this->reset(['depositType', 'selectedAccountId', 'selectedWalletId', 'accountNumber', 'walletAddress', 'amount', 'reason', 'currency', 'isLoading', 'detectedUser', 'detectedUserName', 'availableBalance', 'balanceError']);
+        $this->reset(['selectedAccountId', 'selectedWalletId', 'accountNumber', 'walletAddress', 'amount', 'reason', 'currency', 'isLoading', 'detectedUser', 'detectedUserName', 'availableBalance', 'balanceError']);
+        $this->depositType = 'account'; // Réinitialiser explicitement à 'account'
         if (!Auth::user()->is_admin) {
             $this->selectedAccountId = Auth::user()->accounts->first()->id ?? null;
         }

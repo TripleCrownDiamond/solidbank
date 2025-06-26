@@ -6,7 +6,13 @@ return [
     'continue' => 'Continue',
     'confirm_transfer' => 'Confirm Transfer',
     'validate_step' => 'Validate Step',
+    'start_transfer' => 'Start Transfer',
+    'continue_transfer' => 'Continue Transfer',
+    'continuing_transfer' => 'Continuing',
+    'starting_transfer' => 'Starting',
     'processing_transfer' => 'Processing Transfer',
+    'ready_to_continue' => 'Ready to continue transfer',
+    'ready_to_start' => 'Ready to start transfer',
     'transfer_in_progress' => 'Your transaction is being processed',
     'transfer_summary' => 'Transfer Summary',
     // Status and progress messages
@@ -15,6 +21,7 @@ return [
     'step_in_progress' => 'Step in progress',
     'transfer_in_progress' => 'Transfer in progress',
     'transfer_completed_successfully' => 'Transfer completed successfully',
+    'transfer_submitted_successfully' => 'Transfer submitted successfully',
     'transfer_blocked' => 'Transfer blocked',
     'unknown_step' => 'Unknown step',
     'verification_in_progress' => 'Verification in progress...',
@@ -103,6 +110,7 @@ return [
     'recipient_not_found' => 'Recipient not found',
     'creation_error' => 'Error creating transfer',
     'execution_error' => 'Error executing transfer',
+    'transaction_not_found' => 'Transaction not found',
     // Success messages
     'transfer_completed' => 'Transfer completed successfully',
     'transfer_created' => 'Transfer created successfully',
@@ -206,4 +214,6 @@ return [
     'step_info_unavailable' => 'Step information unavailable',
     'account_transfer_steps' => 'Account Transfer Steps',
     'currently_blocked_at' => 'Currently blocked at',
+    'all_steps_completed' => 'All Steps Completed',
+    'transfer_steps_completed_successfully' => 'All transfer steps have been completed successfully.',
 ];

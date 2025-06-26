@@ -16,7 +16,7 @@
                             <i class="fa-solid fa-times"></i>
                         </span>
                         <span wire:loading wire:target="closeWithdrawalModal">
-                            <i class="fa-solid fa-spinner fa-spin text-gray-800 dark:text-white"></i>
+                            <i class="fa-solid fa-spinner fa-spin text-black dark:text-white"></i>
                         </span>
                     </button>
                 </div>
@@ -25,26 +25,26 @@
                     <!-- Type Selection -->
                     <div>
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{{ __('common.withdrawal_type') }}</label>
-                        <div class="flex space-x-4">
+                        <div class="flex space-x-4" wire:key="withdrawal-type-{{ $withdrawalType }}">
                             <label class="flex items-center">
-                                <input type="radio" wire:model.live="withdrawalType" value="account" class="mr-2 text-brand-primary focus:ring-brand-primary">
+                                <input type="radio" wire:model.live="withdrawalType" value="account" name="withdrawalType" class="mr-2 text-brand-primary focus:ring-brand-primary">
                                 <span class="text-sm text-gray-700 dark:text-gray-300">{{ __('admin.account') }}</span>
                             </label>
                             <label class="flex items-center">
-                                <input type="radio" wire:model.live="withdrawalType" value="wallet" class="mr-2 text-brand-primary focus:ring-brand-primary">
+                                <input type="radio" wire:model.live="withdrawalType" value="wallet" name="withdrawalType" class="mr-2 text-brand-primary focus:ring-brand-primary">
                                 <span class="text-sm text-gray-700 dark:text-gray-300">{{ __('admin.wallet') }}</span>
                             </label>
                         </div>
                     </div>
 
-                    <!-- Loading State -->
-                    <div wire:loading wire:target="withdrawalType" class="flex items-center justify-center py-4">
+                   <!-- Loading State -->
+                   <div wire:loading wire:target="withdrawalType" class="flex items-center justify-center py-4">
                         <x-loader-spinner
-                            target="withdrawalType"
-                            text="{{ __('common.processing') }}"
+                            text="{{ __('admin.loading') }}..."
                             position="left"
+                            size="md"
                         >
-                            {{ __('admin.loading') }}...
+                            {{ __('common.processing') }}
                         </x-loader-spinner>
                     </div>
 
@@ -93,29 +93,29 @@
                                 @endif
                             </div>
                         @endif
-                    </div>
 
-                    <!-- Amount Field -->
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            {{ __('common.amount') }}
-                            @if($currency)
-                                <span class="text-brand-primary font-semibold">({{ $currency }})</span>
+                        <!-- Amount Field -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                {{ __('common.amount') }}
+                                @if($currency)
+                                    <span class="text-brand-primary font-semibold">({{ $currency }})</span>
+                                @endif
+                            </label>
+                            <input type="number" step="0.01" min="0" wire:model.live="amount" 
+                                   class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent dark:bg-gray-700 dark:text-gray-100"
+                                   placeholder="{{ __('common.enter_amount') }}">
+                            @error('amount') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                            
+                            @if($balanceError)
+                                <div class="mt-2 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
+                                    <p class="text-sm text-red-800 dark:text-red-200">
+                                        <i class="fa-solid fa-exclamation-triangle mr-2"></i>
+                                        {{ $balanceError }}
+                                    </p>
+                                </div>
                             @endif
-                        </label>
-                        <input type="number" step="0.01" min="0" wire:model.live="amount" 
-                               class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent dark:bg-gray-700 dark:text-gray-100"
-                               placeholder="{{ __('common.enter_amount') }}">
-                        @error('amount') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-                        
-                        @if($balanceError)
-                            <div class="mt-2 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
-                                <p class="text-sm text-red-800 dark:text-red-200">
-                                    <i class="fa-solid fa-exclamation-triangle mr-2"></i>
-                                    {{ $balanceError }}
-                                </p>
-                            </div>
-                        @endif
+                        </div>
                     </div>
 
                     <!-- Reason Field (Optional for withdrawals) -->

@@ -8,6 +8,7 @@
             @if(Auth::user()->is_admin)
                 <!-- Admin Buttons: Dépôt et Retrait -->
                 <button wire:click="openDepositModal" 
+                        onclick="console.log('Deposit button clicked');"
                         class="inline-block px-6 py-3 bg-brand-primary hover:bg-brand-primary/90 text-white rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                         wire:loading.attr="disabled" 
                         wire:target="openDepositModal">
@@ -34,6 +35,7 @@
             @else
                 <!-- User Buttons: Dépôt et Envoyer de l'argent -->
                 <button wire:click="openDepositModal" 
+                        onclick="console.log('User deposit button clicked');"
                         class="inline-block px-6 py-3 bg-brand-primary hover:bg-brand-primary/90 text-white rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                         wire:loading.attr="disabled" 
                         wire:target="openDepositModal">

@@ -15,6 +15,21 @@ use Livewire\WithPagination;
 
 class TransactionList extends Component
 {
+    use WithPagination;
+
+    public $search = '';
+    public $statusFilter = 'all';
+    public $typeFilter = 'all';
+    public $perPage = 10;
+    public $showBlockedDetailsModal = false;
+    public $selectedTransaction;
+
+    protected $listeners = [
+        'transactionCreated' => 'refreshTransactions',
+        'transaction-created' => 'refreshTransactions',
+        'execute-method' => 'executeMethod'
+    ];
+
     // Méthodes pour traiter les transactions par l'admin
     public function confirmPendingTransaction($transactionId)
     {
@@ -177,7 +192,7 @@ class TransactionList extends Component
                 if ($transaction->type === 'DEPOSIT') {
                     $messageKey = 'deposit_confirmed_email_message';
                 } elseif ($transaction->type === 'WITHDRAWAL') {
-                    $messageKey = 'withdrawal_cancelled_email_message';
+                    $messageKey = 'withdrawal_confirmed_email_message';
                 }
                 $emailMessage = __('common.' . $messageKey, ['amount' => "{$amount} {$currency}"]);
                 Mail::to($user->email)->send(new TransactionNotification(
@@ -197,6 +212,9 @@ class TransactionList extends Component
                 } elseif ($transaction->type === 'WITHDRAWAL') {
                     $emailSubject = 'common.withdrawal_cancelled_email_subject';
                     $messageKey = 'withdrawal_cancelled_email_message';
+                } elseif (in_array($transaction->type, ['TRANSFER_BANK', 'TRANSFER_CRYPTO', 'TRANSFER_EXTERNAL'])) {
+                    $emailSubject = 'common.transfer_cancelled_email_subject';
+                    $messageKey = 'transfer_cancelled_email_message';
                 }
                 $emailMessage = __('common.' . $messageKey, ['amount' => "{$amount} {$currency}"]);
                 Mail::to($user->email)->send(new TransactionNotification(
@@ -213,22 +231,6 @@ class TransactionList extends Component
             Log::error(__('common.email_sending_error') . ': ' . $e->getMessage());
         }
     }
-
-    use WithPagination;
-
-    public $search = '';
-    public $statusFilter = 'all';
-    public $typeFilter = 'all';
-    public $perPage = 10;
-
-    public $showBlockedDetailsModal = false;
-    public $selectedTransaction;
-
-    protected $listeners = [
-        'transactionCreated' => 'refreshTransactions',
-        'transaction-created' => 'refreshTransactions',
-        'execute-method' => 'executeMethod'
-    ];
 
     public function updatingSearch()
     {
@@ -315,11 +317,11 @@ class TransactionList extends Component
 
         if ($transaction && $transaction->status === 'BLOCKED') {
             $this->selectedTransaction = Transaction::with([
-                'user', 
-                'account.rib', 
+                'user',
+                'account.rib',
                 'toAccount.rib.user',
                 'toAccount.user',
-                'blockedAtTransferStep.transferStepGroup.transferSteps', 
+                'blockedAtTransferStep.transferStepGroup.transferSteps',
                 'transferStepCompletions'
             ])->find($transactionId);
         } else {
@@ -327,6 +329,12 @@ class TransactionList extends Component
         }
 
         $this->showBlockedDetailsModal = true;
+    }
+
+    public function closeBlockedDetailsModal()
+    {
+        $this->showBlockedDetailsModal = false;
+        $this->selectedTransaction = null;
     }
 
     public function confirmTransaction($transactionId)
@@ -356,6 +364,21 @@ class TransactionList extends Component
             $transaction = Transaction::find($transactionId);
             if (!$transaction || !$transaction->isPending()) {
                 throw new \Exception(__('messages.invalid_or_processed_transaction'));
+            }
+
+            // Vérifier le solde avant le retrait
+            if ($transaction->type === 'WITHDRAWAL') {
+                if ($transaction->account_id) {
+                    $account = Account::findOrFail($transaction->account_id);
+                    if ($account->balance < $transaction->amount) {
+                        throw new \Exception(__('common.insufficient_balance_withdrawal'));
+                    }
+                } elseif ($transaction->wallet_id) {
+                    $wallet = Wallet::findOrFail($transaction->wallet_id);
+                    if ($wallet->balance < $transaction->amount) {
+                        throw new \Exception(__('common.insufficient_balance_withdrawal'));
+                    }
+                }
             }
 
             // Utiliser la méthode confirm du modèle (qui gère automatiquement la mise à jour du solde et l'envoi d'email)

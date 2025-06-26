@@ -209,6 +209,82 @@ class Transaction extends Model
     }
 
     /**
+     * Vérifier si toutes les étapes de transfert sont complétées
+     */
+    public function areAllTransferStepsCompleted()
+    {
+        // Déterminer le type de source (compte ou portefeuille)
+        $sourceType = $this->account_id ? 'account' : 'wallet';
+        $sourceId = $this->account_id ?: $this->wallet_id;
+        
+        if (!$sourceId) {
+            return false;
+        }
+
+        // Récupérer les étapes de transfert selon le type de source
+        if ($sourceType === 'account') {
+            $account = \App\Models\Account::find($sourceId);
+            if (!$account) {
+                return false;
+            }
+            $transferSteps = $account->transferStepGroups()
+                ->with('transferSteps')
+                ->get()
+                ->flatMap(function ($group) {
+                    return $group->transferSteps;
+                })
+                ->sortBy('order');
+        } else {
+            $wallet = \App\Models\Wallet::find($sourceId);
+            if (!$wallet) {
+                return false;
+            }
+            $transferSteps = $wallet->transferStepGroups()
+                ->with('transferSteps')
+                ->get()
+                ->flatMap(function ($group) {
+                    return $group->transferSteps;
+                })
+                ->sortBy('order');
+        }
+
+        // Vérifier si toutes les étapes sont complétées
+        foreach ($transferSteps as $step) {
+            if (!$this->isStepCompleted($step->id)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Changer le statut de BLOCKED à PENDING si toutes les étapes sont complétées
+     */
+    public function updateStatusIfAllStepsCompleted()
+    {
+        if ($this->status === self::STATUS_BLOCKED && $this->areAllTransferStepsCompleted()) {
+            $this->update([
+                'status' => self::STATUS_PENDING,
+                'is_blocked' => false,
+                'blocked_at_transfer_step_id' => null,
+                'blocked_at_transfer_step_group_id' => null,
+                'blocked_reason' => null,
+                'blocked_at' => null,
+            ]);
+            
+            \Illuminate\Support\Facades\Log::info('Transaction status updated from BLOCKED to PENDING', [
+                'transaction_id' => $this->id,
+                'user_id' => $this->user_id
+            ]);
+            
+            return true;
+        }
+        
+        return false;
+    }
+
+    /**
      * Obtenir l'étape de transfert où la transaction est bloquée
      */
     public function getBlockedStepName()

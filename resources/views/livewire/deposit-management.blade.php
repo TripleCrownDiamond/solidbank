@@ -1,4 +1,7 @@
 <div>
+    <script>
+        console.log('DepositManagement template loaded');
+    </script>
     <livewire:deposit-management.action-buttons />
     <livewire:deposit-management.deposit-modal />
     <livewire:deposit-management.withdrawal-modal />

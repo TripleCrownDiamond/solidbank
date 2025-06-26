@@ -7,8 +7,13 @@ return [
     'confirm_transfer' => 'Confirmer le transfert',
     'validate_step' => "Valider l'étape",
     'start_transfer' => 'Démarrer le transfert',
+    'continue_transfer' => 'Continuer le transfert',
+    'continuing_transfer' => 'Continuation en cours',
+    'starting_transfer' => 'Démarrage en cours',
     'processing_transfer' => 'Traitement en cours',
     'transfer_in_progress' => 'Votre transaction est en cours de traitement',
+    'ready_to_continue' => 'Prêt à continuer le transfert',
+    'ready_to_start' => 'Prêt à démarrer le transfert',
     'transfer_summary' => 'Récapitulatif du transfert',
     // Types et sources
     'source_type' => 'Source du transfert',
@@ -57,6 +62,7 @@ return [
     'step_processing' => 'Traitement en cours',
     'step_completion' => 'Transfert terminé',
     'transfer_completed_successfully' => 'Transfert terminé avec succès',
+    'transfer_submitted_successfully' => 'Transfert soumis avec succès',
     'transfer_saved_successfully' => 'Transfert enregistré avec succès',
     'processing_error' => 'Erreur lors du traitement du transfert',
     'transfer_completed' => 'Transfert terminé',
@@ -91,6 +97,7 @@ return [
     'recipient_not_found' => 'Destinataire non trouvé',
     'creation_error' => 'Erreur lors de la création du transfert',
     'execution_error' => "Erreur lors de l'exécution du transfert",
+    'transaction_not_found' => 'Transaction non trouvée',
     // Messages de succès
     'transfer_completed' => 'Transfert effectué avec succès',
     'transfer_created' => 'Transfert créé avec succès',
@@ -181,6 +188,7 @@ return [
     'unlock_step' => 'Débloquer l\'étape',
     'step_title_unavailable' => 'Titre de l\'étape non disponible',
     'step_description_unavailable' => 'Description de l\'étape non disponible',
+    'step_description' => 'Description de l\'étape',
     'step_type' => 'Type d\'étape',
     'step_type_unavailable' => 'Type d\'étape non disponible',
     'step_not_found' => 'Étape non trouvée',
@@ -213,13 +221,14 @@ return [
     'incorrect_unlock_code' => 'Code de déblocage incorrect. Veuillez réessayer',
     'invalid_step' => 'Étape invalide',
     'invalid_unlock_code' => 'Code de déblocage invalide',
+    'verification_error' => 'Erreur lors de la vérification du code',
     'transfer_completed_successfully' => 'Transfert terminé avec succès!',
     'transfer_success_message' => 'Le transfert a été effectué avec succès.',
     'step_already_completed' => 'Étape :title déjà complétée',
     'step_completed_successfully' => 'Étape :title complétée avec succès',
     
     // Nouvelles traductions pour la page de déblocage
-    'unlock_required' => 'Déblocage requis',
+    'unlock_required' => 'Transfert bloqué',
     'unlock_step' => 'Débloquer l\'étape',
     'unlock_step_description' => 'Votre transfert est temporairement bloqué. Veuillez débloquer l\'étape suivante pour continuer.',
     
@@ -241,4 +250,6 @@ return [
     'no_step_to_unlock_description' => 'Toutes les étapes de ce transfert ont été complétées ou aucune étape n\'est en attente.',
     'back_to_transactions' => 'Retour aux transactions',
     'progress' => 'Progression',
+    'all_steps_completed' => 'Toutes les étapes complétées',
+    'transfer_steps_completed_successfully' => 'Toutes les étapes de transfert ont été complétées avec succès.',
 ];

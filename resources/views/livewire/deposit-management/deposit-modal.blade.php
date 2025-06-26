@@ -1,4 +1,4 @@
-<div x-data="{}" x-cloak @if(!$showDepositModal) style="display: none;" @endif>
+<div>
     @if($showDepositModal)
         <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
             <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full mx-4">
@@ -15,7 +15,7 @@
                                 <i class="fa-solid fa-times"></i>
                             </span>
                             <span wire:loading wire:target="closeDepositModal">
-                                <i class="fa-solid fa-spinner fa-spin text-gray-800 dark:text-white"></i>
+                                <i class="fa-solid fa-spinner fa-spin text-black dark:text-white"></i>
                             </span>
                         </button>
                     </div>
@@ -24,13 +24,13 @@
                         <!-- Type Selection -->
                         <div>
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{{ __('common.deposit_type') }}</label>
-                            <div class="flex space-x-4">
+                            <div class="flex space-x-4" wire:key="deposit-type-{{ $depositType }}">
                                 <label class="flex items-center">
-                                    <input type="radio" wire:model.live="depositType" value="account" class="mr-2 text-brand-primary focus:ring-brand-primary">
+                                    <input type="radio" wire:model.live="depositType" value="account" name="depositType" class="mr-2 text-brand-primary focus:ring-brand-primary">
                                     <span class="text-sm text-gray-700 dark:text-gray-300">{{ __('admin.account') }}</span>
                                 </label>
                                 <label class="flex items-center">
-                                    <input type="radio" wire:model.live="depositType" value="wallet" class="mr-2 text-brand-primary focus:ring-brand-primary">
+                                    <input type="radio" wire:model.live="depositType" value="wallet" name="depositType" class="mr-2 text-brand-primary focus:ring-brand-primary">
                                     <span class="text-sm text-gray-700 dark:text-gray-300">{{ __('admin.wallet') }}</span>
                                 </label>
                             </div>

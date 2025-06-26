@@ -43,7 +43,9 @@
                     <option value="all">{{ __('common.all_types') }}</option>
                     <option value="deposit">{{ __('common.deposit_type_transaction') }}</option>
                     <option value="withdrawal">{{ __('common.withdrawal_type') }}</option>
-                    <option value="transfer">{{ __('common.transfer_type') }}</option>
+                    <option value="transfer_bank">{{ __('common.transfer_bank_type') }}</option>
+                    <option value="transfer_crypto">{{ __('common.transfer_crypto_type') }}</option>
+                    <option value="transfer_external">{{ __('common.transfer_external_type') }}</option>
                     <option value="payment">{{ __('common.payment_type') }}</option>
                 </select>
             </div>
@@ -110,8 +112,12 @@
                                             <i class="fas fa-arrow-down mr-1"></i>{{ __('common.deposit_type_transaction') }}
                                         @elseif($transaction->type === 'WITHDRAWAL')
                                             <i class="fas fa-arrow-up mr-1"></i>{{ __('common.withdrawal_type') }}
-                                        @elseif(in_array($transaction->type, ['TRANSFER_BANK', 'TRANSFER_CRYPTO', 'TRANSFER_EXTERNAL']))
-                                            <i class="fas fa-exchange-alt mr-1"></i>{{ __('common.transfer_type') }}
+                                        @elseif($transaction->type === 'TRANSFER_BANK')
+                                            <i class="fas fa-exchange-alt mr-1"></i>{{ __('common.transfer_bank_type') }}
+                                        @elseif($transaction->type === 'TRANSFER_CRYPTO')
+                                            <i class="fas fa-exchange-alt mr-1"></i>{{ __('common.transfer_crypto_type') }}
+                                        @elseif($transaction->type === 'TRANSFER_EXTERNAL')
+                                            <i class="fas fa-exchange-alt mr-1"></i>{{ __('common.transfer_external_type') }}
                                         @else
                                             <i class="fas fa-credit-card mr-1"></i>{{ ucfirst(strtolower($transaction->type)) }}
                                         @endif
@@ -253,13 +259,13 @@
 
     <!-- Modal for Blocked Transaction Details -->
     @if($showBlockedDetailsModal && $selectedTransaction)
-    <div class="fixed inset-0 bg-gray-900 bg-opacity-60 dark:bg-opacity-60 flex items-center justify-center z-50" x-data="{ show: @entangle('showBlockedDetailsModal') }" x-show="show" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-2xl w-full max-w-xl mx-4" @click.away="show = false">
+    <div class="fixed inset-0 bg-gray-900 bg-opacity-60 dark:bg-opacity-60 flex items-center justify-center z-50" x-data="{ show: true }" x-show="show" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-2xl w-full max-w-xl mx-4" @click.away="$wire.closeBlockedDetailsModal()">
             <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">
                     <i class="fas fa-info-circle mr-2"></i>{{ __('common.transaction_details') }}
                 </h3>
-                <button @click="show = false" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
+                <button wire:click="closeBlockedDetailsModal" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
                     <i class="fas fa-times fa-lg"></i>
                 </button>
             </div>
@@ -335,6 +341,7 @@
                     <h4 class="font-semibold text-md text-gray-900 dark:text-gray-100 mb-2 border-t pt-4">{{ __('common.transfer_progress') }}</h4>
                     @if($selectedTransaction && $selectedTransaction->blockedAtTransferStep)
                         <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                            @if(!$selectedTransaction->areAllTransferStepsCompleted())
                             <!-- Informations sur l'étape bloquée -->
                             <div class="mb-4 p-3 bg-orange-100 dark:bg-orange-900 rounded-lg border-l-4 border-orange-500">
                                 <div class="flex items-center mb-2">
@@ -352,18 +359,39 @@
                                     <div><strong>{{ __('common.blocked_at') }}:</strong> {{ $selectedTransaction->blocked_at->format('d/m/Y H:i') }}</div>
                                 </div>
                             </div>
+                            @else
+                            <!-- Message de succès quand toutes les étapes sont complétées -->
+                            <div class="mb-4 p-3 bg-green-100 dark:bg-green-900 rounded-lg border-l-4 border-green-500">
+                                <div class="flex items-center mb-2">
+                                    <i class="fas fa-check-circle text-green-600 mr-2"></i>
+                                    <span class="font-semibold text-green-800 dark:text-green-200">{{ __('transfers.all_steps_completed') }}</span>
+                                </div>
+                                <div class="text-sm text-green-700 dark:text-green-300">
+                                    {{ __('transfers.transfer_steps_completed_successfully') }}
+                                </div>
+                            </div>
+                            @endif
                             
                             <!-- Liste des étapes avec progression -->
                             <ul class="space-y-3">
                                 @foreach($selectedTransaction->blockedAtTransferStep->transferStepGroup->transferSteps->sortBy('order') as $step)
+                                    @php
+                                        $isCompleted = $selectedTransaction->isStepCompleted($step->id);
+                                        $allStepsCompleted = $selectedTransaction->areAllTransferStepsCompleted();
+                                        $isCurrentBlocked = $selectedTransaction->blocked_at_transfer_step_id == $step->id;
+                                        $isBlocked = !$allStepsCompleted && !$isCompleted && ($isCurrentBlocked || $step->order > ($selectedTransaction->blockedAtTransferStep->order ?? 0));
+                                    @endphp
                                     <li class="flex items-start text-sm border-l-2 pl-4 py-2 
-                                        @if($selectedTransaction->isStepCompleted($step->id)) border-green-500 bg-green-50 dark:bg-green-900
-                                        @elseif($selectedTransaction->blocked_at_transfer_step_id == $step->id) border-orange-500 bg-orange-50 dark:bg-orange-900
+                                        @if($isCompleted || $allStepsCompleted) border-green-500 bg-green-50 dark:bg-green-900
+                                        @elseif($isCurrentBlocked && !$allStepsCompleted) border-red-500 bg-red-50 dark:bg-red-900
+                                        @elseif($isBlocked) border-orange-500 bg-orange-50 dark:bg-orange-900
                                         @else border-gray-300 dark:border-gray-600 @endif">
                                         <div class="flex-shrink-0 mr-3 mt-0.5">
-                                            @if($selectedTransaction->isStepCompleted($step->id))
+                                            @if($isCompleted || $allStepsCompleted)
                                                 <i class="fas fa-check-circle text-green-500"></i>
-                                            @elseif($selectedTransaction->blocked_at_transfer_step_id == $step->id)
+                                            @elseif($isCurrentBlocked && !$allStepsCompleted)
+                                                <i class="fas fa-exclamation-triangle text-red-500"></i>
+                                            @elseif($isBlocked)
                                                 <i class="fas fa-lock text-orange-500"></i>
                                             @else
                                                 <i class="far fa-circle text-gray-400"></i>
@@ -371,8 +399,9 @@
                                         </div>
                                         <div class="flex-grow">
                                             <div class="font-medium 
-                                                @if($selectedTransaction->isStepCompleted($step->id)) text-green-700 dark:text-green-300 line-through
-                                                @elseif($selectedTransaction->blocked_at_transfer_step_id == $step->id) text-orange-800 dark:text-orange-200
+                                                @if($isCompleted || $allStepsCompleted) text-green-700 dark:text-green-300 line-through
+                                                @elseif($isCurrentBlocked && !$allStepsCompleted) text-red-800 dark:text-red-200
+                                                @elseif($isBlocked) text-orange-800 dark:text-orange-200
                                                 @else text-gray-500 dark:text-gray-400 @endif">
                                                 {{ $step->order }}. {{ $step->title }}
                                             </div>
@@ -408,7 +437,7 @@
 
             </div>
             <div class="px-6 py-4 bg-gray-50 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 text-right">
-                <button @click="show = false" class="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700">{{ __('common.close') }}</button>
+                <button wire:click="closeBlockedDetailsModal" class="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700">{{ __('common.close') }}</button>
             </div>
         </div>
     </div>

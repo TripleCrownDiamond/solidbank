@@ -13,11 +13,11 @@
     </span>
     <span wire:loading {{ $target ? "wire:target=\"$target\"" : '' }} class="inline-flex items-center {{ $loadingClass }}">
         @if ($position === 'left')
-            <i class="fa-solid fa-spinner fa-spin {{ $size === 'sm' ? 'text-sm' : ($size === 'lg' ? 'text-lg' : '') }} mr-2 text-gray-800 dark:text-white"></i>
-            <span>{{ $text ?: $slot }}</span>
+            <i class="fa-solid fa-spinner fa-spin {{ $size === 'sm' ? 'text-sm' : ($size === 'lg' ? 'text-lg' : '') }} mr-2 text-black dark:text-white"></i>
+            <span class="text-black dark:text-white">{{ $text ?: $slot }}</span>
         @else
-            <span>{{ $text ?: $slot }}</span>
-            <i class="fa-solid fa-spinner fa-spin {{ $size === 'sm' ? 'text-sm' : ($size === 'lg' ? 'text-lg' : '') }} ml-2 text-gray-800 dark:text-white"></i>
+            <span class="text-black dark:text-white">{{ $text ?: $slot }}</span>
+            <i class="fa-solid fa-spinner fa-spin {{ $size === 'sm' ? 'text-sm' : ($size === 'lg' ? 'text-lg' : '') }} ml-2 text-black dark:text-white"></i>
         @endif
     </span>
 </span>

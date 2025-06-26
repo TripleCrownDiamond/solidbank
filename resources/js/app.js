@@ -1,5 +1,5 @@
 import "./bootstrap";
-import Alpine from 'alpinejs';
+import Alpine from "alpinejs";
 
 // Make Alpine available globally before starting
 window.Alpine = Alpine;
@@ -187,16 +187,16 @@ class TransferProgressLoader {
         this.isPaused = false;
         this.currentStep = 1;
         this.stepThresholds = {
-            1: 25,  // Étape 1: Initialisation
-            2: 50,  // Étape 2: Vérification
-            3: 75,  // Étape 3: Traitement
-            4: 100  // Étape 4: Terminé
+            1: 25, // Étape 1: Initialisation
+            2: 50, // Étape 2: Vérification
+            3: 75, // Étape 3: Traitement
+            4: 100, // Étape 4: Terminé
         };
         this.stepMessages = {
-            1: 'Initialisation du transfert...',
-            2: 'Vérification des données...',
-            3: 'Traitement en cours...',
-            4: 'Transfert terminé'
+            1: "Initialisation du transfert...",
+            2: "Vérification des données...",
+            3: "Traitement en cours...",
+            4: "Transfert terminé",
         };
         this.onStepReached = null;
         this.onComplete = null;
@@ -259,14 +259,16 @@ class TransferProgressLoader {
 
     updateDisplay() {
         if (this.progressElement) {
-            this.progressElement.style.strokeDashoffset = 
+            this.progressElement.style.strokeDashoffset =
                 314 - (314 * this.progress) / 100;
         }
         if (this.percentageElement) {
-            this.percentageElement.textContent = Math.round(this.progress) + '%';
+            this.percentageElement.textContent =
+                Math.round(this.progress) + "%";
         }
         if (this.messageElement) {
-            this.messageElement.textContent = this.stepMessages[this.currentStep] || '';
+            this.messageElement.textContent =
+                this.stepMessages[this.currentStep] || "";
         }
     }
 
@@ -284,7 +286,7 @@ class TransferProgressLoader {
         }
 
         // Incrémenter le progrès
-        this.progress += 0.5; // Vitesse d'animation
+        this.progress += 0.1; // Vitesse d'animation très ralentie
         this.updateDisplay();
 
         if (this.progress >= 100) {

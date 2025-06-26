@@ -16,7 +16,9 @@ class ActionButtons extends Component
 
     public function openDepositModal()
     {
+        \Log::info('ActionButtons: openDepositModal called');
         $this->dispatch('open-deposit-modal');
+        \Log::info('ActionButtons: open-deposit-modal event dispatched');
     }
 
     public function openWithdrawalModal()

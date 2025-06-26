@@ -64,7 +64,8 @@ class WithdrawalModal extends Component
 
     public function openWithdrawalModal($data = [])
     {
-        $this->resetExcept(['userAccounts', 'userWallets', 'cryptoCurrencies']);
+        $this->reset(['withdrawalType', 'selectedAccountId', 'selectedWalletId', 'accountNumber', 'walletAddress', 'amount', 'reason', 'availableBalance', 'detectedUserName', 'balanceError']);
+        $this->withdrawalType = 'account'; // Forcer la réinitialisation du type
         $this->currency = config('app.default_currency', 'EUR');
         $this->availableBalance = null;
         $this->detectedUserName = null;
@@ -74,15 +75,21 @@ class WithdrawalModal extends Component
         }
 
         $this->showWithdrawalModal = true;
+        $this->dispatch('$refresh'); // Forcer le rafraîchissement de l'interface
     }
 
     public function closeWithdrawalModal()
     {
         $this->showWithdrawalModal = false;
-        $this->resetExcept(['userAccounts', 'userWallets', 'cryptoCurrencies']);
+        $this->resetForm();
+    }
+
+    public function resetForm()
+    {
+        $this->reset(['selectedAccountId', 'selectedWalletId', 'accountNumber', 'walletAddress', 'amount', 'reason', 'currency', 'availableBalance', 'detectedUserName', 'balanceError']);
+        $this->withdrawalType = 'account'; // Réinitialiser explicitement à 'account'
         $this->currency = config('app.default_currency', 'EUR');
-        $this->availableBalance = null;
-        $this->detectedUserName = null;
+        $this->resetValidation();
     }
 
     public function updatedWithdrawalType()
@@ -415,7 +422,7 @@ class WithdrawalModal extends Component
             // Suppression de l'affichage du message de succès
 
             // Réinitialisation du formulaire et fermeture de la modale
-            $this->reset(['withdrawalType', 'selectedAccountId', 'selectedWalletId', 'accountNumber', 'walletAddress', 'amount', 'reason', 'currency', 'isLoading']);
+            $this->resetForm();
             $this->showWithdrawalModal = false;
 
         } catch (\Exception $e) {

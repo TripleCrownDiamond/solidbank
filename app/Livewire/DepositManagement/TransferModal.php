@@ -234,7 +234,7 @@ class TransferModal extends Component
             // Récupérer le groupe d'étapes du compte
             $transferStepGroup = null;
             $firstStep = null;
-            
+
             if ($this->sourceType === 'account') {
                 $account = \App\Models\Account::with('transferStepGroups.transferSteps')->find($this->selectedSourceId);
                 if ($account && $account->transferStepGroups->isNotEmpty()) {
@@ -249,10 +249,13 @@ class TransferModal extends Component
                 }
             }
 
+            // Déterminer le type de transfert selon la source
+            $transferType = $this->sourceType === 'account' ? 'TRANSFER_EXTERNAL' : 'TRANSFER_CRYPTO';
+
             // Créer la transaction avec le statut BLOCKED
             $transaction = Transaction::create([
                 'user_id' => Auth::id(),
-                'type' => 'TRANSFER_BANK',
+                'type' => $transferType,
                 'amount' => $this->transferAmount,
                 'currency' => $this->transferCurrency,
                 'status' => Transaction::STATUS_BLOCKED,
@@ -310,7 +313,6 @@ class TransferModal extends Component
                 'locale' => app()->getLocale(),
                 'transferId' => $transaction->id
             ]);
-
         } catch (\Exception $e) {
             Log::error('Erreur lors de la création de la transaction: ' . $e->getMessage());
             session()->flash('error', 'Une erreur est survenue lors de la création du transfert.');
@@ -318,13 +320,13 @@ class TransferModal extends Component
     }
 
     /*
-    public function submitTransfer()
-    {
-        // This method is kept for backward compatibility
-        $this->showProgressAndSubmitTransfer();
-    }
-    */
-    
+     * public function submitTransfer()
+     * {
+     *     // This method is kept for backward compatibility
+     *     $this->showProgressAndSubmitTransfer();
+     * }
+     */
+
     public function render()
     {
         return view('livewire.deposit-management.transfer-modal');

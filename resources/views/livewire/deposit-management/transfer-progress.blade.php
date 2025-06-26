@@ -6,12 +6,16 @@
         <!-- Transaction Details Card -->
         <x-transfer.transaction-details :transaction="$transaction" />
 
+     
         <!-- Start Button -->
         <x-transfer.start-button 
             :transferStatus="$transferStatus" 
             :showStartButton="$showStartButton" 
             :isTransferBlocked="$isTransferBlocked" 
         />
+
+         <!-- Completion Message -->
+         <x-transfer.completion-message :isCompleted="$isCompleted" />
         
         <!-- Progress Card -->
         @if($showProgressBar)
@@ -22,8 +26,7 @@
         />
         @endif
 
-        <!-- Completion Message -->
-        <x-transfer.completion-message :isCompleted="$isCompleted" />
+       
     </div>
     
     <!-- Gestionnaire de progression Livewire optimisé -->
@@ -57,7 +60,7 @@
                     const progressCircle = document.querySelector('.progress-circle');
                     if (progressCircle) {
                         const offset = 282.6 - (progress * 2.826);
-                        progressCircle.style.transition = 'stroke-dashoffset 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+                        progressCircle.style.transition = 'stroke-dashoffset 1.2s cubic-bezier(0.4, 0, 0.2, 1)';
                         progressCircle.style.strokeDashoffset = offset;
                         const percentageElement = document.querySelector('.progress-percentage');
                         if (percentageElement) {
@@ -117,7 +120,8 @@
         });
 
         Livewire.on('close-step-modal', () => {
-            @this.call('$refresh');
+            // Le composant se met à jour automatiquement après le déblocage
+            // Pas besoin de rafraîchissement qui masquerait la progression
         });
 
         Livewire.on('proceed-to-next-step', (event) => {

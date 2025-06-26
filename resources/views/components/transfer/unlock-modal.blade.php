@@ -13,6 +13,18 @@
         unlockCode: @entangle('unlockCode').live,
         unlockError: @entangle('unlockError').live,
         isVerifying: @entangle('isVerifying').live,
+        showError: false,
+        
+        init() {
+            this.$watch('unlockError', (value) => {
+                this.showError = value && value.trim() !== '';
+                if (this.showError) {
+                    this.$nextTick(() => {
+                        console.log('Erreur détectée:', value);
+                    });
+                }
+            });
+        },
         
         closeModal() {
             $wire.closeStepModal();
@@ -21,17 +33,20 @@
         async verifyCode() {
             if (!this.unlockCode?.trim()) {
                 this.unlockError = '{{ __('transfers.unlock_code_required') }}';
+                this.showError = true;
                 return;
             }
             
             this.isVerifying = true;
             this.unlockError = '';
+            this.showError = false;
             
             try {
                 await $wire.verifyUnlockCode();
             } catch (error) {
                 console.error('Erreur lors de la vérification:', error);
                 this.unlockError = '{{ __('transfers.verification_error') }}';
+                this.showError = true;
             } finally {
                 this.isVerifying = false;
             }
@@ -161,40 +176,49 @@
                             <i class="fa-solid fa-key text-gray-400 dark:text-gray-500" aria-hidden="true"></i>
                         </div>
                     </div>
-                    
-                    <!-- Error Message -->
-                    <div x-show="unlockError" 
-                         x-transition:enter="ease-out duration-150"
-                         x-transition:enter-start="opacity-0 transform scale-95"
-                         x-transition:enter-end="opacity-100 transform scale-100"
-                         x-transition:leave="ease-in duration-100"
-                         x-transition:leave-start="opacity-100 transform scale-100"
-                         x-transition:leave-end="opacity-0 transform scale-95"
-                         class="mt-2 text-sm text-red-600 dark:text-red-400 flex items-center space-x-1"
-                         role="alert">
-                        <i class="fa-solid fa-exclamation-circle flex-shrink-0" aria-hidden="true"></i>
-                        <span x-text="unlockError"></span>
-                    </div>
                 </div>
             </div>
             
             <!-- Footer -->
-            <div class="bg-gray-50 dark:bg-gray-700 px-6 py-4 flex flex-col sm:flex-row sm:justify-end space-y-2 sm:space-y-0 sm:space-x-3">
-                <button @click="closeModal()" 
-                        :disabled="isVerifying"
-                        class="w-full sm:w-auto px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-600 border border-gray-300 dark:border-gray-500 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed">
-                    {{ __('transfers.cancel') }}
-                </button>
+            <div class="bg-gray-50 dark:bg-gray-700 px-6 py-4">
+                <!-- Error Message in Footer -->
+                <div x-show="showError && unlockError" 
+                     x-transition:enter="ease-out duration-200"
+                     x-transition:enter-start="opacity-0 transform scale-95 -translate-y-2"
+                     x-transition:enter-end="opacity-100 transform scale-100 translate-y-0"
+                     x-transition:leave="ease-in duration-150"
+                     x-transition:leave-start="opacity-100 transform scale-100 translate-y-0"
+                     x-transition:leave-end="opacity-0 transform scale-95 -translate-y-2"
+                     class="mb-4 p-4 bg-red-50 dark:bg-red-900/30 border-2 border-red-300 dark:border-red-700 rounded-lg shadow-sm"
+                     role="alert">
+                    <div class="flex items-center space-x-3">
+                        <div class="flex-shrink-0">
+                            <i class="fa-solid fa-exclamation-triangle text-red-600 dark:text-red-400 text-lg" aria-hidden="true"></i>
+                        </div>
+                        <div class="flex-1">
+                            <span class="text-sm font-semibold text-red-800 dark:text-red-200" x-text="unlockError"></span>
+                        </div>
+                    </div>
+                </div>
                 
-                <button @click="verifyCode()" 
-                        :disabled="isVerifying || !unlockCode?.trim()"
-                        class="w-full sm:w-auto px-6 py-2 text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 dark:from-blue-500 dark:to-blue-600 dark:hover:from-blue-600 dark:hover:to-blue-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2">
-                    <span x-show="!isVerifying">{{ __('transfers.verify') }}</span>
-                    <span x-show="isVerifying" class="flex items-center space-x-2">
-                        <i class="fa-solid fa-spinner fa-spin" aria-hidden="true"></i>
-                        <span>{{ __('transfers.verifying') }}</span>
-                    </span>
-                </button>
+                <!-- Buttons Side by Side -->
+                <div class="flex flex-row justify-end space-x-3">
+                    <button @click="closeModal()" 
+                            :disabled="isVerifying"
+                            class="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-600 border border-gray-300 dark:border-gray-500 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed">
+                        {{ __('transfers.cancel') }}
+                    </button>
+                    
+                    <button @click="verifyCode()" 
+                            :disabled="isVerifying || !unlockCode?.trim()"
+                            class="px-6 py-2 text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 dark:from-blue-500 dark:to-blue-600 dark:hover:from-blue-600 dark:hover:to-blue-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2">
+                        <span x-show="!isVerifying">{{ __('transfers.verify') }}</span>
+                        <span x-show="isVerifying" class="flex items-center space-x-2">
+                            <i class="fa-solid fa-spinner fa-spin" aria-hidden="true"></i>
+                            <span>{{ __('transfers.verifying') }}</span>
+                        </span>
+                    </button>
+                </div>
             </div>
         </div>
     </div>
