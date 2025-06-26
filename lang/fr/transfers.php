@@ -7,6 +7,8 @@ return [
     'confirm_transfer' => 'Confirmer le transfert',
     'validate_step' => "Valider l'étape",
     'start_transfer' => 'Démarrer le transfert',
+    'continue_transfer' => 'Continuer le transfert',
+    'transfer_pending' => 'Transfert en attente',
     'processing_transfer' => 'Traitement en cours',
     'transfer_in_progress' => 'Votre transaction est en cours de traitement',
     'transfer_summary' => 'Récapitulatif du transfert',
