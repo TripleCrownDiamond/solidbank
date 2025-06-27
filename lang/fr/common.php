@@ -29,6 +29,15 @@ return [
     'user_space' => 'Espace Utilisateur',
     'progress' => 'Progression',
     'recharge' => 'Recharger',
+    'recharge_card' => 'Recharger la carte',
+    'recharge_amount' => 'Montant à recharger',
+    'enter_amount' => 'Entrez le montant',
+    'insufficient_balance_recharge' => 'Solde insuffisant pour recharger la carte',
+    'card_recharged_successfully' => 'Carte rechargée avec succès',
+    'card_not_found' => 'Carte non trouvée',
+    'recharge_card_balance' => 'Recharger le solde de la carte',
+    'current_card_balance' => 'Solde actuel de la carte',
+    'account_balance' => 'Solde du compte',
     'card_requests' => 'Demandes de Cartes',
     'select_card_type' => 'Sélectionnez le type de carte',
     'phone_number_placeholder' => 'Entrez votre numéro de téléphone',
@@ -38,6 +47,7 @@ return [
     'phone_number' => 'Numéro de Téléphone',
     'loading' => 'Chargement',
     'sending' => 'Envoi',
+    'recharging' => 'Rechargement',
     'view_all_requests' => 'Voir toutes les demandes',
     'account_number' => 'Numéro de Compte',
     'username' => "Nom d'Utilisateur",
@@ -347,7 +357,6 @@ return [
     // Email de bienvenue avec vérification
     'welcome_verification_subject' => 'Bonjour ! Vérifiez votre adresse e-mail',
     'welcome_verification_message' => 'Votre compte a été créé avec succès et est en cours de vérification. Pour commencer à utiliser nos services, veuillez vérifier votre adresse e-mail.',
-
     'blocked_transaction_details' => 'Détails de la transaction bloquée',
     'view_details' => 'Voir les détails',
     'rib_details' => 'Détails du RIB',
@@ -361,7 +370,6 @@ return [
     'step' => 'Étape',
     'completed_at' => 'Terminé le',
     'no_transfer_progress_info' => 'Aucune information sur la progression du transfert disponible pour cette transaction.',
-
     // Modal de transaction bloquée
     'blocked_transaction_details' => 'Détails de la Transaction Bloquée',
     'close' => 'Fermer',
@@ -370,7 +378,7 @@ return [
     'blocked_at' => 'Bloquée le',
     'unlocked_at' => 'Débloquée le',
     'not_unlocked_yet' => 'Pas encore débloquée',
-    'no_transfer_progress_info' => 'Aucune information sur la progression du transfert n\'est disponible pour cette transaction.',
+    'no_transfer_progress_info' => "Aucune information sur la progression du transfert n'est disponible pour cette transaction.",
     'welcome_verification_instructions' => 'Pour finaliser la création de votre compte, veuillez vérifier votre adresse e-mail en cliquant sur le bouton ci-dessous.',
     'welcome_verification_note' => 'Ce lien de vérification expirera dans 60 minutes.',
     'welcome_verification_resend_info' => 'Si le lien a expiré, vous pouvez demander un nouveau lien de vérification depuis la page de connexion.',
@@ -558,4 +566,5 @@ return [
     'transfer_funds' => 'Transférer des fonds',
     'transfer_modal_description' => 'Transférer des fonds entre vos comptes ou vers un autre utilisateur.',
     'verify' => 'Vérifier',
+    'recharge_info' => 'Information de recharge',
 ];

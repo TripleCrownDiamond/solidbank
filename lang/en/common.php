@@ -29,6 +29,11 @@ return [
     'user_space' => 'User Space',
     'progress' => 'Progress',
     'recharge' => 'Recharge',
+    'recharge_card' => 'Recharge Card',
+    'recharge_amount' => 'Recharge Amount',
+    'recharge_card_balance' => 'Recharge Card Balance',
+    'insufficient_balance_recharge' => 'Insufficient balance to recharge the card',
+    'card_recharged_successfully' => 'Card recharged successfully',
     'account_number' => 'Account Number',
     'username' => 'Username',
     'registration_date' => 'Registration Date',
@@ -267,6 +272,7 @@ return [
     'withdrawal_confirmed_email_subject' => 'New Withdrawal Confirmed',
     'withdrawal_confirmed_email_message' => 'We are pleased to inform you that your withdrawal of :amount has been confirmed and sent.',
     'processing' => 'Processing...',
+    'recharging' => 'Recharging...',
     'inactive' => 'Inactive',
     // User Dashboard Stats
     'my_stats' => 'My Statistics',
@@ -387,7 +393,6 @@ return [
     'no_transfer_progress_info' => 'No transfer progress information available for this transaction.',
     // Wallet translations
     'wallet_name' => 'Wallet Name',
-
     // Blocked transaction modal
     'blocked_transaction_details' => 'Blocked Transaction Details',
     'close' => 'Close',
@@ -550,4 +555,5 @@ return [
     'transfer_funds' => 'Transfer Funds',
     'transfer_modal_description' => 'Transfer funds between your accounts or to another user.',
     'verify' => 'Verify',
+    'recharge_info' => 'Recharge information',
 ];

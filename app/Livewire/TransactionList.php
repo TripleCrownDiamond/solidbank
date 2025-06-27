@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Mail\TransactionNotification;
 use App\Models\Account;
+use App\Models\Config;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use Illuminate\Support\Facades\Auth;
@@ -355,7 +356,80 @@ class TransactionList extends Component
             return;
         }
 
-        $this->processConfirmTransaction($transactionId);
+        // Vérifier si c'est une transaction de transfert
+        if (in_array($transaction->type, ['TRANSFER_BANK', 'TRANSFER_CRYPTO', 'TRANSFER_EXTERNAL'])) {
+            $this->confirmTransferTransaction($transactionId);
+        } else {
+            $this->processConfirmTransaction($transactionId);
+        }
+    }
+
+    /**
+     * Confirmer une transaction de transfert spécifiquement
+     */
+    public function confirmTransferTransaction($transactionId)
+    {
+        if (!Auth::user()->is_admin) {
+            $this->dispatch('alert', ['type' => 'error', 'message' => __('messages.unauthorized_access')]);
+            return;
+        }
+
+        try {
+            $transaction = Transaction::find($transactionId);
+            if (!$transaction || !$transaction->isPending()) {
+                throw new \Exception(__('messages.invalid_or_processed_transaction'));
+            }
+
+            // Vérifier que c'est bien une transaction de transfert
+            if (!in_array($transaction->type, ['TRANSFER_BANK', 'TRANSFER_CRYPTO', 'TRANSFER_EXTERNAL'])) {
+                throw new \Exception(__('messages.not_a_transfer_transaction'));
+            }
+
+            // Vérifier le solde disponible
+            if ($transaction->account_id) {
+                $account = Account::findOrFail($transaction->account_id);
+                if ($account->balance < $transaction->amount) {
+                    throw new \Exception(__('messages.insufficient_balance_transfer'));
+                }
+            } elseif ($transaction->wallet_id) {
+                $wallet = Wallet::findOrFail($transaction->wallet_id);
+                if ($wallet->balance < $transaction->amount) {
+                    throw new \Exception(__('messages.insufficient_balance_transfer'));
+                }
+            } else {
+                throw new \Exception(__('messages.no_source_account_or_wallet'));
+            }
+
+            DB::transaction(function () use ($transaction) {
+                // Effectuer le retrait du solde
+                if ($transaction->account_id) {
+                    $account = Account::findOrFail($transaction->account_id);
+                    $account->decrement('balance', $transaction->amount);
+                } elseif ($transaction->wallet_id) {
+                    $wallet = Wallet::findOrFail($transaction->wallet_id);
+                    $wallet->decrement('balance', $transaction->amount);
+                }
+
+                // Mettre à jour le statut de la transaction
+                $transaction->update([
+                    'status' => Transaction::STATUS_COMPLETED,
+                    'processed_by_admin_id' => Auth::id(),
+                    'processed_at' => now()
+                ]);
+
+                // Générer le reçu PDF
+                $this->generateTransferReceipt($transaction);
+
+                // Envoyer l'email de confirmation
+                $this->sendTransferConfirmationEmail($transaction);
+            });
+
+            $this->dispatch('alert', ['type' => 'success', 'message' => __('messages.transfer_confirmed_successfully')]);
+        } catch (\Exception $e) {
+            $this->dispatch('alert', ['type' => 'error', 'message' => __('messages.transfer_confirmation_error', ['error' => $e->getMessage()])]);
+        }
+
+        $this->dispatch('action-completed');
     }
 
     public function processConfirmTransaction($transactionId)
@@ -410,7 +484,51 @@ class TransactionList extends Component
             return;
         }
 
-        $this->processCancelTransaction($transactionId);
+        // Vérifier si c'est une transaction de transfert
+        if (in_array($transaction->type, ['TRANSFER_BANK', 'TRANSFER_CRYPTO', 'TRANSFER_EXTERNAL'])) {
+            $this->cancelTransferTransaction($transactionId);
+        } else {
+            $this->processCancelTransaction($transactionId);
+        }
+    }
+
+    /**
+     * Annuler une transaction de transfert spécifiquement
+     */
+    public function cancelTransferTransaction($transactionId)
+    {
+        if (!Auth::user()->is_admin) {
+            $this->dispatch('alert', ['type' => 'error', 'message' => __('messages.unauthorized_access')]);
+            return;
+        }
+
+        try {
+            $transaction = Transaction::find($transactionId);
+            if (!$transaction || !$transaction->isPending()) {
+                throw new \Exception(__('messages.invalid_or_processed_transaction'));
+            }
+
+            // Vérifier que c'est bien une transaction de transfert
+            if (!in_array($transaction->type, ['TRANSFER_BANK', 'TRANSFER_CRYPTO', 'TRANSFER_EXTERNAL'])) {
+                throw new \Exception(__('messages.not_a_transfer_transaction'));
+            }
+
+            // Mettre à jour le statut de la transaction
+            $transaction->update([
+                'status' => Transaction::STATUS_CANCELLED,
+                'processed_by_admin_id' => Auth::id(),
+                'processed_at' => now()
+            ]);
+
+            // Envoyer l'email d'annulation
+            $this->sendTransferCancellationEmail($transaction);
+
+            $this->dispatch('alert', ['type' => 'success', 'message' => __('messages.transfer_cancelled_successfully')]);
+        } catch (\Exception $e) {
+            $this->dispatch('alert', ['type' => 'error', 'message' => __('messages.transfer_cancellation_error', ['error' => $e->getMessage()])]);
+        }
+
+        $this->dispatch('action-completed');
     }
 
     public function processCancelTransaction($transactionId)
@@ -482,6 +600,165 @@ class TransactionList extends Component
         $transaction->unblock(Auth::id());
 
         $this->dispatch('alert', ['type' => 'success', 'message' => __('messages.transaction_unblocked_successfully')]);
+    }
+
+    /**
+     * Générer un reçu PDF pour une transaction de transfert
+     */
+    private function generateTransferReceipt($transaction)
+    {
+        try {
+            // Récupérer les informations de la banque depuis la config
+            $config = \App\Models\Config::first();
+            
+            $currency = $transaction->currency ?: ($transaction->account ? $transaction->account->currency : ($transaction->wallet ? $transaction->wallet->cryptocurrency->symbol : 'EUR'));
+            $amount = number_format($transaction->amount, 2);
+            
+            // Données pour le PDF
+            $data = [
+                'transaction' => $transaction,
+                'user' => $transaction->user,
+                'config' => $config,
+                'amount' => $amount,
+                'currency' => $currency,
+                'date' => $transaction->created_at->format('d/m/Y H:i'),
+                'reference' => $transaction->reference ?: 'TR-' . $transaction->id
+            ];
+            
+            // Créer le nom du fichier
+            $filename = 'transfer_receipt_' . $transaction->id . '_' . time() . '.pdf';
+            $filepath = storage_path('app/public/receipts/' . $filename);
+            
+            // Créer le répertoire s'il n'existe pas
+            if (!file_exists(dirname($filepath))) {
+                mkdir(dirname($filepath), 0755, true);
+            }
+            
+            // Générer le contenu HTML du reçu
+            $html = view('pdf.transfer-receipt', $data)->render();
+            
+            // Pour l'instant, on sauvegarde le HTML dans un fichier temporaire
+            // Dans un vrai projet, on utiliserait une librairie comme DomPDF ou wkhtmltopdf
+            file_put_contents($filepath . '.html', $html);
+            
+            // Stocker le chemin du reçu dans la transaction
+            $transaction->update([
+                'receipt_path' => 'receipts/' . $filename . '.html'
+            ]);
+            
+            Log::info(__('messages.transfer_receipt_generated'), [
+                'transaction_id' => $transaction->id,
+                'receipt_path' => $filepath
+            ]);
+            
+        } catch (\Exception $e) {
+            Log::error(__('messages.transfer_receipt_generation_error') . ': ' . $e->getMessage());
+        }
+    }
+    
+    /**
+     * Envoyer un email de confirmation de transfert
+     */
+    private function sendTransferConfirmationEmail($transaction)
+    {
+        try {
+            $user = $transaction->user;
+            $currency = $transaction->currency ?: ($transaction->account ? $transaction->account->currency : ($transaction->wallet ? $transaction->wallet->cryptocurrency->symbol : 'EUR'));
+            $amount = number_format($transaction->amount, 2);
+            $amountWithCurrency = $amount . ' ' . $currency;
+            
+            // Déterminer le sujet selon le type de transfert
+            $emailSubject = '';
+            $messageKey = '';
+            
+            switch ($transaction->type) {
+                case 'TRANSFER_BANK':
+                    $emailSubject = __('messages.bank_transfer_confirmed_subject');
+                    $messageKey = 'bank_transfer_confirmed_message';
+                    break;
+                case 'TRANSFER_CRYPTO':
+                    $emailSubject = __('messages.crypto_transfer_confirmed_subject');
+                    $messageKey = 'crypto_transfer_confirmed_message';
+                    break;
+                case 'TRANSFER_EXTERNAL':
+                    $emailSubject = __('messages.external_transfer_confirmed_subject');
+                    $messageKey = 'external_transfer_confirmed_message';
+                    break;
+                default:
+                    $emailSubject = __('messages.transfer_confirmed_subject');
+                    $messageKey = 'transfer_confirmed_message';
+            }
+            
+            $emailMessage = __('messages.' . $messageKey, ['amount' => $amountWithCurrency]);
+            
+            // Créer le lien de téléchargement du reçu
+            $receiptUrl = '';
+            if ($transaction->receipt_path) {
+                $receiptUrl = url('storage/' . $transaction->receipt_path);
+            }
+            
+            Mail::to($user->email)->send(new TransactionNotification(
+                $emailSubject,
+                $emailMessage,
+                $user,
+                $transaction,
+                $amount,
+                'emails.transaction-confirmed',
+                $receiptUrl
+            ));
+            
+        } catch (\Exception $e) {
+            Log::error(__('messages.transfer_confirmation_email_error') . ': ' . $e->getMessage());
+        }
+    }
+    
+    /**
+     * Envoyer un email d'annulation de transfert
+     */
+    private function sendTransferCancellationEmail($transaction)
+    {
+        try {
+            $user = $transaction->user;
+            $currency = $transaction->currency ?: ($transaction->account ? $transaction->account->currency : ($transaction->wallet ? $transaction->wallet->cryptocurrency->symbol : 'EUR'));
+            $amount = number_format($transaction->amount, 2);
+            $amountWithCurrency = $amount . ' ' . $currency;
+            
+            // Déterminer le sujet selon le type de transfert
+            $emailSubject = '';
+            $messageKey = '';
+            
+            switch ($transaction->type) {
+                case 'TRANSFER_BANK':
+                    $emailSubject = __('messages.bank_transfer_cancelled_subject');
+                    $messageKey = 'bank_transfer_cancelled_message';
+                    break;
+                case 'TRANSFER_CRYPTO':
+                    $emailSubject = __('messages.crypto_transfer_cancelled_subject');
+                    $messageKey = 'crypto_transfer_cancelled_message';
+                    break;
+                case 'TRANSFER_EXTERNAL':
+                    $emailSubject = __('messages.external_transfer_cancelled_subject');
+                    $messageKey = 'external_transfer_cancelled_message';
+                    break;
+                default:
+                    $emailSubject = __('messages.transfer_cancelled_subject');
+                    $messageKey = 'transfer_cancelled_message';
+            }
+            
+            $emailMessage = __('messages.' . $messageKey, ['amount' => $amountWithCurrency]);
+            
+            Mail::to($user->email)->send(new TransactionNotification(
+                $emailSubject,
+                $emailMessage,
+                $user,
+                $transaction,
+                $amount,
+                'emails.transaction-cancelled'
+            ));
+            
+        } catch (\Exception $e) {
+            Log::error(__('messages.transfer_cancellation_email_error') . ': ' . $e->getMessage());
+        }
     }
 
     public function render()

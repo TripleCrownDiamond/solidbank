@@ -145,4 +145,7 @@ return [
     'user_deleted_successfully' => 'Utilisateur supprimé avec succès',
     'invalid_otp' => 'OTP invalide',
     'otp_sent_successfully' => 'OTP envoyé avec succès',
+    // Transfer messages
+    'transfer_confirmed_successfully' => 'Transfert confirmé avec succès',
+    'external_transfer_confirmed_subject' => 'Confirmation de votre transfert externe',
 ];

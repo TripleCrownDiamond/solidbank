@@ -183,48 +183,41 @@
                 
                 <!-- Toggle Details Button -->
                 @if($type === 'card')
-                    <button wire:click="toggleCardDetails({{ $item->id }})"
+                    <button onclick="Livewire.dispatch('toggleCardDetails', { cardId: {{ $item->id }} })"
                             class="px-3 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition-colors duration-200"
                             title="{{ $showDetails ? __('common.hide_card_details') : __('common.show_card_details') }}">
                         <i class="fa-solid {{ $showDetails ? 'fa-eye-slash' : 'fa-eye' }}"></i>
                     </button>
                 @else
-                    <button wire:click="toggleWalletDetails({{ $item->id }})"
+                    <button onclick="Livewire.dispatch('toggleWalletDetails', { walletId: {{ $item->id }} })"
                             class="px-3 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition-colors duration-200"
                             title="{{ $showDetails ? __('common.hide_wallet_details') : __('common.show_wallet_details') }}">
                         <i class="fa-solid {{ $showDetails ? 'fa-eye-slash' : 'fa-eye' }}"></i>
                     </button>
                 @endif
                 
+                <!-- Recharge Button for Cards (User only) -->
+                @if($type === 'card' && auth()->user() && !auth()->user()->is_admin && !($adminView ?? false))
+                    <button onclick="Livewire.dispatch('openRechargeModal', { cardId: {{ $item->id }} })"
+                            class="px-3 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors duration-200"
+                            title="{{ __('common.recharge_card') }}">
+                        <i class="fa-solid fa-plus"></i>
+                    </button>
+                @endif
+                
                 <!-- Delete Button for Admin -->
                 @if(auth()->user() && auth()->user()->is_admin)
                     @if($type === 'card')
-                        <button wire:click="deleteCard({{ $item->id }})"
-                                wire:confirm="{{ __('messages.confirm_delete_card') }}"
-                                wire:loading.attr="disabled" 
-                                wire:target="deleteCard({{ $item->id }})"
-                                class="px-3 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors duration-200 disabled:opacity-50"
-                                title="{{ __('common.delete') }}">
-                            <span wire:loading.remove wire:target="deleteCard({{ $item->id }})">
-                                <i class="fa-solid fa-trash"></i>
-                            </span>
-                            <span wire:loading wire:target="deleteCard({{ $item->id }})">
-                                <i class="fa-solid fa-spinner fa-spin"></i>
-                            </span>
+                        <button onclick="if(confirm('{{ __('common.confirm_delete_card') }}')) { Livewire.dispatch('deleteCard', { cardId: {{ $item->id }} }) }"
+                                class="px-3 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors duration-200"
+                                title="{{ __('common.delete_card') }}">
+                            <i class="fa-solid fa-trash"></i>
                         </button>
                     @else
-                        <button wire:click="deleteWallet({{ $item->id }})"
-                                wire:confirm="{{ __('messages.confirm_delete_wallet') }}"
-                                wire:loading.attr="disabled" 
-                                wire:target="deleteWallet({{ $item->id }})"
-                                class="px-3 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors duration-200 disabled:opacity-50"
-                                title="{{ __('common.delete') }}">
-                            <span wire:loading.remove wire:target="deleteWallet({{ $item->id }})">
-                                <i class="fa-solid fa-trash"></i>
-                            </span>
-                            <span wire:loading wire:target="deleteWallet({{ $item->id }})">
-                                <i class="fa-solid fa-spinner fa-spin"></i>
-                            </span>
+                        <button onclick="if(confirm('{{ __('common.confirm_delete_wallet') }}')) { Livewire.dispatch('deleteWallet', { walletId: {{ $item->id }} }) }"
+                                class="px-3 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors duration-200"
+                                title="{{ __('common.delete_wallet') }}">
+                            <i class="fa-solid fa-trash"></i>
                         </button>
                     @endif
                 @endif

@@ -24,7 +24,18 @@ class UserBankCards extends Component
     public $loadingAction = null;
     public $showCardDetails = [];
     
-    protected $listeners = ['execute-method' => 'executeMethod'];
+    // Propriétés pour le rechargement de carte
+    public $showRechargeModal = false;
+    public $selectedCardId = null;
+    public $rechargeAmount = '';
+    public $isRecharging = false;
+    
+    protected $listeners = [
+        'execute-method' => 'executeMethod',
+        'toggleCardDetails' => 'handleToggleCardDetails',
+        'openRechargeModal' => 'handleOpenRechargeModal',
+        'deleteCard' => 'handleDeleteCard'
+    ];
 
     /**
      * Vérifie si l'utilisateur a des comptes inactifs
@@ -228,5 +239,103 @@ class UserBankCards extends Component
         if (method_exists($this, $method)) {
             call_user_func_array([$this, $method], $params);
         }
+    }
+    
+    /**
+     * Ouvre la modale de rechargement pour une carte
+     */
+    public function openRechargeModal($cardId)
+    {
+        $this->selectedCardId = $cardId;
+        $this->rechargeAmount = '';
+        $this->showRechargeModal = true;
+        $this->resetValidation();
+    }
+    
+    /**
+     * Ferme la modale de rechargement
+     */
+    public function closeRechargeModal()
+    {
+        $this->showRechargeModal = false;
+        $this->selectedCardId = null;
+        $this->rechargeAmount = '';
+        $this->isRecharging = false;
+        $this->resetValidation();
+    }
+    
+    /**
+     * Recharge le solde d'une carte
+     */
+    public function rechargeCard()
+    {
+        $this->isRecharging = true;
+        
+        try {
+            $this->validate([
+                'rechargeAmount' => 'required|numeric|min:1|max:999999.99',
+                'selectedCardId' => 'required|exists:cards,id'
+            ]);
+            
+            /** @var User $user */
+            $user = Auth::user();
+            
+            // Récupérer la carte
+            $card = $user->cards()->find($this->selectedCardId);
+            if (!$card) {
+                $this->dispatch('alert', ['type' => 'error', 'message' => __('common.card_not_found')]);
+                $this->closeRechargeModal();
+                return;
+            }
+            
+            // Récupérer le compte principal actif
+            $account = $card->account;
+            if (!$account || $account->status !== 'ACTIVE') {
+                $this->dispatch('alert', ['type' => 'error', 'message' => __('common.account_not_active')]);
+                $this->closeRechargeModal();
+                return;
+            }
+            
+            $rechargeAmount = floatval($this->rechargeAmount);
+            
+            // Vérifier si le solde du compte est suffisant
+            if ($account->balance < $rechargeAmount) {
+                $this->dispatch('alert', ['type' => 'error', 'message' => __('common.insufficient_balance_recharge')]);
+                return;
+            }
+            
+            // Effectuer le rechargement
+            $account->balance -= $rechargeAmount;
+            $card->balance += $rechargeAmount;
+            
+            $account->save();
+            $card->save();
+            
+            $this->dispatch('alert', ['type' => 'success', 'message' => __('common.card_recharged_successfully')]);
+            $this->closeRechargeModal();
+            
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            $this->isRecharging = false;
+            throw $e;
+        } catch (\Exception $e) {
+            Log::error('Erreur lors du rechargement de carte: ' . $e->getMessage());
+            $this->dispatch('alert', ['type' => 'error', 'message' => __('common.error_occurred')]);
+            $this->closeRechargeModal();
+        }
+    }
+
+    public function handleToggleCardDetails($cardId)
+    {
+        $this->toggleCardDetails($cardId);
+    }
+
+    public function handleOpenRechargeModal($cardId)
+    {
+        $this->openRechargeModal($cardId);
+    }
+
+    public function handleDeleteCard($cardId)
+    {
+        $this->deleteCard($cardId);
     }
 }

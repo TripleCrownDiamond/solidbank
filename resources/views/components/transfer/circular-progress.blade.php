@@ -75,17 +75,4 @@
     <div class="text-xl font-semibold text-gray-800 dark:text-gray-200 text-center mb-4 min-h-12">
         <span class="status-message">{{ $statusMessage }}</span>
     </div>
-
-    <!-- Unlock Button (shown when blocked) -->
-    <div class="text-center mb-4" style="display: none;" data-unlock-button>
-        <button 
-            wire:click="reopenModal"
-            class="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center mx-auto"
-        >
-            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z"></path>
-            </svg>
-            {{ __('transfers.unlock_step') }}
-        </button>
-    </div>
 </div>

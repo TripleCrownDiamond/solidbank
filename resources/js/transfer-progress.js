@@ -2,7 +2,7 @@
 class TransferProgress {
     constructor() {
         this.progress = 0;
-        this.statusMessage = 'Traitement du transfert en cours...';
+        this.statusMessage = window.translations?.transfers?.processing_transfer_in_progress || 'Traitement du transfert en cours...';
         this.showModal = false;
         this.progressStarted = false;
         this.progressInterval = null;
@@ -71,24 +71,24 @@ class TransferProgress {
                 Livewire.on('transfer-blocked', () => {
                     this.showModal = true;
                     this.updateUI();
-                    console.log('Transfert bloqué, affichage de la modale');
+                    console.log(window.translations?.transfers?.transfer_blocked_showing_modal || 'Transfert bloqué, affichage de la modale');
                 });
 
                 Livewire.on('transferBlocked', () => {
                     console.log('Transfer blocked event received');
-                    this.setStatusMessage('Transaction bloquée');
+                    this.setStatusMessage(window.translations?.transfers?.transaction_blocked || 'Transaction bloquée');
                     this.showUnlockButton();
                 });
 
                 Livewire.on('transfer-completed', () => {
                     this.progress = 100;
-                    this.statusMessage = 'Transfert terminé avec succès';
+                    this.statusMessage = window.translations?.transfers?.transfer_submitted_successfully || 'Soumis avec succès';
                     this.updateUI();
-                    console.log('Transfert complété');
+                    console.log(window.translations?.transfers?.transfer_completed || 'Transfert complété');
                 });
                 
                 Livewire.on('transfer-progress-updated', (progressData) => {
-                    console.log('Mise à jour de la progression reçue:', progressData);
+                    console.log(window.translations?.transfers?.progress_update_received || 'Mise à jour de la progression reçue:', progressData);
                     if (progressData && progressData.totalSteps > 0) {
                         this.totalSteps = progressData.totalSteps;
                         this.percentagePerStep = progressData.percentagePerStep;
@@ -107,16 +107,16 @@ class TransferProgress {
                 });
                 
                 Livewire.on('transferCompleted', () => {
-                    console.log('Transfer completed event received');
+                    console.log(window.translations?.transfers?.transfer_completed_event_received || 'Transfer completed event received');
                     this.setProgress(100);
-                    this.setStatusMessage('Transfert terminé avec succès');
+                    this.setStatusMessage(window.translations?.transfers?.transfer_submitted_successfully || 'Soumis avec succès');
                     this.hideModal();
                     this.hideUnlockButton();
                 });
                 
                 // Écouter l'événement progressDataLoaded émis depuis mount()
                 Livewire.on('progressDataLoaded', (progressData) => {
-                    console.log('Données de progression reçues depuis mount:', progressData);
+                    console.log(window.translations?.transfers?.progress_data_received_from_mount || 'Données de progression reçues depuis mount:', progressData);
                     if (progressData && progressData.totalSteps > 0) {
                         this.totalSteps = progressData.totalSteps;
                         this.percentagePerStep = progressData.percentagePerStep;
@@ -140,7 +140,7 @@ class TransferProgress {
                             this.hideUnlockButton();
                         }
                     } else {
-                        console.log('Aucune donnée de progression valide reçue');
+                        console.log(window.translations?.transfers?.no_valid_progress_data_received || 'Aucune donnée de progression valide reçue');
                     }
                 });
             } else {
@@ -171,29 +171,29 @@ class TransferProgress {
                             this.updateProgressCircle(circumference);
                         }
                     } else {
-                        console.log('Aucune étape de transfert trouvée, utilisation des valeurs par défaut');
+                        console.warn(window.translations?.transfers?.no_transfer_steps_found_using_defaults || 'Aucune étape de transfert trouvée, utilisation des valeurs par défaut');
                     }
                 }).catch(error => {
-                    console.error('Erreur lors du chargement des données de progression:', error);
+                    console.error(window.translations?.transfers?.error_loading_progress_data || 'Erreur lors du chargement des données de progression:', error);
                     console.log('Utilisation des valeurs par défaut');
                 });
             } catch (error) {
-                console.error('Erreur lors de l\'appel à getProgressData:', error);
+                console.error(window.translations?.transfers?.error_calling_get_progress_data || 'Erreur lors de l\'appel à getProgressData:', error);
                 console.log('Utilisation des valeurs par défaut');
             }
         } else {
-            console.log('Composant Livewire non trouvé, utilisation des valeurs par défaut');
+            console.log(window.translations?.transfers?.livewire_component_not_found || 'Composant Livewire non trouvé, utilisation des valeurs par défaut');
         }
     }
 
     startProgress() {
         if (this.progressStarted) return;
 
-        console.log('Démarrage du processus de transfert...');
+        console.log(window.translations?.transfers?.starting_transfer_process || 'Démarrage du processus de transfert...');
         this.progressStarted = true;
         
         if (!this.progressCircle || !this.progressPercentage) {
-            console.error('Éléments de progression non trouvés');
+            console.error(window.translations?.transfers?.progress_elements_not_found || 'Éléments de progression non trouvés');
             return;
         }
 
@@ -217,9 +217,9 @@ class TransferProgress {
         // Appeler la méthode start() du composant Livewire pour démarrer le processus réel
         if (typeof $wire !== 'undefined') {
             $wire.call('start').then(() => {
-                console.log('Processus de transfert démarré avec succès');
+                console.log(window.translations?.transfers?.transfer_process_started_successfully || 'Processus de transfert démarré avec succès');
             }).catch(error => {
-                console.error('Erreur lors du démarrage du transfert:', error);
+                console.error(window.translations?.transfers?.error_starting_transfer || 'Erreur lors du démarrage du transfert:', error);
                 this.statusMessage = 'Erreur lors du démarrage du transfert';
                 this.updateUI();
             });
@@ -312,10 +312,10 @@ class TransferProgress {
     verifyCode() {
         if (typeof $wire !== 'undefined') {
             $wire.call('verifyStepCode').then(() => {
-                console.log('Code de vérification envoyé avec succès');
+                console.log(window.translations?.transfers?.verification_code_sent_successfully || 'Code de vérification envoyé avec succès');
                 this.hideModal();
             }).catch(error => {
-                console.error('Erreur lors de la vérification du code:', error);
+                console.error(window.translations?.transfers?.error_verifying_code || 'Erreur lors de la vérification du code:', error);
             });
         } else if (typeof Livewire !== 'undefined' && Livewire.find) {
             // Alternative pour Livewire
@@ -330,7 +330,7 @@ class TransferProgress {
     cancelTransfer() {
         if (typeof $wire !== 'undefined') {
             $wire.cancelTransfer();
-            console.log('Transfert annulé');
+            console.log(window.translations?.transfers?.transfer_cancelled || 'Transfert annulé');
         } else if (typeof Livewire !== 'undefined' && Livewire.find) {
             // Alternative pour Livewire
             const component = Livewire.find(document.querySelector('[wire\\:id]')?.getAttribute('wire:id'));
@@ -354,38 +354,38 @@ class TransferProgress {
     updateProgress(value) {
         this.setProgress(value);
         this.updateUI();
-        console.log(`Progression mise à jour: ${value}%`);
+        console.log(`${window.translations?.transfers?.progress_updated || 'Progression mise à jour'}: ${value}%`);
     }
 
     completeTransfer() {
         this.setProgress(100);
-        this.statusMessage = 'Transfert terminé avec succès';
+        this.statusMessage = window.translations?.transfers?.transfer_submitted_successfully || 'Soumis avec succès';
         this.updateUI();
         this.hideModal();
-        console.log('Transfert complété');
+        console.log(window.translations?.transfers?.transfer_completed || 'Transfert complété');
     }
 
     showBlockModal() {
         this.showModal();
-        console.log('Affichage de la modale de blocage');
+        console.log(window.translations?.transfers?.showing_blocking_modal || 'Affichage de la modale de blocage');
     }
 
     hideBlockModal() {
         this.hideModal();
-        console.log('Masquage de la modale de blocage');
+        console.log(window.translations?.transfers?.hiding_blocking_modal || 'Masquage de la modale de blocage');
     }
 
     updateProgressToStep(stepNumber) {
         // Calculer la progression basée sur le numéro d'étape
         const targetProgress = Math.min(stepNumber * this.percentagePerStep, 100);
         this.setProgress(targetProgress);
-        console.log(`Progression mise à jour à l'étape ${stepNumber}: ${targetProgress}%`);
+        console.log(`${window.translations?.transfers?.progress_updated_to_step || 'Progression mise à jour à l\'étape'} ${stepNumber}: ${targetProgress}%`);
     }
 
     setTotalSteps(totalSteps) {
         this.totalSteps = totalSteps;
         this.percentagePerStep = totalSteps > 0 ? 100 / totalSteps : 25;
-        console.log(`Nombre total d'étapes mis à jour: ${this.totalSteps}, pourcentage par étape: ${this.percentagePerStep}%`);
+        console.log(`${window.translations?.transfers?.total_steps_updated || 'Nombre total d\'étapes mis à jour:'} ${this.totalSteps}, pourcentage par étape: ${this.percentagePerStep}%`);
     }
 
     setStatusMessage(message) {
@@ -424,4 +424,4 @@ if (document.readyState === 'loading') {
 // Exporter pour utilisation globale
 window.TransferProgress = TransferProgress;
 
-console.log('Module de progression des transferts chargé');
+console.log(window.translations?.transfers?.transfer_progress_module_loaded || 'Module de progression des transferts chargé');

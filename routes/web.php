@@ -74,6 +74,9 @@ Route::prefix('{locale}')->group(function () {
                 Route::get('/users', function () {
                     return view('dashboard.account-management');
                 })->name('admin.users');
+                Route::get('/admin/config', function () {
+                    return view('admin.config');
+                })->name('admin.config');
 
                 Route::get('/users/{user}/manage', function ($locale, $user) {
                     Log::info('Route users.manage accessed', ['locale' => $locale, 'user_id' => $user]);

@@ -138,8 +138,16 @@
                             </div>
 
                             <x-dropdown-link href="{{ route('locale.profile.show', ['locale' => app()->getLocale()]) }}">
+                                <i class="fa-solid fa-user mr-2"></i>
                                 {{ __('common.profile') }}
                             </x-dropdown-link>
+
+                            @if(auth()->user()->is_admin)
+                                <x-dropdown-link href="{{ route('admin.config', ['locale' => app()->getLocale()]) }}">
+                                    <i class="fa-solid fa-cogs mr-2 mt-1"></i>
+                                    {{ __('admin.system_configuration') }}
+                                </x-dropdown-link>
+                            @endif
 
                             @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
                                 <x-dropdown-link href="{{ route('api-tokens.index') }}">

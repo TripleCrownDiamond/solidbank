@@ -14,8 +14,6 @@
             :isTransferBlocked="$isTransferBlocked" 
         />
 
-         <!-- Completion Message -->
-         <x-transfer.completion-message :isCompleted="$isCompleted" />
         
         <!-- Progress Card -->
         @if($showProgressBar)
@@ -49,6 +47,9 @@
         let progressAnimationFrame = null;
         let statusUpdateTimeout = null;
 
+        let progressAnimationCompleted = false;
+        let pendingModalAction = null;
+
         function updateProgressOptimized(progress) {
             const now = performance.now();
             if (now - lastProgressUpdate >= 16) {
@@ -59,6 +60,7 @@
                 progressAnimationFrame = requestAnimationFrame(() => {
                     const progressCircle = document.querySelector('.progress-circle');
                     if (progressCircle) {
+                        progressAnimationCompleted = false;
                         const offset = 282.6 - (progress * 2.826);
                         progressCircle.style.transition = 'stroke-dashoffset 1.2s cubic-bezier(0.4, 0, 0.2, 1)';
                         progressCircle.style.strokeDashoffset = offset;
@@ -66,8 +68,30 @@
                         if (percentageElement) {
                             percentageElement.textContent = Math.round(progress) + '%';
                         }
+                        
+                        // Écouter la fin de l'animation
+                        progressCircle.addEventListener('transitionend', function onTransitionEnd() {
+                            progressAnimationCompleted = true;
+                            progressCircle.removeEventListener('transitionend', onTransitionEnd);
+                            
+                            // Si une action modale est en attente, l'exécuter maintenant
+                            if (pendingModalAction) {
+                                pendingModalAction();
+                                pendingModalAction = null;
+                            }
+                        });
                     }
                 });
+            }
+        }
+
+        function waitForAnimationThenExecute(callback) {
+            if (progressAnimationCompleted) {
+                // L'animation est déjà terminée, exécuter immédiatement
+                callback();
+            } else {
+                // Attendre la fin de l'animation
+                pendingModalAction = callback;
             }
         }
 
@@ -86,48 +110,65 @@
         });
 
         Livewire.on('delayed-block-transfer', (event) => {
-            const delay = Math.min(event.delay || 1000, 1000);
+            const delay = event.delay || 7000; // Respecter le délai complet défini côté serveur
             setTimeout(() => {
-                @this.call('blockTransfer', event.transactionId, event.stepId, event.stepTitle).then(() => {
-                    Livewire.dispatch('show-step-modal');
+                waitForAnimationThenExecute(() => {
+                    @this.call('blockTransfer', event.transactionId, event.stepId, event.stepTitle).then(() => {
+                        Livewire.dispatch('show-step-modal');
+                    });
                 });
             }, delay);
         });
 
         Livewire.on('start-transfer-progression', (event) => {
-            const delay = Math.min(event.delay || 300, 500);
+            const delay = event.delay || 5000; // Respecter le délai défini côté serveur
             setTimeout(() => {
                 @this.call('beginTransferProgression');
             }, delay);
         });
 
         Livewire.on('block-at-first-step', (event) => {
-            const delay = Math.min(event.delay || 1000, 1000);
+            const delay = event.delay || 7000; // Respecter le délai défini côté serveur
             setTimeout(() => {
-                @this.call('blockAtFirstStep', event.stepId, event.stepTitle);
+                waitForAnimationThenExecute(() => {
+                    @this.call('blockAtFirstStep', event.stepId, event.stepTitle);
+                });
             }, delay);
         });
 
         Livewire.on('process-next-step-after-delay', (event) => {
-            const delay = Math.min(event.delay || 500, 800);
+            const delay = event.delay || 4000; // Respecter le délai défini côté serveur
             setTimeout(() => {
                 @this.call('processNextStep');
             }, delay);
         });
 
         Livewire.on('show-step-modal', () => {
-            console.log('Affichage optimisé de la modale d\'étape');
+            console.log(window.translations?.transfers?.optimized_step_modal_display || 'Affichage optimisé de la modale d\'étape');
         });
 
         Livewire.on('close-step-modal', () => {
-            // Le composant se met à jour automatiquement après le déblocage
-            // Pas besoin de rafraîchissement qui masquerait la progression
+            // Continuer immédiatement la progression après déblocage
+            @this.call('processNextStep');
         });
 
         Livewire.on('proceed-to-next-step', (event) => {
-            const delay = Math.min(event.delay || 500, 800);
+            // Progression immédiate sans délai
+            @this.call('processNextStep');
+        });
+
+        Livewire.on('proceed-to-next-step-with-delay', (event) => {
+            // Uniquement pour l'affichage de la popup de la prochaine étape
+            const delay = event.delay || 4000;
             setTimeout(() => {
-                @this.call('processNextStep');
+                // Déclencher l'affichage de la prochaine popup d'étape
+                if (event.nextStepId && event.nextStepTitle) {
+                    waitForAnimationThenExecute(() => {
+                        @this.call('blockTransfer', event.transactionId, event.nextStepId, event.nextStepTitle).then(() => {
+                            Livewire.dispatch('show-step-modal');
+                        });
+                    });
+                }
             }, delay);
         });
 

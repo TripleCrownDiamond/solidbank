@@ -193,34 +193,63 @@
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                     @if($transaction->status === 'PENDING')
                                         <div class="flex space-x-2">
-                                            <button wire:click="confirmTransaction({{ $transaction->id }})" 
-                                                    wire:confirm="{{ __('messages.confirm_transaction_confirmation') }}"
-                                                    wire:loading.attr="disabled"
-                                                    wire:target="confirmTransaction({{ $transaction->id }})"
-                                                    class="inline-flex items-center px-3 py-1.5 bg-green-600 hover:bg-green-700 text-white text-xs font-medium rounded-md transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-                                                    title="{{ __('common.confirm_transaction') }}">
-                                                <span wire:loading.remove wire:target="confirmTransaction({{ $transaction->id }})">
-                                                    <i class="fas fa-check mr-1"></i>
-                                                    {{ __('common.confirm_transaction') }}
-                                                </span>
-                                                <span wire:loading wire:target="confirmTransaction({{ $transaction->id }})">
-                                                    <i class="fas fa-spinner fa-spin"></i>
-                                                </span>
-                                            </button>
-                                            <button wire:click="cancelTransaction({{ $transaction->id }})" 
-                                                    wire:confirm="{{ __('messages.confirm_transaction_cancellation') }}"
-                                                    wire:loading.attr="disabled"
-                                                    wire:target="cancelTransaction({{ $transaction->id }})"
-                                                    class="inline-flex items-center px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white text-xs font-medium rounded-md transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-                                                    title="{{ __('common.cancel_transaction') }}">
-                                                <span wire:loading.remove wire:target="cancelTransaction({{ $transaction->id }})">
-                                                    <i class="fas fa-times mr-1"></i>
-                                                    {{ __('common.cancel_transaction') }}
-                                                </span>
-                                                <span wire:loading wire:target="cancelTransaction({{ $transaction->id }})">
-                                                    <i class="fas fa-spinner fa-spin"></i>
-                                                </span>
-                                            </button>
+                                            @if(in_array($transaction->type, ['TRANSFER_BANK', 'TRANSFER_CRYPTO', 'TRANSFER_EXTERNAL']))
+                                                <!-- Boutons pour les transactions de transfert -->
+                                                <button wire:click="confirmTransferTransaction({{ $transaction->id }})" 
+                                                        wire:confirm="{{ __('messages.confirm_transaction_confirmation') }}"
+                                                        wire:loading.attr="disabled"
+                                                        wire:target="confirmTransferTransaction({{ $transaction->id }})"
+                                                        class="inline-flex items-center justify-center w-8 h-8 bg-green-600 hover:bg-green-700 text-white rounded-md transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                                                        title="{{ __('common.confirm_transaction') }}">
+                                                    <span wire:loading.remove wire:target="confirmTransferTransaction({{ $transaction->id }})">
+                                                        <i class="fas fa-check"></i>
+                                                    </span>
+                                                    <span wire:loading wire:target="confirmTransferTransaction({{ $transaction->id }})">
+                                                        <i class="fas fa-spinner fa-spin"></i>
+                                                    </span>
+                                                </button>
+                                                <button wire:click="cancelTransferTransaction({{ $transaction->id }})" 
+                                                        wire:confirm="{{ __('messages.confirm_transaction_cancellation') }}"
+                                                        wire:loading.attr="disabled"
+                                                        wire:target="cancelTransferTransaction({{ $transaction->id }})"
+                                                        class="inline-flex items-center justify-center w-8 h-8 bg-red-600 hover:bg-red-700 text-white rounded-md transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                                                        title="{{ __('common.cancel_transaction') }}">
+                                                    <span wire:loading.remove wire:target="cancelTransferTransaction({{ $transaction->id }})">
+                                                        <i class="fas fa-times"></i>
+                                                    </span>
+                                                    <span wire:loading wire:target="cancelTransferTransaction({{ $transaction->id }})">
+                                                        <i class="fas fa-spinner fa-spin"></i>
+                                                    </span>
+                                                </button>
+                                            @else
+                                                <!-- Boutons pour les transactions de dépôt et retrait -->
+                                                <button wire:click="confirmTransaction({{ $transaction->id }})" 
+                                                        wire:confirm="{{ __('messages.confirm_transaction_confirmation') }}"
+                                                        wire:loading.attr="disabled"
+                                                        wire:target="confirmTransaction({{ $transaction->id }})"
+                                                        class="inline-flex items-center justify-center w-8 h-8 bg-green-600 hover:bg-green-700 text-white rounded-md transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                                                        title="{{ __('common.confirm_transaction') }}">
+                                                    <span wire:loading.remove wire:target="confirmTransaction({{ $transaction->id }})">
+                                                        <i class="fas fa-check"></i>
+                                                    </span>
+                                                    <span wire:loading wire:target="confirmTransaction({{ $transaction->id }})">
+                                                        <i class="fas fa-spinner fa-spin"></i>
+                                                    </span>
+                                                </button>
+                                                <button wire:click="cancelTransaction({{ $transaction->id }})" 
+                                                        wire:confirm="{{ __('messages.confirm_transaction_cancellation') }}"
+                                                        wire:loading.attr="disabled"
+                                                        wire:target="cancelTransaction({{ $transaction->id }})"
+                                                        class="inline-flex items-center justify-center w-8 h-8 bg-red-600 hover:bg-red-700 text-white rounded-md transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                                                        title="{{ __('common.cancel_transaction') }}">
+                                                    <span wire:loading.remove wire:target="cancelTransaction({{ $transaction->id }})">
+                                                        <i class="fas fa-times"></i>
+                                                    </span>
+                                                    <span wire:loading wire:target="cancelTransaction({{ $transaction->id }})">
+                                                        <i class="fas fa-spinner fa-spin"></i>
+                                                    </span>
+                                                </button>
+                                            @endif
                                         </div>
                                     @elseif($transaction->status === 'BLOCKED')
                                         <button wire:click="showBlockedTransactionDetails({{ $transaction->id }})" 

@@ -15,7 +15,11 @@ class UserWallets extends Component
     public $loadingAction = null;
     public $showWalletDetails = [];
 
-    protected $listeners = ['execute-method' => 'executeMethod'];
+    protected $listeners = [
+        'execute-method' => 'executeMethod',
+        'toggleWalletDetails' => 'handleToggleWalletDetails',
+        'deleteWallet' => 'handleDeleteWallet'
+    ];
 
     public function mount($user = null, $dashboardView = false, $maxWallets = null, $adminView = false)
     {
@@ -88,7 +92,17 @@ class UserWallets extends Component
     public function executeMethod($method, $params = [])
     {
         if (method_exists($this, $method)) {
-            call_user_func_array([$this, $method], $params);
+            $this->$method(...$params);
         }
+    }
+
+    public function handleToggleWalletDetails($walletId)
+    {
+        $this->toggleWalletDetails($walletId);
+    }
+
+    public function handleDeleteWallet($walletId)
+    {
+        $this->deleteWallet($walletId);
     }
 }

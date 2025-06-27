@@ -157,15 +157,7 @@
     <!-- Request Card Modal -->
     @if($showRequestCardModal)
         <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" 
-             wire:ignore.self
-             x-data="{ show: @entangle('showRequestCardModal') }"
-             x-show="show"
-             x-transition:enter="ease-out duration-300"
-             x-transition:enter-start="opacity-0"
-             x-transition:enter-end="opacity-100"
-             x-transition:leave="ease-in duration-200"
-             x-transition:leave-start="opacity-100"
-             x-transition:leave-end="opacity-0">
+             wire:ignore.self>
             <div class="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-md mx-4" wire:click.stop>
                 <div class="flex items-center justify-between mb-4">
                     <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100">{{ __('common.request_new_card') }}</h3>
@@ -245,6 +237,73 @@
                             </button>
                         </div>
                     </form>
+            </div>
+        </div>
+    @endif
+
+    <!-- Recharge Card Modal -->
+    @if($showRechargeModal)
+        <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" 
+             wire:ignore.self>
+            <div class="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-md mx-4" wire:click.stop>
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100">{{ __('common.recharge_card') }}</h3>
+                    <button wire:click="closeRechargeModal()" class="text-gray-400 hover:text-gray-600 disabled:opacity-50 disabled:cursor-not-allowed" wire:loading.attr="disabled" wire:target="closeRechargeModal">
+                        <span wire:loading.remove wire:target="closeRechargeModal">
+                            <i class="fa-solid fa-times"></i>
+                        </span>
+                        <span wire:loading wire:target="closeRechargeModal">
+                            <i class="fa-solid fa-spinner fa-spin text-gray-800 dark:text-white"></i>
+                        </span>
+                    </button>
+                </div>
+                    
+                <form wire:submit.prevent="rechargeCard">
+                    <div class="mb-4">
+                        <label for="rechargeAmount" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            {{ __('common.amount') }} *
+                        </label>
+                        <div class="relative">
+                            <input 
+                                type="number" 
+                                wire:model="rechargeAmount" 
+                                id="rechargeAmount" 
+                                step="0.01"
+                                min="1"
+                                max="999999.99"
+                                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-brand-primary focus:border-brand-primary dark:bg-gray-700 dark:text-gray-100"
+                                placeholder="{{ __('common.enter_amount') }}"
+                            >
+                            <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                                <span class="text-gray-500 dark:text-gray-400 text-sm">€</span>
+                            </div>
+                        </div>
+                        @error('rechargeAmount') 
+                            <span class="text-red-500 text-sm">{{ $message }}</span> 
+                        @enderror
+                    </div>
+                    
+                    <div class="mb-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                        <div class="flex items-center text-blue-800 dark:text-blue-200">
+                            <i class="fa-solid fa-info-circle mr-2"></i>
+                            <span class="text-sm">{{ __('common.recharge_info') }}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-end space-x-3">
+                        <button type="button" wire:click="closeRechargeModal()" wire:loading.attr="disabled" wire:target="rechargeCard" class="px-4 py-2 bg-gray-300 hover:bg-gray-400 text-gray-800 rounded-md transition-colors duration-200 disabled:opacity-50">
+                            {{ __('common.cancel') }}
+                        </button>
+                        <button type="submit" wire:loading.attr="disabled" wire:target="rechargeCard" class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-md transition-colors duration-200 disabled:opacity-50">
+                            <span wire:loading.remove wire:target="rechargeCard">
+                                <i class="fa-solid fa-plus mr-2"></i>{{ __('common.recharge') }}
+                            </span>
+                            <span wire:loading wire:target="rechargeCard">
+                                <i class="fa-solid fa-spinner fa-spin mr-2"></i>{{ __('common.recharging') }}...
+                            </span>
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     @endif

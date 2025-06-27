@@ -20,7 +20,7 @@
                 this.showError = value && value.trim() !== '';
                 if (this.showError) {
                     this.$nextTick(() => {
-                        console.log('Erreur détectée:', value);
+                        console.log(window.translations?.transfers?.error_detected || 'Erreur détectée:', value);
                     });
                 }
             });
@@ -44,7 +44,7 @@
             try {
                 await $wire.verifyUnlockCode();
             } catch (error) {
-                console.error('Erreur lors de la vérification:', error);
+                console.error(window.translations?.transfers?.error_during_verification || 'Erreur lors de la vérification:', error);
                 this.unlockError = '{{ __('transfers.verification_error') }}';
                 this.showError = true;
             } finally {
