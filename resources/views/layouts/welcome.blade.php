@@ -19,6 +19,11 @@
 
     <!-- Footer -->
     <x-welcome-footer />
-</body>
+
+     <!-- Alert Manager -->
+     @livewire('alert-manager')
+     <!-- Before the closing body tag in welcome.blade.php -->
+     @stack('scripts')
+    @livewireScripts</body>
 
 </html>

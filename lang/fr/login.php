@@ -13,6 +13,7 @@ return [
     'email_invalid' => "Le format de l'e-mail est invalide.",
     'password_required' => 'Le champ mot de passe est requis.',
     'failed' => 'Ces identifiants ne correspondent pas à nos enregistrements.',
+    'success' => 'Connexion réussie ! Bienvenue.',
     'throttle' => 'Trop de tentatives de connexion. Veuillez réessayer dans :seconds secondes.',
     'no_account' => "Vous n'avez pas de compte ?",
     'register_now' => 'Inscrivez-vous maintenant',

@@ -48,6 +48,13 @@ return [
     'transaction_not_blocked' => "Cette transaction n'est pas bloquée",
     'confirm_transaction' => 'Confirmer la transaction',
     'confirm_transaction_text' => 'Êtes-vous sûr de vouloir confirmer cette transaction de :amount :currency ?',
+    
+    // Messages de newsletter
+    'newsletter_subscription_success' => 'Merci ! Vous êtes maintenant inscrit(e) à notre newsletter.',
+    'newsletter_subscription_error' => 'Une erreur est survenue. Veuillez réessayer.',
+    'email_required' => 'L\'adresse email est requise.',
+    'email_invalid' => 'Veuillez saisir une adresse email valide.',
+    'email_already_subscribed' => 'Cette adresse email est déjà inscrite à notre newsletter.',
     'transaction_confirmed_successfully' => 'Transaction confirmée avec succès',
     'transaction_confirmation_error' => 'Erreur lors de la confirmation : :error',
     'cancel_transaction' => 'Annuler la transaction',

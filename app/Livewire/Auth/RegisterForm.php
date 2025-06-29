@@ -55,7 +55,7 @@ class RegisterForm extends Component
     public $showPassword = false;
     public $showPasswordConfirmation = false;
     // Variables pour la gestion des erreurs
-    public $generalError = null;
+    // Removed generalError property - now using alert system
     public $validationErrors = [];
 
     // Ajoutez ces propriétés
@@ -119,7 +119,7 @@ class RegisterForm extends Component
             try {
                 // Vérifier la taille du fichier (10MB = 10240KB)
                 if ($this->identity_document->getSize() > 10485760) {  // 10MB en bytes
-                    $this->addError('identity_document', __('register.field_errors.identity_document.max'));
+                    $this->dispatch('alert', ['type' => 'error', 'message' => __('register.field_errors.identity_document.max')]);
                     return;
                 }
                 $tempPath = 'temp/identity_' . session()->getId() . '_' . time() . '.' . $this->identity_document->getClientOriginalExtension();
@@ -128,7 +128,7 @@ class RegisterForm extends Component
                 $data['identity_document_name'] = $this->identity_document->getClientOriginalName();
             } catch (\Exception $e) {
                 Log::warning('Failed to save identity document to temp: ' . $e->getMessage());
-                $this->addError('identity_document', __('register.field_errors.identity_document.upload_failed'));
+                $this->dispatch('alert', ['type' => 'error', 'message' => __('register.field_errors.identity_document.upload_failed')]);
             }
         }
 
@@ -136,7 +136,7 @@ class RegisterForm extends Component
             try {
                 // Vérifier la taille du fichier (10MB = 10240KB)
                 if ($this->address_document->getSize() > 10485760) {  // 10MB en bytes
-                    $this->addError('address_document', __('register.field_errors.address_document.max'));
+                    $this->dispatch('alert', ['type' => 'error', 'message' => __('register.field_errors.address_document.max')]);
                     return;
                 }
                 $tempPath = 'temp/address_' . session()->getId() . '_' . time() . '.' . $this->address_document->getClientOriginalExtension();
@@ -145,7 +145,7 @@ class RegisterForm extends Component
                 $data['address_document_name'] = $this->address_document->getClientOriginalName();
             } catch (\Exception $e) {
                 Log::warning('Failed to save address document to temp: ' . $e->getMessage());
-                $this->addError('address_document', __('register.field_errors.address_document.upload_failed'));
+                $this->dispatch('alert', ['type' => 'error', 'message' => __('register.field_errors.address_document.upload_failed')]);
             }
         }
 
@@ -201,7 +201,7 @@ class RegisterForm extends Component
     // Méthode pour réinitialiser les erreurs
     protected function resetErrors()
     {
-        $this->generalError = null;
+        // Reset any previous errors
         $this->validationErrors = [];
         $this->resetErrorBag();
     }
@@ -217,10 +217,10 @@ class RegisterForm extends Component
             $this->saveToSession();
         } catch (\Illuminate\Validation\ValidationException $e) {
             $this->validationErrors = $e->errors();
-            $this->generalError = __('register.validation_error_message');
+            $this->dispatch('alert', ['type' => 'error', 'message' => __('register.validation_error_message')]);
             throw $e;
         } catch (\Exception $e) {
-            $this->generalError = __('register.error_message');
+            $this->dispatch('alert', ['type' => 'error', 'message' => __('register.error_message')]);
             Log::error('RegisterForm nextStep error: ' . $e->getMessage(), [
                 'step' => $this->step,
                 'user_data' => $this->getCleanUserData()
@@ -321,8 +321,7 @@ class RegisterForm extends Component
 
             // Vérifier une dernière fois que l'email n'existe pas (protection contre la double soumission)
             if (User::where('email', $this->email)->exists()) {
-                $this->addError('email', __('register.validation.unique'));
-                $this->generalError = __('register.email_already_exists');
+                $this->dispatch('alert', ['type' => 'error', 'message' => __('register.email_already_exists')]);
                 return;
             }
 
@@ -339,7 +338,7 @@ class RegisterForm extends Component
                 $this->processAndSaveFile($this->identity_document, $identityPath);
             } catch (\Exception $e) {
                 Log::error('Failed to process identity document: ' . $e->getMessage());
-                $this->addError('identity_document', __('register.field_errors.identity_document.upload_failed'));
+                $this->dispatch('alert', ['type' => 'error', 'message' => __('register.field_errors.identity_document.upload_failed')]);
                 return;
             }
 
@@ -347,7 +346,7 @@ class RegisterForm extends Component
                 $this->processAndSaveFile($this->address_document, $addressPath);
             } catch (\Exception $e) {
                 Log::error('Failed to process address document: ' . $e->getMessage());
-                $this->addError('address_document', __('register.field_errors.address_document.upload_failed'));
+                $this->dispatch('alert', ['type' => 'error', 'message' => __('register.field_errors.address_document.upload_failed')]);
                 return;
             }
 
@@ -409,8 +408,7 @@ class RegisterForm extends Component
             $this->dispatch('email-verification-needed');
         } catch (\Illuminate\Validation\ValidationException $e) {
             $this->validationErrors = $e->errors();
-            $this->generalError = __('register.validation_error_message');
-
+            
             // Log spécifique pour l'erreur d'email déjà utilisé
             if (isset($e->errors()['email'])) {
                 Log::error('RegisterForm: Email validation failed during registration.', [
@@ -418,10 +416,12 @@ class RegisterForm extends Component
                     'errors' => $e->errors(),
                     'message' => $e->getMessage()
                 ]);
-                $this->generalError = __('register.email_already_exists');
+                $this->dispatch('alert', ['type' => 'error', 'message' => __('register.email_already_exists')]);
+            } else {
+                $this->dispatch('alert', ['type' => 'error', 'message' => __('register.validation_error_message')]);
             }
         } catch (\Exception $e) {
-            $this->generalError = __('register.error_message');
+            $this->dispatch('alert', ['type' => 'error', 'message' => __('register.error_message')]);
             Log::error('RegisterForm: Registration failed.', [
                 'error' => $e->getMessage(),
                 'user_data' => $this->getCleanUserData(),

@@ -13,6 +13,7 @@ return [
     'email_invalid' => 'The email format is invalid.',
     'password_required' => 'The password field is required.',
     'failed' => 'These credentials do not match our records.',
+    'success' => 'Login successful! Welcome.',
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
     'no_account' => "Don't have an account?",
     'register_now' => 'Register now',

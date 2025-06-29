@@ -312,6 +312,30 @@ class TransferProgressLoader {
 // Initialiser le loader de progression pour les transferts
 window.TransferProgressLoader = TransferProgressLoader;
 
+// Mobile Menu Toggle Logic
+document.addEventListener("DOMContentLoaded", function () {
+    const mobileMenuToggle = document.getElementById("mobile-menu-toggle");
+    const mobileMenu = document.getElementById("mobile-menu");
+    const hamburgerIcon = document.getElementById("hamburger-icon");
+    const closeIcon = document.getElementById("close-icon");
+
+    if (mobileMenuToggle && mobileMenu) {
+        mobileMenuToggle.addEventListener("click", function () {
+            const isHidden = mobileMenu.classList.contains("hidden");
+            
+            if (isHidden) {
+                mobileMenu.classList.remove("hidden");
+                hamburgerIcon?.classList.add("hidden");
+                closeIcon?.classList.remove("hidden");
+            } else {
+                mobileMenu.classList.add("hidden");
+                hamburgerIcon?.classList.remove("hidden");
+                closeIcon?.classList.add("hidden");
+            }
+        });
+    }
+});
+
 // Livewire Alert Listener (SweetAlert2 removed)
 
 if (window.Livewire) {

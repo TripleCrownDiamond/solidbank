@@ -87,7 +87,7 @@ class Login extends Component
         $user = Auth::getProvider()->retrieveByCredentials($credentials);
 
         if (!$user || !Auth::getProvider()->validateCredentials($user, $credentials)) {
-            $this->addError('email', __('login.failed'));
+            $this->dispatch('alert', ['type' => 'error', 'message' => __('login.failed')]);
             return;
         }
 
@@ -113,6 +113,7 @@ class Login extends Component
 
         // Login without 2FA
         Auth::login($user, $this->remember);
+        $this->dispatch('alert', ['type' => 'success', 'message' => __('login.success')]);
         $locale = app()->getLocale() ?? 'fr';
         $this->redirect(route('dashboard', compact('locale')), navigate: true);
     }
@@ -122,14 +123,14 @@ class Login extends Component
         $this->validate(['otpCode' => 'required|string|size:6']);
 
         if (!$this->pendingUserId) {
-            $this->addError('otpCode', __('login.session_expired'));
+            $this->dispatch('alert', ['type' => 'error', 'message' => __('login.session_expired')]);
             return;
         }
 
         $storedOtp = Cache::get('otp_' . $this->pendingUserId);
 
         if (!$storedOtp || $storedOtp !== $this->otpCode) {
-            $this->addError('otpCode', __('login.otp_invalid'));
+            $this->dispatch('alert', ['type' => 'error', 'message' => __('login.otp_invalid')]);
             return;
         }
 
@@ -137,7 +138,7 @@ class Login extends Component
         $user = Auth::getProvider()->retrieveById($this->pendingUserId);
 
         if (!$user) {
-            $this->addError('otpCode', __('login.user_not_found'));
+            $this->dispatch('alert', ['type' => 'error', 'message' => __('login.user_not_found')]);
             return;
         }
 
@@ -146,6 +147,7 @@ class Login extends Component
 
         // Login the user
         Auth::login($user, $this->remember);
+        $this->dispatch('alert', ['type' => 'success', 'message' => __('login.success')]);
 
         $locale = app()->getLocale() ?? 'fr';
         $this->redirect(route('dashboard', compact('locale')), navigate: true);

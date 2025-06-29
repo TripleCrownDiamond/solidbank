@@ -4,13 +4,7 @@
         <p class="text-sm text-gray-500 dark:text-gray-400">{{ __('login.subtitle') }}</p>
     </div>
 
-    <x-validation-errors class="mb-4" />
-
-    @session('status')
-        <div class="mb-4 font-medium text-sm text-green-600 dark:text-green-400">
-            {{ $value }}
-        </div>
-    @endsession
+    <!-- Messages are now handled by the alert-manager component -->
 
     @if ($showOtpChallenge)
         <div class="text-center mb-8">

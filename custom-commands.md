@@ -1,6 +1,6 @@
 # Custom Artisan Commands
 
-This file documents all custom Artisan commands created for the SolidBank project.
+This file documents all custom Artisan commands created for the Bred Fin project.
 
 ## Available Commands
 

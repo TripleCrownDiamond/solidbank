@@ -13,36 +13,50 @@ return new class extends Migration
     {
         Schema::table('transactions', function (Blueprint $table) {
             // Ajouter les champs pour les étapes de transfert
-            $table->foreignId('blocked_at_transfer_step_id')
-                  ->nullable()
-                  ->constrained('transfer_steps')
-                  ->nullOnDelete()
-                  ->after('external_bank_info');
+            if (!Schema::hasColumn('transactions', 'blocked_at_transfer_step_id')) {
+                $table->foreignId('blocked_at_transfer_step_id')
+                      ->nullable()
+                      ->constrained('transfer_steps')
+                      ->nullOnDelete()
+                      ->after('external_bank_info');
+            }
                   
-            $table->foreignId('blocked_at_transfer_step_group_id')
-                  ->nullable()
-                  ->constrained('transfer_step_groups')
-                  ->nullOnDelete()
-                  ->after('blocked_at_transfer_step_id');
+            if (!Schema::hasColumn('transactions', 'blocked_at_transfer_step_group_id')) {
+                $table->foreignId('blocked_at_transfer_step_group_id')
+                      ->nullable()
+                      ->constrained('transfer_step_groups')
+                      ->nullOnDelete()
+                      ->after('blocked_at_transfer_step_id');
+            }
                   
             // Champ pour indiquer si la transaction est bloquée
-            $table->boolean('is_blocked')->default(false)->after('blocked_at_transfer_step_group_id');
+            if (!Schema::hasColumn('transactions', 'is_blocked')) {
+                $table->boolean('is_blocked')->default(false)->after('blocked_at_transfer_step_group_id');
+            }
             
             // Raison du blocage
-            $table->text('blocked_reason')->nullable()->after('is_blocked');
+            if (!Schema::hasColumn('transactions', 'blocked_reason')) {
+                $table->text('blocked_reason')->nullable()->after('is_blocked');
+            }
             
             // Date de blocage
-            $table->timestamp('blocked_at')->nullable()->after('blocked_reason');
+            if (!Schema::hasColumn('transactions', 'blocked_at')) {
+                $table->timestamp('blocked_at')->nullable()->after('blocked_reason');
+            }
             
             // Champ pour l'admin qui a confirmé/annulé
-            $table->foreignId('processed_by_admin_id')
-                  ->nullable()
-                  ->constrained('users')
-                  ->nullOnDelete()
-                  ->after('blocked_at');
+            if (!Schema::hasColumn('transactions', 'processed_by_admin_id')) {
+                $table->foreignId('processed_by_admin_id')
+                      ->nullable()
+                      ->constrained('users')
+                      ->nullOnDelete()
+                      ->after('blocked_at');
+            }
                   
             // Date de traitement par l'admin
-            $table->timestamp('processed_at')->nullable()->after('processed_by_admin_id');
+            if (!Schema::hasColumn('transactions', 'processed_at')) {
+                $table->timestamp('processed_at')->nullable()->after('processed_by_admin_id');
+            }
         });
     }
 

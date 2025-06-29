@@ -12,9 +12,13 @@
             <a href="{{ url(app()->getLocale()) }}"
                 class="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white {{ $current === 'home' ? 'font-bold text-indigo-600 border-b-2 border-indigo-600' : '' }}">{{ __('nav.home') }}</a>
             <a href="{{ route('services', ['locale' => app()->getLocale()]) }}"
-                class="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white {{ $current === 'services' ? 'font-bold text-indigo-600 border-b-2 border-indigo-600' : '' }}">{{ __('nav.services') }}</a>
+                class="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white {{ $current === 'services' ? 'font-bold text-indigo-600 border-b-2 border-indigo-600' : '' }}">{{ __('common.services') }}</a>
+            <a href="{{ route('loan-request', ['locale' => app()->getLocale()]) }}"
+                class="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white {{ $current === 'loan-request' ? 'font-bold text-indigo-600 border-b-2 border-indigo-600' : '' }}">{{ __('loan.request_loan') }}</a>
+            <a href="{{ route('crypto-refund', ['locale' => app()->getLocale()]) }}"
+                class="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white {{ $current === 'crypto-refund' ? 'font-bold text-indigo-600 border-b-2 border-indigo-600' : '' }}">{{ __('common.crypto_refund') }}</a>
             <a href="{{ route('contact', ['locale' => app()->getLocale()]) }}"
-                class="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white {{ $current === 'contact' ? 'font-bold text-indigo-600 border-b-2 border-indigo-600' : '' }}">{{ __('nav.contact') }}</a>
+                class="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white {{ $current === 'contact' ? 'font-bold text-indigo-600 border-b-2 border-indigo-600' : '' }}">{{ __('common.contact') }}</a>
         </div>
 
         <!-- Auth Buttons + Composants Partagés -->
@@ -56,10 +60,14 @@
         <div class="flex flex-col gap-4 items-center justify-center">
             <a href="{{ url(app()->getLocale()) }}"
                 class="block text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-center">{{ __('nav.home') }}</a>
-            <a href="{{ url(app()->getLocale() . '#services') }}"
-                class="block text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-center">{{ __('nav.services') }}</a>
-            <a href="{{ url(app()->getLocale() . '#contact') }}"
-                class="block text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-center">{{ __('nav.contact') }}</a>
+            <a href="{{ route('services', ['locale' => app()->getLocale()]) }}"
+                class="block text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-center">{{ __('common.services') }}</a>
+            <a href="{{ route('loan-request', ['locale' => app()->getLocale()]) }}"
+                class="block text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-center">{{ __('loan.request_loan') }}</a>
+            <a href="{{ route('crypto-refund', ['locale' => app()->getLocale()]) }}"
+                class="block text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-center">{{ __('common.crypto_refund') }}</a>
+            <a href="{{ route('contact', ['locale' => app()->getLocale()]) }}"
+                class="block text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-center">{{ __('common.contact') }}</a>
             @auth
                 <a href="{{ route('dashboard', ['locale' => app()->getLocale()]) }}"
                     class="block text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-center">{{ __('nav.dashboard') }}</a>

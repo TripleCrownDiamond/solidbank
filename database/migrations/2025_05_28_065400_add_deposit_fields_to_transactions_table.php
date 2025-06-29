@@ -13,13 +13,19 @@ return new class extends Migration
     {
         Schema::table('transactions', function (Blueprint $table) {
             // Add account_id for account-based transactions (separate from from_account_id/to_account_id)
-            $table->foreignId('account_id')->nullable()->after('id')->constrained('accounts')->nullOnDelete();
+            if (!Schema::hasColumn('transactions', 'account_id')) {
+                $table->foreignId('account_id')->nullable()->after('id')->constrained('accounts')->nullOnDelete();
+            }
             
             // Add wallet_id for wallet-based transactions
-            $table->foreignId('wallet_id')->nullable()->after('account_id')->constrained('wallets')->nullOnDelete();
+            if (!Schema::hasColumn('transactions', 'wallet_id')) {
+                $table->foreignId('wallet_id')->nullable()->after('account_id')->constrained('wallets')->nullOnDelete();
+            }
             
             // Add currency field to track the currency of the transaction
-            $table->string('currency', 10)->nullable()->after('amount');
+            if (!Schema::hasColumn('transactions', 'currency')) {
+                $table->string('currency', 10)->nullable()->after('amount');
+            }
             
             // Make reference nullable since it might be generated after creation
             $table->string('reference')->nullable()->change();

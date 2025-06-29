@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Script d'export des utilisateurs SolidBank
+ * Script d'export des utilisateurs Bred Fin
  * Exporte tous les utilisateurs avec leurs comptes associés
  */
 require_once 'vendor/autoload.php';
@@ -14,7 +14,7 @@ $kernel->bootstrap();
 use App\Models\Account;
 use App\Models\User;
 
-echo "=== Export des utilisateurs SolidBank ===\n";
+echo "=== Export des utilisateurs Bred Fin ===\n";
 echo "Début de l'export...\n\n";
 
 // Récupérer tous les utilisateurs avec leurs comptes

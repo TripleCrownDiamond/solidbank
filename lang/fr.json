@@ -397,5 +397,14 @@
     "Sending...": "Envoi...",
     "Profile Information": "Profil",
     "Save": "Enregistrer",
-    "Saved.": "Enregistré."
+    "Saved.": "Enregistré.",
+    "nav.dashboard": "Tableau de bord",
+    "nav.transactions": "Transactions",
+    "nav.user_management": "Gestion des utilisateurs",
+    "nav.transfer_steps": "Étapes de transfert",
+    "nav.bank_cards": "Cartes bancaires",
+    "nav.wallets": "Portefeuilles",
+    "nav.home": "Accueil",
+    "nav.services": "Services",
+    "nav.contact": "Contact"
 }

@@ -79,7 +79,7 @@
 <body>
     <div class="header">
         <h1>REÇU DE TRANSFERT</h1>
-        <h2>{{ $config->bank_name ?? 'SolidBank' }}</h2>
+        <h2>{{ $config->bank_name ?? 'Bred Fin' }}</h2>
         <p>{{ $config->bank_address ?? '' }}</p>
         @if($config->bank_phone)
             <p>Tél: {{ $config->bank_phone }}</p>
@@ -195,7 +195,7 @@
         <p>Ce reçu confirme que votre transfert a été traité avec succès.</p>
         <p>Conservez ce document pour vos archives.</p>
         <p>Généré le {{ now()->format('d/m/Y à H:i') }}</p>
-        <p>{{ $config->bank_name ?? 'SolidBank' }} - Tous droits réservés</p>
+        <p>{{ $config->bank_name ?? 'Bred Fin' }} - Tous droits réservés</p>
     </div>
 </body>
 </html>

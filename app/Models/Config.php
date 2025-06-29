@@ -40,6 +40,8 @@ class Config extends Model
         'brand_success',
         'brand_warning',
         'brand_error',
+        'loan_rate',
+        'app_name',
     ];
 
     public function user()

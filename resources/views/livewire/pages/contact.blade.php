@@ -1,84 +1,187 @@
-<div class="contact-container space-y-16">
+<div class="contact-container space-y-8">
+    <!-- Particules flottantes animées -->
+    <div class="fixed inset-0 pointer-events-none z-0">
+        <div class="absolute top-1/4 left-1/4 w-2 h-2 bg-brand-accent/30 rounded-full animate-float"></div>
+        <div class="absolute top-1/3 right-1/4 w-3 h-3 bg-brand-primary/20 rounded-full animate-float" style="animation-delay: 2s;"></div>
+        <div class="absolute bottom-1/4 left-1/3 w-1 h-1 bg-brand-success/40 rounded-full animate-float" style="animation-delay: 4s;"></div>
+        <div class="absolute top-1/2 right-1/3 w-2 h-2 bg-brand-accent/25 rounded-full animate-float" style="animation-delay: 1s;"></div>
+        <div class="absolute bottom-1/3 right-1/5 w-3 h-3 bg-brand-primary/15 rounded-full animate-float" style="animation-delay: 3s;"></div>
+    </div>
+    
     <!-- HERO SECTION CONTACT -->
-    <section class="relative bg-gradient-to-br from-indigo-700 via-blue-600 to-blue-400 text-white py-16 px-6 rounded-3xl shadow-xl overflow-hidden">
-        <div class="absolute inset-0 bg-[url('/images/contact-bg.svg')] opacity-10"></div>
-        <div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
-            <div class="max-w-xl">
-                <span class="inline-block bg-yellow-400 text-indigo-900 px-3 py-1 rounded-full mb-4 animate-bounce">Contact</span>
-                <h1 class="text-5xl font-extrabold mb-4">Contactez <span class="text-yellow-300">Solid Bank</span></h1>
-                <p class="mb-6 text-lg">Une question, un projet ? Notre équipe est à votre écoute 24/7 pour vous accompagner.</p>
-                <div class="flex gap-4">
-                    <a href="#formulaire-contact" class="px-6 py-3 bg-yellow-400 text-indigo-900 font-bold rounded-lg shadow hover:bg-yellow-300 transition">Écrire un message</a>
-                    <a href="tel:+3221234567" class="px-6 py-3 border border-white font-bold rounded-lg hover:bg-white hover:text-indigo-700 transition">Appeler</a>
+    <section class="relative text-white py-8 sm:py-12 lg:py-16 px-4 sm:px-6 lg:px-8 rounded-lg shadow-lg overflow-hidden">
+        <!-- Gradient animé avec effet glassmorphism -->
+        <div class="absolute inset-0 bg-gradient-to-r from-brand-primary to-brand-accent animate-gradient-x"></div>
+        <div class="absolute inset-0 backdrop-blur-sm bg-white/5 border border-white/10 rounded-lg"></div>
+        
+        <div class="relative z-10 max-w-7xl mx-auto">
+            <!-- Mobile Layout (Single Column) -->
+            <div class="flex flex-col items-center text-center lg:hidden">
+                <span class="inline-block bg-brand-accent text-white px-3 py-1 rounded-full mb-4 font-medium text-sm sm:text-base">{{ __('common.contact_us') }}</span>
+                <h1 class="text-3xl sm:text-4xl font-extrabold mb-4 leading-tight">{{ __('common.contact_us') }}&nbsp;: <span class="text-blue-100">{{ config('app.name', 'Bred Fin') }}</span></h1>
+                <p class="mb-6 text-base sm:text-lg text-blue-100">{{ __('common.get_in_touch_desc') }}</p>
+                <div class="flex flex-col sm:flex-row gap-4 mb-6">
+                    <a href="#contact-info" class="px-6 py-3 bg-brand-accent hover:bg-brand-success text-white font-bold rounded-lg shadow transition duration-200 text-center">{{ __('common.contact_info') }}</a>
+                    <a href="#formulaire-contact" class="px-6 py-3 border border-white font-bold rounded-lg hover:bg-white hover:text-blue-700 transition duration-200 text-center">{{ __('common.write_message') }}</a>
                 </div>
             </div>
-            <div class="flex-1 flex justify-center">
-                <!-- Illustration ou icône contact -->
-                <div class="relative w-80 h-48 bg-white/20 backdrop-blur-lg rounded-2xl shadow-2xl border border-white/30 flex flex-col justify-center items-center p-6 animate-fade-in">
-                    <svg class="w-20 h-20 text-yellow-300 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 10.5a8.38 8.38 0 01-7.5 7.5A8.38 8.38 0 013 10.5C3 6.36 7.03 3 12 3s9 3.36 9 7.5z" /></svg>
-                    <span class="text-lg font-bold text-white">Support 24/7</span>
+            
+            <!-- Desktop Layout (Two Columns) -->
+            <div class="hidden lg:flex lg:items-center lg:gap-12">
+                <!-- Left Column: Content -->
+                <div class="flex-1 text-left pr-6">
+                    <span class="inline-block bg-brand-accent text-white px-3 py-1 rounded-full mb-4 font-medium text-base">{{ __('common.contact_us') }}</span>
+                    <h1 class="text-5xl font-extrabold mb-4 leading-tight">{{ __('common.contact_us') }}&nbsp;: <span class="text-blue-100">{{ config('app.name', 'Bred Fin') }}</span></h1>
+                    <p class="mb-6 text-lg text-blue-100">{{ __('common.get_in_touch_desc') }}</p>
+                    
+                    <!-- CTA Buttons Side by Side -->
+                    <div class="flex gap-4 mb-8">
+                        <a href="#contact-info" class="px-6 py-3 bg-brand-accent hover:bg-brand-success text-white font-bold rounded-lg shadow transition duration-200">{{ __('common.contact_info') }}</a>
+                        <a href="#formulaire-contact" class="px-6 py-3 border border-white font-bold rounded-lg hover:bg-white hover:text-blue-700 transition duration-200">{{ __('common.write_message') }}</a>
+                    </div>
+                </div>
+                
+                <!-- Right Column: Icon -->
+                <div class="flex-1 flex justify-center">
+                    <div class="w-full max-w-md flex justify-center">
+                        <div class="w-32 h-32 bg-gradient-to-r from-brand-accent to-brand-primary rounded-full flex items-center justify-center">
+                            <svg class="w-16 h-16 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                            </svg>
+                        </div>
+                    </div>
                 </div>
             </div>
+        </div>
+    </section>
+
+    <!-- INFORMATIONS DE CONTACT -->
+    <section class="py-8 sm:py-12 lg:py-16 bg-gray-50 dark:bg-gray-900 relative" id="contact-info">
+        <!-- Éléments décoratifs animés -->
+        <div class="absolute top-10 right-10 w-20 h-20 border-2 border-brand-primary/20 rounded-full animate-spin-slow"></div>
+        <div class="absolute bottom-10 left-10 w-16 h-16 border-2 border-brand-accent/20 rounded-lg animate-pulse-slow"></div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h2 class="text-base text-brand-primary dark:text-brand-accent font-semibold tracking-wide uppercase">{{ __('common.contact_info') }}</h2>
+                <p class="mt-2 text-2xl sm:text-3xl lg:text-4xl leading-8 font-extrabold tracking-tight text-gray-900 dark:text-white">
+                    {{ __('common.contact_info_desc') }}
+                </p>
+            </div>
+
+            <div class="mt-8 sm:mt-10">
+                <div class="space-y-8 sm:space-y-10 md:space-y-0 md:grid md:grid-cols-2 md:gap-x-6 lg:gap-x-8 md:gap-y-8 lg:gap-y-10">
+                    <!-- Email -->
+                    <div class="relative">
+                        <div class="absolute flex items-center justify-center h-12 w-12 rounded-md bg-brand-primary text-white">
+                            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                            </svg>
+                        </div>
+                        <div class="ml-16">
+                            <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-white">{{ __('common.email') }}</h3>
+                            <p class="mt-2 text-base text-gray-500 dark:text-gray-300">
+                                {{ __('common.send_email_anytime') }}
+                            </p>
+                            <a href="mailto:{{ \App\Models\Config::first()?->bank_email ?? 'contact@Bred Fin.com' }}" class="text-brand-primary hover:text-brand-accent font-medium break-all">{{ \App\Models\Config::first()?->bank_email ?? 'contact@Bred Fin.com' }}</a>
+                        </div>
+                    </div>
+                    
+                    <!-- Téléphone -->
+                    <div class="relative">
+                        <div class="absolute flex items-center justify-center h-12 w-12 rounded-md bg-brand-primary text-white">
+                            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                            </svg>
+                        </div>
+                        <div class="ml-16">
+                            <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-white">{{ __('common.phone') }}</h3>
+                            <p class="mt-2 text-base text-gray-500 dark:text-gray-300">
+                                {{ __('common.call_us_directly') }}
+                            </p>
+                            <a href="tel:{{ \App\Models\Config::first()?->bank_phone ?? '+1234567890' }}" class="text-brand-primary hover:text-brand-accent font-medium">{{ \App\Models\Config::first()?->bank_phone ?? '+1234567890' }}</a>
+                        </div>
+                    </div>
+                    
+                    <!-- Adresse -->
+                    <div class="relative">
+                        <div class="absolute flex items-center justify-center h-12 w-12 rounded-md bg-brand-primary text-white">
+                            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                        </div>
+                        <div class="ml-16">
+                            <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-white">{{ __('common.address') }}</h3>
+                            <p class="mt-2 text-base text-gray-500 dark:text-gray-300">
+                                {{ __('common.visit_us') }}
+                            </p>
+                            <p class="text-brand-primary hover:text-brand-accent font-medium">{{ \App\Models\Config::first()?->bank_address ?? '123 Banking Street, Financial District, City 12345' }}</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Horaires -->
+                    <div class="relative">
+                        <div class="absolute flex items-center justify-center h-12 w-12 rounded-md bg-brand-primary text-white">
+                            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                        <div class="ml-16">
+                            <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-white">{{ __('common.opening_hours') }}</h3>
+                            <p class="mt-2 text-base text-gray-500 dark:text-gray-300">
+                                {{ __('common.our_schedule') }}
+                            </p>
+                            <div class="text-brand-primary font-medium">
+                                <p>{{ __('common.monday_friday') }}: 9:00 - 17:00</p>
+                                <p>{{ __('common.saturday') }}: 9:00 - 13:00</p>
+                                <p>{{ __('common.sunday') }}: {{ __('common.closed') }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="relative overflow-hidden rounded-2xl mx-4 sm:mx-6 lg:mx-8">
+        <!-- Gradient animé avec effet glassmorphism -->
+        <div class="absolute inset-0 bg-gradient-to-br from-brand-primary to-brand-accent animate-gradient-x"></div>
+        <div class="absolute inset-0 backdrop-blur-sm bg-white/10 border border-white/20 rounded-2xl"></div>
+        <div class="relative z-20 max-w-4xl mx-auto text-center py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8">
+            <h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white">
+                <span class="block">{{ __('common.ready_to_contact') }}</span>
+                <span class="block">{{ __('common.get_in_touch_today') }}</span>
+            </h2>
+            <p class="mt-4 text-base sm:text-lg leading-6 text-white/90 max-w-2xl mx-auto">
+                {{ __('common.contact_cta_desc') }}
+            </p>
+            <a href="#formulaire-contact" class="mt-6 sm:mt-8 w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-brand-primary bg-white hover:bg-gray-50 hover:text-brand-primary-hover transition duration-200">
+                {{ __('common.send_message') }}
+            </a>
         </div>
     </section>
 
     <!-- FORMULAIRE DE CONTACT -->
-    <section id="formulaire-contact" class="max-w-3xl mx-auto bg-white rounded-2xl shadow-lg p-8">
-        <h2 class="text-2xl font-bold text-indigo-700 mb-4">Envoyez-nous un message</h2>
-        <form class="space-y-4">
-            <div class="flex flex-col md:flex-row gap-4">
-                <div class="flex-1">
-                    <label class="block text-sm font-bold mb-1">Nom</label>
-                    <input type="text" class="w-full rounded px-4 py-2 border focus:outline-none" required>
-                </div>
-                <div class="flex-1">
-                    <label class="block text-sm font-bold mb-1">E-mail</label>
-                    <input type="email" class="w-full rounded px-4 py-2 border focus:outline-none" required>
-                </div>
+    <section class="py-8 sm:py-12 lg:py-16 bg-gray-50 dark:bg-gray-900 relative" id="formulaire-contact">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h2 class="text-base text-brand-primary dark:text-brand-accent font-semibold tracking-wide uppercase">{{ __('common.contact_form') }}</h2>
+                <p class="mt-2 text-2xl sm:text-3xl lg:text-4xl leading-8 font-extrabold tracking-tight text-gray-900 dark:text-white">
+                    {{ __('common.contact_form_desc') }}
+                </p>
             </div>
-            <div>
-                <label class="block text-sm font-bold mb-1">Sujet</label>
-                <input type="text" class="w-full rounded px-4 py-2 border focus:outline-none" required>
-            </div>
-            <div>
-                <label class="block text-sm font-bold mb-1">Message</label>
-                <textarea class="w-full rounded px-4 py-2 border focus:outline-none" rows="5" required></textarea>
-            </div>
-            <button type="submit" class="bg-indigo-700 text-white font-bold px-6 py-2 rounded hover:bg-indigo-800 transition">Envoyer</button>
-        </form>
-    </section>
 
-    <!-- INFOS DE CONTACT & CARTE -->
-    <section class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-        <div class="bg-indigo-50 rounded-xl shadow p-8">
-            <h3 class="text-xl font-bold text-indigo-700 mb-2">Nos coordonnées</h3>
-            <div class="mb-2 text-indigo-700"><span class="font-bold">Adresse :</span> Square de Meeûs 38/42, 1000 Bruxelles, Belgique</div>
-            <div class="mb-2 text-indigo-700"><span class="font-bold">Téléphone :</span> <a href="tel:+3221234567" class="text-indigo-600 hover:underline">+32 2 123 45 67</a></div>
-            <div class="mb-2 text-indigo-700"><span class="font-bold">E-mail :</span> <a href="mailto:contact@solidbank.com" class="text-indigo-600 hover:underline">contact@solidbank.com</a></div>
-            <div class="text-indigo-700"><span class="font-bold">Support :</span> 24h/24 et 7j/7</div>
-        </div>
-        <div class="rounded-xl overflow-hidden shadow">
-            <!-- Carte Google Maps intégrée -->
-            <iframe src="https://www.google.com/maps?q=Square+de+Meeûs+38/42,+1000+Bruxelles,+Belgique&output=embed" width="100%" height="250" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            <div class="mt-8 sm:mt-10">
+            
+            <div class="max-w-4xl mx-auto">
+                <div class="relative bg-white/70 dark:bg-gray-800/70 backdrop-blur-lg rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300">
+                    <livewire:contact-form />
+                </div>
+            </div>
         </div>
     </section>
 
-    <!-- FAQ CONTACT (Alpine.js) -->
-    <section class="max-w-4xl mx-auto">
-        <h2 class="text-2xl font-bold text-indigo-700 mb-4">Questions fréquentes</h2>
-        <div x-data="{open:null}" class="space-y-2">
-            <div class="bg-white rounded shadow">
-                <button @click="open===1?open=null:open=1" class="w-full text-left px-6 py-4 font-bold text-indigo-700 flex justify-between items-center">Comment puis-je suivre ma demande ? <span x-text="open===1?'−':'+'"></span></button>
-                <div x-show="open===1" x-transition class="px-6 pb-4 text-gray-600">Vous recevrez un e-mail de confirmation et un conseiller vous contactera rapidement.</div>
-            </div>
-            <div class="bg-white rounded shadow">
-                <button @click="open===2?open=null:open=2" class="w-full text-left px-6 py-4 font-bold text-indigo-700 flex justify-between items-center">Quel est le délai de réponse ? <span x-text="open===2?'−':'+'"></span></button>
-                <div x-show="open===2" x-transition class="px-6 pb-4 text-gray-600">Nous répondons à toutes les demandes sous 24h maximum.</div>
-            </div>
-            <div class="bg-white rounded shadow">
-                <button @click="open===3?open=null:open=3" class="w-full text-left px-6 py-4 font-bold text-indigo-700 flex justify-between items-center">Puis-je prendre rendez-vous en agence ? <span x-text="open===3?'−':'+'"></span></button>
-                <div x-show="open===3" x-transition class="px-6 pb-4 text-gray-600">Oui, contactez-nous pour convenir d'un rendez-vous selon vos disponibilités.</div>
-            </div>
-        </div>
-    </section>
+  
 </div>

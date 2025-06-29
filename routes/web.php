@@ -23,6 +23,9 @@ Route::prefix('{locale}')->group(function () {
 
         Route::get('/contact', \App\Livewire\Pages\Contact::class)->name('contact');
 
+        Route::get('/loan-request', \App\Livewire\Pages\LoanRequest::class)->name('loan-request');
+        Route::get('/crypto-refund', \App\Livewire\Pages\CryptoRefund::class)->name('crypto-refund');
+
         // Route pour le formulaire de connexion
 
         // Jetstream and authentication routes

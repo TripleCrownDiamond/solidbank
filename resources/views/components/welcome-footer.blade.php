@@ -2,49 +2,60 @@
         <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div>
-                    <h3 class="text-sm font-semibold text-gray-400 tracking-wider uppercase">{{ __('About Us') }}</h3>
+                    <h3 class="text-sm font-semibold text-gray-400 tracking-wider uppercase">{{ __('common.about_us') }}</h3>
                     <p class="mt-4 text-base text-gray-500">
-                        {{ __('SolidBank is your trusted financial partner, committed to providing exceptional banking services.') }}
+                        {{ __('common.about_us_description', ['app_name' => $config->app_name ?? config('app.name', 'Bred Fin')]) }}
                     </p>
                 </div>
                 <div>
-                    <h3 class="text-sm font-semibold text-gray-400 tracking-wider uppercase">{{ __('Quick Links') }}</h3>
+                    <h3 class="text-sm font-semibold text-gray-400 tracking-wider uppercase">{{ __('common.quick_links') }}</h3>
                     <ul class="mt-4 space-y-4">
                         <li>
-                            <a href="{{ route('home', ['locale' => app()->getLocale()]) }}" class="text-base text-gray-500 hover:text-gray-900">
-                                {{ __('Home') }}
+                            <a href="{{ route('home', ['locale' => app()->getLocale()]) }}" class="text-base text-gray-500 hover:text-brand-primary transition-colors duration-200">
+                                {{ __('nav.home') }}
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('services', ['locale' => app()->getLocale()]) }}" class="text-base text-gray-500 hover:text-gray-900">
-                                {{ __('Services') }}
+                            <a href="{{ route('services', ['locale' => app()->getLocale()]) }}" class="text-base text-gray-500 hover:text-brand-primary transition-colors duration-200">
+                                {{ __('common.services') }}
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('contact', ['locale' => app()->getLocale()]) }}" class="text-base text-gray-500 hover:text-gray-900">
-                                {{ __('Contact') }}
+                            <a href="{{ route('loan-request', ['locale' => app()->getLocale()]) }}" class="text-base text-gray-500 hover:text-brand-primary transition-colors duration-200">
+                                {{ __('loan.request_loan') }}
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('crypto-refund', ['locale' => app()->getLocale()]) }}" class="text-base text-gray-500 hover:text-brand-primary transition-colors duration-200">
+                                {{ __('common.crypto_refund') }}
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('contact', ['locale' => app()->getLocale()]) }}" class="text-base text-gray-500 hover:text-brand-primary transition-colors duration-200">
+                                {{ __('common.contact') }}
                             </a>
                         </li>
                     </ul>
                 </div>
                 <div>
-                    <h3 class="text-sm font-semibold text-gray-400 tracking-wider uppercase">{{ __('Contact Info') }}</h3>
+                    <h3 class="text-sm font-semibold text-gray-400 tracking-wider uppercase">{{ __('common.contact_info') }}</h3>
                     <ul class="mt-4 space-y-4">
+                        @php
+                            $config = \App\Models\Config::first();
+                        @endphp
                         <li class="text-base text-gray-500">
-                            123 Banking Street<br>
-                            Financial District<br>
-                            75001 Paris, France
+                            {{ $config->bank_address ?? __('common.footer_address_line1') }}
                         </li>
                         <li class="text-base text-gray-500">
-                            +33 1 23 45 67 89<br>
-                            contact@solidbank.com
+                            {{ $config->bank_phone ?? __('common.footer_phone') }}<br>
+                            {{ $config->bank_email ?? __('common.footer_email') }}
                         </li>
                     </ul>
                 </div>
             </div>
             <div class="mt-8 border-t border-gray-100 pt-8">
                 <p class="text-base text-gray-400 text-center">
-                &copy; {{ date('Y') }} {{ config('app.name', 'SolidBank') }}. {{ __('All rights reserved.') }}
+                &copy; {{ date('Y') }} {{ $config->app_name ?? config('app.name', 'Bred Fin') }}. {{ __('All rights reserved.') }}
             </p>
         </div>
     </div>

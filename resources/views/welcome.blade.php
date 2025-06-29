@@ -11,8 +11,11 @@
                     <p class="text-xl text-gray-600 dark:text-gray-300 mb-8">
                         {{ __('welcome.subtitle') }}
                     </p>
-                    <a href="{{ route('login', ['locale' => app()->getLocale()]) }}" class="text-sm text-gray-700 dark:text-gray-500 underline">{{ __('auth.login') }}</a>
-                        <a href="{{ route('register', ['locale' => app()->getLocale()]) }}" class="ml-4 text-sm text-gray-700 dark:text-gray-500 underline">{{ __('auth.register') }}</a>
+                    
+                    <div class="border-t border-gray-200 dark:border-gray-700 pt-6">
+                        <a href="{{ route('login', ['locale' => app()->getLocale()]) }}" class="text-sm text-gray-700 dark:text-gray-500 underline hover:text-brand-primary transition duration-200">{{ __('auth.login') }}</a>
+                        <a href="{{ route('register', ['locale' => app()->getLocale()]) }}" class="ml-4 text-sm text-gray-700 dark:text-gray-500 underline hover:text-brand-primary transition duration-200">{{ __('auth.register') }}</a>
+                    </div>
                 </div>
             </div>
         </div>
