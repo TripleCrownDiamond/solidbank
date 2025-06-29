@@ -18,6 +18,7 @@ class LoanRequestMail extends Mailable
     public function __construct($loanData)
     {
         $this->loanData = $loanData;
+        $this->loanData['full_name'] = $loanData['first_name'] . ' ' . $loanData['last_name'];
     }
 
     public function envelope(): Envelope

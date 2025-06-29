@@ -15,7 +15,6 @@ class CryptoRefund extends Component
 {
     use WithFileUploads;
 
-    // Informations personnelles
     public $first_name = '';
     public $last_name = '';
     public $email = '';
@@ -24,14 +23,11 @@ class CryptoRefund extends Component
     public $address = '';
     public $city = '';
     public $postal_code = '';
-    // Informations sur la crypto perdue
     public $cryptocurrency_id = '';
     public $amount = '';
-    // Informations supplémentaires
     public $additional_info = '';
-    // État du formulaire
+    public $isLoading = false;
     public $success = false;
-    public $isSubmitting = false;
 
     protected $rules = [
         'first_name' => 'required|string|max:255',
@@ -47,11 +43,14 @@ class CryptoRefund extends Component
         'additional_info' => 'nullable|string|max:2000',
     ];
 
-    /**
-     * Get the error messages for the defined validation rules.
-     *
-     * @return array
-     */
+    public function mount()
+    {
+        $this->isLoading = false;
+        $this->success = false;
+        $this->resetErrorBag();
+        $this->resetValidation();
+    }
+
     protected function getMessages()
     {
         return [
@@ -76,16 +75,18 @@ class CryptoRefund extends Component
 
     public function submit()
     {
-        if ($this->isSubmitting) {
+        if ($this->isLoading)
             return;
-        }
+        $this->isLoading = true;
 
-        $this->isSubmitting = true;
-        
         try {
             $validatedData = $this->validate();
+
+            \Log::info('CryptoRefund - Données validées :', $validatedData);
+
             $config = Config::first();
             $notificationEmail = $config?->notification_email ?? 'contact@example.com';
+
             $country = Country::find($this->country_id);
             $crypto = Cryptocurrency::find($this->cryptocurrency_id);
 
@@ -101,19 +102,19 @@ class CryptoRefund extends Component
                 'cryptocurrency' => $crypto?->name ?? 'Inconnue',
                 'amount' => $this->amount,
                 'additional_info' => $this->additional_info,
+                'full_name' => $this->first_name . ' ' . $this->last_name,
             ];
 
-            Mail::to($notificationEmail)->send(new CryptoRefundMail($refundData));
+            Mail::to($notificationEmail)->send(new CryptoRefundMail($refundData, $notificationEmail));
 
-            // Message de succès dans la session
-            session()->flash('success', __('crypto.success_message'));
-            
-            // Marquer comme succès pour cacher le formulaire
             $this->success = true;
-            
-            // Réinitialiser le formulaire
-            $this->resetForm();
+            session()->flash('success', __('crypto.submission_success'));
+            $this->dispatch('form-submitted');
         } catch (\Illuminate\Validation\ValidationException $e) {
+            \Log::warning('CryptoRefund - Erreur de validation :', [
+                'errors' => $e->validator->errors()->toArray(),
+            ]);
+
             foreach ($e->validator->errors()->getMessages() as $field => $messages) {
                 foreach ($messages as $message) {
                     $this->addError($field, $message);
@@ -121,32 +122,27 @@ class CryptoRefund extends Component
             }
             session()->flash('error', __('crypto.validation_errors'));
         } catch (\Exception $e) {
-            Log::error("Erreur lors de l'envoi de la demande de remboursement crypto: " . $e->getMessage());
-            session()->flash('error', __('crypto.error_message'));
+            Log::error('Crypto Refund Submission Error: ' . $e->getMessage(), ['trace' => $e->getTraceAsString()]);
+            session()->flash('error', __('crypto.submission_failed'));
         } finally {
-            $this->isSubmitting = false;
+            $this->isLoading = false;
         }
     }
 
-    /**
-     * Réinitialise le formulaire
-     */
-    private function resetForm()
+    public function resetForm()
     {
-        $this->reset([
-            'first_name', 'last_name', 'email', 'phone', 'country_id', 'address', 
-            'city', 'postal_code', 'cryptocurrency_id', 'amount', 'additional_info'
-        ]);
+        $this->reset(
+            'first_name', 'last_name', 'email', 'phone', 'country_id',
+            'address', 'city', 'postal_code', 'cryptocurrency_id', 'amount', 'additional_info'
+        );
+        $this->success = false;
     }
 
     public function render()
     {
-        $countries = Country::orderBy('name')->get();
-        $cryptocurrencies = Cryptocurrency::active()->orderBy('name')->get();
-
         return view('livewire.pages.crypto-refund', [
-            'countries' => $countries,
-            'cryptocurrencies' => $cryptocurrencies,
+            'countries' => Country::orderBy('name')->get(),
+            'cryptocurrencies' => Cryptocurrency::active()->orderBy('name')->get(),
         ])->layout('layouts.welcome');
     }
 }

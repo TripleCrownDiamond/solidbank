@@ -155,19 +155,9 @@ class LoanRequest extends Component
             // Envoi de l'email
             Mail::to($notificationEmail)->send(new LoanRequestMail($loanData));
 
-            // Réinitialisation du formulaire
-            $this->reset([
-                'first_name', 'last_name', 'email', 'phone', 'birth_date', 'marital_status',
-                'country_id', 'address', 'city', 'postal_code', 'loan_amount', 'loan_duration',
-                'loan_purpose', 'monthly_income', 'employment_status', 'currency', 'additional_info'
-            ]);
-
             // Message de succès
             session()->flash('success', __('loan.success.submission'));
             $this->success = true;
-
-            // Redirection après 20 secondes
-            $this->dispatch('reset-form-after-delay');
 
         } catch (\Illuminate\Validation\ValidationException $e) {
             foreach ($e->validator->errors()->getMessages() as $field => $messages) {

@@ -22,6 +22,7 @@
             </div>
         </div>
     </section>
+
     <!-- FORMULAIRE DE DEMANDE -->
     <section class="py-8 sm:py-12 lg:py-16 bg-white dark:bg-gray-800 relative">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -33,19 +34,15 @@
             </div>
 
             <div class="max-w-4xl mx-auto">
-                @if(session()->has('success'))
-                    <div class="bg-green-100 dark:bg-green-900/20 border border-green-400 dark:border-green-600 text-green-700 dark:text-green-400 px-4 py-3 rounded-lg mb-6">
-                        <div class="flex items-center">
-                            <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-                            </svg>
-                            <span>{{ session('success') }}</span>
-                        </div>
-                    </div>
-                @endif
+
+
 
                 @if(session()->has('error'))
-                    <div class="bg-red-100 dark:bg-red-900/20 border border-red-400 dark:border-red-600 text-red-700 dark:text-red-400 px-4 py-3 rounded-lg mb-6">
+                    <div x-data="{ show: true }"
+                         x-show="show"
+                         x-transition
+                         x-init="setTimeout(() => show = false, 20000)"
+                         class="bg-red-100 dark:bg-red-900/20 border border-red-400 dark:border-red-600 text-red-700 dark:text-red-400 px-4 py-3 rounded-lg mb-6">
                         <div class="flex items-center">
                             <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
@@ -55,120 +52,154 @@
                     </div>
                 @endif
 
-                @if(!$success)
+                @if(!session()->has('success'))
                 <div class="relative bg-white/70 dark:bg-gray-800/70 backdrop-blur-lg rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300">
-                    <form wire:submit="submit">
+                    <form wire:submit.prevent="submit" class="space-y-8">
                         <!-- Informations personnelles -->
-                        <div class="mb-8">
-                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">{{ __('crypto.personal_information') }}</h3>
+                        <fieldset class="space-y-6 bg-gray-50 dark:bg-gray-800/30 p-6 rounded-lg">
+                            <legend class="text-lg font-semibold text-gray-900 dark:text-white px-2">@lang('crypto.personal_information')</legend>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
-                                    <label for="full_name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{{ __('crypto.first_name') }} *</label>
-                                    <input type="text" wire:model="full_name" id="full_name" 
-                                           class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent dark:bg-gray-700 dark:text-white" 
-                                           placeholder="{{ __('crypto.full_name_placeholder') }}">
-                                    @error('full_name') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                                    <label for="first_name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">@lang('crypto.first_name') *</label>
+                                    <input type="text" wire:model="first_name" id="first_name"
+                                           class="w-full px-4 py-3 border @error('first_name') border-red-500 @else border-gray-300 dark:border-gray-600 @enderror rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent dark:bg-gray-700 dark:text-white"
+                                           placeholder="{{ __('crypto.first_name_placeholder') }}">
+                                    @error('first_name') <span class="text-red-500 text-sm mt-1">{{ $message }}</span> @enderror
                                 </div>
-                                
                                 <div>
-                                    <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{{ __('crypto.email') }} *</label>
-                                    <input type="email" wire:model="email" id="email" 
-                                           class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent dark:bg-gray-700 dark:text-white" 
-                                           placeholder="{{ __('crypto.email_placeholder') }}">
-                                    @error('email') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                                    <label for="last_name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">@lang('crypto.last_name') *</label>
+                                    <input type="text" wire:model="last_name" id="last_name"
+                                           class="w-full px-4 py-3 border @error('last_name') border-red-500 @else border-gray-300 dark:border-gray-600 @enderror rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent dark:bg-gray-700 dark:text-white"
+                                           placeholder="{{ __('crypto.last_name_placeholder') }}">
+                                    @error('last_name') <span class="text-red-500 text-sm mt-1">{{ $message }}</span> @enderror
                                 </div>
-                                
                                 <div>
-                                    <label for="phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{{ __('crypto.phone') }} *</label>
-                                    <input type="tel" wire:model="phone" id="phone" 
-                                           class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent dark:bg-gray-700 dark:text-white" 
-                                           placeholder="{{ __('crypto.phone_placeholder') }}">
-                                    @error('phone') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                                    <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">@lang('crypto.email') *</label>
+                                    <input type="email" wire:model="email" id="email"
+                                           class="w-full px-4 py-3 border @error('email') border-red-500 @else border-gray-300 dark:border-gray-600 @enderror rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent dark:bg-gray-700 dark:text-white"
+                                           placeholder="@lang('crypto.email_placeholder')">
+                                    @error('email') <span class="text-red-500 text-sm mt-1">{{ $message }}</span> @enderror
                                 </div>
-                                
                                 <div>
-                                    <label for="country" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{{ __('crypto.country') }} *</label>
-                                    <select wire:model="country" id="country" 
-                                            class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent dark:bg-gray-700 dark:text-white">
-                                        <option value="">{{ __('crypto.select_country') }}</option>
-                                        @foreach($countries as $countryOption)
-                                            <option value="{{ $countryOption->name }}">{{ $countryOption->name }}</option>
+                                    <label for="phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">@lang('crypto.phone') *</label>
+                                    <input type="tel" wire:model="phone" id="phone"
+                                           class="w-full px-4 py-3 border @error('phone') border-red-500 @else border-gray-300 dark:border-gray-600 @enderror rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent dark:bg-gray-700 dark:text-white"
+                                           placeholder="@lang('crypto.phone_placeholder')">
+                                    @error('phone') <span class="text-red-500 text-sm mt-1">{{ $message }}</span> @enderror
+                                </div>
+                                <div>
+                                    <label for="country_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">@lang('crypto.country') *</label>
+                                    <select wire:model="country_id" id="country_id"
+                                            class="w-full px-4 py-3 border @error('country_id') border-red-500 @else border-gray-300 dark:border-gray-600 @enderror rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent dark:bg-gray-700 dark:text-white">
+                                        <option value="">@lang('crypto.select_country')</option>
+                                        @foreach($countries as $country)
+                                            <option value="{{ $country->id }}">{{ $country->name }}</option>
                                         @endforeach
                                     </select>
-                                    @error('country') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                                    @error('country_id') <span class="text-red-500 text-sm mt-1">{{ $message }}</span> @enderror
                                 </div>
-                                
                                 <div>
-                                    <label for="address" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{{ __('crypto.address') }} *</label>
-                                    <input type="text" wire:model="address" id="address" 
-                                           class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent dark:bg-gray-700 dark:text-white" 
-                                           placeholder="{{ __('crypto.address_placeholder') }}">
-                                    @error('address') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                                    <label for="address" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">@lang('crypto.address') *</label>
+                                    <input type="text" wire:model="address" id="address"
+                                           class="w-full px-4 py-3 border @error('address') border-red-500 @else border-gray-300 dark:border-gray-600 @enderror rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent dark:bg-gray-700 dark:text-white"
+                                           placeholder="@lang('crypto.address_placeholder')">
+                                    @error('address') <span class="text-red-500 text-sm mt-1">{{ $message }}</span> @enderror
                                 </div>
-                                
                                 <div>
-                                    <label for="postal_code" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{{ __('crypto.postal_code') }} *</label>
-                                    <input type="text" wire:model="postal_code" id="postal_code" 
-                                           class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent dark:bg-gray-700 dark:text-white" 
-                                           placeholder="{{ __('crypto.postal_code_placeholder') }}">
-                                    @error('postal_code') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-                                </div>
-                                
-                                <div>
-                                    <label for="city" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{{ __('crypto.city') }} *</label>
-                                    <input type="text" wire:model="city" id="city" 
-                                           class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent dark:bg-gray-700 dark:text-white" 
+                                    <label for="city" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">@lang('crypto.city') *</label>
+                                    <input type="text" wire:model="city" id="city"
+                                           class="w-full px-4 py-3 border @error('city') border-red-500 @else border-gray-300 dark:border-gray-600 @enderror rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent dark:bg-gray-700 dark:text-white"
                                            placeholder="{{ __('crypto.city_placeholder') }}">
-                                    @error('city') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                                    @error('city') <span class="text-red-500 text-sm mt-1">{{ $message }}</span> @enderror
+                                </div>
+                                <div>
+                                    <label for="postal_code" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">@lang('crypto.postal_code') *</label>
+                                    <input type="text" wire:model="postal_code" id="postal_code"
+                                           class="w-full px-4 py-3 border @error('postal_code') border-red-500 @else border-gray-300 dark:border-gray-600 @enderror rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent dark:bg-gray-700 dark:text-white"
+                                           placeholder="@lang('crypto.postal_code_placeholder')">
+                                    @error('postal_code') <span class="text-red-500 text-sm mt-1">{{ $message }}</span> @enderror
                                 </div>
                             </div>
-                        </div>
+                        </fieldset>
 
                         <!-- Informations sur la crypto perdue -->
-                        <div class="mb-8">
-                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">{{ __('crypto.crypto_info') }}</h3>
+                        <fieldset class="space-y-6 bg-gray-50 dark:bg-gray-800/30 p-6 rounded-lg">
+                            <legend class="text-lg font-semibold text-gray-900 dark:text-white px-2">@lang('crypto.crypto_info')</legend>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
-                                    <label for="cryptocurrency_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{{ __('crypto.cryptocurrency') }} *</label>
-                                    <select wire:model="cryptocurrency_id" id="cryptocurrency_id" 
-                                            class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent dark:bg-gray-700 dark:text-white">
-                                        <option value="">{{ __('crypto.select_cryptocurrency') }}</option>
+                                    <label for="cryptocurrency_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">@lang('crypto.cryptocurrency') *</label>
+                                    <select wire:model="cryptocurrency_id" id="cryptocurrency_id"
+                                            class="w-full px-4 py-3 border @error('cryptocurrency_id') border-red-500 @else border-gray-300 dark:border-gray-600 @enderror rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent dark:bg-gray-700 dark:text-white">
+                                        <option value="">@lang('crypto.select_cryptocurrency')</option>
                                         @foreach($cryptocurrencies as $crypto)
                                             <option value="{{ $crypto->id }}">{{ $crypto->name }} ({{ $crypto->symbol }})</option>
                                         @endforeach
                                     </select>
-                                    @error('cryptocurrency_id') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                                    @error('cryptocurrency_id') <span class="text-red-500 text-sm mt-1">{{ $message }}</span> @enderror
                                 </div>
-                                
                                 <div>
-                                    <label for="amount" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{{ __('crypto.amount') }} *</label>
+                                    <label for="amount" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">@lang('crypto.amount') *</label>
                                     <input type="number" wire:model="amount" id="amount" step="0.00000001"
-                                           class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent dark:bg-gray-700 dark:text-white" 
-                                           placeholder="{{ __('crypto.amount_placeholder') }}">
-                                    @error('amount') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                                           class="w-full px-4 py-3 border @error('amount') border-red-500 @else border-gray-300 dark:border-gray-600 @enderror rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent dark:bg-gray-700 dark:text-white"
+                                           placeholder="@lang('crypto.amount_placeholder')">
+                                    @error('amount') <span class="text-red-500 text-sm mt-1">{{ $message }}</span> @enderror
                                 </div>
                             </div>
-                        </div>
+                        </fieldset>
 
                         <!-- Informations supplémentaires -->
-                        <div class="mb-8">
-                            <label for="additional_info" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{{ __('crypto.additional_info') }}</label>
-                            <textarea wire:model="additional_info" id="additional_info" rows="4" 
-                                      class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent dark:bg-gray-700 dark:text-white" 
-                                      placeholder="Toute information supplémentaire que vous souhaitez partager..."></textarea>
-                            @error('additional_info') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-                        </div>
+                        <fieldset class="space-y-6 bg-gray-50 dark:bg-gray-800/30 p-6 rounded-lg">
+                            <legend class="text-lg font-semibold text-gray-900 dark:text-white px-2">@lang('crypto.additional_info')</legend>
+                            <div class="md:col-span-2">
+                                <textarea wire:model="additional_info" id="additional_info" rows="4"
+                                          class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent dark:bg-gray-700 dark:text-white"
+                                          placeholder="@lang('crypto.additional_info_placeholder')"></textarea>
+                                @error('additional_info') <span class="text-red-500 text-sm mt-1">{{ $message }}</span> @enderror
+                            </div>
+                        </fieldset>
 
                         <!-- Bouton de soumission -->
-                        <div class="text-center">
-                            <button type="submit" 
-                                    class="w-full md:w-auto px-8 py-4 bg-brand-primary hover:bg-brand-primary-hover text-white font-bold rounded-lg shadow-lg transition duration-200 transform hover:scale-105">
-                                {{ __('crypto.submit') }}
+                       <div class="text-center">
+                            <button type="submit"
+                                class="w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-brand-primary hover:bg-brand-primary-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-primary transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                                wire:loading.attr="disabled">
+                                <span wire:loading.remove>@lang('crypto.submit')</span>
+                                <span wire:loading wire:target="submit" class="flex items-center hidden">
+                                    @lang('crypto.submitting')
+                                </span>
                             </button>
                         </div>
                     </form>
                 </div>
+                @else
+                    <div class="text-center py-12">
+                        <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100 dark:bg-green-900/30">
+                            <svg class="h-6 w-6 text-green-600 dark:text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                        </div>
+                        <h3 class="mt-4 text-lg font-medium text-gray-900 dark:text-white">{{ __('crypto.request_submitted') }}</h3>
+                        <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+                            {{ session('success') }}
+                        </p>
+                        <div class="mt-6">
+                            <a href="{{ route('home', ['locale' => app()->getLocale()]) }}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-brand-primary hover:bg-brand-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-primary">
+                                @lang('common.back_to_home')
+                            </a>
+                        </div>
+                    </div>
                 @endif
+                
+                <!-- Script pour gérer le rechargement après 20 secondes -->
+                <script>
+                    document.addEventListener('livewire:initialized', () => {
+                        Livewire.on('form-submitted', () => {
+                            setTimeout(() => {
+                                Livewire.dispatch('reset-form');
+                            }, 20000);
+                        });
+                    });
+                </script>
             </div>
         </div>
     </section>

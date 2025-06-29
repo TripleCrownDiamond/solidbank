@@ -17,7 +17,7 @@
         
         <div style="margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid #93c5fd;">
             <span style="font-weight: bold; color: #1e40af;">Nom complet :</span>
-            <span style="color: #1e40af; margin-left: 10px;">{{ $loanData['first_name'] }} {{ $loanData['last_name'] }}</span>
+            <span style="color: #1e40af; margin-left: 10px;">{{ $loanData['full_name'] }}</span>
         </div>
         
         <div style="margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid #93c5fd;">
