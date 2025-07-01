@@ -12,6 +12,17 @@ Route::get('/', function () {
     return redirect("$defaultLocale");
 });
 
+// Redirection pour les URLs sans préfixe locale
+Route::get('/transactions', function () {
+    $defaultLocale = session('locale', 'fr');
+    return redirect("/$defaultLocale/transactions");
+});
+
+Route::get('/dashboard', function () {
+    $defaultLocale = session('locale', 'fr');
+    return redirect("/$defaultLocale/dashboard");
+});
+
 // Groupe de routes avec préfixe {locale}
 Route::prefix('{locale}')->group(function () {
     // Middleware pour définir la locale en fonction de l'URL

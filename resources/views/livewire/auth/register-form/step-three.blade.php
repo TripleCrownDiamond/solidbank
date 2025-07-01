@@ -113,8 +113,8 @@
         </div>
     </div>
 
-    <!-- Identity Document Upload -->
-    <div>
+    {{-- Identity Document Upload - Removed for simplified registration --}}
+    {{-- <div>
         <label for="identity_document" class="block text-sm font-medium text-gray-900 dark:text-white">
             {{ __('register.identity_document') }}
         </label>
@@ -129,10 +129,10 @@
         @error('identity_document')
             <span class="text-red-500 text-xs">{{ $message }}</span>
         @enderror
-    </div>
+    </div> --}}
 
-    <!-- Address Document Upload -->
-    <div>
+    {{-- Address Document Upload - Removed for simplified registration --}}
+    {{-- <div>
         <label for="address_document" class="block text-sm font-medium text-gray-900 dark:text-white">
             {{ __('register.address_document') }}
         </label>
@@ -147,7 +147,7 @@
         @error('address_document')
             <span class="text-red-500 text-xs">{{ $message }}</span>
         @enderror
-    </div>
+    </div> --}}
 
     <!-- Navigation Buttons -->
     <div class="flex justify-between pt-4">

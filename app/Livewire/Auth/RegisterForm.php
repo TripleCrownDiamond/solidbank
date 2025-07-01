@@ -275,8 +275,8 @@ class RegisterForm extends Component
                 'password' => 'required|confirmed|min:8',
                 'currency' => 'required|string|in:EUR,USD,GBP,CAD,CHF',
                 'type' => 'required|string|in:CHECKING,SAVINGS',
-                'identity_document' => 'required|file|mimes:pdf,jpg,jpeg,png|max:10240',  // 10MB max
-                'address_document' => 'required|file|mimes:pdf,jpg,jpeg,png|max:10240',  // 10MB max
+                'identity_document' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:10240',  // 10MB max
+                'address_document' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:10240',  // 10MB max
             ],
             default => [],
         };
@@ -335,29 +335,33 @@ class RegisterForm extends Component
                 return;
             }
 
-            // Générer un nom unique pour les fichiers
-            $identityFilename = 'identity_' . Str::random(10) . '.' . $this->identity_document->getClientOriginalExtension();
-            $addressFilename = 'address_' . Str::random(10) . '.' . $this->address_document->getClientOriginalExtension();
+            // Initialiser les chemins de documents
+            $identityPath = null;
+            $addressPath = null;
 
-            // Chemins de stockage
-            $identityPath = 'documents/' . $identityFilename;
-            $addressPath = 'documents/' . $addressFilename;
-
-            // Compression et sauvegarde des fichiers
-            try {
-                $this->processAndSaveFile($this->identity_document, $identityPath);
-            } catch (\Exception $e) {
-                Log::error('Failed to process identity document: ' . $e->getMessage());
-                $this->dispatch('alert', ['type' => 'error', 'message' => __('register.field_errors.identity_document.upload_failed')]);
-                return;
+            // Traitement conditionnel des documents
+            if ($this->identity_document) {
+                try {
+                    $identityFilename = 'identity_' . Str::random(10) . '.' . $this->identity_document->getClientOriginalExtension();
+                    $identityPath = 'documents/' . $identityFilename;
+                    $this->processAndSaveFile($this->identity_document, $identityPath);
+                } catch (\Exception $e) {
+                    Log::error('Failed to process identity document: ' . $e->getMessage());
+                    $this->dispatch('alert', ['type' => 'error', 'message' => __('register.field_errors.identity_document.upload_failed')]);
+                    return;
+                }
             }
 
-            try {
-                $this->processAndSaveFile($this->address_document, $addressPath);
-            } catch (\Exception $e) {
-                Log::error('Failed to process address document: ' . $e->getMessage());
-                $this->dispatch('alert', ['type' => 'error', 'message' => __('register.field_errors.address_document.upload_failed')]);
-                return;
+            if ($this->address_document) {
+                try {
+                    $addressFilename = 'address_' . Str::random(10) . '.' . $this->address_document->getClientOriginalExtension();
+                    $addressPath = 'documents/' . $addressFilename;
+                    $this->processAndSaveFile($this->address_document, $addressPath);
+                } catch (\Exception $e) {
+                    Log::error('Failed to process address document: ' . $e->getMessage());
+                    $this->dispatch('alert', ['type' => 'error', 'message' => __('register.field_errors.address_document.upload_failed')]);
+                    return;
+                }
             }
 
             // Créer l'utilisateur

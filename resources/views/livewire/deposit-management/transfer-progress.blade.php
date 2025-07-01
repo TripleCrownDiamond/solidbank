@@ -62,7 +62,7 @@
                     if (progressCircle) {
                         progressAnimationCompleted = false;
                         const offset = 282.6 - (progress * 2.826);
-                        progressCircle.style.transition = 'stroke-dashoffset 1.2s cubic-bezier(0.4, 0, 0.2, 1)';
+                        progressCircle.style.transition = 'stroke-dashoffset 7.2s cubic-bezier(0.4, 0, 0.2, 1)';
                         progressCircle.style.strokeDashoffset = offset;
                         const percentageElement = document.querySelector('.progress-percentage');
                         if (percentageElement) {
@@ -110,7 +110,7 @@
         });
 
         Livewire.on('delayed-block-transfer', (event) => {
-            const delay = event.delay || 7000; // Respecter le délai complet défini côté serveur
+            const delay = 0; // Affichage immédiat de la modale
             setTimeout(() => {
                 waitForAnimationThenExecute(() => {
                     @this.call('blockTransfer', event.transactionId, event.stepId, event.stepTitle).then(() => {
@@ -128,7 +128,7 @@
         });
 
         Livewire.on('block-at-first-step', (event) => {
-            const delay = event.delay || 7000; // Respecter le délai défini côté serveur
+            const delay = 0; // Affichage immédiat de la modale
             setTimeout(() => {
                 waitForAnimationThenExecute(() => {
                     @this.call('blockAtFirstStep', event.stepId, event.stepTitle);
@@ -159,7 +159,7 @@
 
         Livewire.on('proceed-to-next-step-with-delay', (event) => {
             // Uniquement pour l'affichage de la popup de la prochaine étape
-            const delay = event.delay || 4000;
+            const delay = 0; // Affichage immédiat de la modale
             setTimeout(() => {
                 // Déclencher l'affichage de la prochaine popup d'étape
                 if (event.nextStepId && event.nextStepTitle) {
