@@ -136,7 +136,13 @@ class TransferStepManagement extends Component
             }
 
             $this->closeGroupModal();
-            $this->resetPage();
+            // Réinitialiser les filtres pour s'assurer que le nouveau groupe est visible
+            $this->search = '';
+            $this->statusFilter = 'all';
+            // Utiliser la méthode dédiée pour rafraîchir
+            $this->refreshGroups();
+            // Dispatch un événement personnalisé pour forcer la mise à jour
+            $this->dispatch('group-created');
         } catch (\Exception $e) {
             $this->dispatch('alert', ['type' => 'error', 'message' => __('messages.group_save_error')]);
         } finally {
@@ -161,6 +167,7 @@ class TransferStepManagement extends Component
             $this->dispatch('alert', ['type' => 'success', 'message' => __('messages.group_deleted_successfully')]);
 
             $this->resetPage();
+            $this->dispatch('$refresh');
         } catch (\Exception $e) {
             // Log::info('Dispatching group delete error alert');
             $this->dispatch('alert', ['type' => 'error', 'message' => __('messages.group_deletion_error')]);
@@ -180,6 +187,7 @@ class TransferStepManagement extends Component
 
             $message = $group->is_active ? __('messages.group_activated_successfully') : __('messages.group_deactivated_successfully');
             $this->dispatch('alert', ['type' => 'success', 'message' => $message]);
+            $this->dispatch('$refresh');
         } catch (\Exception $e) {
             $this->dispatch('alert', ['type' => 'error', 'message' => __('messages.group_status_change_error')]);
         } finally {
@@ -190,7 +198,13 @@ class TransferStepManagement extends Component
     // Step management methods
     public function selectGroup($groupId)
     {
-        $this->selectedGroup = $groupId;
+        // Vérifier que le groupe existe avant de le sélectionner
+        $group = TransferStepGroup::find($groupId);
+        if ($group) {
+            $this->selectedGroup = $groupId;
+            // Force une mise à jour pour s'assurer que la sélection est visible
+            $this->dispatch('$refresh');
+        }
     }
 
     public function deselectGroup()
@@ -352,5 +366,13 @@ class TransferStepManagement extends Component
         if (method_exists($this, $method)) {
             call_user_func_array([$this, $method], $params);
         }
+    }
+
+    public function refreshGroups()
+    {
+        // Méthode pour forcer le rafraîchissement de la liste des groupes
+        $this->resetPage();
+        $this->selectedGroup = null;
+        $this->dispatch('$refresh');
     }
 }

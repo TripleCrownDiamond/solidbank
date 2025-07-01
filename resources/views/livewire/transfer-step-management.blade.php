@@ -376,3 +376,14 @@
         </div>
     @endif
 </div>
+
+<script>
+    document.addEventListener('livewire:init', () => {
+        Livewire.on('group-created', () => {
+            // Force une mise à jour complète du composant
+            setTimeout(() => {
+                Livewire.dispatch('$refresh');
+            }, 100);
+        });
+    });
+</script>
