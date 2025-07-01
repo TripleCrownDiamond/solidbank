@@ -719,11 +719,11 @@
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{{ __('admin.apply_to') }}</label>
                             <div class="flex space-x-4">
                                 <label class="flex items-center">
-                                    <input type="radio" wire:model.live="transferGroupType" value="account" class="mr-2 text-brand-primary focus:ring-brand-primary">
+                                    <input type="radio" wire:model.live="transferGroupType" value="account" name="transferGroupType" class="mr-2 text-brand-primary focus:ring-brand-primary">
                                     <span class="text-sm text-gray-700 dark:text-gray-300">{{ __('admin.account') }}</span>
                                 </label>
                                 <label class="flex items-center">
-                                    <input type="radio" wire:model.live="transferGroupType" value="wallet" class="mr-2 text-brand-primary focus:ring-brand-primary">
+                                    <input type="radio" wire:model.live="transferGroupType" value="wallet" name="transferGroupType" class="mr-2 text-brand-primary focus:ring-brand-primary">
                                     <span class="text-sm text-gray-700 dark:text-gray-300">{{ __('admin.wallet') }}</span>
                                 </label>
                             </div>

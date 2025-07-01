@@ -216,6 +216,10 @@ class UserDetailManagement extends Component
 
     public function openTransferGroupModal($type, $id)
     {
+        // Reset modal state first
+        $this->resetTransferGroupModal();
+        
+        // Set new values
         $this->transferGroupType = $type;
         if ($type === 'account') {
             $this->selectedAccountId = $id;
@@ -233,12 +237,9 @@ class UserDetailManagement extends Component
         // Simuler un petit délai pour l'effet de loading
         usleep(300000);  // 300ms
 
-        // Réinitialiser les sélections quand le type change
-        if ($value === 'account') {
-            $this->selectedWalletId = null;
-        } else {
-            $this->selectedAccountId = null;
-        }
+        // Réinitialiser toutes les sélections quand le type change
+        $this->selectedAccountId = null;
+        $this->selectedWalletId = null;
         $this->selectedTransferGroupId = null;
     }
 
@@ -308,11 +309,19 @@ class UserDetailManagement extends Component
 
     public function closeTransferGroupModal()
     {
+        $this->resetTransferGroupModal();
+    }
+
+    private function resetTransferGroupModal()
+    {
         $this->showTransferGroupModal = false;
         $this->selectedAccountId = null;
         $this->selectedWalletId = null;
         $this->selectedTransferGroupId = null;
         $this->transferGroupType = 'account';
+        
+        // Force re-render to ensure clean state
+        $this->dispatch('$refresh');
     }
 
     private function generateRib($account)

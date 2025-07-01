@@ -5,6 +5,12 @@
         </h3>
         <div class="w-16 h-1 bg-blue-500 dark:bg-blue-400 rounded-full mb-4"></div>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            @php
+                $userAccount = Auth::user()->account;
+                $isAccountInactive = $userAccount && $userAccount->status !== 'ACTIVE';
+                $shouldDisableButtons = !Auth::user()->is_admin && $isAccountInactive;
+            @endphp
+            
             @if(Auth::user()->is_admin)
                 <!-- Admin Buttons: Dépôt et Retrait -->
                 <button wire:click="openDepositModal" 
@@ -34,31 +40,58 @@
                 </button>
             @else
                 <!-- User Buttons: Dépôt et Envoyer de l'argent -->
-                <button wire:click="openDepositModal" 
-                        onclick="console.log('User deposit button clicked');"
-                        class="inline-block px-6 py-3 bg-brand-primary hover:bg-brand-primary/90 text-white rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-                        wire:loading.attr="disabled" 
-                        wire:target="openDepositModal">
-                    <x-loader-spinner
-                        target="openDepositModal"
-                        text="{{ __('common.deposit') }}"
-                        position="left"
-                    >
-                        <i class="fa-solid fa-plus mr-2"></i>{{ __('common.deposit') }}
-                    </x-loader-spinner>
-                </button>
-                <button wire:click="openTransferModal" 
-                        class="inline-block px-6 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-                        wire:loading.attr="disabled" 
-                        wire:target="openTransferModal">
-                    <x-loader-spinner
-                        target="openTransferModal"
-                        text="{{ __('transfers.send_money') }}"
-                        position="left"
-                    >
-                        <i class="fa-solid fa-paper-plane mr-2"></i>{{ __('transfers.send_money') }}
-                    </x-loader-spinner>
-                </button>
+                @if($shouldDisableButtons)
+                    <!-- Disabled buttons for inactive accounts -->
+                    <div class="relative">
+                        <button disabled
+                                class="inline-block px-6 py-3 bg-gray-400 text-gray-600 rounded-lg transition-all duration-200 opacity-50 cursor-not-allowed">
+                            <i class="fa-solid fa-plus mr-2"></i>{{ __('common.deposit') }}
+                        </button>
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <span class="bg-red-500 text-white text-xs px-2 py-1 rounded-full">
+                                {{ __('common.account_inactive') }}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="relative">
+                        <button disabled
+                                class="inline-block px-6 py-3 bg-gray-400 text-gray-600 rounded-lg transition-all duration-200 opacity-50 cursor-not-allowed">
+                            <i class="fa-solid fa-paper-plane mr-2"></i>{{ __('transfers.send_money') }}
+                        </button>
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <span class="bg-red-500 text-white text-xs px-2 py-1 rounded-full">
+                                {{ __('common.account_inactive') }}
+                            </span>
+                        </div>
+                    </div>
+                @else
+                    <!-- Active buttons for active accounts -->
+                    <button wire:click="openDepositModal" 
+                            onclick="console.log('User deposit button clicked');"
+                            class="inline-block px-6 py-3 bg-brand-primary hover:bg-brand-primary/90 text-white rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                            wire:loading.attr="disabled" 
+                            wire:target="openDepositModal">
+                        <x-loader-spinner
+                            target="openDepositModal"
+                            text="{{ __('common.deposit') }}"
+                            position="left"
+                        >
+                            <i class="fa-solid fa-plus mr-2"></i>{{ __('common.deposit') }}
+                        </x-loader-spinner>
+                    </button>
+                    <button wire:click="openTransferModal" 
+                            class="inline-block px-6 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                            wire:loading.attr="disabled" 
+                            wire:target="openTransferModal">
+                        <x-loader-spinner
+                            target="openTransferModal"
+                            text="{{ __('transfers.send_money') }}"
+                            position="left"
+                        >
+                            <i class="fa-solid fa-paper-plane mr-2"></i>{{ __('transfers.send_money') }}
+                        </x-loader-spinner>
+                    </button>
+                @endif
             @endif
         </div>
     </div>

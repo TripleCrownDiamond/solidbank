@@ -28,53 +28,7 @@
             </div>
         </div>
 
-        <!-- Bulk Actions -->
-        @if(count($selectedUsers) > 0)
-            <div class="mb-4 p-4 rounded-lg border bg-brand-primary/10 border-brand-primary/30">
-                <div class="flex items-center justify-between">
-                    <span class="text-sm text-brand-primary">
-                        {{ __('admin.selected_users', ['count' => count($selectedUsers)]) }}
-                    </span>
-                    <div class="flex space-x-2">
-                        <button wire:click="bulkActivate" 
-                                wire:confirm="{{ __('messages.confirm_bulk_activate_users', ['count' => count($selectedUsers)]) }}"
-                                class="px-3 py-1 bg-green-600 text-white text-sm rounded hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                                wire:loading.attr="disabled" 
-                                wire:target="bulkActivate">
-                            <span wire:loading.remove wire:target="bulkActivate">
-                                <i class="fa-solid fa-check-circle mr-1"></i> {{ __('common.activate') }}
-                            </span>
-                            <span wire:loading wire:target="bulkActivate">
-                                <i class="fa-solid fa-spinner fa-spin mr-1"></i> {{ __('common.activate') }}
-                            </span>
-                        </button>
-                        <button wire:click="bulkSuspend" 
-                                class="px-3 py-1 bg-yellow-600 text-white text-sm rounded hover:bg-yellow-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                                wire:loading.attr="disabled" 
-                                wire:target="bulkSuspend">
-                            <span wire:loading.remove wire:target="bulkSuspend">
-                                <i class="fa-solid fa-pause-circle mr-1"></i> {{ __('common.suspend') }}
-                            </span>
-                            <span wire:loading wire:target="bulkSuspend">
-                                <i class="fa-solid fa-spinner fa-spin mr-1"></i> {{ __('common.suspend') }}
-                            </span>
-                        </button>
-                        <button wire:click="bulkDelete" 
-                                wire:confirm="{{ __('messages.confirm_bulk_delete_users', ['count' => count($selectedUsers)]) }}"
-                                class="px-3 py-1 bg-red-600 text-white text-sm rounded hover:bg-red-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                                wire:loading.attr="disabled" 
-                                wire:target="bulkDelete">
-                            <span wire:loading.remove wire:target="bulkDelete">
-                                <i class="fa-solid fa-trash-can mr-1"></i> {{ __('common.delete') }}
-                            </span>
-                            <span wire:loading wire:target="bulkDelete">
-                                <i class="fa-solid fa-spinner fa-spin mr-1"></i> {{ __('common.delete') }}
-                            </span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        @endif
+
 
         <!-- Results Info -->
         <div class="mb-4 flex items-center justify-between">
@@ -106,10 +60,6 @@
                 <table class="min-w-full">
                     <thead>
                         <tr class="border-b border-gray-200 dark:border-gray-700">
-                            <th scope="col" class="px-6 py-4 text-left">
-                                <input type="checkbox" wire:model.live="selectAll" 
-                                       class="rounded border-gray-300 text-brand-primary focus:ring-brand-primary">
-                            </th>
                             <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-brand-primary dark:text-brand-accent uppercase tracking-wider cursor-pointer" 
                                 wire:click="sortBy('name')">
                                 <div class="flex items-center space-x-1">
@@ -150,20 +100,12 @@
                     </thead>
                     <tbody class="divide-y divide-gray-100 dark:divide-gray-700">
                         @foreach ($users as $user)
+                            @if(!$user->is_admin)
                             <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors duration-200">
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    @if($user->id !== auth()->id())
-                                        <input type="checkbox" wire:model.live="selectedUsers" value="{{ $user->id }}" 
-                                               class="rounded border-gray-300 text-brand-primary focus:ring-brand-primary">
-                                    @endif
-                                </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">
                                     <div class="flex items-center space-x-3">
                                         <div class="w-2 h-2 bg-brand-accent rounded-full"></div>
                                         <span>{{ $user->name }}</span>
-                                        @if($user->id === auth()->id())
-                                            <span class="text-xs px-2 py-1 rounded-full bg-brand-primary/20 text-brand-primary">{{ __('admin.you') }}</span>
-                                        @endif
                                     </div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">{{ $user->email }}</td>
@@ -284,13 +226,14 @@
                                             <div wire:loading wire:target="deleteUser({{ $user->id }})" class="animate-spin">
                                                 <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24">
                                                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 714 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 718-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 714 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                                                 </svg>
                                             </div>
                                         </button>
                                     </div>
                                 </td>
                             </tr>
+                            @endif
                         @endforeach
                     </tbody>
                 </table>
