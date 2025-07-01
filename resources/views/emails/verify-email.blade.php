@@ -1,14 +1,13 @@
-<x-mail::message>
-# {{ __('Verify Email Address') }}
+@extends('emails.layout')
 
-{{ __('Please click the button below to verify your email address.') }}
+@section('content')
+    <h1>{{ __('Verify Email Address') }}</h1>
 
-<x-mail::button :url="$verificationUrl">
-{{ __('Verify Email Address') }}
-</x-mail::button>
+    <p>{{ __('Please click the button below to verify your email address.') }}</p>
 
-{{ __('If you did not create an account, no further action is required.') }}
+    <a href="{{ $verificationUrl }}" class="button">
+        {{ __('Verify Email Address') }}
+    </a>
 
-Thanks,<br>
-{{ getAppName() }}
-</x-mail::message>
+    <p>{{ __('If you did not create an account, no further action is required.') }}</p>
+@endsection

@@ -64,6 +64,21 @@
             font-size: 28px;
             margin-bottom: 20px;
         }
+        .button {
+            display: inline-block;
+            background-color: var(--brand-primary);
+            color: #ffffff !important;
+            padding: 12px 25px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .button:hover {
+            background-color: var(--brand-primary-hover);
+        }
     </style>
 </head>
 <body>

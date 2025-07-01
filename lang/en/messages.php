@@ -145,6 +145,19 @@ return [
     'user_deleted_successfully' => 'User deleted successfully',
     'invalid_otp' => 'Invalid OTP',
     'otp_sent_successfully' => 'OTP sent successfully',
+    'newsletter_subscription_success' => 'You have successfully subscribed to our newsletter.',
+    // Contact Form messages
+    'contact_form' => [
+        'name_required' => 'The name is required.',
+        'name_min' => 'The name must contain at least 2 characters.',
+        'email_required' => 'The email is required.',
+        'email_email' => 'The email must be valid.',
+        'subject_required' => 'The subject is required.',
+        'subject_min' => 'The subject must contain at least 5 characters.',
+        'message_required' => 'The message is required.',
+        'message_min' => 'The message must contain at least 10 characters.',
+        'send_error' => 'An error occurred while sending the message. Please try again.',
+    ],
     // Transfer messages
     'transfer_confirmed_successfully' => 'Transfer confirmed successfully',
     'external_transfer_confirmed_subject' => 'Your external transfer confirmation',

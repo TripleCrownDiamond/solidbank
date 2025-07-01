@@ -8,10 +8,11 @@
         <div class="absolute bottom-1/3 right-1/5 w-3 h-3 bg-brand-primary/15 rounded-full animate-float" style="animation-delay: 3s;"></div>
     </div>
     <!-- HERO SECTION -->
-    <section class="relative text-white py-8 sm:py-12 lg:py-16 px-4 sm:px-6 lg:px-8 rounded-lg shadow-lg overflow-hidden">
+    <section class="relative text-white py-8 sm:py-12 lg:py-16 px-4 sm:px-6 lg:px-8 rounded-xl shadow-2xl overflow-hidden border border-white/20">
         <!-- Gradient animé avec effet glassmorphism -->
-        <div class="absolute inset-0 bg-gradient-to-r from-brand-primary to-brand-accent animate-gradient-x"></div>
-        <div class="absolute inset-0 backdrop-blur-sm bg-white/5 border border-white/10 rounded-lg"></div>
+        <div class="absolute inset-0 bg-gradient-to-br from-brand-primary via-brand-accent to-brand-primary animate-gradient-xy"></div>
+        <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent animate-pulse"></div>
+        <div class="absolute inset-0 backdrop-blur-sm bg-white/5 border border-white/10 rounded-xl"></div>
         <div class="relative z-10 max-w-7xl mx-auto">
             <div class="text-center">
                 <span class="inline-block bg-brand-accent text-white px-3 py-1 rounded-full mb-4 font-medium text-sm sm:text-base">{{ __('common.our_services') }}</span>
@@ -26,7 +27,7 @@
     </section>
 
     <!-- SERVICES PRINCIPAUX -->
-    <section class="py-8 sm:py-12 lg:py-16 bg-gray-50 dark:bg-gray-900 relative">
+    <section class="py-8 sm:py-12 lg:py-16 bg-gray-50 dark:bg-gray-900 relative rounded-xl border border-gray-200/50 dark:border-gray-700/50 mt-8 mb-8">
         <!-- Éléments décoratifs animés -->
         <div class="absolute top-10 right-10 w-20 h-20 border-2 border-brand-primary/20 rounded-full animate-spin-slow"></div>
         <div class="absolute bottom-10 left-10 w-16 h-16 border-2 border-brand-accent/20 rounded-lg animate-pulse-slow"></div>
@@ -112,7 +113,7 @@
     </section>
 
     <!-- WALLETS CRYPTO SERVICES -->
-    <section class="py-8 sm:py-12 lg:py-16 bg-gradient-to-br from-blue-50 via-indigo-50 to-blue-100 dark:from-gray-900 dark:via-blue-900/20 dark:to-gray-900 relative">
+    <section class="py-8 sm:py-12 lg:py-16 bg-gradient-to-br from-blue-50 via-indigo-50 to-blue-100 dark:from-gray-900 dark:via-blue-900/20 dark:to-gray-900 relative rounded-xl border border-blue-200/50 dark:border-blue-700/50 mt-8 mb-8">
         <!-- Gradient animé en arrière-plan -->
         <div class="absolute inset-0">
             <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-blue-400/20 via-indigo-500/20 to-blue-600/20 animate-pulse"></div>
@@ -268,7 +269,7 @@
     </section>
 
     <!-- CRYPTO RECOVERY PROGRAM SECTION -->
-    <section class="py-8 sm:py-12 lg:py-16 relative overflow-hidden">
+    <section class="py-8 sm:py-12 lg:py-16 relative overflow-hidden rounded-xl border border-blue-200/50 dark:border-blue-700/50 mt-8 mb-8">
         <!-- Gradient animé en arrière-plan -->
         <div class="absolute inset-0 bg-gradient-to-br from-blue-50 via-indigo-50 to-blue-100 dark:from-blue-900/20 dark:via-indigo-900/20 dark:to-blue-800/20 animate-gradient-xy"></div>
         
@@ -310,7 +311,7 @@
     </section>
 
   <!-- CRYPTO REFUND CTA SECTION - Completely separate from Livewire component -->
-    <section class="py-8 sm:py-12 lg:py-16 bg-gray-50 dark:bg-gray-900 relative">
+    <section class="py-8 sm:py-12 lg:py-16 bg-gray-50 dark:bg-gray-900 relative rounded-xl border border-gray-200/50 dark:border-gray-700/50 mt-8 mb-8">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center">
                 <div class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-lg rounded-2xl shadow-xl border border-blue-200/50 dark:border-blue-700/50 p-6 max-w-md mx-auto">
@@ -328,7 +329,7 @@
     </section>
 
     <!-- AVANTAGES SERVICES -->
-    <section class="max-w-6xl mx-auto">
+    <section class="max-w-6xl mx-auto py-8 sm:py-12 lg:py-16 bg-white dark:bg-gray-800 rounded-xl border border-gray-200/50 dark:border-gray-700/50 mt-8 mb-8 px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-8">
             <h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-gray-900 dark:text-white mb-4">{{ __('common.service_advantages') }}</h2>
         </div>
@@ -359,7 +360,7 @@
   
 
     <!-- LOAN REQUEST CTA SECTION -->
-    <section class="py-8 sm:py-12 lg:py-16 bg-gradient-to-br from-green-600 via-emerald-700 to-teal-800 text-white relative overflow-hidden">
+    <section class="py-8 sm:py-12 lg:py-16 bg-gradient-to-br from-green-600 via-emerald-700 to-teal-800 text-white relative overflow-hidden rounded-xl border border-emerald-400/30 mt-8 mb-8">
         <!-- Particules flottantes animées -->
         <div class="absolute inset-0 pointer-events-none">
             <div class="absolute top-1/4 left-1/4 w-2 h-2 bg-emerald-400/30 rounded-full animate-float"></div>
@@ -398,7 +399,7 @@
     </section>
 
     <!-- FAQ SERVICES (Alpine.js) -->
-    <section class="py-16 bg-gray-50 dark:bg-gray-900">
+    <section class="py-16 bg-gray-50 dark:bg-gray-900 rounded-xl border border-gray-200/50 dark:border-gray-700/50 mt-8 mb-8">
         <div class="max-w-4xl mx-auto px-4">
             <h2 class="text-2xl font-bold text-brand-primary dark:text-blue-300 mb-4">{{ __('common.frequently_asked_questions_services') }}</h2>
             <div x-data="{open:null}" class="space-y-2">
@@ -419,7 +420,7 @@
     </section>
 
     <!-- CTA Section -->
-    <section class="relative overflow-hidden rounded-2xl">
+    <section class="relative overflow-hidden rounded-2xl border border-white/20 mt-8 mb-8">
         <!-- Gradient animé avec effet glassmorphism -->
         <div class="absolute inset-0 bg-gradient-to-r from-brand-primary to-brand-accent animate-gradient-x"></div>
         <div class="absolute inset-0 backdrop-blur-sm bg-white/10 border border-white/20 rounded-2xl"></div>

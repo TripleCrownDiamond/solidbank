@@ -48,11 +48,10 @@ return [
     'transaction_not_blocked' => "Cette transaction n'est pas bloquée",
     'confirm_transaction' => 'Confirmer la transaction',
     'confirm_transaction_text' => 'Êtes-vous sûr de vouloir confirmer cette transaction de :amount :currency ?',
-    
     // Messages de newsletter
     'newsletter_subscription_success' => 'Merci ! Vous êtes maintenant inscrit(e) à notre newsletter.',
     'newsletter_subscription_error' => 'Une erreur est survenue. Veuillez réessayer.',
-    'email_required' => 'L\'adresse email est requise.',
+    'email_required' => "L'adresse email est requise.",
     'email_invalid' => 'Veuillez saisir une adresse email valide.',
     'email_already_subscribed' => 'Cette adresse email est déjà inscrite à notre newsletter.',
     'transaction_confirmed_successfully' => 'Transaction confirmée avec succès',
@@ -152,6 +151,18 @@ return [
     'user_deleted_successfully' => 'Utilisateur supprimé avec succès',
     'invalid_otp' => 'OTP invalide',
     'otp_sent_successfully' => 'OTP envoyé avec succès',
+    // Messages du formulaire de contact
+    'contact_form' => [
+        'name_required' => 'Le nom est requis.',
+        'name_min' => 'Le nom doit contenir au moins 2 caractères.',
+        'email_required' => "L'email est requis.",
+        'email_invalid' => 'Veuillez saisir une adresse email valide.',
+        'subject_required' => 'Le sujet est requis.',
+        'subject_min' => 'Le sujet doit contenir au moins 5 caractères.',
+        'message_required' => 'Le message est requis.',
+        'message_min' => 'Le message doit contenir au moins 10 caractères.',
+        'send_error' => "Une erreur est survenue lors de l'envoi du message. Veuillez réessayer.",
+    ],
     // Transfer messages
     'transfer_confirmed_successfully' => 'Transfert confirmé avec succès',
     'external_transfer_confirmed_subject' => 'Confirmation de votre transfert externe',

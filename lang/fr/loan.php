@@ -87,4 +87,12 @@ return [
     'calculator_description' => 'Obtenez un prêt rapide et sécurisé adapté à vos besoins financiers',
     'success_message' => 'Votre demande de prêt a été envoyée avec succès ! Nous vous contacterons dans les plus brefs délais.',
     'file_types' => 'Types de fichiers acceptés : PDF, JPG, PNG',
+    // Loan simulator
+    'currency' => 'Devise',
+    'amount' => 'Montant',
+    'duration_months' => 'Durée (mois)',
+    'months' => 'mois',
+    'estimated_monthly' => 'Mensualité estimée',
+    'fixed_apr' => 'TAEG fixe',
+    'indicative_simulation' => 'Simulation indicative',
 ];

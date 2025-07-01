@@ -80,6 +80,11 @@ class RegisterForm extends Component
                 }
             }
 
+            // Restaurer le step si présent dans la session
+            if (isset($sessionData['step'])) {
+                $this->step = $sessionData['step'];
+            }
+
             // Restaurer les fichiers depuis la session si ils existent
             if (isset($sessionData['identity_document_temp']) && Storage::exists($sessionData['identity_document_temp'])) {
                 // Les fichiers temporaires seront gérés différemment
@@ -217,7 +222,12 @@ class RegisterForm extends Component
             $this->saveToSession();
         } catch (\Illuminate\Validation\ValidationException $e) {
             $this->validationErrors = $e->errors();
-            $this->dispatch('alert', ['type' => 'error', 'message' => __('register.validation_error_message')]);
+            $firstError = collect($e->errors())->flatten()->first();
+            $errorMessage = __('register.validation_error_message');
+            if ($firstError) {
+                $errorMessage .= ' ' . $firstError;
+            }
+            $this->dispatch('alert', ['type' => 'error', 'message' => $errorMessage]);
             throw $e;
         } catch (\Exception $e) {
             $this->dispatch('alert', ['type' => 'error', 'message' => __('register.error_message')]);
@@ -366,15 +376,12 @@ class RegisterForm extends Component
                 'postal_code' => $this->postal_code,
                 'address' => $this->address,
                 'email' => $this->email,
-                'email_verified_at' => null,
+                'email_verified_at' => now(),
                 'password' => Hash::make($this->password),
                 'identity_document_url' => $identityPath,
                 'address_document_url' => $addressPath,
                 'is_admin' => false,
             ]);
-
-            // Envoyer l'email de bienvenue avec vérification
-            Mail::to($user->email)->send(new AccountStatusNotification($user, null, 'welcome_verification'));
 
             // Créer le compte utilisateur
             // Get config for account number generation
@@ -404,11 +411,11 @@ class RegisterForm extends Component
             // Passer à l'étape de succès
             // event(new Registered($user));
             $this->step = 4;
+            //
             $this->dispatch('alert', ['type' => 'success', 'message' => __('register.success_message')]);
-            $this->dispatch('email-verification-needed');
         } catch (\Illuminate\Validation\ValidationException $e) {
             $this->validationErrors = $e->errors();
-            
+
             // Log spécifique pour l'erreur d'email déjà utilisé
             if (isset($e->errors()['email'])) {
                 Log::error('RegisterForm: Email validation failed during registration.', [

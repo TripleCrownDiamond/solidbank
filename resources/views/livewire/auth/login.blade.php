@@ -1,4 +1,4 @@
-<div class="max-w-md mx-auto p-6 bg-white dark:bg-gray-800 shadow-md rounded-lg">
+<div>
     <div class="text-center mb-8">
         <h2 class="text-2xl font-bold text-gray-900 dark:text-white">{{ __('login.title') }}</h2>
         <p class="text-sm text-gray-500 dark:text-gray-400">{{ __('login.subtitle') }}</p>

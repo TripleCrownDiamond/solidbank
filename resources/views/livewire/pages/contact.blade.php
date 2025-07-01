@@ -9,10 +9,11 @@
     </div>
     
     <!-- HERO SECTION CONTACT -->
-    <section class="relative text-white py-8 sm:py-12 lg:py-16 px-4 sm:px-6 lg:px-8 rounded-lg shadow-lg overflow-hidden">
+    <section class="relative text-white py-8 sm:py-12 lg:py-16 px-4 sm:px-6 lg:px-8 rounded-xl shadow-2xl overflow-hidden border border-white/20">
         <!-- Gradient animé avec effet glassmorphism -->
-        <div class="absolute inset-0 bg-gradient-to-r from-brand-primary to-brand-accent animate-gradient-x"></div>
-        <div class="absolute inset-0 backdrop-blur-sm bg-white/5 border border-white/10 rounded-lg"></div>
+        <div class="absolute inset-0 bg-gradient-to-br from-brand-primary via-brand-accent to-brand-primary animate-gradient-xy"></div>
+        <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent animate-pulse"></div>
+        <div class="absolute inset-0 backdrop-blur-sm bg-white/5 border border-white/10 rounded-xl"></div>
         
         <div class="relative z-10 max-w-7xl mx-auto">
             <!-- Mobile Layout (Single Column) -->
@@ -56,7 +57,7 @@
     </section>
 
     <!-- INFORMATIONS DE CONTACT -->
-    <section class="py-8 sm:py-12 lg:py-16 bg-gray-50 dark:bg-gray-900 relative" id="contact-info">
+    <section class="py-8 sm:py-12 lg:py-16 bg-gray-50 dark:bg-gray-900 relative rounded-xl border border-gray-200/50 dark:border-gray-700/50 mt-8 mb-8" id="contact-info">
         <!-- Éléments décoratifs animés -->
         <div class="absolute top-10 right-10 w-20 h-20 border-2 border-brand-primary/20 rounded-full animate-spin-slow"></div>
         <div class="absolute bottom-10 left-10 w-16 h-16 border-2 border-brand-accent/20 rounded-lg animate-pulse-slow"></div>
@@ -70,7 +71,7 @@
             </div>
 
             <div class="mt-8 sm:mt-10">
-                <div class="space-y-8 sm:space-y-10 md:space-y-0 md:grid md:grid-cols-2 md:gap-x-6 lg:gap-x-8 md:gap-y-8 lg:gap-y-10">
+                <div class="space-y-8 sm:space-y-10 md:space-y-0 md:grid md:grid-cols-3 md:gap-x-6 lg:gap-x-8">
                     <!-- Email -->
                     <div class="relative">
                         <div class="absolute flex items-center justify-center h-12 w-12 rounded-md bg-brand-primary text-white">
@@ -84,22 +85,6 @@
                                 {{ __('common.send_email_anytime') }}
                             </p>
                             <a href="mailto:{{ \App\Models\Config::first()?->bank_email ?? 'contact@Bred Fin.com' }}" class="text-brand-primary hover:text-brand-accent font-medium break-all">{{ \App\Models\Config::first()?->bank_email ?? 'contact@Bred Fin.com' }}</a>
-                        </div>
-                    </div>
-                    
-                    <!-- Téléphone -->
-                    <div class="relative">
-                        <div class="absolute flex items-center justify-center h-12 w-12 rounded-md bg-brand-primary text-white">
-                            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                            </svg>
-                        </div>
-                        <div class="ml-16">
-                            <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-white">{{ __('common.phone') }}</h3>
-                            <p class="mt-2 text-base text-gray-500 dark:text-gray-300">
-                                {{ __('common.call_us_directly') }}
-                            </p>
-                            <a href="tel:{{ \App\Models\Config::first()?->bank_phone ?? '+1234567890' }}" class="text-brand-primary hover:text-brand-accent font-medium">{{ \App\Models\Config::first()?->bank_phone ?? '+1234567890' }}</a>
                         </div>
                     </div>
                     
@@ -145,7 +130,7 @@
     </section>
 
     <!-- CTA Section -->
-    <section class="relative overflow-hidden rounded-2xl mx-4 sm:mx-6 lg:mx-8">
+    <section class="relative overflow-hidden rounded-xl mx-4 sm:mx-6 lg:mx-8 mt-8 mb-8 border border-white/20">
         <!-- Gradient animé avec effet glassmorphism -->
         <div class="absolute inset-0 bg-gradient-to-br from-brand-primary to-brand-accent animate-gradient-x"></div>
         <div class="absolute inset-0 backdrop-blur-sm bg-white/10 border border-white/20 rounded-2xl"></div>
@@ -164,7 +149,7 @@
     </section>
 
     <!-- FORMULAIRE DE CONTACT -->
-    <section class="py-8 sm:py-12 lg:py-16 bg-gray-50 dark:bg-gray-900 relative" id="formulaire-contact">
+    <section class="py-8 sm:py-12 lg:py-16 bg-gray-50 dark:bg-gray-900 relative rounded-xl border border-gray-200/50 dark:border-gray-700/50 mt-8 mb-8" id="formulaire-contact">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center">
                 <h2 class="text-base text-brand-primary dark:text-brand-accent font-semibold tracking-wide uppercase">{{ __('common.contact_form') }}</h2>

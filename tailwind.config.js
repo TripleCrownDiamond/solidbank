@@ -25,6 +25,7 @@ export default {
                 brand: {
                     primary: "#1e40af",
                     accent: "#3b82f6",
+                    secondary: "#FFD700",
                     success: "#10b981",
                     danger: "#dc2626",
                 },

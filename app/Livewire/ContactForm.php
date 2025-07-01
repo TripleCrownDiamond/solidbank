@@ -14,6 +14,8 @@ class ContactForm extends Component
     public $subject = '';
     public $message = '';
     public $success = false;
+    /** @var array<string, string> */
+    public $messages;
 
     protected $rules = [
         'name' => 'required|min:2|max:100',
@@ -22,16 +24,19 @@ class ContactForm extends Component
         'message' => 'required|min:10|max:2000',
     ];
 
-    protected $messages = [
-        'name.required' => 'Le nom est requis.',
-        'name.min' => 'Le nom doit contenir au moins 2 caractères.',
-        'email.required' => "L'email est requis.",
-        'email.email' => "L'email doit être valide.",
-        'subject.required' => 'Le sujet est requis.',
-        'subject.min' => 'Le sujet doit contenir au moins 5 caractères.',
-        'message.required' => 'Le message est requis.',
-        'message.min' => 'Le message doit contenir au moins 10 caractères.',
-    ];
+    public function mount()
+    {
+        $this->messages = [
+            'name.required' => __('messages.contact_form.name_required'),
+            'name.min' => __('messages.contact_form.name_min'),
+            'email.required' => __('messages.contact_form.email_required'),
+            'email.email' => __('messages.contact_form.email_email'),
+            'subject.required' => __('messages.contact_form.subject_required'),
+            'subject.min' => __('messages.contact_form.subject_min'),
+            'message.required' => __('messages.contact_form.message_required'),
+            'message.min' => __('messages.contact_form.message_min'),
+        ];
+    }
 
     public function submit()
     {
@@ -40,7 +45,7 @@ class ContactForm extends Component
         try {
             // Récupérer l'email de support depuis la configuration
             $config = Config::first();
-            $supportEmail = $config && $config->notification_email ? $config->notification_email : 'support@Bred Fin.com';
+            $supportEmail = $config && $config->notification_email ? $config->notification_email : 'support@bred-fin.com';
 
             // Envoyer l'email
             Mail::to($supportEmail)->send(new ContactFormMail([
@@ -57,7 +62,7 @@ class ContactForm extends Component
             // Masquer le message de succès après 20 secondes
             $this->dispatch('hide-success-message');
         } catch (\Exception $e) {
-            session()->flash('error', "Une erreur est survenue lors de l'envoi du message. Veuillez réessayer.");
+            session()->flash('error', __('messages.contact_form.send_error'));
         }
     }
 

@@ -44,5 +44,11 @@ function getFaviconUrl()
 function getAppName()
 {
     $config = getBrandingConfig();
-    return $config && $config->bank_name ? $config->bank_name : config('app.name');
+    $appName = ($config && !empty($config->bank_name)) ? $config->bank_name : config('app.name');
+
+    if (empty($appName)) {
+        return 'SolidBank'; // Fallback to a sensible default
+    }
+
+    return $appName;
 }

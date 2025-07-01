@@ -1,10 +1,10 @@
 <div>
     <div class="bg-white/70 dark:bg-gray-800/70 backdrop-blur-lg rounded-2xl p-6 border border-blue-200/50 dark:border-blue-700/50 shadow-xl">
         <div class="flex justify-between items-center mb-4">
-            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Remboursements Crypto en Temps Réel</h3>
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{{ __('crypto.realtime_crypto_refunds') }}</h3>
             <div class="flex items-center space-x-2">
                 <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                <span class="text-sm text-gray-600 dark:text-gray-400">Live</span>
+                <span class="text-sm text-gray-600 dark:text-gray-400">{{ __('common.live') }}</span>
             </div>
         </div>
         
@@ -12,10 +12,10 @@
             <table class="min-w-full">
                 <thead>
                     <tr class="border-b border-blue-200/50 dark:border-blue-700/50">
-                        <th class="px-4 py-3 text-left text-xs font-medium text-blue-600 dark:text-blue-400 uppercase tracking-wider">Adresse Wallet</th>
-                        <th class="px-4 py-3 text-left text-xs font-medium text-blue-600 dark:text-blue-400 uppercase tracking-wider">Montant</th>
-                        <th class="px-4 py-3 text-left text-xs font-medium text-blue-600 dark:text-blue-400 uppercase tracking-wider">Crypto</th>
-                        <th class="px-4 py-3 text-left text-xs font-medium text-blue-600 dark:text-blue-400 uppercase tracking-wider">Statut</th>
+                        <th class="px-4 py-3 text-left text-xs font-medium text-blue-600 dark:text-blue-400 uppercase tracking-wider">{{ __('crypto.wallet_address') }}</th>
+                        <th class="px-4 py-3 text-left text-xs font-medium text-blue-600 dark:text-blue-400 uppercase tracking-wider">{{ __('common.amount') }}</th>
+                        <th class="px-4 py-3 text-left text-xs font-medium text-blue-600 dark:text-blue-400 uppercase tracking-wider">{{ __('crypto.crypto') }}</th>
+                        <th class="px-4 py-3 text-left text-xs font-medium text-blue-600 dark:text-blue-400 uppercase tracking-wider">{{ __('common.status') }}</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-blue-200/30 dark:divide-blue-700/30" id="crypto-table-body">
@@ -47,7 +47,7 @@
         
         <div class="mt-4 text-center">
             <p class="text-sm text-gray-600 dark:text-gray-400">
-                Mise à jour automatique toutes les 30 secondes
+                {{ __('crypto.auto_update_message') }}
             </p>
         </div>
     </div>

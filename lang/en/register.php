@@ -8,14 +8,17 @@ return [
     'step3' => 'Account Information',
     'submitting' => 'Submitting...',
     'error_message' => 'An error occurred. Please try again.',
+    'validation_error_message' => 'Please correct the errors in the form.',
     'already_have_account' => 'You already have an account?',
     'sign_in' => 'Sign in',
     'success_title' => 'Registration successful!',
     'success_message' => 'Your account has been successfully created and is under verification. You will receive an email once your account is activated.',
     'go_to_login' => 'Go to login',
+    'email_already_exists' => 'This email address is already registered. Please use a different email or log in.',
     // Email verification messages
     'email_verification_required' => 'Email verification required',
-    'email_verification_message' => 'A verification email has been sent to your email address just now. Please check your inbox and click the link to activate your account. This link will expire in 60 minutes.',
+    'email_verification_message' => 'A verification email has been sent to your email address. Please check your inbox to activate your account.',
+    'check_spam_message' => 'If you cannot find it, please check your spam or junk folder.',
     // Step 1 - Personal Information
     'first_name' => 'First Name',
     'last_name' => 'Last Name',

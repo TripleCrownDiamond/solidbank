@@ -8,6 +8,9 @@
     $languageNames = [
         'fr' => 'Français',
         'en' => 'English',
+        'es' => 'Español',
+        'de' => 'Deutsch',
+        'pt' => 'Português',
     ];
     
     $currentLocale = app()->getLocale();

@@ -74,7 +74,7 @@ return [
     'locale' => env('APP_LOCALE', 'fr'),  // Langue par défaut : français
     'fallback_locale' => env('APP_FALLBACK_LOCALE', 'en'),  // Langue de secours : anglais
     'faker_locale' => env('APP_FAKER_LOCALE', 'en_US'),
-    'available_locales' => ['fr', 'en'],
+    'available_locales' => ['fr', 'en', 'es', 'de', 'pt'],
 
     /*
      * |--------------------------------------------------------------------------

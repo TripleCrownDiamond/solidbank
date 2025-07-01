@@ -1,6 +1,10 @@
 <?php
 
 return [
+    'realtime_crypto_refunds' => 'Real-time Crypto Refunds',
+    'wallet_address' => 'Wallet Address',
+    'crypto' => 'Crypto',
+    'auto_update_message' => 'Automatic update every 30 seconds',
     'refund_title' => 'Crypto Refund Request',
     'refund_description' => 'Recover your lost cryptocurrency with our secure refund process.',
     'form_title' => 'Refund Request Form',

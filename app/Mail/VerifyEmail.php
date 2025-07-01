@@ -34,7 +34,10 @@ class VerifyEmail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
+            to: $this->user->email,
             subject: __('Verify Email Address'),
+            // Log the email address to debug
+            metadata: ['email_to' => $this->user->email],
         );
     }
 

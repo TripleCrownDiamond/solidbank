@@ -86,4 +86,12 @@ return [
     'calculator_description' => 'Get a quick and secure loan tailored to your financial needs',
     'success_message' => 'Your loan request has been submitted successfully! We will contact you shortly.',
     'file_types' => 'Accepted file types: PDF, JPG, PNG',
+    // Loan simulator
+    'currency' => 'Currency',
+    'amount' => 'Amount',
+    'duration_months' => 'Duration (months)',
+    'months' => 'months',
+    'estimated_monthly' => 'Estimated monthly payment',
+    'fixed_apr' => 'Fixed APR',
+    'indicative_simulation' => 'Indicative simulation',
 ];

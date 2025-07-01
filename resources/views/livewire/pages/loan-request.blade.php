@@ -9,10 +9,11 @@
     </div>
     
     <!-- HERO SECTION -->
-    <section class="relative text-white py-8 sm:py-12 lg:py-16 px-4 sm:px-6 lg:px-8 rounded-lg shadow-lg overflow-hidden">
+    <section class="relative text-white py-8 sm:py-12 lg:py-16 px-4 sm:px-6 lg:px-8 rounded-xl shadow-2xl overflow-hidden border border-white/20">
         <!-- Gradient animé avec effet glassmorphism -->
-        <div class="absolute inset-0 bg-gradient-to-r from-brand-primary to-brand-accent animate-gradient-x"></div>
-        <div class="absolute inset-0 backdrop-blur-sm bg-white/5 border border-white/10 rounded-lg"></div>
+        <div class="absolute inset-0 bg-gradient-to-br from-brand-primary via-brand-accent to-brand-primary animate-gradient-xy"></div>
+        <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent animate-pulse"></div>
+        <div class="absolute inset-0 backdrop-blur-sm bg-white/5 border border-white/10 rounded-xl"></div>
         <div class="relative z-10 max-w-7xl mx-auto">
             <div class="text-center">
                 <span class="inline-block bg-brand-accent text-white px-3 py-1 rounded-full mb-4 font-medium text-sm sm:text-base">@lang('loan.request_loan')</span>
@@ -23,7 +24,7 @@
     </section>
 
     <!-- SIMULATEUR DE PRÊT -->
-    <section class="py-8 sm:py-12 lg:py-16 bg-gray-50 dark:bg-gray-900 relative">
+    <section class="py-8 sm:py-12 lg:py-16 bg-gray-50 dark:bg-gray-900 relative rounded-xl border border-gray-200/50 dark:border-gray-700/50 mt-8 mb-8">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-8">
                 <h2 class="text-base text-brand-primary dark:text-brand-accent font-semibold tracking-wide uppercase">@lang('loan.loan_simulator')</h2>
@@ -102,7 +103,7 @@
     </section>
 
     <!-- FORMULAIRE DE DEMANDE -->
-    <section class="py-8 sm:py-12 lg:py-16 bg-white dark:bg-gray-800 relative">
+    <section class="py-8 sm:py-12 lg:py-16 bg-white dark:bg-gray-800 relative rounded-xl border border-gray-200/50 dark:border-gray-700/50 mt-8 mb-8">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-8">
                 <h2 class="text-base text-brand-primary dark:text-brand-accent font-semibold tracking-wide uppercase">@lang('loan.form_title')</h2>

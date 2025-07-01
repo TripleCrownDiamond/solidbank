@@ -10,12 +10,15 @@ return [
     'already_have_account' => 'Vous avez déjà un compte ?',
     'sign_in' => 'Se connecter',
     'error_message' => 'Une erreur est survenue. Veuillez réessayer.',
+    'validation_error_message' => 'Veuillez corriger les erreurs dans le formulaire.',
     'success_title' => 'Inscription réussie !',
     'success_message' => 'Votre compte a été créé avec succès et est en cours de vérification. Vous recevrez un e-mail une fois votre compte activé.',
     'go_to_login' => 'Aller à la connexion',
+    'email_already_exists' => 'Cette adresse e-mail est déjà enregistrée. Veuillez utiliser une adresse e-mail différente ou vous connecter.',
     // Messages de vérification d'email
     'email_verification_required' => "Vérification d'email requise",
     'email_verification_message' => "Un email de vérification a été envoyé à l'instant à votre adresse email. Veuillez vérifier votre boîte de réception et cliquer sur le lien pour activer votre compte. Ce lien expirera dans 60 minutes.",
+    'check_spam_message' => 'Si vous ne le trouvez pas, veuillez vérifier votre dossier de spam ou de courriers indésirables.',
     // Étape 1 - Informations personnelles
     'first_name' => 'Prénom',
     'last_name' => 'Nom',

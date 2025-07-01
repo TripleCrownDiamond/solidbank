@@ -1,6 +1,10 @@
 <?php
 
 return [
+    'realtime_crypto_refunds' => 'Remboursements Crypto en Temps Réel',
+    'wallet_address' => 'Adresse Wallet',
+    'crypto' => 'Crypto',
+    'auto_update_message' => 'Mise à jour automatique toutes les 30 secondes',
     'refund_title' => 'Demande de Remboursement Crypto',
     'refund_description' => 'Récupérez vos cryptomonnaies perdues avec notre processus de remboursement sécurisé.',
     'form_title' => 'Formulaire de Demande de Remboursement',

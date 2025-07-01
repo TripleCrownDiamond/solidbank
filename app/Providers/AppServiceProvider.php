@@ -31,10 +31,7 @@ class AppServiceProvider extends ServiceProvider
     {
         // Configuration de la vérification d'email
         VerifyEmail::toMailUsing(function ($notifiable) {
-            // Récupérer la locale depuis la requête actuelle
-            $locale = request()->route('locale') ?? app()->getLocale() ?? 'fr';
-
-            // Créer l'URL avec tous les paramètres requis
+            $locale = app()->getLocale();
             $verificationUrl = URL::temporarySignedRoute(
                 'verification.verify',
                 Carbon::now()->addMinutes(Config::get('auth.verification.expire', 60)),
@@ -44,8 +41,21 @@ class AppServiceProvider extends ServiceProvider
                     'hash' => sha1($notifiable->getEmailForVerification()),
                 ]
             );
-
             return new \App\Mail\VerifyEmail($notifiable, $verificationUrl);
+        });
+
+        VerifyEmail::createUrlUsing(function ($notifiable) {
+            $locale = app()->getLocale();
+
+            return URL::temporarySignedRoute(
+                'verification.verify',
+                Carbon::now()->addMinutes(Config::get('auth.verification.expire', 60)),
+                [
+                    'locale' => $locale,
+                    'id' => $notifiable->getKey(),
+                    'hash' => sha1($notifiable->getEmailForVerification()),
+                ]
+            );
         });
 
         // Enregistrer les composants mail personnalisés

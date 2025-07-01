@@ -44,11 +44,13 @@
                             $config = \App\Models\Config::first();
                         @endphp
                         <li class="text-base text-gray-500">
-                            {{ $config->bank_address ?? __('common.footer_address_line1') }}
+                            {{ __('common.footer_address_line1', ['bank_address' => $config->bank_address ?? '']) }}
+                {{ __('common.footer_address_line2', ['bank_address_line2' => $config->bank_address_line2 ?? '']) }}
+                {{ __('common.footer_address_line3', ['bank_address_line3' => $config->bank_address_line3 ?? '']) }}
                         </li>
                         <li class="text-base text-gray-500">
-                            {{ $config->bank_phone ?? __('common.footer_phone') }}<br>
-                            {{ $config->bank_email ?? __('common.footer_email') }}
+                            
+                            {{ __('common.footer_email', ['bank_email' => $config->bank_email ?? '']) }}
                         </li>
                     </ul>
                 </div>

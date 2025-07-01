@@ -25,8 +25,11 @@ class DatabaseSeeder extends Seeder
         $this->call(CryptocurrencySeeder::class);
 
         // Create 30 users with accounts
-        User::factory(10)->create()->each(function ($user) {
-            Account::factory()->create(['user_id' => $user->id]);
-        });
+
+        /*
+         * User::factory(10)->create()->each(function ($user) {
+         *     Account::factory()->create(['user_id' => $user->id]);
+         * });
+         */
     }
 }
