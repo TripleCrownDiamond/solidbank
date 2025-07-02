@@ -302,7 +302,7 @@
                                             @endif
                                         </td>
                                         <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100 font-mono">
-                                            {{ number_format($account->balance ?? 0, 2) }} €
+                                            {{ number_format($account->balance ?? 0, 2) }} {{ $account->currency }}
                                         </td>
                                         <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                                             {{ $account->created_at->diffForHumans() }}
