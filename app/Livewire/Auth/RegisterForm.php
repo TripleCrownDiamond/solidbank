@@ -404,7 +404,7 @@ class RegisterForm extends Component
                 'account_number' => $accountNumber,
                 'balance' => 0,
                 'type' => $this->type,
-                'currency' => 'EUR',
+                'currency' => $this->currency,
                 'status' => 'INACTIVE',
             ]);
 

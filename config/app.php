@@ -176,4 +176,16 @@ return [
         'driver' => env('APP_MAINTENANCE_DRIVER', 'file'),
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
+
+    /*
+     * |--------------------------------------------------------------------------
+     * | Default Currency
+     * |--------------------------------------------------------------------------
+     * |
+     * | This value determines the default currency used throughout the application
+     * | when no specific currency is defined. This can be overridden by setting
+     * | the APP_DEFAULT_CURRENCY environment variable.
+     * |
+     */
+    'default_currency' => env('APP_DEFAULT_CURRENCY', 'EUR'),
 ];

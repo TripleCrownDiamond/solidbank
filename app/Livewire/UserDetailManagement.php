@@ -403,6 +403,10 @@ class UserDetailManagement extends Component
             // Générer un CVV
             $cvv = str_pad(rand(100, 999), 3, '0', STR_PAD_LEFT);
 
+            // Récupérer la devise du compte sélectionné
+            $selectedAccount = \App\Models\Account::find($this->selectedAccountForCard);
+            $accountCurrency = $selectedAccount ? $selectedAccount->currency : 'EUR';
+
             $card = \App\Models\Card::create([
                 'user_id' => $this->user->id,
                 'account_id' => $this->selectedAccountForCard,
@@ -413,7 +417,7 @@ class UserDetailManagement extends Component
                 'cvv' => $cvv,
                 'card_holder_name' => $this->cardHolderName,
                 'balance' => 0,
-                'currency' => 'EUR',
+                'currency' => $accountCurrency,
             ]);
 
             // Si une demande de carte était sélectionnée, la marquer comme approuvée
