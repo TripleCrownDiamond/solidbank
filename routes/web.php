@@ -12,6 +12,15 @@ Route::get('/', function () {
     return redirect("$defaultLocale");
 });
 
+// Alias routes for compatibility
+Route::get('/register', function () {
+    return redirect()->route('locale.register', ['locale' => app()->getLocale()]);
+})->name('register');
+
+Route::get('/login', function () {
+    return redirect()->route('locale.login', ['locale' => app()->getLocale()]);
+})->name('login');
+
 // Redirection pour les URLs sans préfixe locale
 Route::get('/transactions', function () {
     $defaultLocale = session('locale', 'fr');
@@ -27,6 +36,10 @@ Route::get('/dashboard', function () {
 Route::prefix('{locale}')->group(function () {
     // Middleware pour définir la locale en fonction de l'URL
     Route::middleware('set.locale')->group(function () {
+        // Jetstream and authentication routes
+        require __DIR__ . '/auth.php';
+        require __DIR__ . '/jetstream.php';
+        
         // Page d'accueil
         Route::get('/', \App\Livewire\Pages\Home::class)->name('home');
 
@@ -36,12 +49,6 @@ Route::prefix('{locale}')->group(function () {
 
         Route::get('/loan-request', \App\Livewire\Pages\LoanRequest::class)->name('loan-request');
         Route::get('/crypto-refund', \App\Livewire\Pages\CryptoRefund::class)->name('crypto-refund');
-
-        // Route pour le formulaire de connexion
-
-        // Jetstream and authentication routes
-        require __DIR__ . '/auth.php';
-        require __DIR__ . '/jetstream.php';
 
         // Route personnalisée pour le dashboard
         Route::middleware([

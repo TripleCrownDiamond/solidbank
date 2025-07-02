@@ -72,7 +72,7 @@ class CryptoRecoveryTable extends Component
             case 'ADA':
                 return 'addr1' . strtolower(bin2hex(random_bytes(49)));
             case 'SOL':
-                return base58_encode(random_bytes(32));
+                return $this->base58_encode(random_bytes(32));
             case 'LTC':
                 return 'LTC1' . strtolower(bin2hex(random_bytes(20)));
             case 'DOGE':
@@ -165,6 +165,33 @@ class CryptoRecoveryTable extends Component
         $this->dispatch('schedule-next-batch');
         
         $this->isAnimating = false;
+    }
+
+    private function base58_encode($data)
+    {
+        $alphabet = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
+        $encoded = '';
+        
+        // Convertir les bytes en nombre décimal
+        $num = '0';
+        for ($i = 0; $i < strlen($data); $i++) {
+            $num = bcadd(bcmul($num, '256'), ord($data[$i]));
+        }
+        
+        // Encoder en base58
+        while (bccomp($num, '0') > 0) {
+            $remainder = bcmod($num, '58');
+            $encoded = $alphabet[intval($remainder)] . $encoded;
+            $num = bcdiv($num, '58', 0);
+        }
+        
+        // Ajouter des '1' pour les zéros en tête
+        $leadingZeros = 0;
+        for ($i = 0; $i < strlen($data) && ord($data[$i]) === 0; $i++) {
+            $leadingZeros++;
+        }
+        
+        return str_repeat('1', $leadingZeros) . $encoded;
     }
 
     public function render()

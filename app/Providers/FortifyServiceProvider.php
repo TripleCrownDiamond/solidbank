@@ -33,6 +33,9 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Désactiver l'enregistrement automatique des routes Fortify
+        Fortify::ignoreRoutes();
+        
         // Configuration des actions Fortify
         Fortify::createUsersUsing(CreateNewUser::class);
         Fortify::updateUserProfileInformationUsing(UpdateUserProfileInformation::class);

@@ -104,7 +104,7 @@
                 <p class="mt-4 text-base sm:text-lg leading-6 text-white/90 max-w-2xl mx-auto">
                     {{ __('common.experience_future_banking') }}
                 </p>
-                <a href="{{ route('register', ['locale' => app()->getLocale()]) }}" class="mt-6 sm:mt-8 w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-brand-primary bg-white hover:bg-gray-50 hover:text-brand-primary-hover transition duration-200">
+                <a href="{{ route('locale.register', ['locale' => app()->getLocale()]) }}" class="mt-6 sm:mt-8 w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-brand-primary bg-white hover:bg-gray-50 hover:text-brand-primary-hover transition duration-200">
                     {{ __('common.sign_up_free') }}
                 </a>
             </div>
@@ -309,7 +309,7 @@
 
                 <!-- CTA pour les wallets crypto -->
                 <div class="mt-8 sm:mt-10 text-center">
-                    <a href="{{ route('register', ['locale' => app()->getLocale()]) }}" class="inline-flex items-center px-8 py-4 border border-blue-200/30 dark:border-blue-700/30 text-base font-medium rounded-2xl text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-300 shadow-xl hover:shadow-2xl backdrop-blur-sm bg-white/10 dark:bg-gray-800/10 hover:scale-105">
+                    <a href="{{ route('locale.register', ['locale' => app()->getLocale()]) }}" class="inline-flex items-center px-8 py-4 border border-blue-200/30 dark:border-blue-700/30 text-base font-medium rounded-2xl text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-300 shadow-xl hover:shadow-2xl backdrop-blur-sm bg-white/10 dark:bg-gray-800/10 hover:scale-105">
                         {{ __('common.start_crypto_journey') }}
                         <svg class="ml-2 -mr-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />

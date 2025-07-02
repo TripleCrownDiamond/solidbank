@@ -19,7 +19,7 @@
                 <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold mb-4 leading-tight">{{ __('common.modern_innovative_banking_services') }}</h1>
                 <p class="mb-6 text-base sm:text-lg text-blue-100 max-w-3xl mx-auto">{{ __('common.discover_complete_range_financial_services') }}</p>
                 <div class="flex flex-col sm:flex-row gap-4 justify-center mb-6">
-                    <a href="{{ route('register', ['locale' => app()->getLocale()]) }}" class="px-6 py-3 bg-brand-accent hover:bg-brand-success text-white font-bold rounded-lg shadow transition duration-200 text-center">{{ __('common.open_account') }}</a>
+                    <a href="{{ route('locale.register', ['locale' => app()->getLocale()]) }}" class="px-6 py-3 bg-brand-accent hover:bg-brand-success text-white font-bold rounded-lg shadow transition duration-200 text-center">{{ __('common.open_account') }}</a>
                     <a href="{{ route('contact', ['locale' => app()->getLocale()]) }}" class="px-6 py-3 border border-white font-bold rounded-lg hover:bg-white hover:text-blue-700 transition duration-200 text-center">{{ __('common.contact_us') }}</a>
                 </div>
             </div>

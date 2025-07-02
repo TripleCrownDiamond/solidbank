@@ -809,7 +809,6 @@ return [
     // Contact form messages
     'contact_success_message' => 'Succès! Votre message a été envoyé avec succès. Nous vous répondrons dans les plus brefs délais.',
     'contact_error_message' => "Erreur! Une erreur est survenue lors de l'envoi de votre message. Veuillez réessayer.",
-    'contact_info' => 'Informations de Contact',
     'business_hours' => "Heures d'Ouverture",
     'monday_friday' => 'Lundi - Vendredi : 9h00 - 18h00',
     'saturday' => 'Samedi : 10h00 - 16h00',

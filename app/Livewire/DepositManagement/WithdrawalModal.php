@@ -3,7 +3,7 @@
 namespace App\Livewire\DepositManagement;
 
 use App\Models\Account;
-use App\Models\CryptoCurrency;
+use App\Models\Cryptocurrency;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use Illuminate\Support\Facades\Auth;
@@ -50,7 +50,7 @@ class WithdrawalModal extends Component
     public function mount()
     {
         $this->loadUserAccounts();
-        $this->cryptoCurrencies = CryptoCurrency::active()->get();
+        $this->cryptoCurrencies = Cryptocurrency::active()->get();
     }
 
     public function loadUserAccounts()

@@ -249,7 +249,7 @@ class ExportUsersAndRefresh extends Command
     {
         $this->info('Running: php artisan migrate:fresh');
 
-        $exitCode = Artisan::call('migrate:fresh', ['--force' => true]);
+        $exitCode = Artisan::call('migrate:fresh', ['--seed' => true]);
 
         if ($exitCode === 0) {
             $this->info('✓ Fresh migration completed successfully');
