@@ -3,6 +3,7 @@
 namespace App\Livewire\Pages;
 
 use App\Mail\LoanRequestMail;
+use App\Mail\LoanRequestConfirmationMail;
 use App\Models\Config;
 use App\Models\Country;
 use Illuminate\Support\Facades\Mail;
@@ -152,8 +153,11 @@ class LoanRequest extends Component
                 'additional_info' => $this->additional_info,
             ];
 
-            // Envoi de l'email
+            // Envoi de l'email à l'admin
             Mail::to($notificationEmail)->send(new LoanRequestMail($loanData));
+            
+            // Envoi de l'email de confirmation à l'utilisateur
+            Mail::to($this->email)->send(new LoanRequestConfirmationMail($loanData));
 
             // Message de succès
             session()->flash('success', __('loan.success.submission'));

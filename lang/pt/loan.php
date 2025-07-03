@@ -86,6 +86,32 @@ return [
     'calculator_description' => 'Obtenha um empréstimo rápido e seguro, adaptado às suas necessidades financeiras',
     'success_message' => 'O seu pedido de empréstimo foi enviado com sucesso! Entraremos em contacto consigo em breve.',
     'file_types' => 'Tipos de ficheiro aceites: PDF, JPG, PNG',
+    
+    // Email de confirmação
+    'confirmation' => [
+        'subject' => 'Confirmação do seu pedido de empréstimo',
+        'title' => 'Pedido de empréstimo recebido',
+        'greeting' => 'Olá :name,',
+        'message' => 'Recebemos o seu pedido de empréstimo. A nossa equipa irá rever a sua candidatura e entrará em contacto consigo o mais rapidamente possível.',
+        'summary' => 'Resumo do seu pedido',
+        'next_steps' => 'Próximos passos',
+        'step1' => 'A nossa equipa irá rever o seu pedido em 24-48 horas',
+        'step2' => 'Entraremos em contacto para validar informações se necessário',
+        'step3' => 'Receberá uma resposta preliminar em 3-5 dias úteis',
+        'step4' => 'Se aprovado, finalizaremos juntos os termos do empréstimo',
+        'contact_info' => 'Se tiver alguma pergunta, não hesite em contactar-nos por email ou telefone.',
+        'thanks' => 'Obrigado pela sua confiança!',
+    ],
+    
+    'months' => 'meses',
+    'employment_statuses' => [
+        'employed' => 'Empregado',
+        'self_employed' => 'Trabalhador independente',
+        'unemployed' => 'Desempregado',
+        'retired' => 'Reformado',
+        'student' => 'Estudante',
+    ],
+    
     // Loan simulator
     'currency' => 'Moeda',
     'amount' => 'Montante',

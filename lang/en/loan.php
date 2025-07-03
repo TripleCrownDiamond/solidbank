@@ -84,13 +84,38 @@ return [
     'form_title' => 'Loan Application',
     'calculator_title' => 'Calculate Your Loan',
     'calculator_description' => 'Get a quick and secure loan tailored to your financial needs',
-    'success_message' => 'Your loan request has been submitted successfully! We will contact you shortly.',
+    'success_message' => 'Your loan request has been sent successfully! We will contact you soon.',
     'file_types' => 'Accepted file types: PDF, JPG, PNG',
+    
+    // Confirmation email
+    'confirmation' => [
+        'subject' => 'Confirmation of your loan request',
+        'title' => 'Loan request received',
+        'greeting' => 'Hello :name,',
+        'message' => 'We have received your loan request. Our team will review your application and contact you as soon as possible.',
+        'summary' => 'Summary of your request',
+        'next_steps' => 'Next steps',
+        'step1' => 'Our team will review your request within 24-48 hours',
+        'step2' => 'We will contact you to validate information if necessary',
+        'step3' => 'You will receive a preliminary response within 3-5 business days',
+        'step4' => 'If approved, we will finalize the loan terms together',
+        'contact_info' => 'If you have any questions, please feel free to contact us by email or phone.',
+        'thanks' => 'Thank you for your trust!',
+    ],
+    
+    'months' => 'months',
+    'employment_statuses' => [
+        'employed' => 'Employed',
+        'self_employed' => 'Self-employed',
+        'unemployed' => 'Unemployed',
+        'retired' => 'Retired',
+        'student' => 'Student',
+    ],
+    
     // Loan simulator
     'currency' => 'Currency',
     'amount' => 'Amount',
     'duration_months' => 'Duration (months)',
-    'months' => 'months',
     'estimated_monthly' => 'Estimated monthly payment',
     'fixed_apr' => 'Fixed APR',
     'indicative_simulation' => 'Indicative simulation',

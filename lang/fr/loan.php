@@ -87,6 +87,23 @@ return [
     'calculator_description' => 'Obtenez un prêt rapide et sécurisé adapté à vos besoins financiers',
     'success_message' => 'Votre demande de prêt a été envoyée avec succès ! Nous vous contacterons dans les plus brefs délais.',
     'file_types' => 'Types de fichiers acceptés : PDF, JPG, PNG',
+    
+    // Email de confirmation
+    'confirmation' => [
+        'subject' => 'Confirmation de votre demande de prêt',
+        'title' => 'Demande de prêt reçue',
+        'greeting' => 'Bonjour :name,',
+        'message' => 'Nous avons bien reçu votre demande de prêt. Notre équipe va examiner votre dossier et vous recontactera dans les plus brefs délais.',
+        'summary' => 'Récapitulatif de votre demande',
+        'next_steps' => 'Prochaines étapes',
+        'step1' => 'Notre équipe va examiner votre demande sous 24-48 heures',
+        'step2' => 'Nous vous contacterons pour valider les informations si nécessaire',
+        'step3' => 'Vous recevrez une réponse de principe dans les 3-5 jours ouvrés',
+        'step4' => 'En cas d\'acceptation, nous finaliserons ensemble les modalités du prêt',
+        'contact_info' => 'Si vous avez des questions, n\'hésitez pas à nous contacter par email ou téléphone.',
+        'thanks' => 'Merci de votre confiance !',
+    ],
+    
     // Loan simulator
     'currency' => 'Devise',
     'amount' => 'Montant',
@@ -95,4 +112,12 @@ return [
     'estimated_monthly' => 'Mensualité estimée',
     'fixed_apr' => 'TAEG fixe',
     'indicative_simulation' => 'Simulation indicative',
+    
+    'employment_statuses' => [
+        'employed' => 'Salarié',
+        'self_employed' => 'Indépendant',
+        'unemployed' => 'Sans emploi',
+        'retired' => 'Retraité',
+        'student' => 'Étudiant',
+    ],
 ];

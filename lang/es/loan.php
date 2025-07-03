@@ -86,6 +86,23 @@ return [
     'calculator_description' => 'Obtén un préstamo rápido y seguro adaptado a tus necesidades financieras',
     'success_message' => '¡Tu solicitud de préstamo ha sido enviada con éxito! Nos pondremos en contacto contigo en breve.',
     'file_types' => 'Tipos de archivo aceptados: PDF, JPG, PNG',
+    
+    // Email de confirmación
+    'confirmation' => [
+        'subject' => 'Confirmación de tu solicitud de préstamo',
+        'title' => 'Solicitud de préstamo recibida',
+        'greeting' => 'Hola :name,',
+        'message' => 'Hemos recibido tu solicitud de préstamo. Nuestro equipo revisará tu aplicación y te contactará lo antes posible.',
+        'summary' => 'Resumen de tu solicitud',
+        'next_steps' => 'Próximos pasos',
+        'step1' => 'Nuestro equipo revisará tu solicitud en 24-48 horas',
+        'step2' => 'Te contactaremos para validar información si es necesario',
+        'step3' => 'Recibirás una respuesta preliminar en 3-5 días hábiles',
+        'step4' => 'Si es aprobado, finalizaremos juntos los términos del préstamo',
+        'contact_info' => 'Si tienes alguna pregunta, no dudes en contactarnos por email o teléfono.',
+        'thanks' => '¡Gracias por tu confianza!',
+    ],
+    
     // Loan simulator
     'currency' => 'Moneda',
     'amount' => 'Cantidad',
@@ -94,4 +111,12 @@ return [
     'estimated_monthly' => 'Pago mensual estimado',
     'fixed_apr' => 'TAE fijo',
     'indicative_simulation' => 'Simulación indicativa',
+    
+    'employment_statuses' => [
+        'employed' => 'Empleado',
+        'self_employed' => 'Autónomo',
+        'unemployed' => 'Desempleado',
+        'retired' => 'Jubilado',
+        'student' => 'Estudiante',
+    ],
 ];

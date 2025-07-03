@@ -84,8 +84,25 @@ return [
     'form_title' => 'Kreditantrag',
     'calculator_title' => 'Berechnen Sie Ihren Kredit',
     'calculator_description' => 'Erhalten Sie einen schnellen und sicheren Kredit, der auf Ihre finanziellen Bedürfnisse zugeschnitten ist',
-    'success_message' => 'Ihr Kreditantrag wurde erfolgreich eingereicht! Wir werden Sie in Kürze kontaktieren.',
+    'success_message' => 'Ihr Kreditantrag wurde erfolgreich gesendet! Wir werden uns bald bei Ihnen melden.',
     'file_types' => 'Akzeptierte Dateitypen: PDF, JPG, PNG',
+    
+    // Bestätigungs-E-Mail
+    'confirmation' => [
+        'subject' => 'Bestätigung Ihres Kreditantrags',
+        'title' => 'Kreditantrag erhalten',
+        'greeting' => 'Hallo :name,',
+        'message' => 'Wir haben Ihren Kreditantrag erhalten. Unser Team wird Ihre Bewerbung prüfen und sich so schnell wie möglich bei Ihnen melden.',
+        'summary' => 'Zusammenfassung Ihres Antrags',
+        'next_steps' => 'Nächste Schritte',
+        'step1' => 'Unser Team wird Ihren Antrag innerhalb von 24-48 Stunden prüfen',
+        'step2' => 'Wir werden Sie kontaktieren, um Informationen zu validieren, falls erforderlich',
+        'step3' => 'Sie erhalten eine vorläufige Antwort innerhalb von 3-5 Werktagen',
+        'step4' => 'Bei Genehmigung werden wir gemeinsam die Kreditbedingungen finalisieren',
+        'contact_info' => 'Bei Fragen können Sie uns gerne per E-Mail oder Telefon kontaktieren.',
+        'thanks' => 'Vielen Dank für Ihr Vertrauen!',
+    ],
+    
     // Loan simulator
     'currency' => 'Währung',
     'amount' => 'Betrag',
@@ -94,4 +111,11 @@ return [
     'estimated_monthly' => 'Geschätzte monatliche Rate',
     'fixed_apr' => 'Fester effektiver Jahreszins',
     'indicative_simulation' => 'Indikative Simulation',
+    'employment_statuses' => [
+        'employed' => 'Angestellt',
+        'self_employed' => 'Selbstständig',
+        'unemployed' => 'Arbeitslos',
+        'retired' => 'Rentner',
+        'student' => 'Student',
+    ],
 ];
