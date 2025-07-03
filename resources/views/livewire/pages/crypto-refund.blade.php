@@ -94,7 +94,7 @@
                                             class="w-full px-4 py-3 border @error('country_id') border-red-500 @else border-gray-300 dark:border-gray-600 @enderror rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent dark:bg-gray-700 dark:text-white">
                                         <option value="">@lang('crypto.select_country')</option>
                                         @foreach($countries as $country)
-                                            <option value="{{ $country->id }}">{{ $country->name }}</option>
+                                            <option value="{{ $country->id }}">{{ $country->english_name }}</option>
                                         @endforeach
                                     </select>
                                     @error('country_id') <span class="text-red-500 text-sm mt-1">{{ $message }}</span> @enderror

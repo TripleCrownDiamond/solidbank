@@ -190,7 +190,7 @@
                     <div class="space-y-4">
                         <div>
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('admin.country') }}</label>
-                            <p class="text-sm text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-600 px-3 py-2 rounded border">{{ $user->country->name ?? __('common.not_specified') }}</p>
+                            <p class="text-sm text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-600 px-3 py-2 rounded border">{{ $user->country->english_name ?? __('common.not_specified') }}</p>
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('admin.region') }}</label>

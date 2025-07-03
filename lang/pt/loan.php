@@ -40,10 +40,12 @@ return [
     'select_country' => 'Selecione o seu país',
     'loan_details' => 'Detalhes do Empréstimo',
     'purpose' => 'Finalidade do Empréstimo',
+    'loan_purpose' => 'Finalidade do Empréstimo',
     'purpose_placeholder' => 'Descreva a finalidade do empréstimo...',
     'select_purpose' => 'Selecione uma finalidade',
     'currency' => 'Moeda',
     'income' => 'Rendimento Mensal',
+    'monthly_income' => 'Rendimento Mensal',
     'employment_status' => 'Situação Profissional',
     'employment_status_options' => [
         'employed' => 'Empregado',

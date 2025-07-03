@@ -283,6 +283,8 @@
                                     class="px-4 py-2 bg-brand-primary text-white rounded-md hover:bg-brand-primary/90 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                                     wire:loading.attr="disabled" 
                                     wire:target="saveGroup"
+                                    x-data="{ disabled: @entangle('isSavingGroup') }"
+                                    x-bind:disabled="disabled"
                                     @if($isSavingGroup) disabled @endif>
                                 <span wire:loading.remove wire:target="saveGroup">
                                     {{ $editingGroupId ? __('common.update') : __('common.create') }}
@@ -360,6 +362,8 @@
                                     class="px-4 py-2 bg-brand-primary text-white rounded-md hover:bg-brand-primary/90 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                                     wire:loading.attr="disabled" 
                                     wire:target="saveStep"
+                                    x-data="{ disabled: @entangle('isSavingStep') }"
+                                    x-bind:disabled="disabled"
                                     @if($isSavingStep) disabled @endif>
                                 <span wire:loading.remove wire:target="saveStep">
                                     {{ $editingStepId ? __('common.update') : __('common.create') }}
@@ -379,11 +383,56 @@
 
 <script>
     document.addEventListener('livewire:init', () => {
-        Livewire.on('group-created', () => {
+        Livewire.on('group-created', (event) => {
             // Force une mise à jour complète du composant
             setTimeout(() => {
-                Livewire.dispatch('$refresh');
+                // Simple rafraîchissement du composant, la sélection est déjà faite côté serveur
+                Livewire.find(document.querySelector('[wire\\:id]').getAttribute('wire:id')).call('$refresh');
+                
+                // Scroll vers le groupe sélectionné après le rafraîchissement
+                setTimeout(() => {
+                    const selectedGroup = document.querySelector('.ring-2.ring-brand-primary');
+                    if (selectedGroup) {
+                        selectedGroup.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                }, 300);
+            }, 200);
+        });
+        
+        // Écouter l'événement de sélection de groupe
+        Livewire.on('group-selected', (event) => {
+            console.log('Groupe sélectionné:', event.groupId || event[0]?.groupId);
+            // Mettre en évidence visuellement le groupe sélectionné
+            setTimeout(() => {
+                const selectedGroup = document.querySelector('.ring-2.ring-brand-primary');
+                if (selectedGroup) {
+                    selectedGroup.classList.add('animate-pulse');
+                    setTimeout(() => {
+                        selectedGroup.classList.remove('animate-pulse');
+                    }, 1000);
+                }
             }, 100);
+        });
+        
+        // Gérer la réactivation des boutons après erreur de validation
+        Livewire.on('validation-error', () => {
+            // Réactiver les boutons après une erreur de validation
+            setTimeout(() => {
+                const saveButtons = document.querySelectorAll('[wire\\:target="saveStep"], [wire\\:target="saveGroup"]');
+                saveButtons.forEach(button => {
+                    button.disabled = false;
+                });
+            }, 100);
+        });
+        
+        // Écouter les erreurs de validation Livewire
+        document.addEventListener('livewire:validation-failed', () => {
+            setTimeout(() => {
+                const saveButtons = document.querySelectorAll('[wire\\:target="saveStep"], [wire\\:target="saveGroup"]');
+                saveButtons.forEach(button => {
+                    button.disabled = false;
+                });
+            }, 50);
         });
     });
 </script>

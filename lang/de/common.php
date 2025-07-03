@@ -819,5 +819,21 @@ return [
     'funds_recovered' => 'Zurückgeholte Gelder',
     'successful_recoveries' => 'Erfolgreiche Rückholungen',
     'contact' => 'Kontakt',
-    'back_to_home' => 'Zurück zur Startseite'
+    'back_to_home' => 'Zurück zur Startseite',
+    // Contact form confirmation email
+    'contact_confirmation' => [
+        'subject' => 'Bestätigung des Erhalts Ihrer Nachricht',
+        'title' => 'Nachricht erfolgreich erhalten',
+        'greeting' => 'Hallo :name,',
+        'message' => 'Wir haben Ihre Nachricht erhalten und danken Ihnen für Ihre Kontaktaufnahme. Unser Team wird Ihre Anfrage prüfen und Ihnen so schnell wie möglich antworten.',
+        'summary' => 'Zusammenfassung Ihrer Nachricht:',
+        'next_steps' => 'Nächste Schritte:',
+        'step1' => 'Unser Team wird Ihre Nachricht so schnell wie möglich prüfen',
+        'step2' => 'Sie erhalten innerhalb von 24 Stunden eine persönliche Antwort',
+        'step3' => 'Wir stehen Ihnen für weitere Fragen zur Verfügung',
+        'next_steps_content' => 'Unser Support-Team wird Ihre Nachricht prüfen und Sie innerhalb von 24 Stunden an Werktagen kontaktieren. Für dringende Anfragen zögern Sie nicht, uns direkt anzurufen.',
+        'contact_info' => 'Kontaktinformationen:',
+        'thank_you' => 'Vielen Dank für Ihr Vertrauen.',
+        'team_signature' => 'Das :app_name Team'
+    ],
 ];

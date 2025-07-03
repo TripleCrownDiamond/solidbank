@@ -17,7 +17,7 @@
             class="mt-1 block w-full rounded-md shadow-sm border-gray-300 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:border-brand-primary focus:ring-brand-primary">
             <option value="">{{ __('register.select_country') }}</option>
             @foreach ($countries as $country)
-                <option value="{{ $country->id }}">{{ $country->name }}</option>
+                <option value="{{ $country->id }}">{{ $country->english_name }}</option>
             @endforeach
         </select>
         @error('country_id')

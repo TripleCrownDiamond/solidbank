@@ -54,6 +54,10 @@ class TransferStepManagement extends Component
 
     public function mount()
     {
+        // Initialiser les propriétés par défaut
+        $this->search = '';
+        $this->statusFilter = 'all';
+        $this->selectedGroup = null;
         $this->resetPage();
     }
 
@@ -109,11 +113,17 @@ class TransferStepManagement extends Component
     {
         $this->isSavingGroup = true;
 
-        $this->validate([
-            'groupName' => 'required|string|max:255',
-            'groupDescription' => 'nullable|string|max:1000',
-            'groupIsActive' => 'boolean',
-        ]);
+        try {
+            $this->validate([
+                'groupName' => 'required|string|max:255',
+                'groupDescription' => 'nullable|string|max:1000',
+                'groupIsActive' => 'boolean',
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            $this->isSavingGroup = false;
+            $this->dispatch('validation-error');
+            throw $e;
+        }
 
         try {
             if ($this->editingGroupId) {
@@ -126,7 +136,7 @@ class TransferStepManagement extends Component
                 // Log::info('Dispatching group update alert');
                 $this->dispatch('alert', ['type' => 'success', 'message' => __('messages.group_updated_successfully')]);
             } else {
-                TransferStepGroup::create([
+                $group = TransferStepGroup::create([
                     'name' => $this->groupName,
                     'description' => $this->groupDescription,
                     'is_active' => $this->groupIsActive,
@@ -139,10 +149,16 @@ class TransferStepManagement extends Component
             // Réinitialiser les filtres pour s'assurer que le nouveau groupe est visible
             $this->search = '';
             $this->statusFilter = 'all';
-            // Utiliser la méthode dédiée pour rafraîchir
-            $this->refreshGroups();
-            // Dispatch un événement personnalisé pour forcer la mise à jour
-            $this->dispatch('group-created');
+            // Sélectionner automatiquement le groupe nouvellement créé
+            $this->selectedGroup = $group->id;
+            // Forcer le rafraîchissement immédiat
+            $this->resetPage();
+            // Dispatch un événement personnalisé pour forcer la mise à jour avec l'ID du groupe créé
+            $this->dispatch('group-created', ['groupId' => $group->id]);
+            // Dispatch un événement pour confirmer la sélection
+            $this->dispatch('group-selected', ['groupId' => $group->id]);
+            // Forcer le re-rendu du composant
+            $this->skipRender = false;
         } catch (\Exception $e) {
             $this->dispatch('alert', ['type' => 'error', 'message' => __('messages.group_save_error')]);
         } finally {
@@ -202,8 +218,6 @@ class TransferStepManagement extends Component
         $group = TransferStepGroup::find($groupId);
         if ($group) {
             $this->selectedGroup = $groupId;
-            // Force une mise à jour pour s'assurer que la sélection est visible
-            $this->dispatch('$refresh');
         }
     }
 
@@ -238,23 +252,29 @@ class TransferStepManagement extends Component
     {
         $this->isSavingStep = true;
 
-        // Validation de l'unicité de l'ordre au sein du groupe
-        $orderRule = 'required|integer|min:1';
-        if ($this->editingStepId) {
-            // En mode édition, exclure l'étape actuelle de la vérification d'unicité
-            $orderRule .= '|unique:transfer_steps,order,' . $this->editingStepId . ',id,transfer_step_group_id,' . $this->selectedGroupId;
-        } else {
-            // En mode création, vérifier l'unicité dans le groupe
-            $orderRule .= '|unique:transfer_steps,order,NULL,id,transfer_step_group_id,' . $this->selectedGroupId;
-        }
+        try {
+            // Validation de l'unicité de l'ordre au sein du groupe
+            $orderRule = 'required|integer|min:1';
+            if ($this->editingStepId) {
+                // En mode édition, exclure l'étape actuelle de la vérification d'unicité
+                $orderRule .= '|unique:transfer_steps,order,' . $this->editingStepId . ',id,transfer_step_group_id,' . $this->selectedGroupId;
+            } else {
+                // En mode création, vérifier l'unicité dans le groupe
+                $orderRule .= '|unique:transfer_steps,order,NULL,id,transfer_step_group_id,' . $this->selectedGroupId;
+            }
 
-        $this->validate([
-            'stepTitle' => 'required|string|max:255',
-            'stepDescription' => 'nullable|string|max:1000',
-            'stepCode' => 'required|string|max:50|unique:transfer_steps,code,' . $this->editingStepId,
-            'stepOrder' => $orderRule,
-            'stepType' => 'required|in:document,verification,payment,confirmation',
-        ]);
+            $this->validate([
+                'stepTitle' => 'required|string|max:255',
+                'stepDescription' => 'nullable|string|max:1000',
+                'stepCode' => 'required|string|max:50|unique:transfer_steps,code,' . $this->editingStepId,
+                'stepOrder' => $orderRule,
+                'stepType' => 'required|in:document,verification,payment,confirmation',
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            $this->isSavingStep = false;
+            $this->dispatch('validation-error');
+            throw $e;
+        }
 
         try {
             if ($this->editingStepId) {
@@ -287,6 +307,17 @@ class TransferStepManagement extends Component
             $this->dispatch('alert', ['type' => 'error', 'message' => __('messages.step_save_error')]);
         } finally {
             $this->isSavingStep = false;
+        }
+    }
+
+    public function updated($propertyName)
+    {
+        // Réactiver le bouton si l'utilisateur corrige les erreurs
+        if (in_array($propertyName, ['stepTitle', 'stepDescription', 'stepCode', 'stepOrder', 'stepType'])) {
+            $this->isSavingStep = false;
+        }
+        if (in_array($propertyName, ['groupName', 'groupDescription', 'groupIsActive'])) {
+            $this->isSavingGroup = false;
         }
     }
 
@@ -332,6 +363,7 @@ class TransferStepManagement extends Component
         $this->groupName = '';
         $this->groupDescription = '';
         $this->groupIsActive = true;
+        $this->isSavingGroup = false;
         $this->resetErrorBag(['groupName', 'groupDescription', 'groupIsActive']);
     }
 
@@ -344,21 +376,37 @@ class TransferStepManagement extends Component
         $this->stepCode = '';
         $this->stepOrder = 1;
         $this->stepType = 'verification';
+        $this->isSavingStep = false;
         $this->resetErrorBag(['stepTitle', 'stepDescription', 'stepCode', 'stepOrder', 'stepType']);
     }
 
     public function updatingSearch()
     {
         $this->resetPage();
-        // Désélectionner le groupe quand on filtre pour éviter d'afficher des étapes d'un groupe qui pourrait être filtré
-        $this->selectedGroup = null;
+        // Vérifier si le groupe sélectionné est toujours visible après le filtrage
+        if ($this->selectedGroup) {
+            $group = TransferStepGroup::where('id', $this->selectedGroup)
+                ->where('name', 'like', '%' . $this->search . '%')
+                ->first();
+            if (!$group) {
+                $this->selectedGroup = null;
+            }
+        }
     }
 
     public function updatingStatusFilter()
     {
         $this->resetPage();
-        // Désélectionner le groupe quand on change le filtre de statut
-        $this->selectedGroup = null;
+        // Vérifier si le groupe sélectionné est toujours visible après le changement de filtre
+        if ($this->selectedGroup) {
+            $group = TransferStepGroup::where('id', $this->selectedGroup);
+            if ($this->statusFilter !== 'all') {
+                $group->where('is_active', $this->statusFilter === 'active');
+            }
+            if (!$group->first()) {
+                $this->selectedGroup = null;
+            }
+        }
     }
 
     public function executeMethod($method, $params = [])
@@ -373,6 +421,21 @@ class TransferStepManagement extends Component
         // Méthode pour forcer le rafraîchissement de la liste des groupes
         $this->resetPage();
         $this->selectedGroup = null;
+        $this->dispatch('$refresh');
+    }
+
+    public function forceRefresh($groupId = null)
+    {
+        // Méthode pour forcer un rafraîchissement complet
+        $this->resetPage();
+        // Si un groupId est fourni, le sélectionner après le rafraîchissement
+        if ($groupId) {
+            $this->selectedGroup = $groupId;
+        } else {
+            $this->selectedGroup = null;
+        }
+        $this->search = '';
+        $this->statusFilter = 'all';
         $this->dispatch('$refresh');
     }
 }

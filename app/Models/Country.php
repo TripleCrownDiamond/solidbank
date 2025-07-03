@@ -29,4 +29,61 @@ class Country extends Model
     {
         return $this->hasMany(User::class);
     }
+
+    /**
+     * Get the English name of the country based on its code.
+     */
+    public function getEnglishNameAttribute(): string
+    {
+        $englishNames = [
+            'AL' => 'Albania',
+            'DE' => 'Germany',
+            'AD' => 'Andorra',
+            'AT' => 'Austria',
+            'BE' => 'Belgium',
+            'BY' => 'Belarus',
+            'BA' => 'Bosnia and Herzegovina',
+            'BG' => 'Bulgaria',
+            'CY' => 'Cyprus',
+            'HR' => 'Croatia',
+            'DK' => 'Denmark',
+            'ES' => 'Spain',
+            'EE' => 'Estonia',
+            'FI' => 'Finland',
+            'FR' => 'France',
+            'GR' => 'Greece',
+            'HU' => 'Hungary',
+            'IE' => 'Ireland',
+            'IS' => 'Iceland',
+            'IT' => 'Italy',
+            'XK' => 'Kosovo',
+            'LV' => 'Latvia',
+            'LI' => 'Liechtenstein',
+            'LT' => 'Lithuania',
+            'LU' => 'Luxembourg',
+            'MK' => 'North Macedonia',
+            'MT' => 'Malta',
+            'MD' => 'Moldova',
+            'MC' => 'Monaco',
+            'ME' => 'Montenegro',
+            'NO' => 'Norway',
+            'NL' => 'Netherlands',
+            'PL' => 'Poland',
+            'PT' => 'Portugal',
+            'CZ' => 'Czech Republic',
+            'RO' => 'Romania',
+            'GB' => 'United Kingdom',
+            'RU' => 'Russia',
+            'SM' => 'San Marino',
+            'RS' => 'Serbia',
+            'SK' => 'Slovakia',
+            'SI' => 'Slovenia',
+            'SE' => 'Sweden',
+            'CH' => 'Switzerland',
+            'UA' => 'Ukraine',
+            'VA' => 'Vatican City',
+        ];
+
+        return $englishNames[$this->code] ?? $this->name;
+    }
 }

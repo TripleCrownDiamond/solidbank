@@ -30,7 +30,7 @@
         ],
         [
             'title' => __('common.top_country_by_users'),
-            'value' => $topCountryUsers ? $topCountryUsers->country->name . ' (' . $topCountryUsers->user_count . ')' : 'N/A',
+            'value' => $topCountryUsers ? $topCountryUsers->country->english_name . ' (' . $topCountryUsers->user_count . ')' : 'N/A',
             'icon' => 'fa-globe',
             'color' => 'brand-primary',
             'gradient' => 'from-brand-primary to-brand-accent',
@@ -66,7 +66,7 @@
                             @if(isset($card['isCountry']) && $card['isCountry'])
                                 <p class="text-lg font-bold text-gray-900 dark:text-white group-hover:text-{{ $card['color'] }} transition-colors duration-300 leading-tight">
                                     @if ($topCountryUsers)
-                                        {{ $topCountryUsers->country->name }}
+                                        {{ $topCountryUsers->country->english_name }}
                                         <span class="block text-sm font-medium text-gray-500 dark:text-gray-400 group-hover:text-{{ $card['color'] }}/70">({{ $topCountryUsers->user_count }})</span>
                                     @else
                                         <span class="text-gray-400">N/A</span>

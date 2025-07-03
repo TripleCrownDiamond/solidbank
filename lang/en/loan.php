@@ -40,10 +40,12 @@ return [
     'select_country' => 'Select your country',
     'loan_details' => 'Loan Details',
     'purpose' => 'Loan Purpose',
+    'loan_purpose' => 'Loan Purpose',
     'purpose_placeholder' => 'Describe the intended use of the loan...',
     'select_purpose' => 'Select a purpose',
     'currency' => 'Currency',
     'income' => 'Monthly Income',
+    'monthly_income' => 'Monthly Income',
     'employment_status' => 'Employment Status',
     'employment_status_options' => [
         'employed' => 'Employed',

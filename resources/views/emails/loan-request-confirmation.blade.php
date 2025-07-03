@@ -1,10 +1,20 @@
 @extends('emails.layout')
 
 @section('title')
+    @php
+        if (isset($locale)) {
+            App::setLocale($locale);
+        }
+    @endphp
     {{ __('loan.confirmation.subject') }}
 @endsection
 
 @section('content')
+    @php
+        if (isset($locale)) {
+            App::setLocale($locale);
+        }
+    @endphp
     <h1 style="color: var(--brand-primary); font-size: 28px; margin-bottom: 20px;">✅ {{ __('loan.confirmation.title') }}</h1>
     
     <p style="font-size: 16px; line-height: 1.6; margin-bottom: 25px; color: #374151;">
@@ -17,7 +27,7 @@
     
     <!-- Récapitulatif de la demande -->
     <div style="background: linear-gradient(135deg, #dbeafe, #bfdbfe); padding: 25px; border-radius: 12px; margin: 25px 0; border: 2px solid #2563eb;">
-        <h3 style="color: #1e40af; margin-top: 0; margin-bottom: 20px;">📋 {{ __('loan.confirmation.summary') }}</h3>
+        <h3 style="color: #1e40af; margin-top: 0; margin-bottom: 20px;">{{ __('loan.confirmation.summary') }}</h3>
         
         <div style="margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid #93c5fd;">
             <span style="font-weight: bold; color: #1e40af;">{{ __('loan.loan_amount') }} :</span>

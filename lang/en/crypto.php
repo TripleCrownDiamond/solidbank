@@ -56,4 +56,18 @@ return [
     'error_message' => 'An error occurred while submitting your request. Please try again later.',
     'validation_errors' => 'Please correct the errors in the form.',
     'submission_success' => 'Your refund request has been submitted successfully. We will contact you shortly.',
+    
+    // Confirmation email
+    'confirmation' => [
+        'subject' => 'Confirmation of your crypto refund request',
+        'title' => 'Refund request received',
+        'greeting' => 'Hello :name,',
+        'message' => 'We have received your cryptocurrency refund request. Our team will review your case and contact you as soon as possible.',
+        'summary' => 'Summary of your request',
+        'next_steps' => 'Next steps',
+        'step1' => 'Our team will review your request within 24-48 hours',
+        'step2' => 'We will contact you to validate information if necessary',
+        'step3' => 'You will receive a preliminary response within 3-5 business days',
+        'contact_info' => 'If you have any questions, please do not hesitate to contact us at any time.',
+    ],
 ];

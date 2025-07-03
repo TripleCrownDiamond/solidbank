@@ -40,10 +40,12 @@ return [
     'select_country' => 'Wählen Sie Ihr Land',
     'loan_details' => 'Kreditdetails',
     'purpose' => 'Kreditzweck',
+    'loan_purpose' => 'Kreditzweck',
     'purpose_placeholder' => 'Beschreiben Sie den Verwendungszweck des Kredits...',
     'select_purpose' => 'Wählen Sie einen Zweck',
     'currency' => 'Währung',
     'income' => 'Monatliches Einkommen',
+    'monthly_income' => 'Monatliches Einkommen',
     'employment_status' => 'Beschäftigungsstatus',
     'employment_status_options' => [
         'employed' => 'Angestellt',

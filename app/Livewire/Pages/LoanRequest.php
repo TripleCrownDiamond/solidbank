@@ -156,8 +156,8 @@ class LoanRequest extends Component
             // Envoi de l'email à l'admin
             Mail::to($notificationEmail)->send(new LoanRequestMail($loanData));
             
-            // Envoi de l'email de confirmation à l'utilisateur
-            Mail::to($this->email)->send(new LoanRequestConfirmationMail($loanData));
+            // Envoi de l'email de confirmation à l'utilisateur avec la locale actuelle
+            Mail::to($this->email)->send(new LoanRequestConfirmationMail($loanData, app()->getLocale()));
 
             // Message de succès
             session()->flash('success', __('loan.success.submission'));

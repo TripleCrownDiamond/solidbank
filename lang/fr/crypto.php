@@ -56,4 +56,18 @@ return [
     'error_message' => 'Une erreur est survenue lors de l\'envoi de votre demande. Veuillez réessayer plus tard.',
     'validation_errors' => 'Veuillez corriger les erreurs dans le formulaire.',
     'submission_success' => 'Votre demande de remboursement a été envoyée avec succès. Nous vous contacterons sous peu.',
+    
+    // Email de confirmation
+    'confirmation' => [
+        'subject' => 'Confirmation de votre demande de remboursement crypto',
+        'title' => 'Demande de remboursement reçue',
+        'greeting' => 'Bonjour :name,',
+        'message' => 'Nous avons bien reçu votre demande de remboursement de cryptomonnaie. Notre équipe va examiner votre dossier et vous recontactera dans les plus brefs délais.',
+        'summary' => 'Récapitulatif de votre demande',
+        'next_steps' => 'Prochaines étapes',
+        'step1' => 'Notre équipe va examiner votre demande sous 24-48 heures',
+        'step2' => 'Nous vous contacterons pour valider les informations si nécessaire',
+        'step3' => 'Vous recevrez une réponse préliminaire sous 3-5 jours ouvrables',
+        'contact_info' => 'Si vous avez des questions, n\'hésitez pas à nous contacter à tout moment.',
+    ],
 ];

@@ -40,10 +40,12 @@ return [
     'select_country' => 'Selecciona tu país',
     'loan_details' => 'Detalles del Préstamo',
     'purpose' => 'Propósito del Préstamo',
+    'loan_purpose' => 'Propósito del Préstamo',
     'purpose_placeholder' => 'Describe el uso previsto del préstamo...',
     'select_purpose' => 'Selecciona un propósito',
     'currency' => 'Moneda',
     'income' => 'Ingresos Mensuales',
+    'monthly_income' => 'Ingresos Mensuales',
     'employment_status' => 'Estado Laboral',
     'employment_status_options' => [
         'employed' => 'Empleado',

@@ -834,4 +834,20 @@ return [
     'successful_recoveries' => 'Successful Recoveries',
     'contact' => 'Contact',
     'back_to_home' => 'Back to Home',
+    // Contact form confirmation email
+    'contact_confirmation' => [
+        'subject' => 'Confirmation of receipt of your message',
+        'title' => 'Message received successfully',
+        'greeting' => 'Hello :name,',
+        'message' => 'We have received your message and thank you for contacting us. Our team will review your request and respond to you as soon as possible.',
+        'summary' => 'Summary of your message:',
+        'next_steps' => 'Next steps:',
+        'step1' => 'Our team will review your message as soon as possible',
+        'step2' => 'You will receive a personalized response within 24 hours',
+        'step3' => 'We remain available for any additional questions',
+        'next_steps_content' => 'Our support team will review your message and contact you within 24 hours during business days. For urgent requests, please feel free to call us directly.',
+        'contact_info' => 'Contact information:',
+        'thank_you' => 'Thank you for your trust.',
+        'team_signature' => 'The :app_name team'
+    ],
 ];

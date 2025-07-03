@@ -40,10 +40,12 @@ return [
     'select_country' => 'Sélectionnez votre pays',
     'loan_details' => 'Informations de prêt',
     'purpose' => 'Objet du prêt',
+    'loan_purpose' => 'Objet du prêt',
     'purpose_placeholder' => 'Décrivez l\'utilisation prévue du prêt...',
     'select_purpose' => 'Sélectionnez un motif',
     'currency' => 'Devise',
     'income' => 'Revenus mensuels',
+    'monthly_income' => 'Revenus mensuels',
     'employment_status' => 'Statut professionnel',
     'employment_status_options' => [
         'employed' => 'Salarié',

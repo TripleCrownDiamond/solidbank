@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Mail\ContactFormMail;
+use App\Mail\ContactFormConfirmationMail;
 use App\Models\Config;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Component;
@@ -47,8 +48,16 @@ class ContactForm extends Component
             $config = Config::first();
             $supportEmail = $config && $config->notification_email ? $config->notification_email : 'support@bred-fin.com';
 
-            // Envoyer l'email
+            // Envoyer l'email de notification à l'admin
             Mail::to($supportEmail)->send(new ContactFormMail([
+                'name' => $this->name,
+                'email' => $this->email,
+                'subject' => $this->subject,
+                'message' => $this->message,
+            ]));
+            
+            // Envoyer l'email de confirmation à l'utilisateur
+            Mail::to($this->email)->send(new ContactFormConfirmationMail([
                 'name' => $this->name,
                 'email' => $this->email,
                 'subject' => $this->subject,

@@ -55,5 +55,18 @@ return [
     'submitting' => 'Wird übermittelt...',
     'error_message' => 'Beim Senden Ihrer Anfrage ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut.',
     'validation_errors' => 'Bitte korrigieren Sie die Fehler im Formular.',
-    'submission_success' => 'Ihre Rückerstattungsanfrage wurde erfolgreich übermittelt. Wir werden uns in Kürze bei Ihnen melden.'
+    'submission_success' => 'Ihre Rückerstattungsanfrage wurde erfolgreich übermittelt. Wir werden uns in Kürze bei Ihnen melden.',
+    // Crypto refund confirmation email
+    'confirmation' => [
+        'subject' => 'Bestätigung Ihrer Krypto-Rückerstattungsanfrage',
+        'title' => 'Anfrage erfolgreich erhalten',
+        'greeting' => 'Hallo :first_name :last_name,',
+        'message' => 'Wir haben Ihre Krypto-Rückerstattungsanfrage erhalten und danken Ihnen für Ihre Kontaktaufnahme. Unser Team wird Ihre Anfrage prüfen und sich so schnell wie möglich bei Ihnen melden.',
+        'summary' => 'Zusammenfassung Ihrer Anfrage:',
+        'next_steps' => 'Nächste Schritte:',
+        'next_steps_content' => 'Unser spezialisiertes Team wird Ihre Rückerstattungsanfrage prüfen und sich innerhalb von 2-3 Werktagen bei Ihnen melden. Bewahren Sie alle Dokumente im Zusammenhang mit Ihrer Kryptowährungstransaktion auf, um den Prozess zu beschleunigen.',
+        'contact_info' => 'Kontaktinformationen:',
+        'thank_you' => 'Vielen Dank für Ihr Vertrauen.',
+        'team_signature' => 'Das :app_name Team'
+    ],
 ];

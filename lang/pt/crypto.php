@@ -55,5 +55,18 @@ return [
     'submitting' => 'Enviando...',
     'error_message' => 'Ocorreu um erro ao enviar sua solicitação. Por favor, tente novamente mais tarde.',
     'validation_errors' => 'Por favor, corrija os erros no formulário.',
-    'submission_success' => 'Sua solicitação de reembolso foi enviada com sucesso. Entraremos em contato em breve.'
+    'submission_success' => 'Sua solicitação de reembolso foi enviada com sucesso. Entraremos em contato em breve.',
+    // Crypto refund confirmation email
+    'confirmation' => [
+        'subject' => 'Confirmação da sua solicitação de reembolso de cripto',
+        'title' => 'Solicitação recebida com sucesso',
+        'greeting' => 'Olá :first_name :last_name,',
+        'message' => 'Recebemos sua solicitação de reembolso de cripto e agradecemos por entrar em contato conosco. Nossa equipe revisará sua solicitação e entrará em contato o mais breve possível.',
+        'summary' => 'Resumo da sua solicitação:',
+        'next_steps' => 'Próximos passos:',
+        'next_steps_content' => 'Nossa equipe especializada revisará sua solicitação de reembolso e entrará em contato dentro de 2-3 dias úteis. Mantenha todos os documentos relacionados à sua transação de criptomoeda para acelerar o processo.',
+        'contact_info' => 'Informações de contato:',
+        'thank_you' => 'Obrigado pela sua confiança.',
+        'team_signature' => 'A equipe :app_name'
+    ],
 ];

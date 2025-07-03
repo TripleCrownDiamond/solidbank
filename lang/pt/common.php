@@ -814,4 +814,20 @@ return [
     'successful_recoveries' => 'Recuperações Bem-Sucedidas',
     'contact' => 'Contacto',
     'back_to_home' => 'Voltar ao Início',
+    // Contact form confirmation email
+    'contact_confirmation' => [
+        'subject' => 'Confirmação de recepção da sua mensagem',
+        'title' => 'Mensagem recebida com sucesso',
+        'greeting' => 'Olá :name,',
+        'message' => 'Recebemos a sua mensagem e agradecemos por nos contactar. A nossa equipa irá analisar o seu pedido e responder o mais breve possível.',
+        'summary' => 'Resumo da sua mensagem:',
+        'next_steps' => 'Próximos passos:',
+        'step1' => 'A nossa equipa irá analisar a sua mensagem o mais breve possível',
+        'step2' => 'Receberá uma resposta personalizada dentro de 24 horas',
+        'step3' => 'Permanecemos disponíveis para qualquer questão adicional',
+        'next_steps_content' => 'A nossa equipa de suporte irá analisar a sua mensagem e contactá-lo dentro de 24 horas durante os dias úteis. Para pedidos urgentes, não hesite em ligar-nos diretamente.',
+        'contact_info' => 'Informações de contacto:',
+        'thank_you' => 'Obrigado pela sua confiança.',
+        'team_signature' => 'A equipa :app_name'
+    ],
 ];

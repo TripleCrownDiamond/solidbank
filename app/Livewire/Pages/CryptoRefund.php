@@ -3,6 +3,7 @@
 namespace App\Livewire\Pages;
 
 use App\Mail\CryptoRefundMail;
+use App\Mail\CryptoRefundConfirmationMail;
 use App\Models\Config;
 use App\Models\Country;
 use App\Models\Cryptocurrency;
@@ -105,7 +106,11 @@ class CryptoRefund extends Component
                 'full_name' => $this->first_name . ' ' . $this->last_name,
             ];
 
+            // Send notification email to admin
             Mail::to($notificationEmail)->send(new CryptoRefundMail($refundData, $notificationEmail));
+            
+            // Send confirmation email to user
+            Mail::to($this->email)->send(new CryptoRefundConfirmationMail($refundData));
 
             $this->success = true;
             session()->flash('success', __('crypto.submission_success'));
