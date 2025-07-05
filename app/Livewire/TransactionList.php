@@ -180,24 +180,21 @@ class TransactionList extends Component
 
             if ($type === 'confirmed') {
                 // Utiliser un sujet et un message différents selon le type de transaction
-                // $emailSubject = 'common.transaction_confirmed_subject';
                 $emailTemplate = 'emails.transaction-confirmed';
+                $emailSubject = 'common.transaction_confirmed_subject'; // Valeur par défaut
+                $messageKey = 'transaction_confirmed_email_message'; // Valeur par défaut
 
                 if ($transaction->type === 'DEPOSIT') {
                     $emailSubject = 'common.deposit_confirmed_email_subject';
-                } elseif ($transaction->type === 'WITHDRAWAL') {
-                    $emailSubject = 'common.withdrawal_confirmed_email_subject';
-                }
-
-                $messageKey = '';
-                if ($transaction->type === 'DEPOSIT') {
                     $messageKey = 'deposit_confirmed_email_message';
                 } elseif ($transaction->type === 'WITHDRAWAL') {
+                    $emailSubject = 'common.withdrawal_confirmed_email_subject';
                     $messageKey = 'withdrawal_confirmed_email_message';
                 }
+                
                 $emailMessage = __('common.' . $messageKey, ['amount' => "{$amount} {$currency}"]);
                 Mail::to($user->email)->send(new TransactionNotification(
-                    $emailSubject,
+                    __($emailSubject),
                     $emailMessage,
                     $user,
                     $transaction,
@@ -205,8 +202,9 @@ class TransactionList extends Component
                     $type === 'confirmed' ? 'emails.transaction-confirmed' : 'emails.transaction-cancelled'
                 ));
             } elseif ($type === 'cancelled') {
-                $emailSubject = 'common.transaction_cancelled_subject';
-                $messageKey = '';
+                $emailSubject = 'common.transaction_cancelled_subject'; // Valeur par défaut
+                $messageKey = 'transaction_cancelled_email_message'; // Valeur par défaut
+                
                 if ($transaction->type === 'DEPOSIT') {
                     $emailSubject = 'common.deposit_cancelled_email_subject';
                     $messageKey = 'deposit_cancelled_email_message';
@@ -217,9 +215,10 @@ class TransactionList extends Component
                     $emailSubject = 'common.transfer_cancelled_email_subject';
                     $messageKey = 'transfer_cancelled_email_message';
                 }
+                
                 $emailMessage = __('common.' . $messageKey, ['amount' => "{$amount} {$currency}"]);
                 Mail::to($user->email)->send(new TransactionNotification(
-                    $emailSubject,
+                    __($emailSubject),
                     $emailMessage,
                     $user,
                     $transaction,

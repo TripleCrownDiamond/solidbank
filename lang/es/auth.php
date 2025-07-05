@@ -29,5 +29,20 @@ return [
     'resend_verification_email' => 'Reenviar Correo de Verificación',
     'log_out' => 'Cerrar Sesión',
     'login' => 'Iniciar sesión',
-    'register' => 'Registrarse'
+    'register' => 'Registrarse',
+    
+    // Activación de cuenta
+    'account_activation_subject' => 'Activación de mi cuenta',
+    'account_activation_title' => 'Activación de mi cuenta',
+    'greeting_activation' => 'Hola :name,',
+    'account_activation_message' => '¡Estamos encantados de darle la bienvenida! Su registro ha sido guardado exitosamente. Para finalizar la creación de su cuenta y acceder a todos nuestros servicios bancarios, haga clic en el enlace a continuación.',
+    'activation_benefits' => 'Una vez que su cuenta esté activada, podrá disfrutar de todas nuestras funcionalidades: gestión de cuentas, transferencias, tarjetas bancarias y mucho más.',
+    'activation_security_note' => 'Este enlace de activación es seguro y expirará en 60 minutos para su protección.',
+    'activate_account_button' => 'Activar mi cuenta',
+    'activation_link_expires' => 'Este enlace de activación expirará en 60 minutos.',
+    'activation_note' => 'Si no creó una cuenta, no se requiere ninguna acción de su parte. Gracias,',
+    'activation_link_invalid' => 'El enlace de activación es inválido o ha expirado.',
+    'account_already_activated' => 'Su cuenta ya está activada.',
+    'account_activated_successfully' => '¡Su cuenta ha sido activada exitosamente! Ahora puede iniciar sesión.',
+    'account_inactive' => 'Su cuenta aún no está activada. Verifique su correo electrónico y haga clic en el enlace de activación.'
 ];

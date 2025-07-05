@@ -3,6 +3,7 @@
 namespace App\Livewire\Auth;
 
 use App\Mail\AccountStatusNotification;
+use App\Mail\AccountActivationMail;
 use App\Models\Account;
 use App\Models\Config;
 use App\Models\Country;
@@ -63,8 +64,14 @@ class RegisterForm extends Component
 
     public function mount()
     {
+        // Nettoyer les sessions résiduelles à chaque accès au formulaire d'inscription
+        // Cela fonctionne pour toutes les routes d'inscription (avec ou sans locale)
+        session()->forget(['registration_success', 'registration_data', 'success_user_name']);
+        $this->step = 1;
+        
         $this->countries = Country::all();
-        $this->restoreFromSession();
+        // Ne pas restaurer depuis la session car on vient de la nettoyer
+        // $this->restoreFromSession();
     }
 
     // Méthode améliorée pour restaurer les données depuis la session
@@ -408,13 +415,27 @@ class RegisterForm extends Component
                 'status' => 'INACTIVE',
             ]);
 
+            // Envoyer l'e-mail d'activation
+            try {
+                Mail::to($user->email)->send(new AccountActivationMail($user));
+                Log::info('Activation email sent successfully', ['user_id' => $user->id]);
+            } catch (\Exception $e) {
+                Log::error('Failed to send activation email', ['user_id' => $user->id, 'error' => $e->getMessage()]);
+            }
+
             // Nettoyer les fichiers temporaires et la session
             $this->cleanupTempFiles();
             session()->forget('registration_data');
 
-            // Passer à l'étape de succès
-            // event(new Registered($user));
+            // Passer à l'étape de succès et forcer la sauvegarde
             $this->step = 4;
+            $this->saveToSession();
+            
+            // Forcer la persistance de l'étape de succès
+            session(['registration_success' => true, 'success_user_name' => $user->first_name]);
+            
+            // Dispatch un événement pour indiquer le succès
+            $this->dispatch('registration-success');
             //
             $this->dispatch('alert', ['type' => 'success', 'message' => __('register.success_message')]);
         } catch (\Illuminate\Validation\ValidationException $e) {

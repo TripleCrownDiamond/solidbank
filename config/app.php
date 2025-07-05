@@ -157,6 +157,7 @@ return [
          */
         App\Providers\AppServiceProvider::class,
         App\Providers\BankConfigServiceProvider::class,
+        App\Providers\MailServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
     ],
 

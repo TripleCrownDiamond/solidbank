@@ -1,18 +1,23 @@
-{{ str_repeat('=', 50) }}
-{{ str_pad(__('login.otp_email_title'), 50, ' ', STR_PAD_BOTH) }}
-{{ str_repeat('=', 50) }}
+@extends('emails.layout')
 
-{{ __('login.otp_email_intro') }}
+@section('title', __('login.otp_email_title'))
 
-{{ str_repeat('-', 50) }}
-{{ str_pad(__('login.otp_email_code_label'), 50, ' ', STR_PAD_BOTH) }}
-{{ str_pad($otp, 50, ' ', STR_PAD_BOTH) }}
-{{ str_repeat('-', 50) }}
+@section('content')
+    <h1>{{ __('login.otp_email_title') }}</h1>
+    
+    <p style="margin-bottom: 20px;">
+        {{ __('login.otp_email_intro') }}
+    </p>
 
-{{ __('login.otp_email_security_note') }}
+    <div class="code-box">
+        {{ $otp }}
+    </div>
 
-{{ __('login.otp_email_no_action') }}
+    <p style="margin-top: 20px;">
+        {{ __('login.otp_email_security_note') }}
+    </p>
 
-{{ str_repeat('=', 50) }}
-{{ str_pad(__('common.thanks'), 50, ' ', STR_PAD_RIGHT) }}{{ getAppName() }}
-{{ str_repeat('=', 50) }}
+    <p style="margin-top: 10px; font-style: italic;">
+        {{ __('login.otp_email_no_action') }}
+    </p>
+@endsection

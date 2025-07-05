@@ -13,6 +13,8 @@ return [
     'sign_in' => 'Anmelden',
     'success_title' => 'Registrierung erfolgreich!',
     'success_message' => 'Ihr Konto wurde erfolgreich erstellt und wird überprüft. Sie erhalten eine E-Mail, sobald Ihr Konto aktiviert ist.',
+    'success_message_with_name' => 'Hallo :name! Ihre Registrierung war erfolgreich. Bitte überprüfen Sie Ihre E-Mail, um Ihr Konto zu aktivieren.',
+    'check_email_activation' => 'Bitte überprüfen Sie Ihre E-Mail und klicken Sie auf den Aktivierungslink, um die Einrichtung Ihres Kontos abzuschließen.',
     'go_to_login' => 'Zur Anmeldung',
     'email_already_exists' => 'Diese E-Mail-Adresse ist bereits registriert. Bitte verwenden Sie eine andere E-Mail oder melden Sie sich an.',
     // Email verification messages

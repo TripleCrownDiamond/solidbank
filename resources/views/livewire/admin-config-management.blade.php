@@ -202,60 +202,31 @@
                 </div>
             </div>
 
-            <!-- Couleurs de Marque -->
+            <!-- Couleurs de Marque - DÉSACTIVÉ -->
+            <!-- 
+            Les couleurs de marque ont été supprimées de la base de données.
+            Les couleurs sont maintenant gérées via CSS avec des valeurs par défaut.
+            Pour réactiver cette fonctionnalité, il faudrait :
+            1. Recréer les colonnes dans la table configs
+            2. Réactiver les propriétés dans AdminConfigManagement.php
+            3. Décommenter cette section
+            -->
             <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-6">
                 <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">
                     <i class="fa-solid fa-palette mr-2 text-brand-primary"></i>
-                    {{ __('admin.brand_colors') }}
+                    {{ __('admin.brand_colors') }} (Fonctionnalité désactivée)
                 </h3>
-                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            {{ __('admin.brand_primary') }}
-                        </label>
-                        <input type="color" wire:model="brand_color" 
-                               class="w-full h-10 border border-gray-300 dark:border-gray-600 rounded-lg">
-                        @error('brand_color') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            {{ __('admin.brand_secondary') }}
-                        </label>
-                        <input type="color" wire:model="brand_secondary" 
-                               class="w-full h-10 border border-gray-300 dark:border-gray-600 rounded-lg">
-                        @error('brand_secondary') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            {{ __('admin.brand_accent') }}
-                        </label>
-                        <input type="color" wire:model="brand_accent" 
-                               class="w-full h-10 border border-gray-300 dark:border-gray-600 rounded-lg">
-                        @error('brand_accent') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            {{ __('admin.brand_success') }}
-                        </label>
-                        <input type="color" wire:model="brand_success" 
-                               class="w-full h-10 border border-gray-300 dark:border-gray-600 rounded-lg">
-                        @error('brand_success') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            {{ __('admin.brand_warning') }}
-                        </label>
-                        <input type="color" wire:model="brand_warning" 
-                               class="w-full h-10 border border-gray-300 dark:border-gray-600 rounded-lg">
-                        @error('brand_warning') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            {{ __('admin.brand_error') }}
-                        </label>
-                        <input type="color" wire:model="brand_error" 
-                               class="w-full h-10 border border-gray-300 dark:border-gray-600 rounded-lg">
-                        @error('brand_error') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                <div class="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4">
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <i class="fa-solid fa-exclamation-triangle text-yellow-400"></i>
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-sm text-yellow-800 dark:text-yellow-200">
+                                La personnalisation des couleurs de marque a été temporairement désactivée.
+                                Les couleurs par défaut sont utilisées via CSS.
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>

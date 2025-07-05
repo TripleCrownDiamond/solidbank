@@ -3,24 +3,38 @@
 <head>
     <title>@yield('title')</title>
     <style>
+        @php
+            $config = getBrandingConfig();
+            $brandPrimary = $config && $config->brand_color ? $config->brand_color : '#2563eb';
+            $brandPrimaryHover = $config && $config->brand_primary_hover ? $config->brand_primary_hover : '#1d4ed8';
+            $brandPrimaryLight = $config && $config->brand_primary_light ? $config->brand_primary_light : '#dbeafe';
+            $brandPrimaryDark = $config && $config->brand_primary_dark ? $config->brand_primary_dark : '#1e40af';
+        @endphp
         :root {
-            --brand-primary: #2563eb;
-            --brand-primary-hover: #1d4ed8;
-            --brand-light: #2563eb20;
-            --brand-dark: #1e40af;
+            --brand-primary: {{ $brandPrimary }};
+            --brand-primary-hover: {{ $brandPrimaryHover }};
+            --brand-light: {{ $brandPrimaryLight }};
+            --brand-dark: {{ $brandPrimaryDark }};
+            --text-primary: #1f2937;
+            --bg-light: #f9fafb;
+            --border-light: #e5e7eb;
+            --text-muted: #6b7280;
+            --text-secondary: #6b7280;
+            --bg-secondary: #f3f4f6;
+            --primary-color: {{ $brandPrimary }};
         }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
-            color: #374151;
+            color: var(--text-primary);
             margin: 0;
             padding: 0;
-            background-color: #f9fafb;
+            background-color: var(--bg-light);
             width: 100%;
         }
         .email-wrapper {
             width: 100%;
-            background-color: #f9fafb;
+            background-color: var(--bg-light);
             padding: 40px 20px;
             box-sizing: border-box;
         }
@@ -32,10 +46,10 @@
             padding: 50px 40px;
             border-radius: 16px;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-            border: 1px solid #e5e7eb;
+            border: 1px solid var(--border-light);
         }
         .code-box {
-            background: linear-gradient(135deg, var(--brand-light), #f3f4f6);
+            background: linear-gradient(135deg, var(--brand-light), var(--bg-secondary));
             padding: 25px 30px;
             border-radius: 12px;
             margin: 35px auto;
@@ -51,7 +65,7 @@
         }
         .footer {
             margin-top: 50px;
-            color: #6b7280;
+            color: var(--text-muted);
             font-size: 14px;
             border-top: 2px solid var(--brand-light);
             padding-top: 25px;
@@ -67,7 +81,7 @@
         .button {
             display: inline-block;
             background-color: var(--brand-primary);
-            color: #ffffff !important;
+            color: white !important;
             padding: 12px 25px;
             border-radius: 8px;
             text-decoration: none;
@@ -87,9 +101,15 @@
             <div class="logo">
                 @php
                     $config = getBrandingConfig();
-                    $logoPath = $config ? public_path($config->logo_url) : public_path('img/logo_blue.svg');
+                    $iconUrl = $config && $config->icon_url ? $config->icon_url : 'img/logo_blue.svg';
+                    $iconPath = public_path($iconUrl);
+                    $appName = getAppName();
                 @endphp
-                <img src="data:image/svg+xml;base64,{{ base64_encode(file_get_contents($logoPath)) }}" alt="{{ getAppName() }}" style="max-width: 180px; height: auto;">
+                @if(file_exists($iconPath))
+                    <img src="data:image/svg+xml;base64,{{ base64_encode(file_get_contents($iconPath)) }}" alt="{{ $appName }}" style="max-width: 80px; height: auto;">
+                @else
+                    <img src="{{ asset('img/logo_blue.svg') }}" alt="{{ $appName }}" style="max-width: 80px; height: auto;">
+                @endif
             </div>
         
             @yield('content')

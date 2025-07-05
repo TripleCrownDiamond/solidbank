@@ -30,8 +30,19 @@ return [
     'log_out' => 'Sair',
     'login' => 'Login',
     'register' => 'Registrar',
-    'resend_verification_email' => 'Resend Verification Email',
-    'log_out' => 'Log Out',
-    'login' => 'Login',
-    'register' => 'Register'
+    
+    // Ativação de conta
+    'account_activation_subject' => 'Ativação da minha conta',
+    'account_activation_title' => 'Ativação da minha conta',
+    'greeting_activation' => 'Olá :name,',
+    'account_activation_message' => 'Estamos felizes em recebê-lo! Seu registro foi salvo com sucesso. Para finalizar a criação da sua conta e acessar todos os nossos serviços bancários, clique no link abaixo.',
+    'activation_benefits' => 'Uma vez que sua conta esteja ativada, você poderá desfrutar de todas as nossas funcionalidades: gestão de contas, transferências, cartões bancários e muito mais.',
+    'activation_security_note' => 'Este link de ativação é seguro e expirará em 60 minutos para sua proteção.',
+    'activate_account_button' => 'Ativar minha conta',
+    'activation_link_expires' => 'Este link de ativação expirará em 60 minutos.',
+    'activation_note' => 'Se você não criou uma conta, nenhuma ação é necessária da sua parte. Obrigado,',
+    'activation_link_invalid' => 'O link de ativação é inválido ou expirou.',
+    'account_already_activated' => 'Sua conta já está ativada.',
+    'account_activated_successfully' => 'Sua conta foi ativada com sucesso! Agora você pode fazer login.',
+    'account_inactive' => 'Sua conta ainda não está ativada. Verifique seu e-mail e clique no link de ativação.'
 ];

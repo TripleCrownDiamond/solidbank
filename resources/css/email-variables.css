@@ -1,0 +1,61 @@
+/* Variables de couleur pour les emails - Centralisées */
+:root {
+    /* Couleurs de base */
+    --color-white: #ffffff;
+    --color-black: #000000;
+    
+    /* Couleurs de marque */
+    --brand-primary: #2563eb;
+    --brand-primary-hover: #1d4ed8;
+    --brand-primary-light: #3b82f6;
+    --brand-primary-dark: #1e40af;
+    --brand-secondary: #64748b;
+    --brand-accent: #10b981;
+    --brand-success: #059669;
+    --brand-warning: #d97706;
+    --brand-error: #dc2626;
+    
+    /* Couleurs de texte */
+    --text-primary: #374151;
+    --text-secondary: #6b7280;
+    --text-muted: #9ca3af;
+    --text-dark: #1f2937;
+    --text-light: #f9fafb;
+    
+    /* Couleurs de fond */
+    --bg-primary: #ffffff;
+    --bg-light: #f9fafb;
+    --bg-secondary: #f3f4f6;
+    --bg-dark: #1f2937;
+    
+    /* Couleurs de bordure */
+    --border-light: #e5e7eb;
+    --border-medium: #d1d5db;
+    --border-dark: #6b7280;
+    
+    /* États - Succès */
+    --success-bg: #dcfce7;
+    --success-border: #16a34a;
+    --success-text: #15803d;
+    
+    /* États - Erreur */
+    --error-bg: #fee2e2;
+    --error-border: #ef4444;
+    --error-text: #b91c1c;
+    
+    /* États - Avertissement */
+    --warning-bg: #fef3c7;
+    --warning-border: #f59e0b;
+    --warning-text: #92400e;
+    
+    /* États - Information */
+    --info-bg: #dbeafe;
+    --info-border: #93c5fd;
+    --info-text: #0c5460;
+    
+    /* Couleurs avec transparence */
+    --brand-light-alpha: rgba(37, 99, 235, 0.1);
+    --success-light-alpha: rgba(16, 185, 129, 0.1);
+    --warning-light-alpha: rgba(245, 158, 11, 0.1);
+    --error-light-alpha: rgba(239, 68, 68, 0.1);
+}

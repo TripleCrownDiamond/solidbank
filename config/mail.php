@@ -115,4 +115,20 @@ return [
         'name' => env('MAIL_FROM_NAME', 'Example'),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Email Headers for Better Deliverability
+    |--------------------------------------------------------------------------
+    |
+    | These headers help improve email deliverability and reduce spam scores.
+    |
+    */
+
+    'headers' => [
+        'X-Mailer' => 'Bred Fin Banking System',
+        'X-Priority' => '1',
+        'Importance' => 'High',
+        'List-Unsubscribe' => '<mailto:unsubscribe@bred-fin.com>',
+    ],
+
 ];

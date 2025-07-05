@@ -30,31 +30,5 @@ return [
     'show' => 'Anzeigen',
     'hide' => 'Verbergen',
     'verify' => 'Bestätigen',
-    // OTP Authentication
-    'otp_required' => 'Der Bestätigungscode ist erforderlich.',
-    'otp_invalid_length' => 'Der Bestätigungscode muss 6-stellig sein.',
-    'otp_sent' => 'Ein Bestätigungscode wurde an Ihre E-Mail gesendet.',
-    'otp_invalid' => 'Der Bestätigungscode ist ungültig oder abgelaufen.',
-    'session_expired' => 'Ihre Sitzung ist abgelaufen. Bitte melden Sie sich erneut an.',
-    'user_not_found' => 'Benutzer nicht gefunden. Bitte versuchen Sie es erneut.',
-    // OTP Email
-    'otp_email_subject' => 'Ihr Anmelde-Bestätigungscode',
-    'otp_email_title' => 'Anmeldebestätigung',
-    'otp_email_greeting' => 'Hallo :name,',
-    'otp_email_intro' => 'Sie versuchen, sich in Ihrem Konto anzumelden. Bitte verwenden Sie den folgenden Bestätigungscode, um die Anmeldung abzuschließen:',
-    'otp_email_code_label' => 'Ihr Bestätigungscode',
-    'otp_email_expiry' => 'Dieser Code läuft in 10 Minuten ab.',
-    'otp_email_security_title' => 'Sicherheitshinweis:',
-    'otp_email_security_message' => 'Wenn Sie keinen Anmeldeversuch unternommen haben, ignorieren Sie diese E-Mail und erwägen Sie eine Änderung Ihres Passworts.',
-    'otp_email_security_note' => 'Wenn Sie keinen Anmeldeversuch unternommen haben, ignorieren Sie diese E-Mail und erwägen Sie eine Änderung Ihres Passworts.',
-    'otp_email_no_action' => 'Wenn Sie diesen Code nicht angefordert haben, ist keine weitere Aktion erforderlich.',
-    'otp_email_footer' => 'Vielen Dank,',
-    // OTP Challenge Page
-    'otp_challenge_title' => 'E-Mail-Bestätigung',
-    'otp_challenge_subtitle' => 'Bitte geben Sie den 6-stelligen Bestätigungscode ein, der an Ihre E-Mail-Adresse gesendet wurde.',
-    'otp_code_label' => 'Bestätigungscode',
-    'otp_code_placeholder' => '6-stelligen Code eingeben',
-    'verify_code' => 'Code bestätigen',
-    'resend_code' => 'Code erneut senden',
-    'back_to_login' => 'Zurück zur Anmeldung',
+
 ];

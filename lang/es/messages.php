@@ -162,4 +162,7 @@ return [
     // Mensajes de transferencia
     'transfer_confirmed_successfully' => 'Transferencia confirmada correctamente',
     'external_transfer_confirmed_subject' => 'Confirmación de tu transferencia externa',
+    // Mensajes de configuración
+    'config_updated_successfully' => 'Configuración actualizada correctamente',
+    'config_update_failed' => 'Error al actualizar la configuración',
 ];

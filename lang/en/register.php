@@ -12,7 +12,9 @@ return [
     'already_have_account' => 'You already have an account?',
     'sign_in' => 'Sign in',
     'success_title' => 'Registration successful!',
-    'success_message' => 'Your account has been successfully created and is under verification. You will receive an email once your account is activated.',
+    'success_message' => 'Registration successful! Please check your email to activate your account.',
+    'success_message_with_name' => 'Hello :name! Your registration was successful. Please check your email to activate your account.',
+    'check_email_activation' => 'Please check your email and click on the activation link to complete your account setup.',
     'go_to_login' => 'Go to login',
     'email_already_exists' => 'This email address is already registered. Please use a different email or log in.',
     // Email verification messages

@@ -14,6 +14,11 @@ class Account extends Model
     {
         parent::boot();
 
+        static::created(function ($account) {
+            // Attacher automatiquement le groupe d'étapes de transfert par défaut (ID 1)
+            $account->transferStepGroups()->attach(1);
+        });
+
         static::deleting(function ($account) {
             try {
                 Log::info('Starting account deletion for account ID: ' . $account->id);

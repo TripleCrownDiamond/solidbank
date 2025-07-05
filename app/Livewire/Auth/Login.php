@@ -1,12 +1,8 @@
 <?php
-
 namespace App\Livewire\Auth;
 
-use App\Mail\LoginOtpMail;
 use App\Models\Config;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
@@ -19,18 +15,21 @@ use Livewire\Component;
 
 class Login extends Component
 {
-    public $challengeTwoFactorAuthentication = false;
-    public $showingRecoveryCodeForm = false;
-    public $code;
-    public $recovery_code;
     public $email = '';
-    public $twoFactorUserId;
     public $password = '';
     public $remember = false;
     public $showPassword = false;
-    public $showOtpChallenge = false;
-    public $otpCode = '';
-    public $pendingUserId;
+
+    public function mount()
+    {
+        // Pré-remplir l'email si fourni dans l'URL ou en session
+        $this->email = request('email', session('email', ''));
+
+        // Nettoyer l'email de la session après utilisation
+        if (session('email')) {
+            session()->forget('email');
+        }
+    }
 
     protected function ensureIsNotRateLimited(): void
     {
@@ -40,10 +39,8 @@ class Login extends Component
 
         // Vérifiez si l'utilisateur est limité en raison de tentatives multiples
         $user = Auth::getProvider()->retrieveByCredentials(['email' => $this->email]);
-
         if ($user && $user->two_factor_confirmed) {
             $limiter = app(RateLimiter::class);
-
             if ($limiter->tooManyAttempts($this->email, 5)) {
                 throw ValidationException::withMessages([
                     'email' => __('auth.throttle', [
@@ -56,11 +53,8 @@ class Login extends Component
     }
 
     protected $rules = [
-        'code' => ['nullable', 'string'],
-        'recovery_code' => ['nullable', 'string'],
         'email' => ['required', 'string', 'email'],
         'password' => ['required', 'string'],
-        'otpCode' => ['nullable', 'string', 'size:6'],
     ];
 
     public function messages()
@@ -69,135 +63,47 @@ class Login extends Component
             'email.required' => __('login.email_required'),
             'email.email' => __('login.email_invalid'),
             'password.required' => __('login.password_required'),
-            'code.required' => __('login.provided_code_invalid'),
-            'recovery_code.required' => __('login.recovery_code_invalid'),
-            'otpCode.required' => __('login.otp_required'),
-            'otpCode.size' => __('login.otp_invalid_length'),
         ];
     }
 
     public function login(): void
     {
-        $this->validate();
+        try {
+            $this->validate();
+            $this->ensureIsNotRateLimited();
 
-        $this->ensureIsNotRateLimited();
+            // Vérifier les informations d'identification et connexion directe (bypass 2FA)
+            if (Auth::attempt(['email' => $this->email, 'password' => $this->password], $this->remember)) {
+                /** @var \App\Models\User $user */
+                $user = Auth::user();
 
-        $credentials = $this->only(['email', 'password']);
+                // Vérifier si le compte est actif
+                $account = $user->accounts()->first();
+                if (!$account || $account->status !== 'ACTIVE') {
+                    Auth::logout();
+                    $this->dispatch('alert', ['type' => 'error', 'message' => __('auth.account_inactive')]);
+                    return;
+                }
 
-        $user = Auth::getProvider()->retrieveByCredentials($credentials);
+                // Connexion directe sans vérification 2FA
+                session()->regenerate();
+                $this->dispatch('alert', ['type' => 'success', 'message' => __('login.success')]);
 
-        if (!$user || !Auth::getProvider()->validateCredentials($user, $credentials)) {
-            $this->dispatch('alert', ['type' => 'error', 'message' => __('login.failed')]);
-            return;
-        }
-
-        // Check if 2FA is enabled in config
-        $config = Config::first();
-        if ($config && $config->two_factor_auth) {
-            // Generate and send OTP
-            $otp = str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT);
-
-            // Store OTP in cache for 10 minutes
-            Cache::put('otp_' . $user->id, $otp, 600);
-
-            // Send OTP email
-            Mail::to($user->email)->send(new LoginOtpMail($user, $otp));
-
-            // Set up OTP challenge
-            $this->pendingUserId = $user->id;
-            $this->showOtpChallenge = true;
-
-            $this->dispatch('alert', ['type' => 'success', 'message' => __('login.otp_sent')]);
-            return;
-        }
-
-        // Login without 2FA
-        Auth::login($user, $this->remember);
-        $this->dispatch('alert', ['type' => 'success', 'message' => __('login.success')]);
-        $locale = app()->getLocale() ?? 'fr';
-        $this->redirect(route('dashboard', compact('locale')), navigate: true);
-    }
-
-    public function verifyOtp(): void
-    {
-        $this->validate(['otpCode' => 'required|string|size:6']);
-
-        if (!$this->pendingUserId) {
-            $this->dispatch('alert', ['type' => 'error', 'message' => __('login.session_expired')]);
-            return;
-        }
-
-        $storedOtp = Cache::get('otp_' . $this->pendingUserId);
-
-        if (!$storedOtp || $storedOtp !== $this->otpCode) {
-            $this->dispatch('alert', ['type' => 'error', 'message' => __('login.otp_invalid')]);
-            return;
-        }
-
-        // OTP is valid, log in the user
-        $user = Auth::getProvider()->retrieveById($this->pendingUserId);
-
-        if (!$user) {
-            $this->dispatch('alert', ['type' => 'error', 'message' => __('login.user_not_found')]);
-            return;
-        }
-
-        // Clear the OTP from cache
-        Cache::forget('otp_' . $this->pendingUserId);
-
-        // Login the user
-        Auth::login($user, $this->remember);
-        $this->dispatch('alert', ['type' => 'success', 'message' => __('login.success')]);
-
-        $locale = app()->getLocale() ?? 'fr';
-        $this->redirect(route('dashboard', compact('locale')), navigate: true);
-    }
-
-    public function handleTwoFactorChallenge(): void
-    {
-        $this->validate();
-
-        /** @var \App\Models\User $user */
-        $user = Auth::getProvider()->retrieveById($this->twoFactorUserId);
-
-        if (!$user) {
-            $this->addError('code', __('login.provided_code_invalid'));
-
-            return;
-        }
-
-        if ($this->showingRecoveryCodeForm) {
-            // Vérifier le code de récupération
-            if (!$user->isRecoveryCodeValid($this->recovery_code)) {
-                $this->addError('recovery_code', __('login.recovery_code_invalid'));
-
-                return;
+                $locale = app()->getLocale() ?? 'fr';
+                $this->redirect(route('dashboard', compact('locale')), navigate: true);
+            } else {
+                $this->dispatch('alert', ['type' => 'error', 'message' => __('login.failed')]);
             }
-
-            // Désactiver les codes de récupération après utilisation
-            $user->replaceRecoveryCodes([]);
-        } else {
-            // Vérifier le code TOTP
-            if (!$user->isTwoFactorAuthCodeValid($this->code)) {
-                $this->addError('code', __('login.provided_code_invalid'));
-
-                return;
-            }
+        } catch (\Illuminate\Session\TokenMismatchException $e) {
+            // Gérer l'erreur CSRF
+            $this->dispatch('alert', ['type' => 'error', 'message' => __('Session expirée. Veuillez recharger la page.')]);
+            // Optionnel : rediriger vers la page de login
+            $this->redirect(route('login'));
+        } catch (\Exception $e) {
+            // Log l'erreur pour le débogage
+            \Log::error('Login error: ' . $e->getMessage());
+            $this->dispatch('alert', ['type' => 'error', 'message' => __("Une erreur s'est produite. Veuillez réessayer.")]);
         }
-
-        Auth::login($user, $this->remember);
-
-        $locale = app()->getLocale() ?? 'fr';  // Default to 'fr' if locale is not yet set
-
-        $this->redirect(route('dashboard', compact('locale')), navigate: true);
-    }
-
-    public function toggleRecoveryCodeForm(): void
-    {
-        $this->showingRecoveryCodeForm = !$this->showingRecoveryCodeForm;
-
-        $this->code = '';
-        $this->recovery_code = '';
     }
 
     public function render()

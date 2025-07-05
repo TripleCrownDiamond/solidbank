@@ -161,4 +161,7 @@ return [
     // Transfer messages
     'transfer_confirmed_successfully' => 'Transfer confirmed successfully',
     'external_transfer_confirmed_subject' => 'Your external transfer confirmation',
+    // Configuration messages
+    'config_updated_successfully' => 'Configuration updated successfully',
+    'config_update_failed' => 'Configuration update failed',
 ];

@@ -30,31 +30,5 @@ return [
     'show' => 'Mostrar',
     'hide' => 'Ocultar',
     'verify' => 'Verificar',
-    // OTP Authentication
-    'otp_required' => 'O código de verificação é obrigatório.',
-    'otp_invalid_length' => 'O código de verificação deve ter 6 dígitos.',
-    'otp_sent' => 'Um código de verificação foi enviado para o seu e-mail.',
-    'otp_invalid' => 'O código de verificação é inválido ou expirou.',
-    'session_expired' => 'A sua sessão expirou. Por favor, tente fazer login novamente.',
-    'user_not_found' => 'Utilizador não encontrado. Por favor, tente fazer login novamente.',
-    // OTP Email
-    'otp_email_subject' => 'O Seu Código de Verificação de Login',
-    'otp_email_title' => 'Verificação de Login',
-    'otp_email_greeting' => 'Olá :name,',
-    'otp_email_intro' => 'Está a tentar iniciar sessão na sua conta. Por favor, utilize o seguinte código de verificação para completar o seu login:',
-    'otp_email_code_label' => 'O Seu Código de Verificação',
-    'otp_email_expiry' => 'Este código irá expirar em 10 minutos.',
-    'otp_email_security_title' => 'Aviso de Segurança:',
-    'otp_email_security_message' => 'Se não tentou iniciar sessão, por favor, ignore este e-mail e considere alterar a sua palavra-passe.',
-    'otp_email_security_note' => 'Se não tentou iniciar sessão, por favor, ignore este e-mail e considere alterar a sua palavra-passe.',
-    'otp_email_no_action' => 'Se não solicitou este código, nenhuma ação adicional é necessária.',
-    'otp_email_footer' => 'Obrigado,',
-    // OTP Challenge Page
-    'otp_challenge_title' => 'Verificação de E-mail',
-    'otp_challenge_subtitle' => 'Por favor, insira o código de verificação de 6 dígitos enviado para o seu endereço de e-mail.',
-    'otp_code_label' => 'Código de Verificação',
-    'otp_code_placeholder' => 'Insira o código de 6 dígitos',
-    'verify_code' => 'Verificar Código',
-    'resend_code' => 'Reenviar Código',
-    'back_to_login' => 'Voltar ao Login',
+
 ];

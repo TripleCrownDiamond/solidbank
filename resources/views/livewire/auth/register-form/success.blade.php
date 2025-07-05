@@ -6,14 +6,12 @@
         </svg>
     </div>
     <h2 class="mt-4 text-2xl font-bold text-gray-900 dark:text-white">{{ __('register.success_title') }}</h2>
-    <p class="mt-2 text-gray-600 dark:text-gray-300">{{ __('register.success_message') }}</p>
-    
+    <p class="mt-2 text-gray-600 dark:text-gray-300">
+        @if(session('success_user_name'))
+            {{ __('register.success_message_with_name', ['name' => session('success_user_name')]) }}
+        @else
+            {{ __('register.success_message') }}
+        @endif
+    </p>
 
-    
-    <div class="mt-8">
-        <a href="{{ route('locale.login', ['locale' => app()->getLocale()]) }}" 
-            class="inline-flex items-center px-6 py-3 bg-brand-primary hover:bg-brand-primary-hover dark:bg-brand-primary dark:hover:bg-brand-primary-hover border border-transparent rounded-md font-semibold text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-primary transition">
-            {{ __('register.go_to_login') }}
-        </a>
-    </div>
 </div>

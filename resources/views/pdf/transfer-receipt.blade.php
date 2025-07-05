@@ -9,24 +9,24 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 20px;
-            color: #333;
+            color: var(--text-primary);
             line-height: 1.6;
         }
         .header {
             text-align: center;
-            border-bottom: 2px solid #007bff;
+            border-bottom: 2px solid var(--brand-primary);
             padding-bottom: 20px;
             margin-bottom: 30px;
         }
         .bank-info {
-            background-color: #f8f9fa;
+            background-color: var(--bg-light);
             padding: 15px;
             border-radius: 5px;
             margin-bottom: 20px;
         }
         .transaction-details {
-            background-color: #fff;
-            border: 1px solid #dee2e6;
+            background-color: var(--color-white);
+            border: 1px solid var(--border-light);
             border-radius: 5px;
             padding: 20px;
             margin-bottom: 20px;
@@ -36,32 +36,32 @@
             justify-content: space-between;
             margin-bottom: 10px;
             padding: 5px 0;
-            border-bottom: 1px dotted #ccc;
+            border-bottom: 1px dotted var(--border-medium);
         }
         .detail-label {
             font-weight: bold;
-            color: #495057;
+            color: var(--text-primary);
         }
         .detail-value {
-            color: #212529;
+            color: var(--text-primary);
         }
         .amount-highlight {
-            background-color: #e7f3ff;
+            background-color: var(--info-bg);
             padding: 15px;
             border-radius: 5px;
             text-align: center;
             font-size: 1.2em;
             font-weight: bold;
-            color: #007bff;
+            color: var(--brand-primary);
             margin: 20px 0;
         }
         .footer {
             text-align: center;
             margin-top: 40px;
             padding-top: 20px;
-            border-top: 1px solid #dee2e6;
+            border-top: 1px solid var(--border-light);
             font-size: 0.9em;
-            color: #6c757d;
+            color: var(--text-secondary);
         }
         .status {
             display: inline-block;
@@ -71,8 +71,8 @@
             text-transform: uppercase;
         }
         .status-completed {
-            background-color: #d4edda;
-            color: #155724;
+            background-color: var(--success-bg);
+            color: var(--success-text);
         }
     </style>
 </head>

@@ -12,7 +12,9 @@ return [
     'already_have_account' => 'Você já tem uma conta?',
     'sign_in' => 'Entrar',
     'success_title' => 'Registro concluído com sucesso!',
-    'success_message' => 'Sua conta foi criada com sucesso e está em verificação. Você receberá um e-mail quando sua conta for ativada.',
+    'success_message' => 'Registro bem-sucedido! Verifique seu e-mail para ativar sua conta.',
+    'success_message_with_name' => 'Olá :name! Seu registro foi bem-sucedido. Verifique seu e-mail para ativar sua conta.',
+    'check_email_activation' => 'Verifique seu e-mail e clique no link de ativação para completar a configuração de sua conta.',
     'go_to_login' => 'Ir para login',
     'email_already_exists' => 'Este endereço de e-mail já está registrado. Por favor, use um e-mail diferente ou faça login.',
     // Email verification messages

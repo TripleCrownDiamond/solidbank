@@ -1,18 +1,23 @@
-{{ str_repeat('=', 50) }}
-{{ str_pad(__('forgot-password.new_password_email.title'), 50, ' ', STR_PAD_BOTH) }}
-{{ str_repeat('=', 50) }}
+@extends('emails.layout')
 
-{{ __('forgot-password.new_password_email.intro') }}
+@section('title', __('forgot-password.new_password_email.title'))
 
-{{ str_repeat('-', 50) }}
-{{ str_pad(__('forgot-password.new_password_email.your_new_password'), 50, ' ', STR_PAD_BOTH) }}
-{{ str_pad($newPassword, 50, ' ', STR_PAD_BOTH) }}
-{{ str_repeat('-', 50) }}
+@section('content')
+    <h1>{{ __('forgot-password.new_password_email.title') }}</h1>
+    
+    <p style="margin-bottom: 20px;">
+        {{ __('forgot-password.new_password_email.intro') }}
+    </p>
 
-{{ __('forgot-password.new_password_email.security_note') }}
+    <div class="code-box">
+        {{ $newPassword }}
+    </div>
 
-{{ __('forgot-password.new_password_email.no_action_required') }}
+    <p style="margin-top: 20px;">
+        {{ __('forgot-password.new_password_email.security_note') }}
+    </p>
 
-{{ str_repeat('=', 50) }}
-{{ str_pad(__('common.thanks'), 50, ' ', STR_PAD_RIGHT) }}{{ getAppName() }}
-{{ str_repeat('=', 50) }}
+    <p style="margin-top: 10px; font-style: italic;">
+        {{ __('forgot-password.new_password_email.no_action_required') }}
+    </p>
+@endsection

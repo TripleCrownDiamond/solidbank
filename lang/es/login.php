@@ -30,30 +30,5 @@ return [
     'show' => 'Mostrar',
     'hide' => 'Ocultar',
     'verify' => 'Verificar',
-    // Autenticación OTP
-    'otp_required' => 'Se requiere un código de verificación.',
-    'otp_invalid_length' => 'El código de verificación debe tener 6 dígitos.',
-    'otp_sent' => 'Un código de verificación ha sido enviado a tu correo electrónico.',
-    'otp_invalid' => 'El código de verificación es inválido o ha expirado.',
-    'session_expired' => 'Tu sesión ha expirado. Por favor, vuelve a iniciar sesión.',
-    'user_not_found' => 'Usuario no encontrado. Por favor, intenta iniciar sesión nuevamente.',
-    // Correo OTP
-    'otp_email_subject' => 'Tu Código de Verificación para Iniciar Sesión',
-    'otp_email_title' => 'Verificación de Inicio de Sesión',
-    'otp_email_greeting' => 'Hola :name,',
-    'otp_email_intro' => 'Estás intentando iniciar sesión en tu cuenta. Por favor, utiliza el siguiente código de verificación para completar el proceso:',
-    'otp_email_code_label' => 'Tu Código de Verificación',
-    'otp_email_expiry' => 'Este código caducará en 10 minutos.',
-    'otp_email_security_title' => 'Aviso de seguridad:',
-    'otp_email_security_message' => 'Si no intentaste iniciar sesión, ignora este correo y considera cambiar tu contraseña.',
-    'otp_email_security_note' => 'Si no intentaste iniciar sesión, ignora este correo y considera cambiar tu contraseña.',
-    'otp_email_no_action' => 'Si no solicitaste este código, no se requiere ninguna acción adicional.',
-    // Página de verificación OTP
-    'otp_challenge_title' => 'Verificación de correo electrónico',
-    'otp_challenge_subtitle' => 'Por favor, introduce el código de 6 dígitos enviado a tu dirección de correo electrónico.',
-    'otp_code_label' => 'Código de verificación',
-    'otp_code_placeholder' => 'Introduce el código de 6 dígitos',
-    'verify_code' => 'Verificar código',
-    'resend_code' => 'Reenviar código',
-    'back_to_login' => 'Volver al inicio de sesión',
+
 ];

@@ -1,22 +1,31 @@
-{{ str_repeat('=', 50) }}
-{{ str_pad(__('transfers.otp_email_title'), 50, ' ', STR_PAD_BOTH) }}
-{{ str_repeat('=', 50) }}
+@extends('emails.layout')
 
-{{ __('transfers.otp_email_greeting', ['name' => $user->first_name ?? $user->name]) }}
+@section('title', __('transfers.otp_email_title'))
 
-{{ __('transfers.otp_email_intro') }}
+@section('content')
+    <h1>{{ __('transfers.otp_email_title') }}</h1>
+    
+    <p style="margin-bottom: 20px;">
+        {{ __('transfers.otp_email_greeting', ['name' => $user->first_name ?? $user->name]) }}
+    </p>
+    
+    <p style="margin-bottom: 20px;">
+        {{ __('transfers.otp_email_intro') }}
+    </p>
 
-{{ str_repeat('-', 50) }}
-{{ str_pad(__('transfers.otp_email_code_label'), 50, ' ', STR_PAD_BOTH) }}
-{{ str_pad($otp, 50, ' ', STR_PAD_BOTH) }}
-{{ str_repeat('-', 50) }}
+    <div class="code-box">
+        {{ $otp }}
+    </div>
 
-{{ __('transfers.otp_email_expiry') }}
+    <p style="margin-top: 20px; color: #e74c3c; font-weight: bold;">
+        {{ __('transfers.otp_email_expiry') }}
+    </p>
 
-{{ __('transfers.otp_email_security_note') }}
-
-{{ __('transfers.otp_email_no_action') }}
-
-{{ str_repeat('=', 50) }}
-{{ str_pad(__('common.thanks'), 50, ' ', STR_PAD_RIGHT) }}{{ getAppName() }}
-{{ str_repeat('=', 50) }}
+    <p style="margin-top: 10px; font-style: italic;">
+        {{ __('transfers.otp_email_security_note') }}
+    </p>
+    
+    <p style="margin-top: 10px; font-style: italic;">
+        {{ __('transfers.otp_email_no_action') }}
+    </p>
+@endsection

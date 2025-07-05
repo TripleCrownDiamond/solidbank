@@ -20,14 +20,18 @@ export default {
             },
             colors: {
                 stroke: {
-                    white: "#ffffff",
+                    white: "var(--color-white, #ffffff)",
                 },
                 brand: {
-                    primary: "#1e40af",
-                    accent: "#3b82f6",
-                    secondary: "#FFD700",
-                    success: "#10b981",
-                    danger: "#dc2626",
+                    primary: "var(--brand-primary)", // #2563eb - Utilise les variables CSS
+                    "primary-hover": "var(--brand-primary-hover)", // #1d4ed8
+                    "primary-light": "var(--brand-primary-light)", // #3b82f6
+                    "primary-dark": "var(--brand-primary-dark)", // #1e40af
+                    secondary: "var(--brand-secondary)", // #64748b
+                    accent: "var(--brand-accent)", // #10b981
+                    success: "var(--brand-success)", // #059669
+                    warning: "var(--brand-warning)", // #d97706
+                    error: "var(--brand-error)", // #dc2626
                 },
             },
             animation: {
@@ -65,7 +69,7 @@ export default {
             },
         },
         stroke: {
-            white: "#ffffff",
+            white: "var(--color-white, #ffffff)",
         },
     },
 

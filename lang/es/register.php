@@ -13,6 +13,8 @@ return [
     'sign_in' => 'Iniciar sesión',
     'success_title' => '¡Registro exitoso!',
     'success_message' => 'Su cuenta ha sido creada exitosamente y está en verificación. Recibirá un correo electrónico una vez que su cuenta sea activada.',
+    'success_message_with_name' => '¡Hola :name! Su registro fue exitoso. Por favor revise su correo electrónico para activar su cuenta.',
+    'check_email_activation' => 'Por favor revise su correo electrónico y haga clic en el enlace de activación para completar la configuración de su cuenta.',
     'go_to_login' => 'Ir a iniciar sesión',
     'email_already_exists' => 'Esta dirección de correo electrónico ya está registrada. Por favor, use un correo diferente o inicie sesión.',
     // Email verification messages

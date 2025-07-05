@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\NewPasswordResetController;
+use App\Http\Controllers\Auth\AccountActivationController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 use Laravel\Fortify\Http\Controllers\EmailVerificationNotificationController;
@@ -25,6 +26,11 @@ Route::middleware(['guest'])->group(function () {
     // Route::get('reset-password/{token}', [NewPasswordController::class, 'create'])->name('password.reset');
     // Route::post('reset-password', [NewPasswordController::class, 'store'])->name('password.update');
 });
+
+// Route d'activation de compte
+Route::get('activate/{id}/{hash}', [AccountActivationController::class, 'activate'])
+    ->middleware(['signed'])
+    ->name('account.activate');
 
 // Email verification routes are handled by Fortify automatically
 // No need to define them manually here

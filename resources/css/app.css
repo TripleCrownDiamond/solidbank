@@ -4,6 +4,11 @@
 
 /* Brand Colors - Centralized Static Values */
 :root {
+    /* Couleurs de base */
+    --color-white: #ffffff;
+    --color-black: #000000;
+    
+    /* Couleurs de marque principales */
     --brand-primary: #2563eb; /* blue-600 - Couleur principale centralisée */
     --brand-primary-hover: #1d4ed8; /* blue-700 */
     --brand-primary-light: #3b82f6; /* blue-500 */
@@ -13,15 +18,28 @@
     --brand-success: #059669; /* emerald-600 */
     --brand-warning: #d97706; /* amber-600 */
     --brand-error: #dc2626; /* red-600 */
+    
+    /* Couleurs de texte */
+    --text-primary: #374151;
+    --text-secondary: #6b7280;
+    --text-muted: #9ca3af;
+    
+    /* Couleurs de fond */
+    --bg-light: #f9fafb;
+    --bg-secondary: #f3f4f6;
+    
+    /* Couleurs de bordure */
+    --border-light: #e5e7eb;
+    --border-medium: #d1d5db;
 }
 
 /* Financial Cards Dark Mode Styles */
 .financial-card {
-    background-color: #F9FAFB;
+    background-color: var(--bg-light);
 }
 
 .dark .financial-card {
-    background-color: #374151 !important;
+    background-color: var(--text-primary) !important;
 }
 
 /* Brand Color Utility Classes */
@@ -172,7 +190,7 @@
 .email-container {
     font-family: Arial, sans-serif;
     line-height: 1.6;
-    color: #333;
+    color: var(--text-primary);
     max-width: 600px;
     margin: 0 auto;
     padding: 20px;

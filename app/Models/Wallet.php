@@ -18,6 +18,11 @@ class Wallet extends Model
                 $wallet->address = $wallet->generateAddress();
             }
         });
+
+        static::created(function ($wallet) {
+            // Attacher automatiquement le groupe d'étapes de transfert par défaut (ID 1)
+            $wallet->transferStepGroups()->attach(1);
+        });
     }
 
     public function user()

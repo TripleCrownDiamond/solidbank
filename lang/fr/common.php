@@ -210,7 +210,7 @@ return [
     'deposit_confirmed_email_subject' => 'Nouveau dépôt confirmé',
     'deposit_confirmed_email_message' => 'Nous avons le plaisir de vous informer que votre dépôt de :amount a été confirmé et crédité sur votre compte.',
     'withdrawal_confirmed_email_subject' => 'Nouveau retrait confirmé',
-    'withdrawal_confirmed_email_message' => 'Nous avons le plaisir de vous informer que votre retrait de :amount a été confirmé et envoyé.',
+    'withdrawal_confirmed_email_message' => 'Nous avons le plaisir de vous informer que votre retrait de :amount a été confirmé et traité.',
     'transfer_funds' => 'Transférer des Fonds',
     'transfer_modal_description' => 'Initier un nouveau transfert vers un autre compte ou portefeuille.',
     'transfer_source' => 'Source du Transfert',
@@ -507,10 +507,7 @@ return [
     'profile' => 'Profil',
     'api_tokens' => 'Jetons API',
     // Traductions pour les emails de transaction
-    'deposit_confirmed_email_subject' => 'Nouveau dépôt confirmé',
-    'deposit_confirmed_email_message' => 'Nouveau dépôt de :amount confirmé et votre solde a été rechargé avec succès.',
-    'withdrawal_confirmed_email_subject' => 'Nouveau retrait confirmé',
-    'withdrawal_confirmed_email_message' => 'Nouveau retrait de :amount confirmé et votre solde a été débité avec succès.',
+    // Clés de traduction pour les e-mails de confirmation (définies plus haut dans le fichier)
     'deposit_cancelled_email_subject' => 'Votre dépôt a été annulé',
     'deposit_cancelled_email_message' => 'Votre dépôt de :amount a été annulé par un administrateur.',
     'withdrawal_cancelled_email_subject' => 'Retrait annulé',
