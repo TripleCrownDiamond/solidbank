@@ -30,5 +30,6 @@ return [
     'show' => 'Mostrar',
     'hide' => 'Ocultar',
     'verify' => 'Verificar',
+    'validation_error_message' => 'Error de validación:',
 
 ];

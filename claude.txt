@@ -1,0 +1,88 @@
+L'erreur 419 "Page Expired" est une erreur CSRF (Cross-Site Request Forgery) très courante dans Laravel. En analysant votre code, je vois plusieurs causes possibles et solutions :
+
+## Causes possibles :
+
+1. **Token CSRF manquant ou expiré** - Le plus probable
+2. **Session expirée** 
+3. **Configuration de session incorrecte**
+4. **Problème avec Livewire et CSRF**
+
+## Solutions à essayer :
+
+### 1. Vérifier la configuration CSRF
+
+Dans votre blade, vous avez `@csrf` mais avec Livewire, assurez-vous que le token est correctement inclus :
+
+```blade
+<!-- Dans votre layout principal -->
+<head>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <!-- ... -->
+</head>
+```
+
+### 2. Modifier le composant Livewire### 3. Vérifier la configuration de session
+
+Vérifiez dans votre fichier `config/session.php` :
+
+```php
+'driver' => env('SESSION_DRIVER', 'file'),
+'lifetime' => env('SESSION_LIFETIME', 120),
+'expire_on_close' => false,
+'encrypt' => false,
+'files' => storage_path('framework/sessions'),
+'connection' => env('SESSION_CONNECTION', null),
+'table' => 'sessions',
+'store' => env('SESSION_STORE', null),
+'lottery' => [2, 100],
+'cookie' => env('SESSION_COOKIE', Str::slug(env('APP_NAME', 'laravel'), '_').'_session'),
+'path' => '/',
+'domain' => env('SESSION_DOMAIN', null),
+'secure' => env('SESSION_SECURE_COOKIE', false),
+'http_only' => true,
+'same_site' => 'lax',
+```
+
+### 4. Modifier le template Blade### 5. Vérifications supplémentaires
+
+**Dans `config/app.php`**, assurez-vous que la clé APP_KEY est définie :
+```bash
+php artisan key:generate
+```
+
+**Vérifiez les permissions des dossiers de session** :
+```bash
+chmod -R 755 storage/framework/sessions
+```
+
+**Effacez le cache** :
+```bash
+php artisan cache:clear
+php artisan config:clear
+php artisan session:clear
+```
+
+### 6. Solution alternative : Désactiver CSRF pour ce composant
+
+Si le problème persiste, vous pouvez temporairement désactiver la vérification CSRF pour ce composant en ajoutant dans `app/Http/Middleware/VerifyCsrfToken.php` :
+
+```php
+protected $except = [
+    'livewire/message/auth.login',
+];
+```
+
+### 7. Debug supplémentaire
+
+Ajoutez cette méthode dans votre composant pour déboguer :
+
+```php
+public function hydrate()
+{
+    if (!session()->has('_token')) {
+        session()->regenerateToken();
+    }
+}
+```
+
+La solution la plus probable est la combinaison de la gestion d'erreur CSRF dans le composant et la vérification du token CSRF dans le template. Essayez d'abord ces modifications et dites-moi si le problème persiste !

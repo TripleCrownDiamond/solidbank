@@ -54,6 +54,7 @@
 
         <script>
             document.addEventListener('livewire:init', () => {
+                // Gestion de l'événement refresh-page
                 Livewire.on('refresh-page', () => {
                     setTimeout(() => {
                         window.location.reload();

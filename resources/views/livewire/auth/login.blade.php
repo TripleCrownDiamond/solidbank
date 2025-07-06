@@ -8,7 +8,6 @@
 
     <!-- Login Form (2FA interface removed) -->
     <form wire:submit.prevent="login" class="space-y-6">
-        @csrf
 
         <!-- Email -->
         <div>
@@ -16,8 +15,11 @@
                 {{ __('login.email') }}
             </label>
             <input type="email" id="email" wire:model.defer="email"
-            class="mt-1 block w-full rounded-md shadow-sm border-gray-300 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:border-brand-primary focus:ring-brand-primary" 
+            class="mt-1 block w-full rounded-md shadow-sm border-gray-300 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:border-brand-primary focus:ring-brand-primary @error('email') border-red-500 focus:border-red-500 focus:ring-red-500 @enderror" 
             required autofocus autocomplete="username" />
+            @error('email')
+                <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+            @enderror
         </div>
 
         <!-- Password -->
@@ -30,7 +32,7 @@
                     type="{{ $showPassword ? 'text' : 'password' }}"
                     id="password"
                     wire:model.defer="password"
-                    class="mt-1 block w-full rounded-md shadow-sm border-gray-300 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 pr-10 focus:border-brand-primary focus:ring-brand-primary" 
+                    class="mt-1 block w-full rounded-md shadow-sm border-gray-300 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 pr-10 focus:border-brand-primary focus:ring-brand-primary @error('password') border-red-500 focus:border-red-500 focus:ring-red-500 @enderror" 
             required autocomplete="current-password" />
                 <button
                     type="button"
@@ -42,6 +44,9 @@
                     </span>
                 </button>
             </div>
+            @error('password')
+                <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+            @enderror
         </div>
 
         <!-- Remember Me -->
@@ -61,9 +66,15 @@
                 </a>
             @endif
 
-            <button type="submit" class="px-4 py-2 bg-brand-primary hover:bg-brand-primary-hover dark:bg-brand-primary dark:hover:bg-brand-primary-hover text-white rounded-md transition flex items-center" wire:loading.attr="disabled">
-                <span wire:loading.remove>{{ __('login.log_in') }}</span>
-                <span wire:loading>{{ __('login.logging_in') }}</span>
+            <button type="submit" 
+                class="px-4 py-2 bg-brand-primary hover:bg-brand-primary-hover dark:bg-brand-primary dark:hover:bg-brand-primary-hover text-white rounded-md transition flex items-center disabled:opacity-50 disabled:cursor-not-allowed" 
+                wire:loading.attr="disabled"
+                {{ $isSubmitting ? 'disabled' : '' }}>
+                <span wire:loading.remove wire:target="login">{{ __('login.log_in') }}</span>
+                <span wire:loading wire:target="login" class="flex items-center">
+                    
+                    {{ __('login.logging_in') }}
+                </span>
             </button>
         </div>
     </form>

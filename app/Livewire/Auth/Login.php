@@ -1,8 +1,10 @@
 <?php
+
 namespace App\Livewire\Auth;
 
 use App\Models\Config;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
@@ -19,6 +21,9 @@ class Login extends Component
     public $password = '';
     public $remember = false;
     public $showPassword = false;
+    public $isSubmitting = false;
+    // Variables pour la gestion des erreurs
+    public $validationErrors = [];
 
     public function mount()
     {
@@ -28,6 +33,14 @@ class Login extends Component
         // Nettoyer l'email de la session après utilisation
         if (session('email')) {
             session()->forget('email');
+        }
+    }
+
+    public function hydrate()
+    {
+        // S'assurer que la session est active
+        if (!session()->isStarted()) {
+            session()->start();
         }
     }
 
@@ -66,9 +79,29 @@ class Login extends Component
         ];
     }
 
-    public function login(): void
+    // Méthode pour réinitialiser les erreurs
+    protected function resetErrors()
+    {
+        // Reset any previous errors
+        $this->validationErrors = [];
+        $this->resetErrorBag();
+    }
+
+    // Méthode utilitaire pour obtenir les données utilisateur nettoyées (sans mots de passe)
+    protected function getCleanUserData()
+    {
+        return [
+            'email' => $this->email,
+            'remember' => $this->remember,
+        ];
+    }
+
+    public function login()
     {
         try {
+            $this->resetErrors();
+            $this->isSubmitting = true;
+
             $this->validate();
             $this->ensureIsNotRateLimited();
 
@@ -89,20 +122,42 @@ class Login extends Component
                 session()->regenerate();
                 $this->dispatch('alert', ['type' => 'success', 'message' => __('login.success')]);
 
+                // Redirection immédiate vers le dashboard
                 $locale = app()->getLocale() ?? 'fr';
-                $this->redirect(route('dashboard', compact('locale')), navigate: true);
+                return $this->redirectRoute('dashboard', ['locale' => $locale]);
             } else {
                 $this->dispatch('alert', ['type' => 'error', 'message' => __('login.failed')]);
             }
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            $this->validationErrors = $e->errors();
+            $firstError = collect($e->errors())->flatten()->first();
+            $errorMessage = __('login.validation_error_message');
+            if ($firstError) {
+                $errorMessage .= ' ' . $firstError;
+            }
+            $this->dispatch('alert', ['type' => 'error', 'message' => $errorMessage]);
+            throw $e;
         } catch (\Illuminate\Session\TokenMismatchException $e) {
-            // Gérer l'erreur CSRF
-            $this->dispatch('alert', ['type' => 'error', 'message' => __('Session expirée. Veuillez recharger la page.')]);
-            // Optionnel : rediriger vers la page de login
-            $this->redirect(route('login'));
+            // Gérer l'erreur CSRF - régénérer la session
+            Log::warning('CSRF Token Mismatch in Login', [
+                'user_email' => $this->email,
+                'session_id' => session()->getId(),
+                'csrf_token' => session()->token()
+            ]);
+
+            session()->regenerate();
+            $this->dispatch('alert', ['type' => 'error', 'message' => __('Session expirée. Veuillez réessayer.')]);
+            return;
         } catch (\Exception $e) {
             // Log l'erreur pour le débogage
-            \Log::error('Login error: ' . $e->getMessage());
+            Log::error('Login error: ' . $e->getMessage(), [
+                'user_email' => $this->email,
+                'user_data' => $this->getCleanUserData(),
+                'exception' => $e->getTraceAsString()
+            ]);
             $this->dispatch('alert', ['type' => 'error', 'message' => __("Une erreur s'est produite. Veuillez réessayer.")]);
+        } finally {
+            $this->isSubmitting = false;
         }
     }
 
