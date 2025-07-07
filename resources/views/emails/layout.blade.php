@@ -121,9 +121,9 @@
                 @endphp
                 <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border-light);">
                     <p style="margin: 0; font-size: 12px; color: var(--text-muted); line-height: 1.4;">
-                        <strong>{{ $bankConfig->bank_name ?? 'Bred Fin' }} - Services Bancaires Numériques</strong><br>
+                        <strong>{{ $bankConfig->bank_name ?? 'Celesium-Fin' }} - Services Bancaires Numériques</strong><br>
                         {{ $bankConfig->bank_address ?? '123 Avenue des Finances, 75001 Paris, France' }}<br>
-                        Email: {{ $bankConfig->bank_email ?? 'contact@bred-fin.com' }}
+                        Email: {{ $bankConfig->bank_email ?? 'contact@celesium-fin.com' }}
                     </p>
                 </div>
             </div>

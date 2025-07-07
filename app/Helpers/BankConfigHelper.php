@@ -23,17 +23,17 @@ class BankConfigHelper
     private static function getDefaultConfig()
     {
         return (object) [
-            'bank_name' => 'Bred Fin',
+            'bank_name' => 'Celesium-Fin',
             'bank_swift' => 'SOLDFR21',
             'bank_country' => 'France',
             'bank_address' => '123 Avenue des Champs-Élysées, 75008 Paris, France',
             'bank_phone' => '+33 1 23 45 67 89',
-            'bank_email' => 'contact@Bred Fin.fr',
-            'bank_website' => 'https://Bred Fin.fr',
+            'bank_email' => 'contact@Celesium-Fin.fr',
+            'bank_website' => 'https://Celesium-Fin.fr',
             'logo_url' => '/images/logo.png',
             'icon_url' => '/images/icon.png',
             'favicon_url' => '/images/favicon.ico',
-            'notification_email' => 'notifications@Bred Fin.fr',
+            'notification_email' => 'notifications@Celesium-Fin.fr',
             'brand_color' => '#3B82F6',
             'brand_primary_hover' => '#2563EB',
             'brand_primary_light' => '#DBEAFE',
