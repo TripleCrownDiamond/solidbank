@@ -31,7 +31,7 @@ class AccountActivationMail extends Mailable
             'account.activate',
             Carbon::now()->addMinutes(config('auth.verification.expire', 60)),
             [
-                'locale' => app()->getLocale(),
+                'locale' => $user->locale ?? 'fr',
                 'id' => $user->getKey(),
                 'hash' => sha1($user->getEmailForVerification()),
             ]

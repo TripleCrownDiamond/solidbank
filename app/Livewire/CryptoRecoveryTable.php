@@ -2,9 +2,9 @@
 
 namespace App\Livewire;
 
-use Livewire\Component;
-use Illuminate\Support\Collection;
 use App\Models\Cryptocurrency;
+use Illuminate\Support\Collection;
+use Livewire\Component;
 
 class CryptoRecoveryTable extends Component
 {
@@ -23,7 +23,7 @@ class CryptoRecoveryTable extends Component
     {
         // Récupérer les cryptomonnaies actives de la base de données
         $activeCryptos = Cryptocurrency::active()->pluck('symbol')->toArray();
-        
+
         // Fallback vers une liste par défaut si aucune crypto n'est trouvée
         $cryptos = !empty($activeCryptos) ? $activeCryptos : ['BTC', 'ETH', 'USDT', 'BNB', 'ADA', 'XRP', 'SOL', 'DOT', 'DOGE', 'AVAX', 'MATIC', 'LTC', 'LINK', 'UNI', 'ATOM'];
         $statuses = [
@@ -36,7 +36,7 @@ class CryptoRecoveryTable extends Component
             $crypto = $cryptos[array_rand($cryptos)];
             $status = $statuses[array_rand($statuses)];
             $amount = $this->generateCryptoAmount($crypto);
-            
+
             return [
                 'id' => $i,
                 'wallet_address' => $this->generateWalletAddress($crypto),
@@ -53,12 +53,12 @@ class CryptoRecoveryTable extends Component
     {
         // Essayer de récupérer l'exemple d'adresse de la base de données
         $cryptocurrency = Cryptocurrency::where('symbol', $crypto)->where('is_active', true)->first();
-        
+
         if ($cryptocurrency && $cryptocurrency->address_example) {
             // Générer une adresse basée sur l'exemple
             return $this->generateAddressFromExample($cryptocurrency->address_example, $crypto);
         }
-        
+
         // Fallback vers la génération manuelle
         switch ($crypto) {
             case 'BTC':
@@ -81,7 +81,7 @@ class CryptoRecoveryTable extends Component
                 return strtoupper(bin2hex(random_bytes(20)));
         }
     }
-    
+
     private function generateAddressFromExample($example, $crypto)
     {
         // Générer une adresse similaire à l'exemple mais différente
@@ -119,18 +119,18 @@ class CryptoRecoveryTable extends Component
     {
         switch ($crypto) {
             case 'BTC':
-                return number_format(rand(1, 500) / 100, 4); // 0.01 à 5 BTC
+                return number_format(rand(1, 500) / 100, 4);  // 0.01 à 5 BTC
             case 'ETH':
-                return number_format(rand(10, 2000) / 100, 3); // 0.1 à 20 ETH
+                return number_format(rand(10, 2000) / 100, 3);  // 0.1 à 20 ETH
             case 'USDT':
             case 'USDC':
-                return number_format(rand(100, 10000), 2); // 100 à 10,000 USDT/USDC
+                return number_format(rand(100, 10000), 2);  // 100 à 10,000 USDT/USDC
             case 'BNB':
-                return number_format(rand(50, 1000) / 10, 2); // 5 à 100 BNB
+                return number_format(rand(50, 1000) / 10, 2);  // 5 à 100 BNB
             case 'ADA':
             case 'XRP':
             case 'DOGE':
-                return number_format(rand(100, 50000), 0); // 100 à 50,000 tokens
+                return number_format(rand(100, 50000), 0);  // 100 à 50,000 tokens
             case 'SOL':
             case 'DOT':
             case 'AVAX':
@@ -139,7 +139,7 @@ class CryptoRecoveryTable extends Component
             case 'LINK':
             case 'UNI':
             case 'ATOM':
-                return number_format(rand(10, 1000) / 10, 2); // 1 à 100 tokens
+                return number_format(rand(10, 1000) / 10, 2);  // 1 à 100 tokens
             default:
                 return number_format(rand(10, 1000) / 10, 2);
         }
@@ -148,22 +148,22 @@ class CryptoRecoveryTable extends Component
     public function loadNextBatch()
     {
         $this->isAnimating = true;
-        
+
         // Prendre les 10 prochaines transactions
         $nextBatch = array_slice($this->allTransactions, $this->currentIndex, 10);
-        
+
         if (empty($nextBatch)) {
             // Recommencer depuis le début
             $this->currentIndex = 0;
             $nextBatch = array_slice($this->allTransactions, 0, 10);
         }
-        
+
         $this->currentTransactions = $nextBatch;
         $this->currentIndex += 10;
-        
+
         // Programmer le prochain changement
         $this->dispatch('schedule-next-batch');
-        
+
         $this->isAnimating = false;
     }
 
@@ -171,26 +171,26 @@ class CryptoRecoveryTable extends Component
     {
         $alphabet = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
         $encoded = '';
-        
+
         // Convertir les bytes en nombre décimal
         $num = '0';
         for ($i = 0; $i < strlen($data); $i++) {
             $num = bcadd(bcmul($num, '256'), ord($data[$i]));
         }
-        
+
         // Encoder en base58
         while (bccomp($num, '0') > 0) {
             $remainder = bcmod($num, '58');
             $encoded = $alphabet[intval($remainder)] . $encoded;
             $num = bcdiv($num, '58', 0);
         }
-        
+
         // Ajouter des '1' pour les zéros en tête
         $leadingZeros = 0;
         for ($i = 0; $i < strlen($data) && ord($data[$i]) === 0; $i++) {
             $leadingZeros++;
         }
-        
+
         return str_repeat('1', $leadingZeros) . $encoded;
     }
 

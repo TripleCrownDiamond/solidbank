@@ -19,7 +19,7 @@ class UserManagement extends Component
     // Search and filters
     public $search = '';
     public $statusFilter = 'all';
-    public $adminFilter = 'all';
+    public $adminFilter = 'non_admin';
     public $sortField = 'created_at';
     public $sortDirection = 'desc';
     public $perPage = 10;
@@ -39,7 +39,7 @@ class UserManagement extends Component
     protected $queryString = [
         'search' => ['except' => ''],
         'statusFilter' => ['except' => 'all'],
-        'adminFilter' => ['except' => 'all'],
+        'adminFilter' => ['except' => 'non_admin'],
         'sortField' => ['except' => 'created_at'],
         'sortDirection' => ['except' => 'desc'],
         'perPage' => ['except' => 10],
@@ -85,10 +85,13 @@ class UserManagement extends Component
             });
         }
 
-        // Admin filter
-        if ($this->adminFilter !== 'all') {
-            $query->where('is_admin', $this->adminFilter === 'admin');
+        // Admin filter - par défaut, exclure les admins
+        if ($this->adminFilter === 'admin') {
+            $query->where('is_admin', true);
+        } elseif ($this->adminFilter === 'non_admin') {
+            $query->where('is_admin', false);
         }
+        // Si 'all', on n'applique aucun filtre
 
         // Status filter (based on accounts)
         if ($this->statusFilter !== 'all') {

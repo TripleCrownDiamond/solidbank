@@ -54,12 +54,14 @@
 
     <!-- Liste des transactions -->
     <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
-        <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
-            <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">
+        <!-- Header -->
+        <div class="bg-gradient-to-r from-brand-primary to-brand-accent p-6">
+            <h2 class="text-xl font-semibold text-white mb-2">
                 <i class="fas fa-exchange-alt mr-2"></i>{{ __('common.transactions') }}
-            </h3>
-            <div class="w-16 h-1 bg-blue-500 rounded-full mt-2"></div>
+            </h2>
+            <div class="w-16 h-1 bg-gray-200 dark:bg-gray-300 rounded-full"></div>
         </div>
+        <div class="p-6">
 
         @if($transactions->count() > 0)
             <!-- Table responsive -->
@@ -271,7 +273,7 @@
             </div>
 
             <!-- Pagination -->
-            <div class="px-6 py-4 border-t border-gray-200 dark:border-gray-700">
+            <div class="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
                 {{ $transactions->links() }}
             </div>
         @else
@@ -284,6 +286,7 @@
                 <p class="text-gray-500 dark:text-gray-400">{{ __('common.no_transactions_message') }}</p>
             </div>
         @endif
+        </div>
     </div>
 
     <!-- Modal for Blocked Transaction Details -->

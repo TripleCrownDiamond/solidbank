@@ -10,79 +10,12 @@ import "./transfer-progress";
 // Start Alpine.js after components are loaded
 Alpine.start();
 
-// Language Switcher Logic
-document.addEventListener("DOMContentLoaded", function () {
-    // Toggle language dropdown (Desktop)
-    const desktopLanguageSwitcher =
-        document.getElementById("language-switcher");
-    if (desktopLanguageSwitcher) {
-        desktopLanguageSwitcher.addEventListener("click", function () {
-            const dropdown = document.getElementById("language-dropdown");
-            dropdown.classList.toggle("hidden");
-            this.setAttribute(
-                "aria-expanded",
-                !dropdown.classList.contains("hidden")
-            );
-        });
-    }
-
-    // Toggle language dropdown (Mobile)
-    const mobileLanguageSwitcher = document.getElementById(
-        "mobile-language-switcher"
-    );
-    if (mobileLanguageSwitcher) {
-        mobileLanguageSwitcher.addEventListener("click", function () {
-            const dropdown = document.getElementById(
-                "mobile-language-dropdown"
-            );
-            dropdown.classList.toggle("hidden");
-            this.setAttribute(
-                "aria-expanded",
-                !dropdown.classList.contains("hidden")
-            );
-        });
-    }
-
-    // Close dropdowns when clicking outside
-    document.addEventListener("click", function (event) {
-        const desktopLanguageDropdown =
-            document.getElementById("language-dropdown");
-        const desktopLanguageButton =
-            document.getElementById("language-switcher");
-        if (
-            desktopLanguageButton &&
-            !desktopLanguageButton.contains(event.target) &&
-            !desktopLanguageDropdown?.contains(event.target)
-        ) {
-            desktopLanguageDropdown.classList.add("hidden");
-            desktopLanguageButton.setAttribute("aria-expanded", false);
-        }
-
-        const mobileLanguageDropdown = document.getElementById(
-            "mobile-language-dropdown"
-        );
-        const mobileLanguageButton = document.getElementById(
-            "mobile-language-switcher"
-        );
-        if (
-            mobileLanguageButton &&
-            !mobileLanguageButton.contains(event.target) &&
-            !mobileLanguageDropdown?.contains(event.target)
-        ) {
-            mobileLanguageDropdown.classList.add("hidden");
-            mobileLanguageButton.setAttribute("aria-expanded", false);
-        }
-    });
-});
+// Language Switcher is now handled by Alpine.js in the component
 
 // Early theme initialization to prevent flash
 (() => {
     const savedTheme = localStorage.getItem("theme");
-    if (
-        savedTheme === "dark" ||
-        (savedTheme === "system" &&
-            window.matchMedia("(prefers-color-scheme: dark)").matches)
-    ) {
+    if (savedTheme === "dark") {
         document.documentElement.classList.add("dark");
     } else {
         document.documentElement.classList.remove("dark");
@@ -100,35 +33,20 @@ document.addEventListener("DOMContentLoaded", function () {
             desktop: "theme-dark-icon",
             mobile: "mobile-theme-dark-icon",
         },
-        system: {
-            desktop: "theme-system-icon",
-            mobile: "mobile-theme-system-icon",
-        },
     };
 
     const setTheme = (theme) => {
         const currentTheme = localStorage.getItem("theme");
         const nextTheme =
             theme ||
-            (currentTheme === "light"
-                ? "dark"
-                : currentTheme === "dark"
-                ? "system"
-                : "light");
+            (currentTheme === "light" ? "dark" : "light");
 
         if (nextTheme === "dark") {
             document.documentElement.classList.add("dark");
             localStorage.setItem("theme", "dark");
-        } else if (nextTheme === "light") {
+        } else {
             document.documentElement.classList.remove("dark");
             localStorage.setItem("theme", "light");
-        } else {
-            if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-                document.documentElement.classList.add("dark");
-            } else {
-                document.documentElement.classList.remove("dark");
-            }
-            localStorage.setItem("theme", "system");
         }
 
         updateThemeIcon(nextTheme);
@@ -151,11 +69,10 @@ document.addEventListener("DOMContentLoaded", function () {
     // Initialize theme immediately
     const initializeTheme = () => {
         const savedTheme = localStorage.getItem("theme");
-        if (savedTheme) {
+        if (savedTheme === "dark" || savedTheme === "light") {
             setTheme(savedTheme);
-        } else if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-            setTheme("dark");
         } else {
+            // Default to light theme
             setTheme("light");
         }
     };

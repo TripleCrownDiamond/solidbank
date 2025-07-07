@@ -28,7 +28,8 @@ class HandleCsrfErrors
             }
 
             // Pour les requêtes normales, rediriger vers la page de login avec un message
-            return redirect()->route('login')
+            $locale = app()->getLocale() ?? 'fr';
+            return to_route('locale.login', ['locale' => $locale])
                 ->with('error', 'Session expirée. Veuillez vous reconnecter.');
         }
     }

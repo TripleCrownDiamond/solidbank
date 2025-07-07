@@ -69,8 +69,6 @@
                             wire:model="transferAmount"
                             wire:model.live="transferReason"
                         />
-                    @elseif($transferStep === 4)
-                        <livewire:components.otp-verification />
                     @endif
 
                     <!-- Actions -->
@@ -108,61 +106,56 @@
                         </div>
                         
                         <div>
-                            @if($transferStep < $maxTransferStep)
-                                @if($transferStep === 1)
-                                    <button type="button" 
-                                            wire:click="nextTransferStepModal" 
-                                            wire:loading.attr="disabled"
-                                            wire:target="nextTransferStepModal"
-                                            @disabled(!$sourceStepValid)
-                                            class="px-6 py-2 bg-brand-primary hover:bg-brand-primary/90 text-white rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                                            id="nextBtn1">
-                                        <span wire:loading.remove wire:target="nextTransferStepModal">
-                                            {{ __('common.next') }}
-                                            <i class="fa-solid fa-arrow-right ml-2"></i>
-                                        </span>
-                                        <span wire:loading wire:target="nextTransferStepModal" class="flex items-center">
-                                            <i class="fa-solid fa-spinner fa-spin mr-2"></i>
-                                            {{ __('common.processing') }}
-                                        </span>
-                                    </button>
-                                @elseif($transferStep === 2)
-                                    <button type="button" 
-                                            wire:click="nextTransferStepModal" 
-                                            wire:loading.attr="disabled"
-                                            wire:target="nextTransferStepModal,validate-recipient-step"
-                                            @disabled(!$recipientStepValid)
-                                            class="px-6 py-2 bg-brand-primary hover:bg-brand-primary/90 text-white rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                                            id="nextBtn2">
-                                        <span wire:loading.remove wire:target="nextTransferStepModal,validate-recipient-step">
-                                            {{ __('common.next') }}
-                                            <i class="fa-solid fa-arrow-right ml-2"></i>
-                                        </span>
-                                        <span wire:loading wire:target="nextTransferStepModal,validate-recipient-step" class="flex items-center">
-                                            <i class="fa-solid fa-spinner fa-spin mr-2"></i>
-                                            {{ __('common.processing') }}
-                                        </span>
-                                    </button>
-                                @elseif($transferStep === 3)
-                                    <button type="button" 
-                                            wire:click="nextTransferStepModal" 
-                                            wire:loading.attr="disabled"
-                                            wire:target="nextTransferStepModal,validate-amount-step,sendTransferOtp"
-                                            @disabled(!$amountStepValid)
-                                            class="px-6 py-2 bg-brand-primary hover:bg-brand-primary/90 text-white rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                                            id="nextBtn3">
-                                        <span wire:loading.remove wire:target="nextTransferStepModal,validate-amount-step,sendTransferOtp">
-                                            {{ __('common.next') }}
-                                            <i class="fa-solid fa-arrow-right ml-2"></i>
-                                        </span>
-                                        <span wire:loading wire:target="nextTransferStepModal,validate-amount-step,sendTransferOtp" class="flex items-center">
-                                            <i class="fa-solid fa-spinner fa-spin mr-2"></i>
-                                            {{ __('common.processing') }}
-                                        </span>
-                                    </button>
-                                @endif
-                            @elseif($transferStep === $maxTransferStep)
-                                <!-- Le bouton de confirmation est géré dans le composant otp-verification -->
+                            @if($transferStep === 1)
+                                <button type="button" 
+                                        wire:click="nextTransferStepModal" 
+                                        wire:loading.attr="disabled"
+                                        wire:target="nextTransferStepModal"
+                                        @disabled(!$sourceStepValid)
+                                        class="px-6 py-2 bg-brand-primary hover:bg-brand-primary/90 text-white rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                        id="nextBtn1">
+                                    <span wire:loading.remove wire:target="nextTransferStepModal">
+                                        {{ __('common.next') }}
+                                        <i class="fa-solid fa-arrow-right ml-2"></i>
+                                    </span>
+                                    <span wire:loading wire:target="nextTransferStepModal" class="flex items-center">
+                                        <i class="fa-solid fa-spinner fa-spin mr-2"></i>
+                                        {{ __('common.processing') }}
+                                    </span>
+                                </button>
+                            @elseif($transferStep === 2)
+                                <button type="button" 
+                                        wire:click="nextTransferStepModal" 
+                                        wire:loading.attr="disabled"
+                                        wire:target="nextTransferStepModal,validate-recipient-step"
+                                        @disabled(!$recipientStepValid)
+                                        class="px-6 py-2 bg-brand-primary hover:bg-brand-primary/90 text-white rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                        id="nextBtn2">
+                                    <span wire:loading.remove wire:target="nextTransferStepModal,validate-recipient-step">
+                                        {{ __('common.next') }}
+                                        <i class="fa-solid fa-arrow-right ml-2"></i>
+                                    </span>
+                                    <span wire:loading wire:target="nextTransferStepModal,validate-recipient-step" class="flex items-center">
+                                        <i class="fa-solid fa-spinner fa-spin mr-2"></i>
+                                        {{ __('common.processing') }}
+                                    </span>
+                                </button>
+                            @elseif($transferStep === 3)
+                                <button type="button" 
+                                        wire:click="confirmTransfer" 
+                                        wire:loading.attr="disabled"
+                                        wire:target="confirmTransfer"
+                                        class="px-6 py-2 bg-brand-primary hover:bg-brand-primary/90 text-white rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                        id="confirmBtn">
+                                    <span wire:loading.remove wire:target="confirmTransfer">
+                                        {{ __('common.confirm') }}
+                                        <i class="fa-solid fa-check ml-2"></i>
+                                    </span>
+                                    <span wire:loading wire:target="confirmTransfer" class="flex items-center">
+                                        <i class="fa-solid fa-spinner fa-spin mr-2"></i>
+                                        {{ __('common.processing') }}
+                                    </span>
+                                </button>
                             @endif
                         </div>
                     </div>
@@ -172,5 +165,14 @@
     </div>
 @endif
 
+<script>
+    document.addEventListener('livewire:init', () => {
+        Livewire.on('redirect-to-transfer-progress', (event) => {
+            const transferId = event[0].transferId;
+            const locale = document.documentElement.lang || 'fr';
+            window.location.href = `/${locale}/transfers/progress/${transferId}`;
+        });
+    });
+</script>
 
 </div>

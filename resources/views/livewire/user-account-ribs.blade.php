@@ -20,8 +20,8 @@
                                 <div class="flex items-center justify-between">
                                     <div class="flex items-center space-x-3">
                                         <div class="flex-shrink-0">
-                                            <div class="w-8 h-8 rounded-full flex items-center justify-center bg-brand-primary/20">
-                                                <svg class="w-4 h-4 text-brand-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <div class="w-8 h-8 rounded-full flex items-center justify-center bg-gray-100 dark:bg-gray-700">
+                                                <svg class="w-4 h-4 text-gray-400 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
                                                 </svg>
                                             </div>
@@ -30,36 +30,36 @@
                                             <h4 class="text-sm font-medium text-gray-900 dark:text-gray-100">
                                                 {{ __('common.account') }} {{ $account->account_number }}
                                             </h4>
-                                            <p class="text-xs text-gray-500 dark:text-gray-400">
-                                                {{ __('register.' . strtolower($account->type)) }} • 
-                                                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium
-                                                    @if($account->status === 'ACTIVE') bg-green-100 text-green-800 dark:bg-green-800 dark:text-white
-                                                    @elseif($account->status === 'INACTIVE') bg-yellow-100 text-yellow-800 dark:bg-yellow-800 dark:text-yellow-100
-                                                    @else bg-red-100 text-red-800 dark:bg-red-800 dark:text-red-100 @endif">
-                                                    {{ __('common.' . strtolower($account->status)) }}
-                                                </span>
-                                            </p>
+                                            <p class="text-xs text-gray-600 dark:text-gray-400">
+                                {{ __('register.' . strtolower($account->type)) }} • 
+                                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium
+                                    @if($account->status === 'ACTIVE') bg-brand-success/10 text-brand-success dark:bg-brand-success/20 dark:text-brand-success
+                                    @elseif($account->status === 'INACTIVE') bg-brand-warning/10 text-brand-warning dark:bg-brand-warning/20 dark:text-brand-warning
+                                    @else bg-brand-danger/10 text-brand-danger dark:bg-brand-danger/20 dark:text-brand-danger @endif">
+                                    {{ __('common.' . strtolower($account->status)) }}
+                                </span>
+                            </p>
                                         </div>
                                     </div>
                                     <div class="flex items-center space-x-3">
                                         <div class="text-right">
-                                            <div class="text-sm font-medium text-gray-900 dark:text-gray-100">
-                                                {{ number_format($account->balance, 2) }} {{ $account->currency }}
-                                            </div>
-                                            @if($account->rib)
-                                                <div class="text-xs text-green-600 dark:text-green-400">
-                                                    {{ __('common.rib_available') }}
-                                                </div>
-                                            @else
-                                                <div class="text-xs text-red-600 dark:text-red-400">
-                                                    {{ __('common.no_rib') }}
-                                                </div>
-                                            @endif
+                                            <div class="text-sm font-medium text-gray-900 dark:text-white">
+                                {{ number_format($account->balance, 2) }} {{ $account->currency }}
+                            </div>
+                            @if($account->rib)
+                                <div class="text-xs text-brand-success dark:text-brand-success">
+                                    {{ __('common.rib_available') }}
+                                </div>
+                            @else
+                                <div class="text-xs text-brand-danger dark:text-brand-danger">
+                                    {{ __('common.no_rib') }}
+                                </div>
+                            @endif
                                         </div>
                                         <div class="transform transition-transform duration-200 {{ $this->isAccountExpanded($account->id) ? 'rotate-180' : '' }}">
-                                            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                                            </svg>
+                                            <svg class="w-5 h-5 text-gray-400 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
                                         </div>
                                     </div>
                                 </div>
@@ -69,55 +69,70 @@
                             @if($this->isAccountExpanded($account->id))
                                 <div class="px-4 py-4 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
                                     @if($account->rib)
-                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                            <div>
-                                                <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-1">
+                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                            <div class="group">
+                                                <label class="block text-xs font-semibold text-brand-primary dark:text-brand-primary-light uppercase tracking-wider mb-2">
                                                     {{ __('common.iban') }}
                                                 </label>
-                                                <div class="flex items-center bg-gray-50 dark:bg-gray-700 px-3 py-2 rounded border">
-                                                    <div class="text-sm text-black dark:text-white font-mono flex-1">
+                                                <div class="relative flex items-center bg-gradient-to-r from-brand-primary/5 to-brand-primary/10 dark:from-gray-700 dark:to-gray-600 px-4 py-3 rounded-lg border border-brand-primary/30 dark:border-gray-600 shadow-sm hover:shadow-md transition-all duration-200">
+                                                    <div class="text-sm text-gray-800 dark:text-white font-mono flex-1 tracking-wide">
                                                         {{ $account->rib->iban }}
                                                     </div>
-                                                    <button x-data x-on:click="$wire.copyRibDetail('{{ $account->rib->iban }}', '{{ __('common.iban') }}')" title="{{ __('common.copy_iban') }}" class="ml-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
-                                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <button x-data="{ copied: false }" x-on:click="navigator.clipboard.writeText('{{ $account->rib->iban }}').then(() => { copied = true; setTimeout(() => copied = false, 2000); })" title="{{ __('common.copy_iban') }}" class="ml-3 p-1.5 text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-md transition-all duration-200">
+                                                        <svg class="w-4 h-4 text-green-600 dark:text-green-400 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24" x-show="copied" x-cloak>
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                                        </svg>
+                                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" x-show="!copied">
                                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
                                                         </svg>
                                                     </button>
                                                 </div>
                                             </div>
-                                            <div>
-                                                <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-1">
+                                            <div class="group">
+                                                <label class="block text-xs font-semibold text-brand-secondary dark:text-brand-secondary uppercase tracking-wider mb-2">
                                                     {{ __('common.swift') }}
                                                 </label>
-                                                <div class="flex items-center bg-gray-50 dark:bg-gray-700 px-3 py-2 rounded border">
-                                                    <div class="text-sm text-black dark:text-white font-mono flex-1">
+                                                <div class="relative flex items-center bg-gradient-to-r from-brand-secondary/5 to-brand-secondary/10 dark:from-gray-700 dark:to-gray-600 px-4 py-3 rounded-lg border border-brand-secondary/30 dark:border-gray-600 shadow-sm hover:shadow-md transition-all duration-200">
+                                                    <div class="text-sm text-gray-800 dark:text-white font-mono flex-1 tracking-wide">
                                                         {{ $account->rib->swift }}
                                                     </div>
-                                                    <button x-data x-on:click="$wire.copyRibDetail('{{ $account->rib->swift }}', '{{ __('common.swift') }}')" title="{{ __('common.copy_swift') }}" class="ml-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
-                                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <button x-data="{ copied: false }" x-on:click="navigator.clipboard.writeText('{{ $account->rib->swift }}').then(() => { copied = true; setTimeout(() => copied = false, 2000); })" title="{{ __('common.copy_swift') }}" class="ml-3 p-1.5 text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-md transition-all duration-200">
+                                                        <svg class="w-4 h-4 text-green-600 dark:text-green-400 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24" x-show="copied" x-cloak>
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                                        </svg>
+                                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" x-show="!copied">
                                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
                                                         </svg>
                                                     </button>
                                                 </div>
                                             </div>
-                                            <div class="md:col-span-2">
-                                                <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-1">
+                                            <div class="md:col-span-2 group">
+                                                <label class="block text-xs font-semibold text-brand-accent dark:text-brand-accent uppercase tracking-wider mb-2">
                                                     {{ __('common.bank_name') }}
                                                 </label>
-                                                <div class="flex items-center bg-gray-50 dark:bg-gray-700 px-3 py-2 rounded border">
-                                                    <div class="text-sm text-black dark:text-white flex-1">
+                                                <div class="relative flex items-center bg-gradient-to-r from-brand-accent/5 to-brand-accent/10 dark:from-gray-700 dark:to-gray-600 px-4 py-3 rounded-lg border border-brand-accent/30 dark:border-gray-600 shadow-sm hover:shadow-md transition-all duration-200">
+                                                    <div class="text-sm text-gray-800 dark:text-white flex-1 font-medium">
                                                         {{ $account->rib->bank_name }}
                                                     </div>
-                                                    <button x-data x-on:click="$wire.copyRibDetail('{{ $account->rib->bank_name }}', '{{ __('common.bank_name') }}')" title="{{ __('common.copy_bank_name') }}" class="ml-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
-                                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                                                    <button x-data="{ copied: false }" x-on:click="navigator.clipboard.writeText('{{ $account->rib->bank_name }}').then(() => { copied = true; setTimeout(() => copied = false, 2000); })" title="{{ __('common.copy_bank_name') }}" class="ml-3 p-1.5 text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-md transition-all duration-200">
+                                                        <svg class="w-4 h-4 text-green-600 dark:text-green-400 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24" x-show="copied" x-cloak>
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                                        </svg>
+                                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" x-show="!copied">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
                                                         </svg>
                                                     </button>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="mt-4 text-xs text-gray-500 dark:text-gray-400">
-                                            {{ __('common.rib_created_at') }}: {{ $account->rib->created_at->format('d/m/Y H:i') }}
+                                        <div class="mt-6 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg border-l-4 border-brand-primary">
+                                            <div class="flex items-center text-xs text-gray-600 dark:text-gray-300">
+                                                <svg class="w-4 h-4 mr-2 text-brand-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                                </svg>
+                                                <span class="font-medium">{{ __('common.rib_created_at') }}:</span>
+                                                <span class="ml-1">{{ $account->rib->created_at->format('d/m/Y H:i') }}</span>
+                                            </div>
                                         </div>
                                     @else
                                         <div class="text-center py-8">
@@ -194,4 +209,14 @@
             </div>
         @endif
     </div>
+
+    <script>
+        document.addEventListener('livewire:init', () => {
+            Livewire.on('start-copy-timer', (event) => {
+                setTimeout(() => {
+                    @this.removeCopiedState(event.value);
+                }, 2000);
+            });
+        });
+    </script>
 </div>

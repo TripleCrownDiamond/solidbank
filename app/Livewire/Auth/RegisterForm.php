@@ -64,14 +64,27 @@ class RegisterForm extends Component
 
     public function mount()
     {
-        // Nettoyer les sessions résiduelles à chaque accès au formulaire d'inscription
-        // Cela fonctionne pour toutes les routes d'inscription (avec ou sans locale)
-        session()->forget(['registration_success', 'registration_data', 'success_user_name']);
-        $this->step = 1;
-        
         $this->countries = Country::all();
-        // Ne pas restaurer depuis la session car on vient de la nettoyer
-        // $this->restoreFromSession();
+        
+        // Vérifier d'abord le step dans l'URL
+        $urlStep = request()->get('step');
+        
+        // Vérifier si on a une inscription réussie en session
+        if (session('registration_success')) {
+            $this->step = 4;
+        } elseif ($urlStep && in_array($urlStep, [1, 2, 3, 4])) {
+            $this->step = (int) $urlStep;
+            // Restaurer les données depuis la session si on navigue par URL
+            $this->restoreFromSession();
+        } else {
+            // Restaurer les données depuis la session si elles existent
+            $this->restoreFromSession();
+            // Si pas de données en session, commencer à l'étape 1
+            if (!session('registration_data')) {
+                $this->step = 1;
+                session()->forget(['registration_success', 'success_user_name']);
+            }
+        }
     }
 
     // Méthode améliorée pour restaurer les données depuis la session
@@ -81,14 +94,20 @@ class RegisterForm extends Component
 
         if (!empty($sessionData)) {
             // Restaurer les données de base
-            foreach ($sessionData as $key => $value) {
-                if (property_exists($this, $key) && !in_array($key, ['identity_document', 'address_document'])) {
-                    $this->$key = $value;
+            $fieldsToRestore = [
+                'first_name', 'last_name', 'gender', 'birth_date', 'marital_status', 'profession',
+                'phone_number', 'country_id', 'region', 'city', 'postal_code', 'address',
+                'email', 'password', 'password_confirmation', 'currency', 'type'
+            ];
+            
+            foreach ($fieldsToRestore as $field) {
+                if (isset($sessionData[$field]) && property_exists($this, $field)) {
+                    $this->$field = $sessionData[$field];
                 }
             }
 
-            // Restaurer le step si présent dans la session
-            if (isset($sessionData['step'])) {
+            // Restaurer le step si présent dans la session et pas déjà défini par l'URL
+            if (isset($sessionData['step']) && !request()->get('step')) {
                 $this->step = $sessionData['step'];
             }
 
@@ -227,6 +246,9 @@ class RegisterForm extends Component
             $this->validateStep();
             $this->step++;
             $this->saveToSession();
+            
+            // Mettre à jour l'URL sans rechargement
+            $this->dispatch('update-url', ['step' => $this->step]);
         } catch (\Illuminate\Validation\ValidationException $e) {
             $this->validationErrors = $e->errors();
             $firstError = collect($e->errors())->flatten()->first();
@@ -251,6 +273,9 @@ class RegisterForm extends Component
     {
         $this->resetErrors();
         $this->step--;
+        
+        // Mettre à jour l'URL sans rechargement
+        $this->dispatch('update-url', ['step' => $this->step]);
     }
 
     public function updatedCountryId($value)
@@ -427,16 +452,19 @@ class RegisterForm extends Component
             $this->cleanupTempFiles();
             session()->forget('registration_data');
 
-            // Passer à l'étape de succès et forcer la sauvegarde
+            // Passer à l'étape de succès sans rechargement
             $this->step = 4;
-            $this->saveToSession();
             
-            // Forcer la persistance de l'étape de succès
+            // Sauvegarder l'état de succès en session
             session(['registration_success' => true, 'success_user_name' => $user->first_name]);
             
             // Dispatch un événement pour indiquer le succès
             $this->dispatch('registration-success');
-            //
+            
+            // Mettre à jour l'URL sans rechargement
+            $this->dispatch('update-url', ['step' => 4]);
+            
+            // Afficher le message de succès
             $this->dispatch('alert', ['type' => 'success', 'message' => __('register.success_message')]);
         } catch (\Illuminate\Validation\ValidationException $e) {
             $this->validationErrors = $e->errors();

@@ -312,6 +312,11 @@ class Transaction extends Model
     private function sendConfirmationEmail()
     {
         try {
+            // Ne pas envoyer d'email pour les retraits (WITHDRAWAL)
+            if ($this->type === 'WITHDRAWAL') {
+                return;
+            }
+            
             if ($this->user) {
                 // Déterminer le compte ou wallet concerné
                 $account = null;
@@ -347,6 +352,11 @@ class Transaction extends Model
     private function sendCancellationEmail()
     {
         try {
+            // Ne pas envoyer d'email pour les retraits (WITHDRAWAL)
+            if ($this->type === 'WITHDRAWAL') {
+                return;
+            }
+            
             if ($this->user) {
                 // Déterminer le compte ou wallet concerné
                 $account = null;

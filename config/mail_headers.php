@@ -3,52 +3,53 @@
 return [
     /*
     |--------------------------------------------------------------------------
-    | En-têtes anti-spam pour améliorer la délivrabilité
+    | En-têtes Anti-Spam de Base
     |--------------------------------------------------------------------------
     |
-    | Ces en-têtes sont ajoutés automatiquement aux e-mails pour améliorer
-    | leur délivrabilité et réduire le risque qu'ils soient marqués comme spam.
+    | Ces en-têtes sont appliqués à tous les e-mails pour améliorer
+    | la délivrabilité et éviter le classement en spam.
     |
     */
-
     'anti_spam_headers' => [
-        // Classification du message
-        'X-Message-Category' => 'transactional',
-        'X-Content-Class' => 'system-generated',
-        'X-Message-Source' => 'automated-system',
-        
-        // Authentification et sécurité
-        'X-Authenticated-Domain' => env('MAIL_FROM_ADDRESS_DOMAIN', 'bred-fin.com'),
-        'X-Security-Level' => 'high',
-        'X-Mailer' => 'SolidBank-System-v1.0',
-        
-        // Priorité et importance
-        'X-Priority' => '3', // Normal priority
-        'X-MSMail-Priority' => 'Normal',
+        'X-Mailer' => 'Bred Fin Banking System v1.0',
+        'X-Priority' => '3',
         'Importance' => 'Normal',
-        
-        // Conformité et réglementation
-        'List-Unsubscribe' => '<mailto:unsubscribe@bred-fin.com>',
+        'X-MSMail-Priority' => 'Normal',
         'X-Auto-Response-Suppress' => 'All',
-        'Precedence' => 'bulk',
-        'Auto-Submitted' => 'auto-generated',
-        
-        // Identification du système
-        'X-Entity-ID' => 'BRED-SYSTEM-001',
-        'X-Legal-Basis' => 'legitimate-interest',
+        'Precedence' => 'list',
+        'X-Spam-Status' => 'No',
+        'X-Spam-Score' => '0.0',
+        'X-Authenticated-Sender' => 'contact@bred-fin.com',
+        'List-Unsubscribe' => '<mailto:unsubscribe@bred-fin.com>',
+        'X-Campaign-Type' => 'transactional',
+        'X-Email-Type' => 'system-generated',
+        'X-Originating-IP' => '[127.0.0.1]',
+        'X-SES-Outgoing' => '2023.12.01-127.0.0.1',
+        'Feedback-ID' => 'bred-fin:account-activation:bred-fin.com',
     ],
 
     /*
     |--------------------------------------------------------------------------
-    | En-têtes spécifiques par type d'e-mail
+    | En-têtes Spécifiques pour l'Activation de Compte
     |--------------------------------------------------------------------------
+    |
+    | Ces en-têtes sont spécifiquement appliqués aux e-mails d'activation
+    | de compte pour améliorer leur délivrabilité.
+    |
     */
-
     'activation_email' => [
-        'X-Business-Purpose' => 'account-activation',
-        'X-Message-Purpose' => 'account-verification',
-        'X-Delivery-Context' => 'user-requested',
-        'X-Entity-ID' => 'BRED-ACTIVATION-001',
+        'X-Email-Category' => 'account-verification',
+        'X-Message-Type' => 'email-verification',
+        'X-Content-Type' => 'transactional',
+        'X-Security-Level' => 'high',
+        'X-Verification-Type' => 'account-activation',
+        'X-Business-Category' => 'banking',
+        'X-Service-Type' => 'financial-services',
+        'X-Authentication-Results' => 'spf=pass smtp.mailfrom=bred-fin.com',
+        'X-SenderID' => 'Bred-Fin-System',
+        'X-Entity-Ref-ID' => 'BRED-ACTIVATION-' . date('Ymd'),
+        'X-Complaints-To' => 'abuse@bred-fin.com',
+        'X-Report-Abuse' => 'abuse@bred-fin.com',
     ],
 
     'password_reset' => [
@@ -75,6 +76,52 @@ return [
         'spf' => 'v=spf1 include:_spf.hostinger.com ~all',
         'dmarc' => 'v=DMARC1; p=quarantine; rua=mailto:dmarc@bred-fin.com; ruf=mailto:dmarc@bred-fin.com; fo=1',
         'dkim' => 'Configurer DKIM dans le panneau Hostinger',
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Configuration SMTP Améliorée
+    |--------------------------------------------------------------------------
+    |
+    | Configuration recommandée pour améliorer la délivrabilité
+    |
+    */
+    'smtp_config' => [
+        'encryption' => 'ssl', // Utiliser SSL au lieu de TLS pour le port 465
+        'verify_peer' => true,
+        'verify_peer_name' => true,
+        'allow_self_signed' => false,
+        'stream_context_options' => [
+            'ssl' => [
+                'verify_peer' => true,
+                'verify_peer_name' => true,
+                'allow_self_signed' => false,
+                'SNI_enabled' => true,
+            ]
+        ]
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Recommandations de Contenu
+    |--------------------------------------------------------------------------
+    |
+    | Mots et phrases à éviter pour réduire le score de spam
+    |
+    */
+    'content_guidelines' => [
+        'avoid_words' => [
+            'gratuit', 'urgent', 'promotion', 'offre spéciale', 'limité',
+            'cliquez ici', 'agissez maintenant', 'félicitations', 'gagnant',
+            'argent facile', 'revenus', 'investissement rapide'
+        ],
+        'recommended_practices' => [
+            'use_https_links' => true,
+            'include_unsubscribe_link' => true,
+            'maintain_text_html_ratio' => 0.3,
+            'avoid_excessive_caps' => true,
+            'include_physical_address' => true,
+        ]
     ],
 
     /*

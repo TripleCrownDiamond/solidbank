@@ -60,6 +60,85 @@
                         window.location.reload();
                     }, 100);
                 });
+                
+                // Gestion de l'événement copy-to-clipboard
+                Livewire.on('copy-to-clipboard', (...args) => {
+                    console.log('Arguments reçus:', args);
+                    console.log('Nombre d\'arguments:', args.length);
+                    
+                    // Gérer différents formats d'événement Livewire
+                    let textToCopy, message;
+                    
+                    if (args.length > 0) {
+                        const eventData = args[0];
+                        console.log('Premier argument:', eventData);
+                        
+                        if (typeof eventData === 'object' && eventData !== null) {
+                            // Si c'est un objet direct
+                            textToCopy = eventData.accountNumber;
+                            message = eventData.message || 'Copié dans le presse-papiers';
+                        } else if (typeof eventData === 'string') {
+                            // Si c'est juste une chaîne
+                            textToCopy = eventData;
+                            message = 'Copié dans le presse-papiers';
+                        }
+                    }
+                    
+                    console.log('Texte à copier:', textToCopy);
+                    console.log('Message:', message);
+                    
+                    if (textToCopy) {
+                        if (navigator.clipboard && navigator.clipboard.writeText) {
+                            navigator.clipboard.writeText(textToCopy).then(() => {
+                                console.log('Texte copié avec succès:', textToCopy);
+                                
+                                // Afficher une notification de succès
+                                window.Livewire.dispatch('alert', {
+                                    type: 'success',
+                                    message: message
+                                });
+                            }).catch(err => {
+                                console.error('Erreur lors de la copie:', err);
+                                fallbackCopy(textToCopy, message);
+                            });
+                        } else {
+                            // Fallback pour les navigateurs plus anciens
+                            fallbackCopy(textToCopy, message);
+                        }
+                    } else {
+                        console.error('Aucun texte à copier trouvé dans l\'événement');
+                    }
+                });
+                
+                // Fonction de fallback pour la copie
+                function fallbackCopy(text, message) {
+                    try {
+                        const textArea = document.createElement('textarea');
+                        textArea.value = text;
+                        textArea.style.position = 'fixed';
+                        textArea.style.opacity = '0';
+                        document.body.appendChild(textArea);
+                        textArea.select();
+                        const successful = document.execCommand('copy');
+                        document.body.removeChild(textArea);
+                        
+                        if (successful) {
+                            console.log('Texte copié avec fallback:', text);
+                            window.Livewire.dispatch('alert', {
+                                type: 'success',
+                                message: message
+                            });
+                        } else {
+                            throw new Error('Commande de copie échouée');
+                        }
+                    } catch (err) {
+                        console.error('Erreur lors de la copie fallback:', err);
+                        window.Livewire.dispatch('alert', {
+                            type: 'error',
+                            message: 'Erreur lors de la copie'
+                        });
+                    }
+                }
             });
         </script>
 

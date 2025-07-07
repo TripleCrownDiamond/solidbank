@@ -4,11 +4,11 @@
         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{{ __('transfers.source_type') }}</label>
         <div class="flex space-x-4">
             <label class="flex items-center">
-                <input type="radio" wire:model.live="sourceType" value="account" class="mr-2 text-brand-primary focus:ring-brand-primary">
+                <input type="radio" wire:model.live="sourceType" value="account" name="sourceType" class="mr-2 text-brand-primary focus:ring-brand-primary">
                 <span class="text-sm text-gray-700 dark:text-gray-300">{{ __('admin.account') }}</span>
             </label>
             <label class="flex items-center">
-                <input type="radio" wire:model.live="sourceType" value="wallet" class="mr-2 text-brand-primary focus:ring-brand-primary">
+                <input type="radio" wire:model.live="sourceType" value="wallet" name="sourceType" class="mr-2 text-brand-primary focus:ring-brand-primary">
                 <span class="text-sm text-gray-700 dark:text-gray-300">{{ __('admin.wallet') }}</span>
             </label>
         </div>

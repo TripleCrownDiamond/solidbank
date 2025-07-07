@@ -18,28 +18,75 @@ class AccountActivationController extends Controller
     /**
      * Activer le compte utilisateur via le lien d'activation
      */
-    public function activate(Request $request, $locale, $id, $hash)
+    public function activate($locale, $id, $hash)
     {
+        $request = request();
+        
+        // Définir la locale si elle n'est pas déjà définie
+        if (!app()->getLocale() || app()->getLocale() === config('app.locale')) {
+            app()->setLocale($locale);
+        }
+        
+        // Utiliser la locale de l'application si elle est déjà définie
+        $locale = app()->getLocale();
+        
+        Log::info('AccountActivationController::activate called', [
+            'locale' => $locale,
+            'id' => $id,
+            'hash' => $hash,
+            'url' => $request->fullUrl(),
+            'signature_valid' => URL::hasValidSignature($request)
+        ]);
+
         // Vérifier que l'URL est valide et non expirée
         if (!URL::hasValidSignature($request)) {
-            return redirect()->route('locale.login', ['locale' => $locale])
+            Log::warning('Invalid or expired activation link signature', [
+                'locale' => $locale,
+                'id' => $id,
+                'hash' => $hash,
+                'url' => $request->fullUrl()
+            ]);
+            return to_route('locale.login', ['locale' => $locale])
                 ->with('error', __('auth.activation_link_invalid'));
         }
 
         // Trouver l'utilisateur
-        $user = User::findOrFail($id);
+        $user = User::find($id);
+        if (!$user) {
+            Log::error('User not found during activation', [
+                'locale' => $locale,
+                'id' => $id,
+                'hash' => $hash
+            ]);
+            return to_route('locale.login', ['locale' => $locale])
+                ->with('error', __('auth.user_not_found'));
+        }
+
+        Log::info('User found for activation', [
+            'user_id' => $user->id,
+            'user_email' => $user->email,
+            'email_verified_at' => $user->email_verified_at
+        ]);
 
         // Vérifier le hash
-        if (!hash_equals($hash, sha1($user->getEmailForVerification()))) {
-            return redirect()->route('locale.login', ['locale' => $locale])
+        $expectedHash = sha1($user->getEmailForVerification());
+        if (!hash_equals($hash, $expectedHash)) {
+            Log::error('Hash mismatch during activation', [
+                'provided_hash' => $hash,
+                'expected_hash' => $expectedHash,
+                'user_email' => $user->email
+            ]);
+            return to_route('locale.login', ['locale' => $locale])
                 ->with('error', __('auth.activation_link_invalid'));
         }
+
+        Log::info('Hash verification successful');
 
         // Vérifier si le compte est déjà activé
         if ($user->hasVerifiedEmail()) {
             $account = $user->accounts()->first();
             if ($account && $account->status === 'ACTIVE') {
-                return redirect()->route('locale.login', ['locale' => $locale])
+                return to_route('locale.login', ['locale' => $locale])
                     ->with('info', __('auth.account_already_activated'))
                     ->with('email', $user->email);
             }
@@ -48,12 +95,16 @@ class AccountActivationController extends Controller
         // Marquer l'email comme vérifié
         if (!$user->hasVerifiedEmail()) {
             $user->markEmailAsVerified();
+            Log::info('Email marked as verified for user', ['user_id' => $user->id]);
+        } else {
+            Log::info('Email already verified for user', ['user_id' => $user->id]);
         }
 
         // Activer le compte
         $account = $user->accounts()->first();
         if ($account) {
             $account->update(['status' => 'ACTIVE']);
+            Log::info('Account activated', ['account_id' => $account->id, 'user_id' => $user->id]);
             
             // Générer automatiquement le RIB si il n'existe pas
             if (!$account->rib) {
@@ -63,14 +114,23 @@ class AccountActivationController extends Controller
                 } catch (\Exception $e) {
                     Log::error('Failed to generate RIB for account ' . $account->account_number . ': ' . $e->getMessage());
                 }
+            } else {
+                Log::info('Account already has RIB', ['account_id' => $account->id]);
             }
+        } else {
+            Log::error('No account found for user during activation', ['user_id' => $user->id]);
         }
 
         // Stocker l'email en session pour l'auto-remplissage
         session(['email' => $user->email]);
 
+        Log::info('Activation process completed successfully, redirecting to login', [
+            'user_id' => $user->id,
+            'locale' => $locale
+        ]);
+
         // Rediriger vers la page de connexion avec un message de succès
-        return redirect()->route('locale.login', ['locale' => $locale])
+        return to_route('locale.login', ['locale' => $locale])
             ->with('success', __('auth.account_activated_successfully'));
     }
     

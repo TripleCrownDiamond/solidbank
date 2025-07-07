@@ -3,7 +3,7 @@
     <div class="bg-gradient-to-r from-brand-primary to-brand-accent p-6">
         <div class="flex justify-between items-center">
             <div>
-                <h2 class="text-xl font-semibold dark:text-white mb-2">{{ __('common.crypto_wallets') }}</h2>
+                <h2 class="text-xl font-semibold text-white mb-2">{{ __('common.crypto_wallets') }}</h2>
                 <div class="w-16 h-1 bg-gray-200 dark:bg-gray-300 rounded-full"></div>
             </div>
         </div>
@@ -34,7 +34,7 @@
                 <div class="mx-auto flex items-center justify-center h-24 w-24 rounded-full bg-gray-100 dark:bg-gray-700 mb-6">
                     <i class="fa-solid fa-wallet text-3xl text-gray-400"></i>
                 </div>
-                <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">{{ __('common.no_wallets_yet') }}</h3>
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">{{ __('common.no_wallets_yet') }}</h3>
                 <p class="text-gray-600 dark:text-gray-400 mb-6">{{ __('common.no_wallets_description') }}</p>
                
             </div>

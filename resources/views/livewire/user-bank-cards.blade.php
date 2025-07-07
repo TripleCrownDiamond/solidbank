@@ -4,25 +4,9 @@
     <div class="bg-gradient-to-r from-brand-primary to-brand-accent p-6">
         <div class="flex justify-between items-center">
             <div>
-                <h2 class="text-xl font-semibold dark:text-white mb-2">{{ __('common.bank_cards') }}</h2>
+                <h2 class="text-xl font-semibold text-white mb-2">{{ __('common.bank_cards') }}</h2>
                 <div class="w-16 h-1 bg-gray-200 dark:bg-gray-300 rounded-full"></div>
             </div>
-            @if($cards->count() === 0)
-                @if($this->hasInactiveAccounts())
-                    <button disabled class="px-4 py-2 bg-gray-400 text-gray-600 rounded-lg cursor-not-allowed opacity-50">
-                        <i class="fa-solid fa-ban mr-2"></i>{{ __('common.account_inactive') }}
-                    </button>
-                @else
-                    <button wire:click="requestCard" wire:loading.attr="disabled" wire:target="requestCard" class="px-4 py-2 bg-white/20 hover:bg-white/30 text-white rounded-lg transition-all duration-200 disabled:opacity-50">
-                        <span wire:loading.remove wire:target="requestCard">
-                            <i class="fa-solid fa-plus mr-2"></i>{{ __('common.request_card') }}
-                        </span>
-                        <span wire:loading wire:target="requestCard">
-                            <i class="fa-solid fa-spinner fa-spin mr-2"></i>{{ __('common.loading') }}...
-                        </span>
-                    </button>
-                @endif
-            @endif
         </div>
     </div>
 

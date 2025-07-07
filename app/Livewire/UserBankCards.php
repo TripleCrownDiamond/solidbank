@@ -62,7 +62,7 @@ class UserBankCards extends Component
 
         // Si on est sur le dashboard, rediriger vers la page des cartes
         if ($this->dashboardView) {
-            return redirect()->route('user.cards', ['locale' => app()->getLocale()]);
+            return to_route('user.cards', ['locale' => app()->getLocale()]);
         }
 
         // Sinon, ouvrir la modale

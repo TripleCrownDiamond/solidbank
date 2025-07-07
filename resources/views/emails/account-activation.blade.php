@@ -21,6 +21,8 @@
         {{ __('auth.account_activation_message') }}
     </p>
 
+
+
     <div style="text-align: center; margin: 32px 0;">
         <a href="{{ $activationUrl }}" 
            style="display: inline-block; background-color: {{ $brandPrimary }}; color: white !important; text-decoration: none; padding: 12px 24px; border-radius: 4px; font-weight: normal; font-size: 16px; border: none;">
@@ -30,7 +32,7 @@
 
     <div style="background-color: #f8fafc; padding: 20px; border-radius: 8px; margin: 24px 0;">
         <p style="color: {{ $textPrimary }}; font-size: 16px; line-height: 1.6; margin: 0 0 16px; font-weight: 500;">
-            🎉 Avantages de votre compte :
+            ✅ Fonctionnalités de votre compte :
         </p>
         <p style="color: {{ $textSecondary }}; font-size: 14px; line-height: 1.6; margin: 0;">
             {{ __('auth.activation_benefits') }}

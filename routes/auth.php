@@ -13,10 +13,10 @@ use Laravel\Fortify\Http\Controllers\VerifyEmailController;
 
 Route::middleware(['guest'])->group(function () {
     Route::get('login', [AuthenticatedSessionController::class, 'create'])->name('locale.login');
-    Route::post('login', [AuthenticatedSessionController::class, 'store']);
+    Route::post('login', [AuthenticatedSessionController::class, 'store'])->name('locale.login.store');
 
     Route::get('register', [RegisteredUserController::class, 'create'])->name('locale.register');
-    Route::post('register', [RegisteredUserController::class, 'store']);
+    Route::post('register', [RegisteredUserController::class, 'store'])->name('locale.register.store');
 
     // Use custom password reset controller
     Route::get('forgot-password', [NewPasswordResetController::class, 'create'])->name('locale.password.request');
@@ -27,10 +27,7 @@ Route::middleware(['guest'])->group(function () {
     // Route::post('reset-password', [NewPasswordController::class, 'store'])->name('password.update');
 });
 
-// Route d'activation de compte
-Route::get('activate/{id}/{hash}', [AccountActivationController::class, 'activate'])
-    ->middleware(['signed'])
-    ->name('account.activate');
+
 
 // Email verification routes are handled by Fortify automatically
 // No need to define them manually here

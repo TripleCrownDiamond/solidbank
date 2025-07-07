@@ -16,7 +16,7 @@ class TransferModal extends Component
 {
     public $showTransferModal = false;
     public $transferStep = 1;
-    public $maxTransferStep = 4;  // Source, Recipient, Amount, OTP
+    public $maxTransferStep = 3;  // Source, Recipient, Amount
     // Properties that are still managed by TransferModal
     public $availableBalance = 0;
     public $transferCurrency = '';
@@ -55,7 +55,10 @@ class TransferModal extends Component
         'amount-step-validity-changed' => 'handleAmountStepValidityChanged',
         'amount-validated' => 'handleAmountValidated',
         'transfer-confirmed' => 'handleTransferConfirmed',
-        'amount-step-validated' => 'handleAmountStepValidated'
+        'amount-step-validated' => 'handleAmountStepValidated',
+        'proceed-with-transfer' => 'proceedWithTransfer',
+        'update-transfer-amount' => 'handleTransferAmountUpdate',
+        'update-transfer-reason' => 'handleTransferReasonUpdate'
     ];
 
     public function rules()
@@ -126,6 +129,18 @@ class TransferModal extends Component
     public function handleAmountStepValidityChanged($data)
     {
         $this->amountStepValid = $data['valid'] ?? false;
+    }
+
+    public function handleTransferAmountUpdate($amount)
+    {
+        $this->transferAmount = $amount;
+        Log::info('Montant du transfert mis à jour:', ['amount' => $amount]);
+    }
+
+    public function handleTransferReasonUpdate($reason)
+    {
+        $this->transferReason = $reason;
+        Log::info('Raison du transfert mise à jour:', ['reason' => $reason]);
     }
 
     public function handleOtpVerified()
@@ -212,13 +227,112 @@ class TransferModal extends Component
             'two_factor_expires_at' => now()->addMinutes(10)
         ]);
 
-        // Envoyer l'e-mail OTP
-        Mail::to($user->email)->send(new TransferOtpMail($user, $otp));
+        // Envoyer l'e-mail OTP - DÉSACTIVÉ
+        // Mail::to($user->email)->send(new TransferOtpMail($user, $otp));
 
-        Log::info(__('transfers.otp_sent_log'), [
+        Log::info('OTP généré mais email non envoyé', [
             'user_id' => Auth::id(),
             'email' => Auth::user()->email
         ]);
+    }
+
+
+    
+    public function confirmTransfer()
+    {
+        Log::info('=== DEBUT confirmTransfer ===', [
+            'transferAmount' => $this->transferAmount,
+            'recipientName' => $this->recipientName,
+            'sourceType' => $this->sourceType,
+            'selectedSourceId' => $this->selectedSourceId,
+            'transferCurrency' => $this->transferCurrency,
+            'transferReason' => $this->transferReason
+        ]);
+        
+        try {
+            // Validation des données requises
+            if (empty($this->transferAmount) || $this->transferAmount <= 0) {
+                throw new \Exception('Montant de transfert invalide: ' . $this->transferAmount);
+            }
+            
+            if (empty($this->selectedSourceId)) {
+                throw new \Exception('Source de transfert non sélectionnée');
+            }
+            
+            if (empty($this->recipientName)) {
+                throw new \Exception('Nom du destinataire requis');
+            }
+            
+            // Créer la transaction avec les vraies valeurs
+            $transactionData = [
+                'user_id' => Auth::id(),
+                'type' => 'TRANSFER_EXTERNAL',
+                'amount' => $this->transferAmount,
+                'currency' => $this->transferCurrency ?: 'EUR',
+                'status' => Transaction::STATUS_BLOCKED,
+                'description' => $this->transferReason ?: 'Transfert',
+                'reference' => 'TRF-' . strtoupper(uniqid()),
+                'account_id' => $this->sourceType === 'account' ? $this->selectedSourceId : null,
+                'wallet_id' => $this->sourceType === 'wallet' ? $this->selectedSourceId : null,
+                'external_bank_info' => [
+                    'recipient_name' => $this->recipientName,
+                    'recipient_iban' => $this->recipientIban,
+                    'recipient_bank' => $this->recipientBank,
+                    'recipient_country' => $this->recipientCountry
+                ],
+                'is_blocked' => true,
+                'blocked_reason' => 'Transfert en attente de validation',
+                'blocked_at' => now()
+            ];
+            
+            Log::info('Données de transaction à créer:', $transactionData);
+            
+            $transaction = Transaction::create($transactionData);
+            
+            Log::info('Transaction créée avec succès', [
+                'transaction_id' => $transaction->id,
+                'status' => $transaction->status
+            ]);
+
+            // Stocker les données de transfert en session
+            $sessionData = [
+                'transfer_data' => [
+                    'transaction_id' => $transaction->id,
+                    'source_type' => $this->sourceType,
+                    'selected_source_id' => $this->selectedSourceId,
+                    'recipient_name' => $this->recipientName,
+                    'recipient_country' => $this->recipientCountry,
+                    'recipient_iban' => $this->recipientIban,
+                    'recipient_bank' => $this->recipientBank,
+                    'transfer_amount' => $this->transferAmount,
+                    'transfer_currency' => $this->transferCurrency ?: 'EUR',
+                    'transfer_reason' => $this->transferReason ?: 'Transfert',
+                    'available_balance' => $this->availableBalance
+                ]
+            ];
+            
+            session($sessionData);
+            Log::info('Données stockées en session:', $sessionData);
+
+            // Fermer le modal
+            $this->showTransferModal = false;
+            Log::info('Modal fermée');
+
+            // Rediriger vers la page de progression
+            Log::info('Dispatch de redirect-to-transfer-progress avec ID:', ['transferId' => $transaction->id]);
+            $this->dispatch('redirect-to-transfer-progress', [
+                'transferId' => $transaction->id
+            ]);
+            
+            Log::info('=== FIN confirmTransfer - SUCCES ===');
+            
+        } catch (\Exception $e) {
+            Log::error('Erreur dans confirmTransfer:', [
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            session()->flash('error', 'Erreur lors de la création du transfert: ' . $e->getMessage());
+        }
     }
 
     public function handleTransferConfirmed()
@@ -308,9 +422,8 @@ class TransferModal extends Component
             // Close transfer modal
             $this->showTransferModal = false;
 
-            // Rediriger vers la page de progression avec l'ID de la transaction
-            return redirect()->route('transfers.progress.resume', [
-                'locale' => app()->getLocale(),
+            // Dispatch event to redirect to transfer progress
+            $this->dispatch('redirect-to-transfer-progress', [
                 'transferId' => $transaction->id
             ]);
         } catch (\Exception $e) {

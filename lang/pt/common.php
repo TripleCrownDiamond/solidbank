@@ -291,6 +291,7 @@ return [
     'latest_transaction' => 'Última Transação',
     'total_cards' => 'Total de Cartões',
     'crypto_wallets' => 'Carteiras de Criptomoedas',
+    'your_wallets' => 'Suas Carteiras',
     'card' => 'Cartão',
     'crypto_wallet' => 'Carteira de Criptomoedas',
     'no_active_account_stats' => 'Nenhuma estatística de conta ativa disponível',
@@ -463,8 +464,8 @@ return [
     'profile' => 'Perfil',
     'api_tokens' => 'Tokens API',
     // Traduções dos e-mails de transação
-    'deposit_confirmed_email_subject' => 'Novo depósito confirmado',
-    'deposit_confirmed_email_message' => 'Depósito no valor de :amount foi confirmado e seu saldo foi creditado com sucesso.',
+    'deposit_confirmed_email_subject' => 'Novo Depósito Recebido',
+    'deposit_confirmed_email_message' => 'Você recebeu um depósito de :amount e sua conta foi creditada.',
     'transaction_cancelled_email_subject' => 'Sua transação foi cancelada',
     'transaction_cancelled_email_message' => 'Sua transação no valor de :amount foi cancelada por um administrador.',
     // Status adicionais de transações

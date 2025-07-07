@@ -53,8 +53,8 @@ class OtpVerification extends Component
             ]);
             Log::info('OtpVerification: User updated with OTP data');
 
-            Mail::to($user->email)->send(new TransferOtpMail($user, $user->two_factor_code));
-            Log::info('OtpVerification: OTP email sent successfully');
+            // Mail::to($user->email)->send(new TransferOtpMail($user, $user->two_factor_code));
+            Log::info('OtpVerification: OTP généré mais email non envoyé');
 
             $this->otpSent = true;
             $this->dispatch('alert', ['type' => 'success', 'message' => __('messages.otp_sent_successfully')]);

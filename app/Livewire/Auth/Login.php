@@ -110,12 +110,14 @@ class Login extends Component
                 /** @var \App\Models\User $user */
                 $user = Auth::user();
 
-                // Vérifier si le compte est actif
-                $account = $user->accounts()->first();
-                if (!$account || $account->status !== 'ACTIVE') {
-                    Auth::logout();
-                    $this->dispatch('alert', ['type' => 'error', 'message' => __('auth.account_inactive')]);
-                    return;
+                // Vérifier si le compte est actif (sauf pour les administrateurs)
+                if (!$user->is_admin) {
+                    $account = $user->accounts()->first();
+                    if (!$account || $account->status !== 'ACTIVE') {
+                        Auth::logout();
+                        $this->dispatch('alert', ['type' => 'error', 'message' => __('auth.account_inactive')]);
+                        return;
+                    }
                 }
 
                 // Connexion directe sans vérification 2FA

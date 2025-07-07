@@ -17,8 +17,8 @@
 @endphp
 
 <!-- resources/views/components/shared/language-switcher.blade.php -->
-<div class="relative inline-block text-left">
-    <button id="language-switcher" type="button"
+<div class="relative inline-block text-left" x-data="{ open: false }" @click.away="open = false">
+    <button @click="open = !open" type="button"
         class="inline-flex justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:bg-gray-800 dark:text-white dark:border-gray-600">
         <i class="fas fa-globe mr-2"></i>
         {{ $languageNames[$currentLocale] ?? strtoupper($currentLocale) }}
@@ -29,16 +29,16 @@
                 clip-rule="evenodd" />
         </svg>
     </button>
-    <div id="language-dropdown"
-        class="hidden origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100 dark:bg-gray-800 dark:ring-gray-700 z-50"
-        role="menu" aria-orientation="vertical" aria-labelledby="language-switcher">
+    <div x-show="open" x-transition
+        class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100 dark:bg-gray-800 dark:ring-gray-700 z-50"
+        role="menu" aria-orientation="vertical">
         <div class="py-1" role="menuitem">
             @foreach ($availableLocales as $localeCode)
                 @php
                     $languageName = $languageNames[$localeCode] ?? strtoupper($localeCode);
                     $isCurrentLocale = $localeCode === $currentLocale;
                 @endphp
-                <a href="{{ url($localeCode) }}"
+                <a href="{{ url('/set-locale/' . $localeCode) }}"
                     class="block px-4 py-2 text-sm {{ $isCurrentLocale ? 'bg-gray-100 text-gray-900 dark:bg-gray-700 dark:text-white font-medium' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white' }}">
                     @if($isCurrentLocale)
                         <i class="fas fa-check mr-2 text-green-500"></i>

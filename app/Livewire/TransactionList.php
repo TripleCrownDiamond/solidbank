@@ -32,105 +32,114 @@ class TransactionList extends Component
     ];
 
     // Méthodes pour traiter les transactions par l'admin
-    public function confirmPendingTransaction($transactionId)
-    {
-        if (!Auth::user()->is_admin) {
-            $this->dispatch('alert', [
-                'type' => 'error',
-                'message' => __('common.unauthorized_access')
-            ]);
-            return;
-        }
 
-        $transaction = null;  // Initialize $transaction outside the closure
-        try {
-            DB::transaction(function () use ($transactionId, &$transaction) {
-                $transaction = Transaction::findOrFail($transactionId);
-
-                if ($transaction->status !== 'PENDING') {
-                    throw new \Exception(__('common.transaction_cannot_be_confirmed'));
-                }
-
-                // Traiter selon le type de transaction
-                if ($transaction->type === 'DEPOSIT') {
-                    $this->processDeposit($transaction);
-                } elseif ($transaction->type === 'WITHDRAWAL') {
-                    $this->processWithdrawal($transaction);
-                }
-
-                // Mettre à jour le statut
-                $transaction->update([
-                    'status' => 'COMPLETED',
-                    'processed_by_admin_id' => Auth::id(),
-                    'processed_at' => now()
-                ]);
-
-                // Envoyer un email de confirmation
-                $this->sendTransactionEmail($transaction, 'confirmed');
-            });
-
-            $message = '';
-            if ($transaction?->type === 'DEPOSIT') {
-                $message = __('common.deposit_confirmed_successfully');
-            } elseif ($transaction?->type === 'WITHDRAWAL') {
-                $message = __('common.withdrawal_confirmed_successfully');
-            } else {
-                $message = __('common.transaction_confirmed_successfully');
-            }
-
-            $this->dispatch('alert', [
-                'type' => 'success',
-                'message' => $message
-            ]);
-            $this->dispatch('transactionUpdated');
-        } catch (\Exception $e) {
-            $this->dispatch('alert', [
-                'type' => 'error',
-                'message' => $e->getMessage()
-            ]);
-        }
-    }
-
-    public function cancelPendingTransaction($transactionId)
-    {
-        if (!Auth::user()->is_admin) {
-            $this->dispatch('alert', [
-                'type' => 'error',
-                'message' => __('common.unauthorized_access')
-            ]);
-            return;
-        }
-
-        try {
-            $transaction = Transaction::findOrFail($transactionId);
-
-            if ($transaction->status !== 'PENDING') {
-                throw new \Exception(__('common.transaction_cannot_be_cancelled'));
-            }
-
-            $transaction->update([
-                'status' => 'CANCELLED',
-                'processed_by_admin_id' => Auth::id(),
-                'processed_at' => now()
-            ]);
-
-            // Envoyer un email d'annulation
-            $this->sendTransactionEmail($transaction, 'cancelled');
-
-            $this->dispatch('alert', [
-                'type' => 'success',
-                'message' => __('common.transaction_cancelled_successfully')
-            ]);
-
-            $this->dispatch('transactionUpdated');
-        } catch (\Exception $e) {
-            Log::error('Transaction cancellation failed: ' . $e->getMessage());
-            $this->dispatch('alert', [
-                'type' => 'error',
-                'message' => $e->getMessage()
-            ]);
-        }
-    }
+    /*
+     * public function confirmPendingTransaction($transactionId)
+     * {
+     *     if (!Auth::user()->is_admin) {
+     *         $this->dispatch('alert', [
+     *             'type' => 'error',
+     *             'message' => __('common.unauthorized_access')
+     *         ]);
+     *         return;
+     *     }
+     *
+     *     $transaction = null;  // Initialize $transaction outside the closure
+     *     try {
+     *         DB::transaction(function () use ($transactionId, &$transaction) {
+     *             $transaction = Transaction::findOrFail($transactionId);
+     *
+     *             if ($transaction->status !== 'PENDING') {
+     *                 throw new \Exception(__('common.transaction_cannot_be_confirmed'));
+     *             }
+     *
+     *             // Traiter selon le type de transaction
+     *             if ($transaction->type === 'DEPOSIT') {
+     *                 $this->processDeposit($transaction);
+     *             } elseif ($transaction->type === 'WITHDRAWAL') {
+     *                 $this->processWithdrawal($transaction);
+     *             }
+     *
+     *             // Mettre à jour le statut
+     *             $transaction->update([
+     *                 'status' => 'COMPLETED',
+     *                 'processed_by_admin_id' => Auth::id(),
+     *                 'processed_at' => now()
+     *             ]);
+     *
+     *             dd($transaction->type);
+     *
+     *             // Envoyer un email de confirmation
+     *             if ($transaction->type !== 'WITHDRAWAL') {
+     *                 $this->sendTransactionEmail($transaction, 'confirmed');
+     *             }
+     *         });
+     *
+     *         $message = '';
+     *         if ($transaction?->type === 'DEPOSIT') {
+     *             $message = __('common.deposit_confirmed_successfully');
+     *         } elseif ($transaction?->type === 'WITHDRAWAL') {
+     *             $message = __('common.withdrawal_confirmed_successfully');
+     *         } else {
+     *             $message = __('common.transaction_confirmed_successfully');
+     *         }
+     *
+     *         $this->dispatch('alert', [
+     *             'type' => 'success',
+     *             'message' => $message
+     *         ]);
+     *         $this->dispatch('transactionUpdated');
+     *     } catch (\Exception $e) {
+     *         $this->dispatch('alert', [
+     *             'type' => 'error',
+     *             'message' => $e->getMessage()
+     *         ]);
+     *     }
+     * }
+     *
+     * public function cancelPendingTransaction($transactionId)
+     * {
+     *     if (!Auth::user()->is_admin) {
+     *         $this->dispatch('alert', [
+     *             'type' => 'error',
+     *             'message' => __('common.unauthorized_access')
+     *         ]);
+     *         return;
+     *     }
+     *
+     *     try {
+     *         $transaction = Transaction::findOrFail($transactionId);
+     *
+     *         if ($transaction->status !== 'PENDING') {
+     *             throw new \Exception(__('common.transaction_cannot_be_cancelled'));
+     *         }
+     *
+     *         $transaction->update([
+     *             'status' => 'CANCELLED',
+     *             'processed_by_admin_id' => Auth::id(),
+     *             'processed_at' => now()
+     *         ]);
+     *
+     *         // Envoyer un email d'annulation
+     *         if ($transaction->type !== 'WITHDRAWAL') {
+     *             $this->sendTransactionEmail($transaction, 'cancelled');
+     *         }
+     *
+     *         $this->dispatch('alert', [
+     *             'type' => 'success',
+     *             'message' => __('common.transaction_cancelled_successfully')
+     *         ]);
+     *
+     *         $this->dispatch('transactionUpdated');
+     *     } catch (\Exception $e) {
+     *         Log::error('Transaction cancellation failed: ' . $e->getMessage());
+     *         $this->dispatch('alert', [
+     *             'type' => 'error',
+     *             'message' => $e->getMessage()
+     *         ]);
+     *     }
+     * }
+     */
 
     private function processDeposit($transaction)
     {
@@ -167,6 +176,11 @@ class TransactionList extends Component
     private function sendTransactionEmail($transaction, $type)
     {
         try {
+            // Ne pas envoyer d'email pour les retraits (WITHDRAWAL)
+            if ($transaction->type === 'WITHDRAWAL') {
+                return;
+            }
+
             $user = $transaction->user;
             $amount = number_format($transaction->amount, 2);
             $currency = $transaction->currency ?: ($transaction->account ? $transaction->account->currency : ($transaction->wallet ? $transaction->wallet->cryptocurrency->symbol : 'EUR'));
@@ -181,17 +195,14 @@ class TransactionList extends Component
             if ($type === 'confirmed') {
                 // Utiliser un sujet et un message différents selon le type de transaction
                 $emailTemplate = 'emails.transaction-confirmed';
-                $emailSubject = 'common.transaction_confirmed_subject'; // Valeur par défaut
-                $messageKey = 'transaction_confirmed_email_message'; // Valeur par défaut
+                $emailSubject = 'common.transaction_confirmed_subject';  // Valeur par défaut
+                $messageKey = 'transaction_confirmed_email_message';  // Valeur par défaut
 
                 if ($transaction->type === 'DEPOSIT') {
                     $emailSubject = 'common.deposit_confirmed_email_subject';
                     $messageKey = 'deposit_confirmed_email_message';
-                } elseif ($transaction->type === 'WITHDRAWAL') {
-                    $emailSubject = 'common.withdrawal_confirmed_email_subject';
-                    $messageKey = 'withdrawal_confirmed_email_message';
                 }
-                
+
                 $emailMessage = __('common.' . $messageKey, ['amount' => "{$amount} {$currency}"]);
                 Mail::to($user->email)->send(new TransactionNotification(
                     __($emailSubject),
@@ -202,20 +213,17 @@ class TransactionList extends Component
                     $type === 'confirmed' ? 'emails.transaction-confirmed' : 'emails.transaction-cancelled'
                 ));
             } elseif ($type === 'cancelled') {
-                $emailSubject = 'common.transaction_cancelled_subject'; // Valeur par défaut
-                $messageKey = 'transaction_cancelled_email_message'; // Valeur par défaut
-                
+                $emailSubject = 'common.transaction_cancelled_subject';  // Valeur par défaut
+                $messageKey = 'transaction_cancelled_email_message';  // Valeur par défaut
+
                 if ($transaction->type === 'DEPOSIT') {
                     $emailSubject = 'common.deposit_cancelled_email_subject';
                     $messageKey = 'deposit_cancelled_email_message';
-                } elseif ($transaction->type === 'WITHDRAWAL') {
-                    $emailSubject = 'common.withdrawal_cancelled_email_subject';
-                    $messageKey = 'withdrawal_cancelled_email_message';
                 } elseif (in_array($transaction->type, ['TRANSFER_BANK', 'TRANSFER_CRYPTO', 'TRANSFER_EXTERNAL'])) {
                     $emailSubject = 'common.transfer_cancelled_email_subject';
                     $messageKey = 'transfer_cancelled_email_message';
                 }
-                
+
                 $emailMessage = __('common.' . $messageKey, ['amount' => "{$amount} {$currency}"]);
                 Mail::to($user->email)->send(new TransactionNotification(
                     __($emailSubject),
@@ -609,10 +617,10 @@ class TransactionList extends Component
         try {
             // Récupérer les informations de la banque depuis la config
             $config = \App\Models\Config::first();
-            
+
             $currency = $transaction->currency ?: ($transaction->account ? $transaction->account->currency : ($transaction->wallet ? $transaction->wallet->cryptocurrency->symbol : 'EUR'));
             $amount = number_format($transaction->amount, 2);
-            
+
             // Données pour le PDF
             $data = [
                 'transaction' => $transaction,
@@ -623,38 +631,37 @@ class TransactionList extends Component
                 'date' => $transaction->created_at->format('d/m/Y H:i'),
                 'reference' => $transaction->reference ?: 'TR-' . $transaction->id
             ];
-            
+
             // Créer le nom du fichier
             $filename = 'transfer_receipt_' . $transaction->id . '_' . time() . '.pdf';
             $filepath = storage_path('app/public/receipts/' . $filename);
-            
+
             // Créer le répertoire s'il n'existe pas
             if (!file_exists(dirname($filepath))) {
                 mkdir(dirname($filepath), 0755, true);
             }
-            
+
             // Générer le contenu HTML du reçu
             $html = view('pdf.transfer-receipt', $data)->render();
-            
+
             // Pour l'instant, on sauvegarde le HTML dans un fichier temporaire
             // Dans un vrai projet, on utiliserait une librairie comme DomPDF ou wkhtmltopdf
             file_put_contents($filepath . '.html', $html);
-            
+
             // Stocker le chemin du reçu dans la transaction
             $transaction->update([
                 'receipt_path' => 'receipts/' . $filename . '.html'
             ]);
-            
+
             Log::info(__('messages.transfer_receipt_generated'), [
                 'transaction_id' => $transaction->id,
                 'receipt_path' => $filepath
             ]);
-            
         } catch (\Exception $e) {
             Log::error(__('messages.transfer_receipt_generation_error') . ': ' . $e->getMessage());
         }
     }
-    
+
     /**
      * Envoyer un email de confirmation de transfert
      */
@@ -665,11 +672,11 @@ class TransactionList extends Component
             $currency = $transaction->currency ?: ($transaction->account ? $transaction->account->currency : ($transaction->wallet ? $transaction->wallet->cryptocurrency->symbol : 'EUR'));
             $amount = number_format($transaction->amount, 2);
             $amountWithCurrency = $amount . ' ' . $currency;
-            
+
             // Déterminer le sujet selon le type de transfert
             $emailSubject = '';
             $messageKey = '';
-            
+
             switch ($transaction->type) {
                 case 'TRANSFER_BANK':
                     $emailSubject = __('messages.bank_transfer_confirmed_subject');
@@ -687,15 +694,15 @@ class TransactionList extends Component
                     $emailSubject = __('messages.transfer_confirmed_subject');
                     $messageKey = 'transfer_confirmed_message';
             }
-            
+
             $emailMessage = __('messages.' . $messageKey, ['amount' => $amountWithCurrency]);
-            
+
             // Créer le lien de téléchargement du reçu
             $receiptUrl = '';
             if ($transaction->receipt_path) {
                 $receiptUrl = url('storage/' . $transaction->receipt_path);
             }
-            
+
             Mail::to($user->email)->send(new TransactionNotification(
                 $emailSubject,
                 $emailMessage,
@@ -705,12 +712,11 @@ class TransactionList extends Component
                 'emails.transaction-confirmed',
                 $receiptUrl
             ));
-            
         } catch (\Exception $e) {
             Log::error(__('messages.transfer_confirmation_email_error') . ': ' . $e->getMessage());
         }
     }
-    
+
     /**
      * Envoyer un email d'annulation de transfert
      */
@@ -721,11 +727,11 @@ class TransactionList extends Component
             $currency = $transaction->currency ?: ($transaction->account ? $transaction->account->currency : ($transaction->wallet ? $transaction->wallet->cryptocurrency->symbol : 'EUR'));
             $amount = number_format($transaction->amount, 2);
             $amountWithCurrency = $amount . ' ' . $currency;
-            
+
             // Déterminer le sujet selon le type de transfert
             $emailSubject = '';
             $messageKey = '';
-            
+
             switch ($transaction->type) {
                 case 'TRANSFER_BANK':
                     $emailSubject = __('messages.bank_transfer_cancelled_subject');
@@ -743,9 +749,9 @@ class TransactionList extends Component
                     $emailSubject = __('messages.transfer_cancelled_subject');
                     $messageKey = 'transfer_cancelled_message';
             }
-            
+
             $emailMessage = __('messages.' . $messageKey, ['amount' => $amountWithCurrency]);
-            
+
             Mail::to($user->email)->send(new TransactionNotification(
                 $emailSubject,
                 $emailMessage,
@@ -754,7 +760,6 @@ class TransactionList extends Component
                 $amount,
                 'emails.transaction-cancelled'
             ));
-            
         } catch (\Exception $e) {
             Log::error(__('messages.transfer_cancellation_email_error') . ': ' . $e->getMessage());
         }

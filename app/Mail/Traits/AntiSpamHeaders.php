@@ -26,7 +26,10 @@ trait AntiSpamHeaders
         $headers = $message->getHeaders();
         
         foreach ($allHeaders as $name => $value) {
-            $headers->addTextHeader($name, $value);
+            // Ignorer Return-Path car il doit être défini différemment
+            if ($name !== 'Return-Path') {
+                $headers->addTextHeader($name, $value);
+            }
         }
         
         // Ajouter des en-têtes dynamiques

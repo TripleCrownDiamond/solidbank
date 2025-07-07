@@ -40,6 +40,11 @@ Route::prefix('{locale}')->group(function () {
         require __DIR__ . '/auth.php';
         require __DIR__ . '/jetstream.php';
         
+        // Route d'activation de compte
+        Route::get('activate/{id}/{hash}', [\App\Http\Controllers\Auth\AccountActivationController::class, 'activate'])
+            ->middleware(['signed'])
+            ->name('account.activate');
+        
         // Page d'accueil
         Route::get('/', \App\Livewire\Pages\Home::class)->name('home');
 
@@ -128,22 +133,45 @@ Route::prefix('{locale}')->group(function () {
                 })->name('transfer-steps');
             });
         });
+        
+        // Route de test pour l'envoi d'emails
+        Route::get('/test-email', [TestMailController::class, 'sendTestEmail'])->name('test-email');
     });
 });
 
 // Route pour changer la langue
 Route::get('/set-locale/{locale}', function ($locale) {
-    // Liste des langues disponibles dans le dossier `lang/`
-    $availableLocales = array_map('basename', File::directories(lang_path()));
-
-    // Vérifie si la langue demandée est disponible
+    // Récupérer dynamiquement les langues disponibles (même logique que SetLocale middleware)
+    $availableLocales = collect(File::directories(base_path('lang')))
+        ->map(fn($dir) => basename($dir))
+        ->toArray();
+    
     if (in_array($locale, $availableLocales)) {
         session(['locale' => $locale]);
-        return redirect()->back();
+        
+        // Analyser l'URL précédente pour remplacer le segment de locale
+        $previousUrl = url()->previous();
+        $parsedUrl = parse_url($previousUrl);
+        $path = $parsedUrl['path'] ?? '/';
+        
+        // Extraire les segments du chemin et réindexer l'array
+        $segments = array_values(array_filter(explode('/', $path)));
+        
+        // Si le premier segment est une locale, le remplacer
+        if (!empty($segments) && isset($segments[0]) && in_array($segments[0], $availableLocales)) {
+            $segments[0] = $locale;
+        } else {
+            // Sinon, ajouter la nouvelle locale au début
+            array_unshift($segments, $locale);
+        }
+        
+        // Reconstruire l'URL
+        $newPath = '/' . implode('/', $segments);
+        $newUrl = ($parsedUrl['scheme'] ?? 'http') . '://' . ($parsedUrl['host'] ?? request()->getHost()) . 
+                  (isset($parsedUrl['port']) ? ':' . $parsedUrl['port'] : '') . $newPath;
+        
+        return redirect($newUrl);
     }
-
-    abort(404);  // Langue non valide
-});
-
-// Route de test pour l'envoi d'emails
-Route::get('/test-email', [TestMailController::class, 'sendTestEmail']);
+    
+    return redirect()->back();
+})->name('set-locale');

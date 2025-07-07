@@ -207,8 +207,8 @@ return [
     'account_deleted_email_message' => 'Bonjour, votre compte a été définitivement supprimé de notre système.',
     'processing' => 'Traitement...',
     'verifying' => 'Vérification en cours...',
-    'deposit_confirmed_email_subject' => 'Nouveau dépôt confirmé',
-    'deposit_confirmed_email_message' => 'Nous avons le plaisir de vous informer que votre dépôt de :amount a été confirmé et crédité sur votre compte.',
+    'deposit_confirmed_email_subject' => 'Nouveau dépôt reçu',
+    'deposit_confirmed_email_message' => 'Vous avez reçu un dépôt de :amount et votre compte a été crédité.',
     'withdrawal_confirmed_email_subject' => 'Nouveau retrait confirmé',
     'withdrawal_confirmed_email_message' => 'Nous avons le plaisir de vous informer que votre retrait de :amount a été confirmé et traité.',
     'transfer_funds' => 'Transférer des Fonds',
@@ -865,9 +865,9 @@ return [
         'step1' => 'Notre équipe examinera votre message dans les plus brefs délais',
         'step2' => 'Vous recevrez une réponse personnalisée dans les 24 heures',
         'step3' => 'Nous restons disponibles pour toute question complémentaire',
-        'next_steps_content' => 'Notre équipe de support examinera votre message et vous contactera dans les 24 heures pendant les jours ouvrables. Pour les demandes urgentes, n\'hésitez pas à nous appeler directement.',
+        'next_steps_content' => "Notre équipe de support examinera votre message et vous contactera dans les 24 heures pendant les jours ouvrables. Pour les demandes urgentes, n'hésitez pas à nous appeler directement.",
         'contact_info' => 'Informations de contact :',
         'thank_you' => 'Merci de votre confiance.',
-        'team_signature' => 'L\'équipe :app_name'
+        'team_signature' => "L'équipe :app_name"
     ],
 ];

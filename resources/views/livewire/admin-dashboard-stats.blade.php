@@ -65,15 +65,15 @@
                         <div class="text-right">
                             @if(isset($card['isCountry']) && $card['isCountry'])
                                 <p class="text-lg font-bold text-gray-900 dark:text-white group-hover:text-{{ $card['color'] }} transition-colors duration-300 leading-tight">
-                                    @if ($topCountryUsers)
-                                        {{ $topCountryUsers->country->english_name }}
-                                        <span class="block text-sm font-medium text-gray-500 dark:text-gray-400 group-hover:text-{{ $card['color'] }}/70">({{ $topCountryUsers->user_count }})</span>
-                                    @else
-                                        <span class="text-gray-400">N/A</span>
-                                    @endif
-                                </p>
-                            @else
-                                <p class="text-2xl font-bold text-gray-900 dark:text-white group-hover:text-{{ $card['color'] }} transition-colors duration-300">{{ $card['value'] }}</p>
+                                @if ($topCountryUsers)
+                                    {{ $topCountryUsers->country->english_name }}
+                                    <span class="block text-sm font-medium text-gray-500 dark:text-gray-400 group-hover:text-{{ $card['color'] }}/70">({{ $topCountryUsers->user_count }})</span>
+                                @else
+                                    <span class="text-gray-500 dark:text-gray-400">N/A</span>
+                                @endif
+                            </p>
+                        @else
+                            <p class="text-2xl font-bold text-gray-900 dark:text-white group-hover:text-{{ $card['color'] }} transition-colors duration-300">{{ $card['value'] }}</p>
                             @endif
                         </div>
                     </div>
