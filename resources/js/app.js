@@ -10,6 +10,37 @@ import "./transfer-progress";
 // Start Alpine.js after components are loaded
 Alpine.start();
 
+// Global error handler to suppress 419 session expired alerts
+window.addEventListener('error', function(event) {
+    // Check if the error is related to session expiration
+    if (event.message && event.message.includes('419')) {
+        event.preventDefault();
+        console.log('Session expired error intercepted and suppressed');
+        return false;
+    }
+});
+
+// Intercept fetch requests to handle 419 errors
+const originalFetch = window.fetch;
+window.fetch = function(...args) {
+    return originalFetch.apply(this, args).then(response => {
+        if (response.status === 419) {
+            // Handle 419 silently - just refresh the page
+            console.log('419 error intercepted, refreshing page silently');
+            window.location.reload();
+            return new Response('', { status: 200 });
+        }
+        return response;
+    }).catch(error => {
+        if (error.message && error.message.includes('419')) {
+            console.log('419 error in fetch caught, refreshing page silently');
+            window.location.reload();
+            return new Response('', { status: 200 });
+        }
+        throw error;
+    });
+};
+
 // Language Switcher Logic
 document.addEventListener("DOMContentLoaded", function () {
     // Toggle language dropdown (Desktop)
@@ -340,6 +371,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
 if (window.Livewire) {
     document.addEventListener("livewire:initialized", () => {
+        // Intercept Livewire errors
+        Livewire.on('error', (error) => {
+            if (error && error.message && error.message.includes('419')) {
+                console.log('Livewire 419 error intercepted, refreshing page silently');
+                window.location.reload();
+                return false;
+            }
+        });
+
         Livewire.on("copy-to-clipboard", (event) => {
             console.log("Livewire copy-to-clipboard event:", event);
             const payload = event[0] || event;

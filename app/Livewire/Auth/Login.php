@@ -29,6 +29,12 @@ class Login extends Component
         if (session('email')) {
             session()->forget('email');
         }
+
+        // Handle silent session expired
+        if (session('silent_session_expired')) {
+            session()->forget('silent_session_expired');
+            // Don't show any alert, just continue silently
+        }
     }
 
     protected function ensureIsNotRateLimited(): void
@@ -95,9 +101,8 @@ class Login extends Component
                 $this->dispatch('alert', ['type' => 'error', 'message' => __('login.failed')]);
             }
         } catch (\Illuminate\Session\TokenMismatchException $e) {
-            // Gérer l'erreur CSRF
-            $this->dispatch('alert', ['type' => 'error', 'message' => __('Session expirée. Veuillez recharger la page.')]);
-            // Optionnel : rediriger vers la page de login
+            // Gérer l'erreur CSRF silencieusement
+            // Rediriger vers la page de login sans afficher d'alerte
             $this->redirect(route('login'));
         } catch (\Exception $e) {
             // Log l'erreur pour le débogage
