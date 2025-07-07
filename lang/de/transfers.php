@@ -269,5 +269,5 @@ return [
     'reopen_unlock_modal' => 'Entsperr-Modal erneut öffnen',
     'unlock_transaction' => 'Transaktion entsperren',
     'need_help' => 'Brauchen Sie Hilfe?',
-    'contact_bank_for_unlock' => 'Bitte kontaktieren Sie die Bank unter :email, um Ihre Überweisung zu entsperren.',
+    'contact_bank_for_unlock' => 'Bitte kontaktieren Sie die Bank unter folgender Adresse, um Ihre Überweisung zu entsperren:',
 ];

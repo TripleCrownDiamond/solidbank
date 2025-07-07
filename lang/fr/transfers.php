@@ -339,5 +339,5 @@ return [
     'reopen_unlock_modal' => 'Rouvrir la modale de déblocage',
     'unlock_transaction' => 'Débloquer la transaction',
     'need_help' => 'Besoin d\'aide ?',
-    'contact_bank_for_unlock' => 'Veuillez contacter la banque à l\'adresse :email pour débloquer votre transfert.',
+    'contact_bank_for_unlock' => 'Veuillez contacter la banque à l\'adresse suivante pour débloquer votre transfert :',
 ];

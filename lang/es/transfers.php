@@ -302,5 +302,5 @@ return [
     'reopen_unlock_modal' => 'Reabrir modal de desbloqueo',
     'unlock_transaction' => 'Desbloquear transacción',
     'need_help' => '¿Necesita ayuda?',
-    'contact_bank_for_unlock' => 'Por favor contacte al banco en :email para desbloquear su transferencia.',
+    'contact_bank_for_unlock' => 'Por favor contacte al banco en la siguiente dirección para desbloquear su transferencia:',
 ];
