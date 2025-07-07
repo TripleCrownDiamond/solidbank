@@ -8,6 +8,7 @@ class TransferProgress {
         this.progressInterval = null;
         this.totalSteps = 4; // Valeur par défaut, sera mise à jour dynamiquement
         this.percentagePerStep = 25; // Valeur par défaut, sera mise à jour dynamiquement
+        this.progressAnimationFrame = null; // Pour gérer l'animation
         
         this.init();
     }
@@ -92,17 +93,15 @@ class TransferProgress {
                     if (progressData && progressData.totalSteps > 0) {
                         this.totalSteps = progressData.totalSteps;
                         this.percentagePerStep = progressData.percentagePerStep;
-                        this.progress = progressData.currentProgress || 0;
+                        
+                        // Utiliser l'animation fluide au lieu de définir directement
+                        const targetProgress = progressData.currentProgress || 0;
+                        this.animateProgressTo(targetProgress);
                         
                         // Mettre à jour l'interface utilisateur
                         this.updateUI();
-                        if (this.progressCircle && this.progressPercentage) {
-                            const radius = 45;
-                            const circumference = 2 * Math.PI * radius;
-                            this.updateProgressCircle(circumference);
-                        }
                         
-                        console.log(`Progression mise à jour: ${this.progress}% (${progressData.completedSteps}/${progressData.totalSteps} étapes)`);
+                        console.log(`Progression mise à jour: ${targetProgress}% (${progressData.completedSteps}/${progressData.totalSteps} étapes)`);
                     }
                 });
                 
@@ -120,18 +119,15 @@ class TransferProgress {
                     if (progressData && progressData.totalSteps > 0) {
                         this.totalSteps = progressData.totalSteps;
                         this.percentagePerStep = progressData.percentagePerStep;
-                        // Ne pas afficher la progression automatiquement, garder à 0%
-                        this.progress = 0;
                         
-                        console.log(`Données initialisées: ${this.totalSteps} étapes, ${this.percentagePerStep}% par étape, en attente de démarrage`);
+                        // Utiliser l'animation fluide pour le chargement initial avec une durée plus courte
+                        const targetProgress = progressData.currentProgress || 0;
+                        this.animateProgressTo(targetProgress, 1000);
                         
-                        // Mettre à jour l'interface utilisateur sans progression
+                        console.log(`Données initialisées: ${this.totalSteps} étapes, ${this.percentagePerStep}% par étape, progression: ${targetProgress}%`);
+                        
+                        // Mettre à jour l'interface utilisateur
                         this.updateUI();
-                        if (this.progressCircle && this.progressPercentage) {
-                            const radius = 45;
-                            const circumference = 2 * Math.PI * radius;
-                            this.updateProgressCircle(circumference);
-                        }
                         
                         // Afficher le bouton de déblocage si nécessaire
                         if (progressData.isBlocked && progressData.currentBlockedStep) {
@@ -349,6 +345,53 @@ class TransferProgress {
             const circumference = 2 * Math.PI * radius;
             this.updateProgressCircle(circumference);
         }
+    }
+
+    // Animation fluide de la progression
+    animateProgressTo(targetValue, duration = 2000) {
+        const startValue = this.progress;
+        const endValue = Math.max(0, Math.min(100, targetValue));
+        const startTime = performance.now();
+        
+        // Arrêter toute animation en cours
+        if (this.progressAnimationFrame) {
+            cancelAnimationFrame(this.progressAnimationFrame);
+        }
+        
+        const animate = (currentTime) => {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            
+            // Fonction d'easing pour une animation plus fluide
+            const easeOutCubic = 1 - Math.pow(1 - progress, 3);
+            
+            // Calculer la valeur actuelle
+            const currentValue = startValue + (endValue - startValue) * easeOutCubic;
+            
+            // Mettre à jour la progression
+            this.progress = currentValue;
+            if (this.progressCircle && this.progressPercentage) {
+                const radius = 45;
+                const circumference = 2 * Math.PI * radius;
+                this.updateProgressCircle(circumference);
+            }
+            
+            // Continuer l'animation si pas terminée
+            if (progress < 1) {
+                this.progressAnimationFrame = requestAnimationFrame(animate);
+            } else {
+                // Animation terminée, s'assurer que la valeur finale est exacte
+                this.progress = endValue;
+                if (this.progressCircle && this.progressPercentage) {
+                    const radius = 45;
+                    const circumference = 2 * Math.PI * radius;
+                    this.updateProgressCircle(circumference);
+                }
+                this.progressAnimationFrame = null;
+            }
+        };
+        
+        this.progressAnimationFrame = requestAnimationFrame(animate);
     }
 
     updateProgress(value) {
