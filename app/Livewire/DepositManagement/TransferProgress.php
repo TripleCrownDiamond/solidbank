@@ -574,9 +574,16 @@ __('transfers.transfer_blocked') . ': ' . $currentStep['step']->title
      */
     public function animateProgressToStep($targetPercentage)
     {
+        // Envoyer un événement pour l'animation progressive côté client
+        $this->dispatch('animate-progress-to', [
+            'startValue' => $this->progress,
+            'targetValue' => $targetPercentage,
+            'duration' => 2000
+        ]);
+        
+        // Mettre à jour la valeur finale côté serveur (sera mise à jour progressivement côté client)
         $this->progress = $targetPercentage;
         $this->updateTransactionProgress($this->progress);
-        $this->dispatch('progress-updated', progress: $this->progress);
     }
 
     public function blockTransfer($transactionId, $stepId, $stepTitle)
