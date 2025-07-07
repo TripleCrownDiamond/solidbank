@@ -58,11 +58,18 @@
         </div>
     </div>
 @elseif($transferStatus === 'blocked')
-    <div class="flex justify-center mb-6">
-        <div class="inline-flex items-center px-6 py-3 text-red-600 dark:text-red-400 font-medium">
+    <div class="flex flex-col items-center mb-6 space-y-4">
+        <div class="inline-flex items-center px-6 py-3 text-red-600 dark:text-red-400 font-medium bg-red-50 dark:bg-red-900/20 rounded-lg border border-red-200 dark:border-red-800">
             <i class="fa-solid fa-exclamation-triangle mr-2"></i>
             {{ __('transfers.transfer_blocked') }}
         </div>
+        <button 
+            wire:click="reopenStepModal" 
+            class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white font-medium rounded-lg transition-colors duration-200"
+        >
+            <i class="fa-solid fa-unlock mr-2"></i>
+            {{ __('transfers.reopen_unlock_modal') }}
+        </button>
     </div>
 @elseif($transferStatus === 'completed')
     <div class="flex justify-center mb-6">

@@ -198,6 +198,9 @@ return [
     
     // New translations for transfer states
     'ready_to_start' => 'Ready to start transfer',
+    'reopen_unlock_modal' => 'Reopen Unlock Modal',
+    'need_help' => 'Need Help?',
+    'contact_bank_for_unlock' => 'Please contact the bank at :email to unblock your transfer.',
     'start_transfer' => 'Start Transfer',
     'starting_transfer' => 'Starting...',
     'transfer_starting' => 'Starting transfer...',

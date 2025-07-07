@@ -154,6 +154,30 @@
                 </div>
                 @endif
                 
+                <!-- Bank Contact Information -->
+                @php
+                    $config = \App\Models\Config::first();
+                    $bankEmail = $config->bank_email ?? $config->notification_email ?? 'support@bank.com';
+                @endphp
+                <div class="mb-6 p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700 rounded-lg">
+                    <div class="flex items-start space-x-3">
+                        <div class="flex-shrink-0">
+                            <i class="fa-solid fa-info-circle text-blue-600 dark:text-blue-400 text-lg" aria-hidden="true"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="text-sm font-medium text-blue-800 dark:text-blue-200 mb-1">
+                                {{ __('transfers.need_help') }}
+                            </h4>
+                            <p class="text-sm text-blue-700 dark:text-blue-300 leading-relaxed">
+                                {{ __('transfers.contact_bank_for_unlock') }}
+                                <a href="mailto:{{ $bankEmail }}" class="font-medium underline hover:no-underline">
+                                    {{ $bankEmail }}
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
                 <!-- Code Input -->
                 <div class="mb-6">
                     <label for="unlock-code" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">

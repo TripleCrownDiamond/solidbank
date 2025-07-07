@@ -1101,6 +1101,54 @@ __('transfers.transfer_blocked') . ': ' . $currentStep['step']->title
         }
     }
 
+    /**
+     * Rouvrir la modale de déblocage pour un transfert bloqué
+     */
+    public function reopenStepModal()
+    {
+        try {
+            // Vérifier que le transfert est bloqué
+            if ($this->transferStatus !== 'blocked') {
+                Log::warning('Tentative de réouverture de la modale sur un transfert non bloqué', [
+                    'transferStatus' => $this->transferStatus,
+                    'transaction_id' => $this->transaction ? $this->transaction->id : null
+                ]);
+                return;
+            }
+
+            // S'assurer que les données de l'étape courante sont disponibles
+            if (!$this->currentStepData) {
+                // Essayer de récupérer les données de l'étape courante
+                if (empty($this->stepsWithPercentages)) {
+                    $this->prepareStepsWithPercentages();
+                }
+
+                $nextStepIndex = $this->findNextIncompleteStep();
+                if ($nextStepIndex !== null && isset($this->stepsWithPercentages[$nextStepIndex])) {
+                    $this->currentStepData = $this->stepsWithPercentages[$nextStepIndex];
+                }
+            }
+
+            // Réinitialiser les erreurs et le code
+            $this->unlockError = '';
+            $this->unlockCode = '';
+            $this->isVerifying = false;
+
+            // Afficher la modale
+            $this->showStepModal = true;
+
+            Log::info('Modale de déblocage rouverte avec succès', [
+                'transaction_id' => $this->transaction ? $this->transaction->id : null,
+                'currentStepData' => $this->currentStepData ? $this->currentStepData['step']->title : 'Non disponible'
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Erreur lors de la réouverture de la modale de déblocage: ' . $e->getMessage(), [
+                'exception' => $e,
+                'transaction_id' => $this->transaction ? $this->transaction->id : null
+            ]);
+        }
+    }
+
     public function render()
     {
         return view('livewire.deposit-management.transfer-progress');
