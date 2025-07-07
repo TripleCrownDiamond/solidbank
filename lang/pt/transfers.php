@@ -168,8 +168,7 @@ return [
     'verify_otp' => 'Verificar Código OTP',
     'otp_verified_title' => 'Transferência Verificada',
     // Página de progresso
-    'transfer_progress' => 'Progresso da Transferência',
-    'please_wait_processing' => 'Por favor, aguarde enquanto sua transferência está sendo processada',
+    'transfer_progress' => 'Progresso da transação',
     'transfer_details' => 'Detalhes da Transferência',
     'amount_label' => 'Valor',
     'reference_label' => 'Referência',

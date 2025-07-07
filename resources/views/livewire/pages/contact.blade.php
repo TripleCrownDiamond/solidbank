@@ -84,7 +84,7 @@
                             <p class="mt-2 text-base text-gray-500 dark:text-gray-300">
                                 {{ __('common.send_email_anytime') }}
                             </p>
-                            <a href="mailto:{{ \App\Models\Config::first()?->bank_email ?? 'contact@Bred Fin.com' }}" class="text-brand-primary hover:text-brand-accent font-medium break-all">{{ \App\Models\Config::first()?->bank_email ?? 'contact@Bred Fin.com' }}</a>
+                            <a href="mailto:{{ \App\Models\Config::first()?->bank_email ?? 'contact@bred-fin.com' }}" class="text-brand-primary hover:text-brand-accent font-medium break-all">{{ \App\Models\Config::first()?->bank_email ?? 'contact@bred-fin.com' }}</a>
                         </div>
                     </div>
                     

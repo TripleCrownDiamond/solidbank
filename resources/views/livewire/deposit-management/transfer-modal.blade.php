@@ -145,6 +145,7 @@
                                         wire:click="confirmTransfer" 
                                         wire:loading.attr="disabled"
                                         wire:target="confirmTransfer"
+                                        @disabled(!$amountStepValid || $amountError || empty($transferAmount) || $transferAmount <= 0 || $transferAmount > $availableBalance)
                                         class="px-6 py-2 bg-brand-primary hover:bg-brand-primary/90 text-white rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                                         id="confirmBtn">
                                     <span wire:loading.remove wire:target="confirmTransfer">

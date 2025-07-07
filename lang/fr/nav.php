@@ -6,5 +6,5 @@ return [
     'contact' => 'Contact',
     'login' => 'Connexion',
     'register' => "S'inscrire",
-    'dashboard' => 'Tableau de bord',
+    'dashboard' => 'Mon Compte',
 ];

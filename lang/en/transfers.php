@@ -169,8 +169,8 @@ return [
     'otp_verified_title' => 'Transfer Verified',
     
     // Progress page
-    'transfer_progress' => 'Transfer Progress',
-    'please_wait_processing' => 'Please wait while your transfer is being processed',
+    'transfer_progress' => 'Transaction progress',
+    'please_wait_processing' => '',
     'transfer_details' => 'Transfer Details',
     'amount_label' => 'Amount',
     'reference_label' => 'Reference',

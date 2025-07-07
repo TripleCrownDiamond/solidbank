@@ -121,8 +121,8 @@
                 @endphp
                 <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border-light);">
                     <p style="margin: 0; font-size: 12px; color: var(--text-muted); line-height: 1.4;">
-                        <strong>{{ $bankConfig->bank_name ?? 'Bred Fin' }} - Services Bancaires Numériques</strong><br>
-                        {{ $bankConfig->bank_address ?? '123 Avenue des Finances, 75001 Paris, France' }}<br>
+                        <strong>{{ $bankConfig->bank_name ?? config('app.name') }} - Services Bancaires Numériques</strong><br>
+                        {{ $bankConfig->bank_address ?? '29 Rue du Faubourg, Paris, France' }}<br>
                         Email: {{ $bankConfig->bank_email ?? 'contact@bred-fin.com' }}
                     </p>
                 </div>

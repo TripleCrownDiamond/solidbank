@@ -263,6 +263,11 @@ class TransferModal extends Component
                 throw new \Exception('Nom du destinataire requis');
             }
             
+            // Vérification du solde disponible
+            if ($this->transferAmount > $this->availableBalance) {
+                throw new \Exception('Solde insuffisant. Montant demandé: ' . $this->transferAmount . ' ' . $this->transferCurrency . ', Solde disponible: ' . $this->availableBalance . ' ' . $this->transferCurrency);
+            }
+            
             // Créer la transaction avec les vraies valeurs
             $transactionData = [
                 'user_id' => Auth::id(),
@@ -345,6 +350,11 @@ class TransferModal extends Component
     public function showProgressAndSubmitTransfer()
     {
         try {
+            // Validation du solde avant de procéder
+            if ($this->transferAmount > $this->availableBalance) {
+                throw new \Exception('Solde insuffisant. Montant demandé: ' . $this->transferAmount . ' ' . $this->transferCurrency . ', Solde disponible: ' . $this->availableBalance . ' ' . $this->transferCurrency);
+            }
+            
             // Récupérer le groupe d'étapes du compte
             $transferStepGroup = null;
             $firstStep = null;

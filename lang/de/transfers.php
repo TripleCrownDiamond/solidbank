@@ -135,8 +135,8 @@ return [
     'verify_otp' => 'OTP-Code bestätigen',
     'otp_verified_title' => 'Überweisung verifiziert',
     // Progress page
-    'transfer_progress' => 'Überweisungsfortschritt',
-    'please_wait_processing' => 'Bitte warten Sie, während Ihre Überweisung bearbeitet wird',
+    'transfer_progress' => 'Transaktionsfortschritt',
+    'please_wait_processing' => '',
     'transfer_details' => 'Überweisungsdetails',
     'amount_label' => 'Betrag',
     'reference_label' => 'Referenz',
