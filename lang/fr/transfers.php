@@ -337,6 +337,7 @@ return [
     'external_transfer_cancelled_message' => 'Votre transfert externe de :amount a été annulé.',
     'transfer_cancelled_message' => 'Votre transfert de :amount a été annulé.',
     'reopen_unlock_modal' => 'Rouvrir la modale de déblocage',
+    'unlock_transaction' => 'Débloquer la transaction',
     'need_help' => 'Besoin d\'aide ?',
     'contact_bank_for_unlock' => 'Veuillez contacter la banque à l\'adresse :email pour débloquer votre transfert.',
 ];

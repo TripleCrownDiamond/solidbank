@@ -298,4 +298,8 @@ return [
     'crypto_transfer_cancelled_message' => 'Sua transferência de cripto de :amount foi cancelada.',
     'external_transfer_cancelled_message' => 'Sua transferência externa de :amount foi cancelada.',
     'transfer_cancelled_message' => 'Sua transferência de :amount foi cancelada.',
+    'reopen_unlock_modal' => 'Reabrir modal de desbloqueio',
+    'unlock_transaction' => 'Desbloquear transação',
+    'need_help' => 'Precisa de ajuda?',
+    'contact_bank_for_unlock' => 'Por favor, entre em contato com o banco em :email para desbloquear sua transferência.',
 ];

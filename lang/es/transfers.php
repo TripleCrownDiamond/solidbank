@@ -298,5 +298,9 @@ return [
     'bank_transfer_cancelled_message' => 'Tu transferencia bancaria de :amount ha sido cancelada.',
     'crypto_transfer_cancelled_message' => 'Tu transferencia cripto de :amount ha sido cancelada.',
     'external_transfer_cancelled_message' => 'Tu transferencia externa de :amount ha sido cancelada.',
-    'transfer_cancelled_message' => 'Tu transferencia de :amount ha sido cancelada.',
+    'transfer_cancelled_message' => 'Su transferencia de :amount ha sido cancelada.',
+    'reopen_unlock_modal' => 'Reabrir modal de desbloqueo',
+    'unlock_transaction' => 'Desbloquear transacción',
+    'need_help' => '¿Necesita ayuda?',
+    'contact_bank_for_unlock' => 'Por favor contacte al banco en :email para desbloquear su transferencia.',
 ];

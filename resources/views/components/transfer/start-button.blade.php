@@ -68,7 +68,7 @@
             class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white font-medium rounded-lg transition-colors duration-200"
         >
             <i class="fa-solid fa-unlock mr-2"></i>
-            {{ __('transfers.reopen_unlock_modal') }}
+            {{ __('transfers.unlock_transaction') }}
         </button>
     </div>
 @elseif($transferStatus === 'completed')
