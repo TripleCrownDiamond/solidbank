@@ -235,10 +235,8 @@ class TransferProgress {
             const offset = circumference - (this.progress / 100) * circumference;
             this.progressCircle.style.strokeDashoffset = offset;
             
-            // Afficher avec une décimale pendant l'animation pour plus de fluidité
-            const displayValue = this.progressAnimationFrame ? 
-                Math.round(this.progress * 10) / 10 : // Une décimale pendant l'animation
-                Math.round(this.progress); // Entier quand l'animation est terminée
+            // Afficher le pourcentage en incréments de +1 pendant l'animation
+            const displayValue = Math.round(this.progress);
             
             this.progressPercentage.textContent = `${displayValue}%`;
         }
