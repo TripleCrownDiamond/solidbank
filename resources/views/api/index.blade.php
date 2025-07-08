@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <x-admin-header 
-            title="API Tokens" 
+            :title="__('common.api_tokens')" 
             icon="fa-solid fa-key" 
         />
     </x-slot>

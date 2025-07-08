@@ -81,7 +81,7 @@
                                         </button>
                                     @endif
 
-                                    <button class="cursor-pointer ms-6 text-sm text-red-500" wire:click="deleteApiToken({{ $token->id }})" wire:confirm="{{ __('Are you sure you would like to delete this API token?') }}">
+                                    <button class="cursor-pointer ms-6 text-sm text-red-500" wire:click="deleteApiToken({{ $token->id }})" wire:confirm="{{ __('common.confirm_delete_api_token') }}">
                                         {{ __('Delete') }}
                                     </button>
                                 </div>

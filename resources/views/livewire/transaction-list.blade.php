@@ -91,6 +91,9 @@
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                                 {{ __('common.transaction_actions') }}
                             </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                                Suppression
+                            </th>
                             @endif
                         </tr>
                     </thead>
@@ -265,6 +268,25 @@
                                         </span>
                                     @endif
                                 </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                     @if($transaction->status === 'COMPLETED')
+                                         <button wire:click="deleteTransaction({{ $transaction->id }})" 
+                                                 wire:confirm="{{ __('common.confirm_delete_transaction') }}"
+                                                 wire:loading.attr="disabled"
+                                                 wire:target="deleteTransaction({{ $transaction->id }})"
+                                                 class="inline-flex items-center justify-center w-8 h-8 bg-red-600 hover:bg-red-700 text-white rounded-md transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                                                 title="{{ __('common.delete_transaction') }}">
+                                             <span wire:loading.remove wire:target="deleteTransaction({{ $transaction->id }})">
+                                                 <i class="fas fa-trash"></i>
+                                             </span>
+                                             <span wire:loading wire:target="deleteTransaction({{ $transaction->id }})">
+                                                 <i class="fas fa-spinner fa-spin"></i>
+                                             </span>
+                                         </button>
+                                     @else
+                                         <span class="text-gray-500 dark:text-gray-400">-</span>
+                                     @endif
+                                 </td>
                                 @endif
                             </tr>
                         @endforeach

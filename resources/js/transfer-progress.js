@@ -105,26 +105,25 @@ class TransferProgress {
                     }
                 });
                 
+                // Écouter l'événement animate-progress-to depuis le serveur
+                Livewire.on('animate-progress-to', (data) => {
+                    console.log('Événement animate-progress-to reçu:', data);
+                    if (data && typeof data.targetValue !== 'undefined') {
+                        const startValue = data.startValue || this.progress;
+                        const targetValue = data.targetValue;
+                        const duration = data.duration || 2000;
+                        
+                        console.log(`Animation serveur: de ${startValue}% vers ${targetValue}% en ${duration}ms`);
+                        this.animateProgressTo(targetValue, duration);
+                    }
+                });
+                
                 Livewire.on('transferCompleted', () => {
                     console.log(window.translations?.transfers?.transfer_completed_event_received || 'Transfer completed event received');
                     this.setProgress(100);
                     this.setStatusMessage(window.translations?.transfers?.transfer_submitted_successfully || 'Soumis avec succès');
                     this.hideModal();
                     this.hideUnlockButton();
-                });
-                
-                Livewire.on('progress-updated', (event) => {
-                    console.log('Progress updated event received:', event);
-                    if (event.progress !== undefined) {
-                        this.setProgressDirect(event.progress);
-                    }
-                });
-                
-                Livewire.on('animate-progress-to', (data) => {
-                    console.log('Animate progress to event received:', data);
-                    if (data && data.targetValue !== undefined) {
-                        this.animateProgressTo(data.targetValue, data.duration || 2000);
-                    }
                 });
                 
                 // Écouter l'événement progressDataLoaded émis depuis mount()
@@ -373,7 +372,7 @@ class TransferProgress {
     }
 
     // Animation fluide de la progression avec incréments de +1
-    animateProgressTo(targetValue, duration = 2000) {
+    animateProgressTo(targetValue, duration = 5000) {
         const startValue = Math.round(this.progress);
         const endValue = Math.max(0, Math.min(100, Math.round(targetValue)));
         
@@ -381,7 +380,7 @@ class TransferProgress {
         
         // Arrêter toute animation en cours
         if (this.progressAnimationFrame) {
-            cancelAnimationFrame(this.progressAnimationFrame);
+            clearTimeout(this.progressAnimationFrame);
         }
         
         // Si pas de différence, pas d'animation
@@ -396,7 +395,7 @@ class TransferProgress {
         }
         
         const totalSteps = Math.abs(endValue - startValue);
-        const stepDuration = duration / totalSteps; // Durée par incrément de 1%
+        const stepDuration = Math.max(200, duration / totalSteps); // Minimum 200ms par étape pour animation plus visible
         const direction = endValue > startValue ? 1 : -1;
         let currentStep = 0;
         

@@ -765,6 +765,118 @@ class TransactionList extends Component
         }
     }
 
+    /**
+     * Supprimer une transaction COMPLETED et reverser les opérations
+     */
+    public function deleteTransaction($transactionId)
+    {
+        if (!Auth::user()->is_admin) {
+            $this->dispatch('alert', ['type' => 'error', 'message' => __('messages.unauthorized_access')]);
+            return;
+        }
+
+        try {
+            $transaction = Transaction::find($transactionId);
+            if (!$transaction) {
+                throw new \Exception(__('messages.transaction_not_found'));
+            }
+
+            if ($transaction->status !== 'COMPLETED') {
+                throw new \Exception(__('messages.only_completed_transactions_can_be_deleted'));
+            }
+
+            DB::transaction(function () use ($transaction) {
+                // Reverser les opérations selon le type de transaction
+                $this->reverseTransactionOperations($transaction);
+
+                // Supprimer la transaction
+                $transaction->delete();
+            });
+
+            $this->dispatch('alert', ['type' => 'success', 'message' => __('messages.transaction_deleted_successfully')]);
+        } catch (\Exception $e) {
+            $this->dispatch('alert', ['type' => 'error', 'message' => __('messages.transaction_deletion_error', ['error' => $e->getMessage()])]);
+        }
+
+        $this->dispatch('action-completed');
+    }
+
+    /**
+     * Reverser les opérations d'une transaction
+     */
+    private function reverseTransactionOperations($transaction)
+    {
+        switch ($transaction->type) {
+            case 'DEPOSIT':
+                // Pour un dépôt, on retire le montant du solde
+                $this->reverseDeposit($transaction);
+                break;
+
+            case 'WITHDRAWAL':
+                // Pour un retrait, on remet le montant dans le solde
+                $this->reverseWithdrawal($transaction);
+                break;
+
+            case 'TRANSFER_BANK':
+            case 'TRANSFER_CRYPTO':
+            case 'TRANSFER_EXTERNAL':
+                // Pour un transfert, on remet le montant dans le compte/wallet source
+                $this->reverseTransfer($transaction);
+                break;
+
+            default:
+                Log::warning('Type de transaction non géré pour la suppression: ' . $transaction->type);
+        }
+    }
+
+    /**
+     * Reverser un dépôt (retirer le montant du solde)
+     */
+    private function reverseDeposit($transaction)
+    {
+        if ($transaction->account_id) {
+            $account = Account::findOrFail($transaction->account_id);
+            if ($account->balance < $transaction->amount) {
+                throw new \Exception(__('messages.insufficient_balance_to_reverse_deposit'));
+            }
+            $account->decrement('balance', $transaction->amount);
+        } elseif ($transaction->wallet_id) {
+            $wallet = Wallet::findOrFail($transaction->wallet_id);
+            if ($wallet->balance < $transaction->amount) {
+                throw new \Exception(__('messages.insufficient_balance_to_reverse_deposit'));
+            }
+            $wallet->decrement('balance', $transaction->amount);
+        }
+    }
+
+    /**
+     * Reverser un retrait (remettre le montant dans le solde)
+     */
+    private function reverseWithdrawal($transaction)
+    {
+        if ($transaction->account_id) {
+            $account = Account::findOrFail($transaction->account_id);
+            $account->increment('balance', $transaction->amount);
+        } elseif ($transaction->wallet_id) {
+            $wallet = Wallet::findOrFail($transaction->wallet_id);
+            $wallet->increment('balance', $transaction->amount);
+        }
+    }
+
+    /**
+     * Reverser un transfert (remettre le montant dans le compte/wallet source)
+     */
+    private function reverseTransfer($transaction)
+    {
+        if ($transaction->account_id) {
+            $account = Account::findOrFail($transaction->account_id);
+            $account->increment('balance', $transaction->amount);
+        } elseif ($transaction->wallet_id) {
+            $wallet = Wallet::findOrFail($transaction->wallet_id);
+            $wallet->increment('balance', $transaction->amount);
+        }
+    }
+
     public function render()
     {
         return view('livewire.transaction-list', [

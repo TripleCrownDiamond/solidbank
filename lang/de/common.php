@@ -577,6 +577,11 @@ return [
         'pending' => 'Ausstehend',
         'completed' => 'Abgeschlossen',
         'failed' => 'Fehlgeschlagen',
+    ],
+    'delete_transaction' => 'Transaktion löschen',
+    'confirm_delete_transaction' => 'Sind Sie sicher, dass Sie diese Transaktion löschen möchten? Diese Aktion ist unwiderruflich und wird die durchgeführten Operationen rückgängig machen.',
+    'confirm_delete_api_token' => 'Sind Sie sicher, dass Sie dieses API-Token löschen möchten?',
+    'api_tokens' => 'API-Tokens',
         'cancelled' => 'Storniert',
     ],
     // Neue Übersetzungen
