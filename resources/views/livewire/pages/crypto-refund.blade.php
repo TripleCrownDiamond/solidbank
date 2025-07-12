@@ -2,22 +2,22 @@
     <!-- Particules flottantes -->
     <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
         <div class="absolute top-10 left-10 w-4 h-4 bg-brand-primary/20 rounded-full animate-float"></div>
-        <div class="absolute top-20 right-20 w-6 h-6 bg-brand-accent/30 rounded-full animate-float-delayed"></div>
+        <div class="absolute top-20 right-20 w-6 h-6 bg-blue-500/30 rounded-full animate-float-delayed"></div>
         <div class="absolute bottom-20 left-20 w-3 h-3 bg-brand-primary/25 rounded-full animate-float"></div>
-        <div class="absolute bottom-10 right-10 w-5 h-5 bg-brand-accent/20 rounded-full animate-float-delayed"></div>
+        <div class="absolute bottom-10 right-10 w-5 h-5 bg-blue-500/20 rounded-full animate-float-delayed"></div>
         <div class="absolute top-1/2 left-1/4 w-2 h-2 bg-brand-primary/30 rounded-full animate-float"></div>
-        <div class="absolute top-1/3 right-1/3 w-4 h-4 bg-brand-accent/25 rounded-full animate-float-delayed"></div>
+        <div class="absolute top-1/3 right-1/3 w-4 h-4 bg-blue-500/25 rounded-full animate-float-delayed"></div>
     </div>
 
     <!-- HERO SECTION -->
     <section class="relative text-white py-8 sm:py-12 lg:py-16 px-4 sm:px-6 lg:px-8 rounded-xl shadow-2xl overflow-hidden border border-white/20">
         <!-- Gradient animé avec effet glassmorphism -->
-        <div class="absolute inset-0 bg-gradient-to-br from-brand-primary via-brand-accent to-brand-primary animate-gradient-xy"></div>
+        <div class="absolute inset-0 bg-gradient-to-br from-brand-primary via-blue-500 to-brand-primary animate-gradient-xy"></div>
         <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent animate-pulse"></div>
         <div class="absolute inset-0 backdrop-blur-sm bg-white/5 border border-white/10 rounded-xl"></div>
         <div class="relative z-10 max-w-7xl mx-auto">
             <div class="text-center">
-                <span class="inline-block bg-brand-accent text-white px-3 py-1 rounded-full mb-4 font-medium text-sm sm:text-base">{{ __('crypto.refund_title') }}</span>
+                <span class="inline-block bg-blue-500 text-white px-3 py-1 rounded-full mb-4 font-medium text-sm sm:text-base">{{ __('crypto.refund_title') }}</span>
                 <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold mb-4 leading-tight">{{ __('crypto.refund_title') }}</h1>
                 <p class="mb-6 text-base sm:text-lg text-blue-100 max-w-3xl mx-auto">{{ __('crypto.refund_description') }}</p>
             </div>
@@ -28,7 +28,7 @@
     <section class="py-8 sm:py-12 lg:py-16 bg-white dark:bg-gray-800 relative rounded-xl border border-gray-200/50 dark:border-gray-700/50 mt-8 mb-8">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-8">
-                <h2 class="text-base text-brand-primary dark:text-brand-accent font-semibold tracking-wide uppercase">{{ __('crypto.form_title') }}</h2>
+                <h2 class="text-base text-brand-primary dark:text-blue-500 font-semibold tracking-wide uppercase">{{ __('crypto.form_title') }}</h2>
                 <p class="mt-2 text-2xl sm:text-3xl lg:text-4xl leading-8 font-extrabold tracking-tight text-gray-900 dark:text-white">
                     {{ __('crypto.refund_title') }}
                 </p>
@@ -184,7 +184,7 @@
                             {{ session('success') }}
                         </p>
                         <div class="mt-6">
-                            <a href="{{ route('home', ['locale' => app()->getLocale()]) }}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-brand-primary hover:bg-brand-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-primary">
+                            <a href="{{ route('home', ['locale' => app()->getLocale()]) }}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-600">
                                 @lang('common.back_to_home')
                             </a>
                         </div>

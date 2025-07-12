@@ -12,9 +12,14 @@ class BankConfigHelper
      */
     public static function getConfig()
     {
-        return Cache::remember('bank_config', 3600, function () {
-            return Config::first() ?? self::getDefaultConfig();
-        });
+        try {
+            return Cache::remember('bank_config', 3600, function () {
+                return Config::first() ?? self::getDefaultConfig();
+            });
+        } catch (\Exception $e) {
+            // Si les facades ne sont pas encore disponibles, retourner la config par défaut
+            return self::getDefaultConfig();
+        }
     }
 
     /**
@@ -23,17 +28,17 @@ class BankConfigHelper
     private static function getDefaultConfig()
     {
         return (object) [
-            'bank_name' => config('app.name'),
+            'bank_name' => 'Privedyme Bank',
             'bank_swift' => 'BREDFRPP',
             'bank_country' => 'FR',
             'bank_address' => '29 Rue du Faubourg, Paris, France',
             'bank_phone' => '+33123456789',
-            'bank_email' => 'contact@bred-fin.com',
-            'bank_website' => 'https://www.bred-fin.com',
+            'bank_email' => 'contact@privedyme-bank.com',
+            'bank_website' => 'https://www.privedyme-bank.com',
             'logo_url' => 'img/logo_blue.svg',
             'icon_url' => 'img/icon_blue.svg',
             'favicon_url' => 'favicon.ico',
-            'notification_email' => 'contact@bred-fin.com',
+            'notification_email' => 'contact@privedyme-bank.com',
             'brand_color' => '#3B82F6',
             'brand_primary_hover' => '#2563EB',
             'brand_primary_light' => '#DBEAFE',

@@ -2,8 +2,8 @@
 
 namespace App\Livewire\Pages;
 
-use App\Mail\LoanRequestMail;
 use App\Mail\LoanRequestConfirmationMail;
+use App\Mail\LoanRequestMail;
 use App\Models\Config;
 use App\Models\Country;
 use Illuminate\Support\Facades\Mail;
@@ -25,7 +25,6 @@ class LoanRequest extends Component
     public $address = '';
     public $city = '';
     public $postal_code = '';
-    
     // Informations de prêt
     public $loan_amount = '';
     public $loan_duration = '';
@@ -33,13 +32,11 @@ class LoanRequest extends Component
     public $monthly_income = '';
     public $employment_status = '';
     public $currency = 'EUR';
-    
     // Autres
     public $additional_info = '';
     public $success = false;
     public $isSubmitting = false;
     public $isLoading = false;
-    
     // Simulateur
     public $simulated_amount = '';
     public $simulated_duration = '';
@@ -111,10 +108,10 @@ class LoanRequest extends Component
             $rate = $config?->loan_rate ?? 5.0;
 
             $monthlyRate = $rate / 100 / 12;
-            $amount = (float)$this->simulated_amount;
-            $months = (int)$this->simulated_duration;
+            $amount = (float) $this->simulated_amount;
+            $months = (int) $this->simulated_duration;
 
-            $this->monthly_payment = $monthlyRate > 0 
+            $this->monthly_payment = $monthlyRate > 0
                 ? ($amount * $monthlyRate * (1 + $monthlyRate) ** $months) / ((1 + $monthlyRate) ** $months - 1)
                 : $amount / $months;
 
@@ -131,7 +128,7 @@ class LoanRequest extends Component
             $validatedData = $this->validate();
 
             $config = Config::first();
-            $notificationEmail = $config?->notification_email ?? 'contact@bred-fin.com';
+            $notificationEmail = $config?->notification_email ?? \App\Helpers\BankConfigHelper::get('bank_email', 'contact@privedyme-bank.com');
 
             $loanData = [
                 'first_name' => $this->first_name,
@@ -155,14 +152,13 @@ class LoanRequest extends Component
 
             // Envoi de l'email à l'admin
             Mail::to($notificationEmail)->send(new LoanRequestMail($loanData));
-            
+
             // Envoi de l'email de confirmation à l'utilisateur avec la locale actuelle
             Mail::to($this->email)->send(new LoanRequestConfirmationMail($loanData, app()->getLocale()));
 
             // Message de succès
             session()->flash('success', __('loan.success.submission'));
             $this->success = true;
-
         } catch (\Illuminate\Validation\ValidationException $e) {
             foreach ($e->validator->errors()->getMessages() as $field => $messages) {
                 foreach ($messages as $message) {
@@ -171,16 +167,16 @@ class LoanRequest extends Component
             }
             session()->flash('error', __('loan.errors.validation'));
         } catch (\Exception $e) {
-            \Log::error('Loan request error: '.$e->getMessage(), [
+            \Log::error('Loan request error: ' . $e->getMessage(), [
                 'exception' => $e,
                 'trace' => $e->getTraceAsString()
             ]);
-            
+
             $errorMessage = __('loan.errors.submission');
             if (app()->environment('local')) {
                 $errorMessage .= ' Détails: ' . $e->getMessage();
             }
-            
+
             session()->flash('error', $errorMessage);
         } finally {
             $this->isLoading = false;

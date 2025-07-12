@@ -1,4 +1,4 @@
-@props(['title', 'subtitle', 'backgroundClass' => 'bg-gradient-to-br from-brand-primary via-brand-secondary to-brand-accent animate-gradient-x'])
+@props(['title', 'subtitle', 'backgroundClass' => 'bg-gradient-to-br from-blue-600 via-blue-500 to-blue-700 animate-gradient-x'])
 
 <section class="relative {{ $backgroundClass }} text-white py-20 overflow-hidden">
     <!-- Particules flottantes -->

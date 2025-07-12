@@ -67,6 +67,39 @@ class NumberHelper
     }
     
     /**
+     * Format a number to a human-readable format with suffixes without rounding
+     * 
+     * @param float $number The number to format
+     * @param int $decimals Number of decimal places
+     * @return string Formatted number with suffix
+     */
+    public static function formatCompactNoRounding($number, $decimals = 1)
+    {
+        $abs = abs($number);
+        $sign = $number < 0 ? '-' : '';
+        
+        if ($abs >= 1000000000) {
+            $formatted = floor(($abs / 1000000000) * pow(10, $decimals)) / pow(10, $decimals);
+            $suffix = 'B';
+        } elseif ($abs >= 1000000) {
+            $formatted = floor(($abs / 1000000) * pow(10, $decimals)) / pow(10, $decimals);
+            $suffix = 'M';
+        } elseif ($abs >= 1000) {
+            $formatted = floor(($abs / 1000) * pow(10, $decimals)) / pow(10, $decimals);
+            $suffix = 'K';
+        } else {
+            return $sign . floor($abs * pow(10, $decimals)) / pow(10, $decimals);
+        }
+        
+        // Remove unnecessary decimal places
+        if ($formatted == floor($formatted)) {
+            return $sign . floor($formatted) . $suffix;
+        }
+        
+        return $sign . number_format($formatted, $decimals) . $suffix;
+    }
+    
+    /**
      * Format a fiat currency amount
      * 
      * @param float $amount The amount to format

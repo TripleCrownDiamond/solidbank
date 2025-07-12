@@ -29,6 +29,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Enregistrer les helpers globaux
+        $this->registerGlobalHelpers();
         // Configuration de la vérification d'email
         VerifyEmail::toMailUsing(function ($notifiable) {
             $locale = app()->getLocale();
@@ -129,5 +131,21 @@ class AppServiceProvider extends ServiceProvider
 
         // 3. Utiliser la locale par défaut du config
         return config('app.locale', 'fr');
+    }
+
+    /**
+     * Enregistre les helpers globaux
+     */
+    protected function registerGlobalHelpers(): void
+    {
+        // Helper pour récupérer la configuration bancaire
+        if (!function_exists('bank_config')) {
+            function bank_config($key = null, $default = null) {
+                if ($key === null) {
+                    return \App\Helpers\BankConfigHelper::getConfig();
+                }
+                return \App\Helpers\BankConfigHelper::get($key, $default);
+            }
+        }
     }
 }

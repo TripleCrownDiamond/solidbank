@@ -1,22 +1,22 @@
 <div>
     <!-- Particules flottantes animées -->
     <div class="fixed inset-0 pointer-events-none z-0">
-        <div class="absolute top-1/4 left-1/4 w-2 h-2 bg-brand-accent/30 rounded-full animate-float"></div>
+        <div class="absolute top-1/4 left-1/4 w-2 h-2 bg-blue-500/30 rounded-full animate-float"></div>
         <div class="absolute top-1/3 right-1/4 w-3 h-3 bg-brand-primary/20 rounded-full animate-float" style="animation-delay: 2s;"></div>
         <div class="absolute bottom-1/4 left-1/3 w-1 h-1 bg-brand-success/40 rounded-full animate-float" style="animation-delay: 4s;"></div>
-        <div class="absolute top-1/2 right-1/3 w-2 h-2 bg-brand-accent/25 rounded-full animate-float" style="animation-delay: 1s;"></div>
+        <div class="absolute top-1/2 right-1/3 w-2 h-2 bg-blue-500/25 rounded-full animate-float" style="animation-delay: 1s;"></div>
         <div class="absolute bottom-1/3 right-1/5 w-3 h-3 bg-brand-primary/15 rounded-full animate-float" style="animation-delay: 3s;"></div>
     </div>
     
     <!-- HERO SECTION -->
     <section class="relative text-white py-8 sm:py-12 lg:py-16 px-4 sm:px-6 lg:px-8 rounded-xl shadow-2xl overflow-hidden border border-white/20">
         <!-- Gradient animé avec effet glassmorphism -->
-        <div class="absolute inset-0 bg-gradient-to-br from-brand-primary via-brand-accent to-brand-primary animate-gradient-xy"></div>
+        <div class="absolute inset-0 bg-gradient-to-br from-brand-primary via-blue-500 to-brand-primary animate-gradient-xy"></div>
         <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent animate-pulse"></div>
         <div class="absolute inset-0 backdrop-blur-sm bg-white/5 border border-white/10 rounded-xl"></div>
         <div class="relative z-10 max-w-7xl mx-auto">
             <div class="text-center">
-                <span class="inline-block bg-brand-accent text-white px-3 py-1 rounded-full mb-4 font-medium text-sm sm:text-base">@lang('loan.request_loan')</span>
+                <span class="inline-block bg-blue-500 text-white px-3 py-1 rounded-full mb-4 font-medium text-sm sm:text-base">@lang('loan.request_loan')</span>
                 <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold mb-4 leading-tight">@lang('loan.request_title')</h1>
                 <p class="mb-6 text-base sm:text-lg text-blue-100 max-w-3xl mx-auto">@lang('loan.calculator_description')</p>
             </div>
@@ -27,7 +27,7 @@
     <section class="py-8 sm:py-12 lg:py-16 bg-gray-50 dark:bg-gray-900 relative rounded-xl border border-gray-200/50 dark:border-gray-700/50 mt-8 mb-8">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-8">
-                <h2 class="text-base text-brand-primary dark:text-brand-accent font-semibold tracking-wide uppercase">@lang('loan.loan_simulator')</h2>
+                <h2 class="text-base text-brand-primary dark:text-blue-500 font-semibold tracking-wide uppercase">@lang('loan.loan_simulator')</h2>
                 <p class="mt-2 text-2xl sm:text-3xl lg:text-4xl leading-8 font-extrabold tracking-tight text-gray-900 dark:text-white">
                     @lang('loan.calculator_title')
                 </p>
@@ -88,8 +88,8 @@
                             <div class="text-2xl font-bold text-brand-primary">{{ number_format($monthly_payment, 2) }} {{ $currency_symbol }}</div>
                             <div class="text-sm text-gray-600 dark:text-gray-400">@lang('loan.monthly_payment')</div>
                         </div>
-                        <div class="bg-brand-accent/10 p-4 rounded-lg text-center">
-                            <div class="text-2xl font-bold text-brand-accent">{{ number_format($total_payment, 2) }} {{ $currency_symbol }}</div>
+                        <div class="bg-blue-500/10 p-4 rounded-lg text-center">
+                            <div class="text-2xl font-bold text-blue-500">{{ number_format($total_payment, 2) }} {{ $currency_symbol }}</div>
                             <div class="text-sm text-gray-600 dark:text-gray-400">@lang('loan.total_amount')</div>
                         </div>
                         <div class="bg-brand-success/10 p-4 rounded-lg text-center">
@@ -106,7 +106,7 @@
     <section class="py-8 sm:py-12 lg:py-16 bg-white dark:bg-gray-800 relative rounded-xl border border-gray-200/50 dark:border-gray-700/50 mt-8 mb-8">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-8">
-                <h2 class="text-base text-brand-primary dark:text-brand-accent font-semibold tracking-wide uppercase">@lang('loan.form_title')</h2>
+                <h2 class="text-base text-brand-primary dark:text-blue-500 font-semibold tracking-wide uppercase">@lang('loan.form_title')</h2>
                 <p class="mt-2 text-2xl sm:text-3xl lg:text-4xl leading-8 font-extrabold tracking-tight text-gray-900 dark:text-white">
                     @lang('loan.request_loan')
                 </p>
@@ -317,7 +317,7 @@
 
                         <!-- Bouton de soumission -->
                         <button type="submit"
-                                class="w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-brand-primary hover:bg-brand-primary-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-primary transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                                class="w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-600 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                                 wire:loading.attr="disabled">
                             <span wire:loading.remove wire:target="submit" class="flex items-center">{{ __('loan.submit_button.default') }}</span>
                             <span wire:loading wire:target="submit" class="flex items-center hidden">                                
@@ -327,8 +327,8 @@
                     </form>
                     @else
                     <div class="text-center py-12">
-                        <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100 dark:bg-green-900/30">
-                            <svg class="h-6 w-6 text-green-600 dark:text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-blue-100 dark:bg-blue-900/30">
+                            <svg class="h-6 w-6 text-blue-600 dark:text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                             </svg>
                         </div>
@@ -337,7 +337,7 @@
                             {{ session('success') }}
                         </p>
                         <div class="mt-6">
-                            <a href="{{ route('home', ['locale' => app()->getLocale()]) }}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-brand-primary hover:bg-brand-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-primary">
+                            <a href="{{ route('home', ['locale' => app()->getLocale()]) }}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-600">
                                 @lang('common.back_to_home')
                             </a>
                         </div>

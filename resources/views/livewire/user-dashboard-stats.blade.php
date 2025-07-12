@@ -5,10 +5,18 @@
     if (!$user->is_admin) {
         // Account Balance Card (only if account is active)
         if ($account && $account->status === 'ACTIVE') {
+            $currency = $account->currency ?? 'USD';
+            $currencySymbol = $currency === 'EUR' ? '€' : ($currency === 'USD' ? '$' : $currency);
+            $amountOnly = \App\Helpers\NumberHelper::formatCompactNoRounding($accountBalance, 1);
+            $formattedBalance = number_format($accountBalance, 2) . ' ' . $currency;
+            $displayBalance = strlen($formattedBalance) > 12 ? substr($formattedBalance, 0, 9) . '...' : $formattedBalance;
+            
             $statsCards[] = [
                 'title' => __('common.account_balance'),
-                'value' => \App\Helpers\NumberHelper::formatCurrency($accountBalance, $account->currency ?? 'USD', true),
-                'exactValue' => number_format($accountBalance, 2) . ' ' . ($account->currency ?? 'USD'),
+                'value' => $amountOnly,
+                'amountValue' => $amountOnly,
+                'exactValue' => $formattedBalance,
+                'currencySymbol' => $currencySymbol,
                 'icon' => 'fa-wallet',
                 'color' => 'brand-primary',
                 'gradient' => 'from-brand-primary to-brand-primary-light',
@@ -35,9 +43,14 @@
         // Cards - Show individual cards if they have balance, otherwise show total count
         if ($cards->count() > 0 && $cards->where('balance', '>', 0)->count() > 0) {
             foreach ($cards->where('balance', '>', 0) as $card) {
+                $currency = $card->currency ?? 'USD';
+                $currencySymbol = $currency === 'EUR' ? '€' : ($currency === 'USD' ? '$' : $currency);
+                $amountOnly = \App\Helpers\NumberHelper::formatCompactNoRounding($card->balance, 1);
+                
                 $statsCards[] = [
                     'title' => __('common.card') . ' (' . $card->type . ')',
-                    'value' => \App\Helpers\NumberHelper::formatCurrency($card->balance, $card->currency ?? 'USD', true),
+                    'value' => $currencySymbol,
+                    'amountValue' => $amountOnly,
                     'subtitle' => '**** ' . substr($card->card_number, -4),
                     'icon' => 'fa-credit-card',
                     'color' => 'brand-accent',
@@ -108,6 +121,7 @@
                             @if(isset($card['isBalance']) && $card['isBalance'])
                                 <p class="text-2xl font-bold text-gray-900 dark:text-white group-hover:text-{{ $card['color'] }} transition-colors duration-300 leading-tight">
                                     {{ $card['value'] }}
+                                   
                                     @if(isset($card['exactValue']))
                                         <span class="block text-xs font-medium text-gray-500 dark:text-gray-400 group-hover:text-{{ $card['color'] }}/70 mt-1">{{ $card['exactValue'] }}</span>
                                     @endif
@@ -121,9 +135,12 @@
                                 </p>
                             @elseif(isset($card['isCard']) && $card['isCard'])
                                 <p class="text-lg font-bold text-gray-900 dark:text-white group-hover:text-{{ $card['color'] }} transition-colors duration-300 leading-tight">
-                                    {{ $card['value'] }}
+                                    {{ $card['amountValue'] }}
+                                    @if(isset($card['value']))
+                                        <span class="block text-sm font-medium text-gray-500 dark:text-gray-400 group-hover:text-{{ $card['color'] }}/70 mt-1">{{ $card['value'] }}</span>
+                                    @endif
                                     @if(isset($card['subtitle']))
-                                        <span class="block text-xs font-medium text-gray-500 dark:text-gray-400 group-hover:text-{{ $card['color'] }}/70">{{ $card['subtitle'] }}</span>
+                                        <span class="block text-xs font-medium text-gray-500 dark:text-gray-400 group-hover:text-{{ $card['color'] }}/70 mt-1">{{ $card['subtitle'] }}</span>
                                     @endif
                                 </p>
                             @elseif(isset($card['isCrypto']) && $card['isCrypto'])

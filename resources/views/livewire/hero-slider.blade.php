@@ -17,7 +17,7 @@
                 <div class="absolute inset-0 bg-black bg-opacity-70 rounded-xl"></div> <!-- Optionnel : garder l'overlay arrondi aussi -->
 
                 <div class="relative z-10 flex flex-col items-center justify-center h-full text-white text-center px-4 sm:px-6 lg:px-8">
-                    <span class="inline-block bg-brand-accent text-white px-3 py-1 rounded-full mb-4 font-medium text-sm sm:text-base" x-text="slide.offer"></span>
+                    <span class="inline-block bg-blue-500 text-white px-3 py-1 rounded-full mb-4 font-medium text-sm sm:text-base" x-text="slide.offer"></span>
                     <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold mb-4 leading-tight" x-html="slide.title"></h1>
                     <p class="mb-6 text-base sm:text-lg lg:text-xl text-blue-100" x-text="slide.description"></p>
 
@@ -25,12 +25,12 @@
                     <div class="flex flex-col sm:flex-row gap-4 mb-8">
                         <a 
                             :href="slide.cta1Link" 
-                            class="px-6 py-3 bg-gradient-to-r from-brand-primary to-brand-accent hover:from-brand-primary-hover hover:to-brand-accent-hover text-white font-bold rounded-lg shadow-lg transition duration-300 transform hover:scale-105 text-center" 
+                            class="px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white font-bold rounded-lg shadow-lg transition duration-300 transform hover:scale-105 text-center" 
                             x-text="slide.cta1Text"
                         ></a>
                         <a 
                             :href="slide.cta2Link" 
-                            class="px-6 py-3 bg-gradient-to-r from-brand-accent to-brand-success hover:from-brand-accent-hover hover:to-brand-success-hover text-white font-bold rounded-lg shadow-lg transition duration-300 transform hover:scale-105 text-center" 
+                            class="px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white font-bold rounded-lg shadow-lg transition duration-300 transform hover:scale-105 text-center" 
                             x-text="slide.cta2Text"
                         ></a>
                     </div>
