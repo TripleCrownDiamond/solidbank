@@ -1,3 +1,4 @@
+@if(isCryptoEnabled())
 <x-app-layout>
     <x-slot name="header">
         <div class="bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-700 dark:to-indigo-700 text-white p-6 rounded-lg shadow-lg">
@@ -82,3 +83,4 @@
         </div>
     </div>
 </x-app-layout>
+@endif

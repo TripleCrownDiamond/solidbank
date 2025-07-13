@@ -1,3 +1,4 @@
+@if(isCryptoEnabled())
 <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg">
     <!-- Header -->
     <div class="bg-gradient-to-r from-brand-primary to-brand-accent p-6">
@@ -41,3 +42,4 @@
         @endif
     </div>
 </div>
+@endif

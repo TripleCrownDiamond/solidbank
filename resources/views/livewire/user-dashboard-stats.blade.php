@@ -68,27 +68,29 @@
             ];
         }
         
-        // Crypto Wallets - Show individual wallets if they have balance, otherwise show total count
-        if ($wallets->count() > 0 && $wallets->where('balance', '>', 0)->count() > 0) {
-            foreach ($wallets->where('balance', '>', 0) as $wallet) {
+        // Crypto Wallets - Show individual wallets if they have balance, otherwise show total count (only if crypto is enabled)
+        if (isCryptoEnabled()) {
+            if ($wallets->count() > 0 && $wallets->where('balance', '>', 0)->count() > 0) {
+                foreach ($wallets->where('balance', '>', 0) as $wallet) {
+                    $statsCards[] = [
+                        'title' => __('common.crypto_wallet') . ' (' . strtoupper($wallet->coin) . ')',
+                        'value' => \App\Helpers\NumberHelper::formatCrypto($wallet->balance),
+                        'subtitle' => substr($wallet->address, 0, 10) . '...' . substr($wallet->address, -6),
+                        'icon' => 'fa-bitcoin-sign',
+                        'color' => 'brand-warning',
+                        'gradient' => 'from-brand-warning to-brand-error',
+                        'isCrypto' => true
+                    ];
+                }
+            } else {
                 $statsCards[] = [
-                    'title' => __('common.crypto_wallet') . ' (' . strtoupper($wallet->coin) . ')',
-                    'value' => \App\Helpers\NumberHelper::formatCrypto($wallet->balance),
-                    'subtitle' => substr($wallet->address, 0, 10) . '...' . substr($wallet->address, -6),
+                    'title' => __('common.crypto_wallets'),
+                    'value' => $wallets->count(),
                     'icon' => 'fa-bitcoin-sign',
                     'color' => 'brand-warning',
-                    'gradient' => 'from-brand-warning to-brand-error',
-                    'isCrypto' => true
+                    'gradient' => 'from-brand-warning to-brand-error'
                 ];
             }
-        } else {
-            $statsCards[] = [
-                'title' => __('common.crypto_wallets'),
-                'value' => $wallets->count(),
-                'icon' => 'fa-bitcoin-sign',
-                'color' => 'brand-warning',
-                'gradient' => 'from-brand-warning to-brand-error'
-            ];
         }
     }
 @endphp

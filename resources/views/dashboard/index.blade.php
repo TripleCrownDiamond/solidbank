@@ -173,9 +173,11 @@
                     <div class="mt-8">
                         @livewire('user-bank-cards', ['dashboardView' => true, 'maxCards' => 4])
                     </div>
-                    <div class="mt-8">
-                        @livewire('user-wallets', ['dashboardView' => true, 'maxWallets' => 4])
-                    </div>
+                    @if(isCryptoEnabled())
+                        <div class="mt-8">
+                            @livewire('user-wallets', ['dashboardView' => true, 'maxWallets' => 4])
+                        </div>
+                    @endif
                 @endif
             @endif
         </div>

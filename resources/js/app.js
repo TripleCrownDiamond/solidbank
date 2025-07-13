@@ -38,8 +38,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const setTheme = (theme) => {
         const currentTheme = localStorage.getItem("theme");
         const nextTheme =
-            theme ||
-            (currentTheme === "light" ? "dark" : "light");
+            theme || (currentTheme === "light" ? "dark" : "light");
 
         if (nextTheme === "dark") {
             document.documentElement.classList.add("dark");
@@ -239,7 +238,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (mobileMenuToggle && mobileMenu) {
         mobileMenuToggle.addEventListener("click", function () {
             const isHidden = mobileMenu.classList.contains("hidden");
-            
+
             if (isHidden) {
                 mobileMenu.classList.remove("hidden");
                 hamburgerIcon?.classList.add("hidden");

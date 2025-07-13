@@ -1,3 +1,4 @@
+@if(isCryptoEnabled())
 <div>
     <div class="bg-white/70 dark:bg-gray-800/70 backdrop-blur-lg rounded-2xl p-6 border border-blue-200/50 dark:border-blue-700/50 shadow-xl">
         <div class="flex justify-between items-center mb-4">
@@ -136,3 +137,5 @@
         }
     }
 </style>
+</div>
+@endif

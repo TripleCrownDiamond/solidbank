@@ -1,3 +1,4 @@
+@if(isCryptoEnabled())
 <div>
     <!-- Particules flottantes -->
     <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
@@ -205,3 +206,4 @@
         </div>
     </section>
 </div>
+@endif

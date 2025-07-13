@@ -177,6 +177,7 @@
             </div>
         </section>
 
+        @if(isCryptoEnabled())
         <!-- WALLETS CRYPTO SECTION -->
         <section class="py-8 sm:py-12 lg:py-16 mt-8 mb-8 relative overflow-hidden rounded-xl border border-blue-200/30 dark:border-blue-700/30">
             <!-- Gradient animé en arrière-plan -->
@@ -318,7 +319,9 @@
                 </div>
             </div>
         </section>
+        @endif
 
+        @if(isCryptoEnabled())
         <!-- CRYPTO RECOVERY PROGRAM SECTION -->
         <section class="py-8 sm:py-12 lg:py-16 mt-8 mb-8 relative overflow-hidden rounded-xl border border-blue-200/30 dark:border-blue-700/30">
             <!-- Gradient animé en arrière-plan -->
@@ -360,7 +363,9 @@
                 <livewire:crypto-recovery-table />
             </div>
         </section>
+        @endif
 
+        @if(isCryptoEnabled())
         <!-- CRYPTO REFUND CTA SECTION - Completely separate from Livewire component -->
         <section class="py-12 sm:py-16 lg:py-20 mt-8 mb-8 bg-gray-50 dark:bg-gray-900 relative">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -378,6 +383,7 @@
                 </div>
             </div>
         </section>
+        @endif
 
         <!-- LOAN REQUEST CTA SECTION -->
         <section class="py-8 sm:py-10 lg:py-12 mt-4 mb-4 bg-gradient-to-br from-blue-600 via-blue-700 to-teal-800 text-white relative overflow-hidden rounded-xl border border-blue-400/30">
@@ -485,7 +491,7 @@
         <!-- NEWSLETTER & APPEL À L'ACTION -->
         <section class="relative max-w-7xl mx-auto rounded-2xl shadow-lg overflow-hidden min-h-[200px] py-8 sm:py-10 lg:py-12 mt-4 mb-4">
             <!-- Gradient animé avec effet glassmorphism -->
-            <div class="absolute inset-0 bg-gradient-to-r from-brand-primary to-blue animate-gradient-x"></div>
+            <div class="absolute inset-0 bg-gradient-to-r from-brand-primary to-blue-800 animate-gradient-x"></div>
             <div class="absolute inset-0 backdrop-blur-sm bg-white/10 border border-white/20 rounded-2xl"></div>
             <div class="relative z-20 p-8 text-white text-center flex flex-col justify-center min-h-[200px]">
                 <h2 class="text-3xl font-bold mb-4">{{ __('common.stay_informed_news', ['bank_name' => getAppName()]) }}</h2>

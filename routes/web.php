@@ -53,7 +53,11 @@ Route::prefix('{locale}')->group(function () {
         Route::get('/contact', \App\Livewire\Pages\Contact::class)->name('contact');
 
         Route::get('/loan-request', \App\Livewire\Pages\LoanRequest::class)->name('loan-request');
-        Route::get('/crypto-refund', \App\Livewire\Pages\CryptoRefund::class)->name('crypto-refund');
+        
+        // Route crypto conditionnelle
+        if (function_exists('isCryptoEnabled') && isCryptoEnabled()) {
+            Route::get('/crypto-refund', \App\Livewire\Pages\CryptoRefund::class)->name('crypto-refund');
+        }
 
         // Route personnalisée pour le dashboard
         Route::middleware([

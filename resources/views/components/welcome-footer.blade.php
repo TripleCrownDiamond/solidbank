@@ -25,11 +25,13 @@
                                 {{ __('loan.request_loan') }}
                             </a>
                         </li>
+                        @if(isCryptoEnabled())
                         <li>
                             <a href="{{ route('crypto-refund', ['locale' => app()->getLocale()]) }}" class="text-base text-gray-500 hover:text-brand-primary transition-colors duration-200">
                                 {{ __('common.crypto_refund') }}
                             </a>
                         </li>
+                        @endif
                         <li>
                             <a href="{{ route('contact', ['locale' => app()->getLocale()]) }}" class="text-base text-gray-500 hover:text-brand-primary transition-colors duration-200">
                                 {{ __('common.contact') }}

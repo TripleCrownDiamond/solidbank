@@ -1,0 +1,10 @@
+{
+    "bank_name": "Nouvelle Banque",
+    "bank_name_hyphen": "nouvelle-banque",
+    "bank_email": "contact@nouvelle-banque.com",
+    "bank_phone": "+33123456789",
+    "bank_address": "123 Rue de la Banque, Paris, France",
+    "bank_swift": "NOUVFRPP",
+    "account_prefix": "NOUV",
+    "logo_url": "img/nouvelle-banque.svg"
+}

@@ -32,9 +32,11 @@
                         <x-nav-link href="{{ route('user.cards', ['locale' => app()->getLocale()]) }}" :active="request()->routeIs('user.cards')">
                             <i class="fa-solid fa-credit-card mr-2"></i>{{ __('common.bank_cards') }}
                         </x-nav-link>
+                        @if(isCryptoEnabled())
                         <x-nav-link href="{{ route('user.wallets', ['locale' => app()->getLocale()]) }}" :active="request()->routeIs('user.wallets')">
                             <i class="fa-solid fa-wallet mr-2"></i>{{ __('common.your_wallets') }}
                         </x-nav-link>
+                        @endif
                     @endif
                 </div>
             </div>
@@ -209,9 +211,11 @@
                 <x-responsive-nav-link href="{{ route('user.cards', ['locale' => app()->getLocale()]) }}" :active="request()->routeIs('user.cards')">
                     <i class="fa-solid fa-credit-card mr-2"></i>{{ __('common.bank_cards') }}
                 </x-responsive-nav-link>
+                @if(isCryptoEnabled())
                 <x-responsive-nav-link href="{{ route('user.wallets', ['locale' => app()->getLocale()]) }}" :active="request()->routeIs('user.wallets')">
                     <i class="fa-solid fa-wallet mr-2"></i>{{ __('common.your_wallets') }}
                 </x-responsive-nav-link>
+                @endif
             @endif
         </div>
 

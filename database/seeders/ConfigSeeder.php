@@ -27,7 +27,7 @@ class ConfigSeeder extends Seeder
                 'bank_phone' => '+33123456789',
                 'bank_email' => \App\Helpers\BankConfigHelper::get('bank_email', 'contact@privedyme-bank.com'),
                 'bank_website' => 'https://www.' . parse_url(\App\Helpers\BankConfigHelper::get('bank_email', 'privedyme-bank.com'), PHP_URL_HOST),
-                'logo_url' => 'img/logo_blue.svg',
+                'logo_url' => 'img/privedyme-bank.svg',
                 'icon_url' => 'img/icon_blue.svg',
                 'favicon_url' => 'favicon.ico',
                 'notification_email' => \App\Helpers\BankConfigHelper::get('bank_email', 'contact@privedyme-bank.com'),
@@ -35,6 +35,7 @@ class ConfigSeeder extends Seeder
                 'account_prefix' => 'PRIV',
                 'account_length' => 10,
                 'transaction_validation_method' => 'manual',
+                'activate_crypto_features' => true,
             ]
         );
     }

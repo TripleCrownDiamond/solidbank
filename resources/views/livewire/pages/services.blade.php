@@ -25,6 +25,7 @@
             </div>
         </div>
     </section>
+    
 
     <!-- SERVICES PRINCIPAUX -->
     <section class="py-8 sm:py-12 lg:py-16 bg-gray-50 dark:bg-gray-900 relative rounded-xl border border-gray-200/50 dark:border-gray-700/50 mt-8 mb-8">
@@ -112,6 +113,7 @@
         </div>
     </section>
 
+    @if(isCryptoEnabled())
     <!-- WALLETS CRYPTO SERVICES -->
     <section class="py-8 sm:py-12 lg:py-16 bg-gradient-to-br from-blue-50 via-indigo-50 to-blue-100 dark:from-gray-900 dark:via-blue-900/20 dark:to-gray-900 relative rounded-xl border border-blue-200/50 dark:border-blue-700/50 mt-8 mb-8">
         <!-- Gradient animé en arrière-plan -->
@@ -267,7 +269,9 @@
             </div>
         </div>
     </section>
+    @endif
 
+    @if(isCryptoEnabled())
     <!-- CRYPTO RECOVERY PROGRAM SECTION -->
     <section class="py-8 sm:py-12 lg:py-16 relative overflow-hidden rounded-xl border border-blue-200/50 dark:border-blue-700/50 mt-8 mb-8">
         <!-- Gradient animé en arrière-plan -->
@@ -309,8 +313,10 @@
             <livewire:crypto-recovery-table />
         </div>
     </section>
+    @endif
 
-  <!-- CRYPTO REFUND CTA SECTION - Completely separate from Livewire component -->
+    @if(isCryptoEnabled())
+    <!-- CRYPTO REFUND CTA SECTION - Completely separate from Livewire component -->
     <section class="py-8 sm:py-12 lg:py-16 bg-gray-50 dark:bg-gray-900 relative rounded-xl border border-gray-200/50 dark:border-gray-700/50 mt-8 mb-8">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center">
@@ -327,6 +333,7 @@
             </div>
         </div>
     </section>
+    @endif
 
     <!-- AVANTAGES SERVICES -->
     <section class="max-w-6xl mx-auto py-8 sm:py-12 lg:py-16 bg-white dark:bg-gray-800 rounded-xl border border-gray-200/50 dark:border-gray-700/50 mt-8 mb-8 px-4 sm:px-6 lg:px-8">
@@ -357,7 +364,6 @@
         </div>
     </section>
 
-  
 
     <!-- LOAN REQUEST CTA SECTION -->
     <section class="py-8 sm:py-12 lg:py-16 bg-gradient-to-br from-blue-600 via-blue-700 to-teal-800 text-white relative overflow-hidden rounded-xl border border-blue-400/30 mt-8 mb-8">

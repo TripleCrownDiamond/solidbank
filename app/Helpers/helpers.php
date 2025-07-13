@@ -79,3 +79,9 @@ function bank_config($key = null, $default = null)
     
     return $defaults[$key] ?? $default;
 }
+
+function isCryptoEnabled()
+{
+    $config = getBrandingConfig();
+    return $config && isset($config->activate_crypto_features) ? (bool) $config->activate_crypto_features : true;
+}
