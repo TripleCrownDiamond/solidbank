@@ -283,4 +283,6 @@ return [
     'no_pending_card_requests' => 'Nenhum pedido de cartão pendente',
     'confirm_delete_wallet' => 'Tem a certeza que deseja eliminar esta carteira?',
     'no_transfer_groups' => '[TO TRANSLATE] no_transfer_groups',
+    'document_not_found' => 'Documento não encontrado',
+    'view_document' => 'Ver documento',
 ];

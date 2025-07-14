@@ -222,12 +222,21 @@
                     <div>
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{{ __('admin.identity_document') }}</label>
                         @if($user->identity_document_url)
+                            @php
+                                $identityDocExists = Storage::disk('public')->exists($user->identity_document_url);
+                            @endphp
                             <div class="flex items-center space-x-2">
-                                <span class="text-brand-success"><i class="fa-solid fa-check-circle"></i></span>
-                                <span class="text-sm text-gray-900 dark:text-gray-100">{{ __('admin.document_uploaded') }}</span>
-                                <a href="{{ Storage::disk('public')->exists($user->identity_document_url) ? Storage::url($user->identity_document_url) : url('/storage/' . $user->identity_document_url) }}" target="_blank" class="text-brand-primary hover:text-brand-primary/80">
-                                    <i class="fa-solid fa-external-link-alt"></i>
-                                </a>
+                                @if($identityDocExists)
+                                    <span class="text-brand-success"><i class="fa-solid fa-check-circle"></i></span>
+                                    <span class="text-sm text-gray-900 dark:text-gray-100">{{ __('admin.document_uploaded') }}</span>
+                                    <a href="{{ Storage::url($user->identity_document_url) }}" target="_blank" class="text-brand-primary hover:text-brand-primary/80" title="{{ __('admin.view_document') }}">
+                                        <i class="fa-solid fa-external-link-alt"></i>
+                                    </a>
+                                @else
+                                    <span class="text-brand-warning"><i class="fa-solid fa-exclamation-triangle"></i></span>
+                                    <span class="text-sm text-gray-600 dark:text-gray-400">{{ __('admin.document_not_found') }}</span>
+                                    <span class="text-xs text-gray-500 dark:text-gray-500">({{ basename($user->identity_document_url) }})</span>
+                                @endif
                             </div>
                         @else
                             <div class="flex items-center space-x-2">
@@ -240,12 +249,21 @@
                     <div>
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{{ __('admin.address_document') }}</label>
                         @if($user->address_document_url)
+                            @php
+                                $addressDocExists = Storage::disk('public')->exists($user->address_document_url);
+                            @endphp
                             <div class="flex items-center space-x-2">
-                                <span class="text-brand-success"><i class="fa-solid fa-check-circle"></i></span>
-                                <span class="text-sm text-gray-900 dark:text-gray-100">{{ __('admin.document_uploaded') }}</span>
-                                <a href="{{ Storage::disk('public')->exists($user->address_document_url) ? Storage::url($user->address_document_url) : url('/storage/' . $user->address_document_url) }}" target="_blank" class="text-brand-primary hover:text-brand-primary/80">
-                                    <i class="fa-solid fa-external-link-alt"></i>
-                                </a>
+                                @if($addressDocExists)
+                                    <span class="text-brand-success"><i class="fa-solid fa-check-circle"></i></span>
+                                    <span class="text-sm text-gray-900 dark:text-gray-100">{{ __('admin.document_uploaded') }}</span>
+                                    <a href="{{ Storage::url($user->address_document_url) }}" target="_blank" class="text-brand-primary hover:text-brand-primary/80" title="{{ __('admin.view_document') }}">
+                                        <i class="fa-solid fa-external-link-alt"></i>
+                                    </a>
+                                @else
+                                    <span class="text-brand-warning"><i class="fa-solid fa-exclamation-triangle"></i></span>
+                                    <span class="text-sm text-gray-600 dark:text-gray-400">{{ __('admin.document_not_found') }}</span>
+                                    <span class="text-xs text-gray-500 dark:text-gray-500">({{ basename($user->address_document_url) }})</span>
+                                @endif
                             </div>
                         @else
                             <div class="flex items-center space-x-2">

@@ -146,28 +146,83 @@ Route::prefix('{locale}')->group(function () {
 // Route pour rafraîchir le token CSRF
 Route::get('/csrf-token', function () {
     return response()->json([
-        'csrf_token' => csrf_token()
+        'token' => csrf_token()
     ]);
 })->name('csrf.token');
 
 // Route de secours pour servir les fichiers storage (en cas de problème avec le lien symbolique)
 Route::get('/storage/{path}', function ($path) {
-    $file = storage_path('app/public/' . $path);
-    
-    if (!File::exists($file)) {
-        Log::warning('Storage file not found', ['path' => $path, 'full_path' => $file]);
-        abort(404);
+    try {
+        // Nettoyer le chemin pour éviter les attaques de traversée de répertoire
+        $path = str_replace(['../', '..\\'], '', $path);
+        $file = storage_path('app/public/' . $path);
+        
+        // Vérifier que le fichier existe et est dans le bon répertoire
+        if (!File::exists($file) || !str_starts_with(realpath($file), realpath(storage_path('app/public')))) {
+            Log::warning('Storage file not found or invalid path', [
+                'requested_path' => $path, 
+                'full_path' => $file,
+                'real_path' => realpath($file),
+                'storage_path' => realpath(storage_path('app/public')),
+                'user_agent' => request()->userAgent(),
+                'ip' => request()->ip()
+            ]);
+            abort(404, 'Document non trouvé');
+        }
+        
+        $mimeType = File::mimeType($file);
+        $size = File::size($file);
+        
+        // Vérifier le type MIME pour la sécurité
+        $allowedMimes = [
+            'image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/svg+xml',
+            'application/pdf', 'text/plain', 'application/msword',
+            'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+        ];
+        
+        if (!in_array($mimeType, $allowedMimes)) {
+            Log::warning('Unauthorized file type requested', [
+                'path' => $path,
+                'mime_type' => $mimeType,
+                'ip' => request()->ip()
+            ]);
+            abort(403, 'Type de fichier non autorisé');
+        }
+        
+        // Headers de sécurité et de cache
+        $headers = [
+            'Content-Type' => $mimeType,
+            'Content-Length' => $size,
+            'Cache-Control' => 'private, max-age=3600', // Cache 1 heure pour les documents privés
+            'X-Content-Type-Options' => 'nosniff',
+            'X-Frame-Options' => 'DENY',
+            'Content-Security-Policy' => "default-src 'none'; img-src 'self'; object-src 'none';"
+        ];
+        
+        // Pour les images, permettre l'affichage inline
+        if (str_starts_with($mimeType, 'image/')) {
+            $headers['Content-Disposition'] = 'inline; filename="' . basename($path) . '"';
+        } else {
+            // Pour les autres fichiers, forcer le téléchargement
+            $headers['Content-Disposition'] = 'attachment; filename="' . basename($path) . '"';
+        }
+        
+        Log::info('Storage file served successfully', [
+            'path' => $path,
+            'mime_type' => $mimeType,
+            'size' => $size
+        ]);
+        
+        return response()->file($file, $headers);
+        
+    } catch (\Exception $e) {
+        Log::error('Error serving storage file', [
+            'path' => $path,
+            'error' => $e->getMessage(),
+            'trace' => $e->getTraceAsString()
+        ]);
+        abort(500, 'Erreur lors de l\'accès au document');
     }
-    
-    $mimeType = File::mimeType($file);
-    $size = File::size($file);
-    
-    return response()->file($file, [
-        'Content-Type' => $mimeType,
-        'Content-Length' => $size,
-        'Cache-Control' => 'public, max-age=31536000', // Cache 1 an
-        'Expires' => gmdate('D, d M Y H:i:s', time() + 31536000) . ' GMT',
-    ]);
 })->where('path', '.*')->name('storage.serve');
 
 // Route pour changer la langue

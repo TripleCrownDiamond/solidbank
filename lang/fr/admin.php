@@ -198,6 +198,8 @@ return [
     'toggle_status' => 'Basculer le statut',
     'edit' => 'Modifier',
     'delete' => 'Supprimer',
+    'document_not_found' => 'Document non trouvé',
+    'view_document' => 'Voir le document',
     'you' => 'Vous',
     'suspend_selected_users' => 'Suspendre les utilisateurs sélectionnés',
     'suspension_reason' => 'Raison de la suspension',

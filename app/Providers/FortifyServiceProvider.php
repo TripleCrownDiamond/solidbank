@@ -61,14 +61,23 @@ class FortifyServiceProvider extends ServiceProvider
             return Limit::perMinute(5)->by($request->session()->get('login.id'));
         });
 
+        // Vues traditionnelles Fortify (sans Livewire)
+        Fortify::loginView(function () {
+            return view('auth.login');
+        });
+
+        Fortify::registerView(function () {
+            return view('auth.register');
+        });
+
         // Vue pour la vérification 2FA
         Fortify::twoFactorChallengeView(function () {
             return view('auth.two-factor-challenge');
         });
 
-        // 🔽 Ajoute cette partie pour la vue de vérification d’email
+        // Vue de vérification d'email
         Fortify::verifyEmailView(function () {
-            return view('auth.verify-email');  // crée ce fichier si ce n’est pas encore fait
+            return view('auth.verify-email');
         });
 
         // Redirection après connexion pour inclure la locale

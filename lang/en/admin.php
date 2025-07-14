@@ -283,4 +283,6 @@ return [
     'no_pending_card_requests' => 'No pending card requests',
     'confirm_delete_wallet' => 'Are you sure you want to delete this wallet?',
     'no_transfer_groups' => '[TO TRANSLATE] no_transfer_groups',
+    'document_not_found' => 'Document not found',
+    'view_document' => 'View document',
 ];
