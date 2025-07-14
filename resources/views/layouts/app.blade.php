@@ -61,6 +61,22 @@
                     }, 100);
                 });
                 
+                // Gestion de l'événement refresh-page-delayed
+                Livewire.on('refresh-page-delayed', (data) => {
+                    const delay = data.delay || 2000;
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, delay);
+                });
+                
+                // Gestion de l'événement csrf-token-expired
+                Livewire.on('csrf-token-expired', () => {
+                    console.warn('Token CSRF expiré détecté par Livewire');
+                    if (window.csrfHandler && window.csrfHandler.refresh) {
+                        window.csrfHandler.refresh();
+                    }
+                });
+                
                 // Gestion de l'événement copy-to-clipboard
                 Livewire.on('copy-to-clipboard', (...args) => {
                     console.log('Arguments reçus:', args);

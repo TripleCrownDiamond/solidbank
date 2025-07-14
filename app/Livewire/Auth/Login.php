@@ -147,15 +147,26 @@ class Login extends Component
             throw $e;
         } catch (\Illuminate\Session\TokenMismatchException $e) {
             $this->isSubmitting = false;
-            // Gérer l'erreur CSRF - régénérer la session
-            Log::warning('CSRF Token Mismatch in Login', [
+            // Log de l'erreur pour le débogage
+            Log::warning('Token CSRF expiré lors de la connexion', [
                 'user_email' => $this->email,
-                'session_id' => session()->getId(),
-                'csrf_token' => session()->token()
+                'ip' => request()->ip(),
+                'user_agent' => request()->userAgent()
             ]);
-
+            
+            // Régénérer la session en cas d'expiration du token CSRF
             session()->regenerate();
-            $this->dispatch('alert', ['type' => 'error', 'message' => __('Session expirée. Veuillez réessayer.')]);
+            
+            // Dispatch d'un événement JavaScript pour rafraîchir le token
+            $this->dispatch('csrf-token-expired');
+            
+            $this->dispatch('alert', [
+                'type' => 'warning',
+                'message' => __('Session expirée. La page va se recharger automatiquement.')
+            ]);
+            
+            // Recharger la page après un délai
+            $this->dispatch('refresh-page-delayed', ['delay' => 2000]);
             return;
         } catch (\Exception $e) {
             $this->isSubmitting = false;

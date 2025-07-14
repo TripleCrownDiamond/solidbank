@@ -143,6 +143,33 @@ Route::prefix('{locale}')->group(function () {
     });
 });
 
+// Route pour rafraîchir le token CSRF
+Route::get('/csrf-token', function () {
+    return response()->json([
+        'csrf_token' => csrf_token()
+    ]);
+})->name('csrf.token');
+
+// Route de secours pour servir les fichiers storage (en cas de problème avec le lien symbolique)
+Route::get('/storage/{path}', function ($path) {
+    $file = storage_path('app/public/' . $path);
+    
+    if (!File::exists($file)) {
+        Log::warning('Storage file not found', ['path' => $path, 'full_path' => $file]);
+        abort(404);
+    }
+    
+    $mimeType = File::mimeType($file);
+    $size = File::size($file);
+    
+    return response()->file($file, [
+        'Content-Type' => $mimeType,
+        'Content-Length' => $size,
+        'Cache-Control' => 'public, max-age=31536000', // Cache 1 an
+        'Expires' => gmdate('D, d M Y H:i:s', time() + 31536000) . ' GMT',
+    ]);
+})->where('path', '.*')->name('storage.serve');
+
 // Route pour changer la langue
 Route::get('/set-locale/{locale}', function ($locale) {
     // Récupérer dynamiquement les langues disponibles (même logique que SetLocale middleware)
