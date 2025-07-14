@@ -21,7 +21,7 @@ return [
     'cryptocurrency' => 'Kryptowährung',
     'amount' => 'Verlorener Betrag',
     'additional_info' => 'Zusätzliche Informationen',
-    'additional_info_placeholder' => 'Bitte geben Sie weitere Details zu Ihrer verlorenen Kryptowährung an...',
+    'additional_info_placeholder' => 'Zusätzliche Informationen, die Sie teilen möchten...',
     'submit' => 'Anfrage absenden',
     'select_country' => 'Land auswählen',
     'first_name_placeholder' => 'Ihr Vorname',
@@ -33,7 +33,6 @@ return [
     'postal_code_placeholder' => '10115',
     'select_cryptocurrency' => 'Kryptowährung auswählen',
     'amount_placeholder' => '0,00000000',
-    'additional_info_placeholder' => 'Zusätzliche Informationen, die Sie teilen möchten...',
     'request_submitted' => 'Anfrage eingereicht!',
     'success_message' => 'Ihre Rückerstattungsanfrage wurde erfolgreich übermittelt. Wir werden uns in Kürze bei Ihnen melden.',
     'first_name_required' => 'Das Vorname-Feld ist erforderlich.',
@@ -56,7 +55,6 @@ return [
     'error_message' => 'Beim Senden Ihrer Anfrage ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut.',
     'validation_errors' => 'Bitte korrigieren Sie die Fehler im Formular.',
     'submission_success' => 'Ihre Rückerstattungsanfrage wurde erfolgreich übermittelt. Wir werden uns in Kürze bei Ihnen melden.',
-    // Crypto refund confirmation email
     'confirmation' => [
         'subject' => 'Bestätigung Ihrer Krypto-Rückerstattungsanfrage',
         'title' => 'Anfrage erfolgreich erhalten',
@@ -67,6 +65,9 @@ return [
         'next_steps_content' => 'Unser spezialisiertes Team wird Ihre Rückerstattungsanfrage prüfen und sich innerhalb von 2-3 Werktagen bei Ihnen melden. Bewahren Sie alle Dokumente im Zusammenhang mit Ihrer Kryptowährungstransaktion auf, um den Prozess zu beschleunigen.',
         'contact_info' => 'Kontaktinformationen:',
         'thank_you' => 'Vielen Dank für Ihr Vertrauen.',
-        'team_signature' => 'Das :app_name Team'
+        'team_signature' => 'Das :app_name Team',
+        'step1' => 'Our team will review your request within 24-48 hours',
+        'step2' => 'We will contact you to validate information if necessary',
+        'step3' => 'You will receive a preliminary response within 3-5 business days',
     ],
 ];

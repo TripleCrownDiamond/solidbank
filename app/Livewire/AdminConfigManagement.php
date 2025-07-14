@@ -35,10 +35,11 @@ class AdminConfigManagement extends Component
     public $icon_url;
     public $favicon_url;
     public $notification_email;
-    public $two_factor_auth;
+
     public $account_prefix;
     public $account_length;
     public $transaction_validation_method;
+    public $activate_crypto_features;
     // Propriétés des couleurs de marque supprimées (colonnes supprimées de la DB)
     // Les couleurs sont maintenant gérées via CSS avec des valeurs par défaut
 
@@ -69,10 +70,11 @@ class AdminConfigManagement extends Component
         $this->icon_url = $this->config->icon_url;
         $this->favicon_url = $this->config->favicon_url;
         $this->notification_email = $this->config->notification_email;
-        $this->two_factor_auth = $this->config->two_factor_auth;
+
         $this->account_prefix = $this->config->account_prefix;
         $this->account_length = $this->config->account_length;
         $this->transaction_validation_method = $this->config->transaction_validation_method;
+        $this->activate_crypto_features = $this->config->activate_crypto_features;
         // Les couleurs de marque ont été supprimées de la base de données
         // Utilisation des valeurs par défaut CSS
     }
@@ -99,10 +101,11 @@ class AdminConfigManagement extends Component
                 'bank_email' => 'nullable|email|max:255',
                 'bank_website' => 'nullable|url|max:255',
                 'notification_email' => 'nullable|email|max:255',
-                'two_factor_auth' => 'nullable|boolean',
+
                 'account_prefix' => 'nullable|string|max:10',
                 'account_length' => 'nullable|integer|min:1|max:50',
                 'transaction_validation_method' => 'nullable|string|in:manual,automatic',
+                'activate_crypto_features' => 'nullable|boolean',
                 // Validation des couleurs de marque supprimée (colonnes supprimées de la DB)
                 'logo' => 'nullable|image|max:2048',
                 'icon' => 'nullable|image|max:1024',
@@ -175,10 +178,11 @@ class AdminConfigManagement extends Component
                 'icon_url' => $this->icon_url,
                 'favicon_url' => $this->favicon_url,
                 'notification_email' => $this->notification_email,
-                'two_factor_auth' => $this->two_factor_auth,
+
                 'account_prefix' => $this->account_prefix,
                 'account_length' => $this->account_length,
                 'transaction_validation_method' => $this->transaction_validation_method,
+                'activate_crypto_features' => $this->activate_crypto_features,
                 // Couleurs de marque supprimées de la base de données
             ];
 

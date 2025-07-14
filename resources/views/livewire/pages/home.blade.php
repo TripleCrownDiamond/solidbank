@@ -404,7 +404,11 @@
                         </svg>
                     </div>
                     <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold mb-4">{{ __('loan.request_title') }}</h2>
-                    <p class="text-lg sm:text-xl text-blue-100 mb-8 max-w-3xl mx-auto">{{ __('loan.request_description') }}</p>
+                    <p class="text-lg sm:text-xl text-blue-100 mb-4 max-w-3xl mx-auto">{{ __('loan.request_description') }}</p>
+                    <div class="bg-green-500/20 border border-green-400/30 rounded-lg p-4 mb-8 max-w-2xl mx-auto">
+                        <p class="text-lg font-semibold text-green-100">{{ __('common.lending_capacity') }}</p>
+                        <p class="text-sm text-green-200 mt-1">{{ __('common.lending_capacity_description') }}</p>
+                    </div>
                     <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
                         <a href="{{ route('loan-request', ['locale' => app()->getLocale()]) }}" 
                         class="inline-flex items-center px-8 py-4 bg-blue-400 text-blue-900 font-semibold rounded-lg hover:bg-blue-300 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
@@ -467,7 +471,6 @@
                 <a href="{{ route('services', ['locale' => app()->getLocale()]) }}" class="text-brand-primary hover:underline">{{ __('common.see_all_rates') }}</a>
             </div>
         </section>
-
 
         <!-- FAQ (Accordéon Alpine.js) -->
         <section class="max-w-4xl mx-auto py-8 sm:py-10 lg:py-12 mt-4 mb-4">

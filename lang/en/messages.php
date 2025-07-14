@@ -1,19 +1,16 @@
 <?php
 
 return [
-    // General messages
     'success' => 'Success',
     'error' => 'Error',
     'warning' => 'Warning',
     'suspended' => 'suspended',
     'reactivated' => 'reactivated',
-    // Access and authorization messages
     'unauthorized_access' => 'Unauthorized access',
     'cannot_activate_admin' => 'Cannot activate an administrator',
     'cannot_suspend_admin' => 'Cannot suspend an administrator',
     'cannot_delete_admin' => 'Cannot delete an administrator',
     'cannot_delete_yourself' => 'You cannot delete yourself',
-    // User management messages
     'activate_user' => 'Activate user',
     'confirm_activate_user' => 'Are you sure you want to activate this user?',
     'user_activated_successfully' => 'User activated successfully',
@@ -27,7 +24,6 @@ return [
     'user_not_found' => 'User not found',
     'user_deleted_successfully' => 'User deleted successfully',
     'user_deletion_failed' => 'User deletion failed',
-    // Bulk action messages
     'users_suspended_count' => ':count user(s) suspended successfully',
     'users_activated_count' => ':count user(s) activated successfully',
     'users_deleted_count' => ':count user(s) deleted successfully',
@@ -40,7 +36,6 @@ return [
     'delete_users' => 'Delete users',
     'confirm_bulk_delete_users' => 'Are you sure you want to delete :count user(s)? This action is irreversible.',
     'confirm_delete_users_count' => 'Are you sure you want to delete :count user(s)? This action is irreversible.',
-    // Transaction messages
     'transaction_not_found' => 'Transaction not found',
     'only_pending_transactions_can_be_confirmed' => 'Only pending transactions can be confirmed',
     'only_pending_transactions_can_be_cancelled' => 'Only pending transactions can be cancelled',
@@ -56,7 +51,6 @@ return [
     'transaction_cancellation_error' => 'Cancellation error: :error',
     'transaction_blocked_successfully' => 'Transaction blocked successfully',
     'transaction_unblocked_successfully' => 'Transaction unblocked successfully',
-    // Deposit messages
     'account_not_found' => 'The specified account was not found.',
     'deposit_not_allowed_inactive_account' => 'Deposit cannot be made to an inactive or suspended account.',
     'wallet_not_found' => 'The specified wallet was not found.',
@@ -64,7 +58,6 @@ return [
     'deposit_request_recorded' => 'Deposit request recorded',
     'withdrawal_recorded_successfully' => 'Withdrawal recorded successfully',
     'withdrawal_request_recorded' => 'Withdrawal request recorded',
-    // Transfer group messages
     'group_updated_successfully' => 'Group updated successfully',
     'group_created_successfully' => 'Group created successfully',
     'group_save_error' => 'Error saving group',
@@ -75,7 +68,6 @@ return [
     'group_activated_successfully' => 'Group activated successfully',
     'group_deactivated_successfully' => 'Group deactivated successfully',
     'group_status_change_error' => 'Error changing group status',
-    // Transfer step messages
     'step_updated_successfully' => 'Step updated successfully',
     'step_created_successfully' => 'Step created successfully',
     'step_save_error' => 'Error saving step',
@@ -84,12 +76,10 @@ return [
     'step_deleted_successfully' => 'Step deleted successfully',
     'step_deletion_error' => 'Error deleting step',
     'step_order_unique_error' => 'This step order already exists in this group. Please choose a different order.',
-    // Applied transfer group messages
     'transfer_group_applied_to_account' => 'Transfer group applied to account successfully',
     'transfer_group_applied_to_wallet' => 'Transfer group applied to wallet successfully',
     'transfer_group_removed_from_account' => 'Transfer group removed from account successfully',
     'transfer_group_removed_from_wallet' => 'Transfer group removed from wallet successfully',
-    // Card messages
     'please_select_card_request' => 'Please select a card request',
     'invalid_card_request' => 'Invalid card request',
     'invalid_account' => 'Invalid account',
@@ -106,7 +96,6 @@ return [
     'only_pending_requests_can_be_deleted' => 'Only pending requests can be deleted',
     'card_request_deleted_successfully' => 'Card request deleted successfully',
     'card_request_deletion_error' => 'Error deleting card request',
-    // Wallet messages
     'wallet_already_exists' => 'A wallet for this cryptocurrency already exists',
     'wallet_added_successfully' => 'Wallet added successfully',
     'wallet_creation_error' => 'Error creating wallet',
@@ -116,7 +105,6 @@ return [
     'wallet_deletion_error' => 'Error deleting wallet',
     'unauthorized_wallet_deletion' => 'You are not authorized to delete this wallet',
     'cannot_delete_wallet_with_balance' => 'Cannot delete a wallet with a positive balance',
-    // Account management messages
     'failed_to_save_account' => 'Failed to save account',
     'failed_to_send_activation_email' => 'Failed to send account activation email',
     'failed_to_send_suspension_email' => 'Failed to send account suspension email',
@@ -130,11 +118,9 @@ return [
     'delete_account' => 'Delete account',
     'confirm_delete_account' => 'Are you sure you want to permanently delete this account? This action is irreversible.',
     'yes_delete' => 'Yes, delete',
-    // Transaction email messages
     'failed_to_send_transaction_confirmation_email' => 'Error sending transaction confirmation email',
     'failed_to_send_transaction_cancellation_email' => 'Error sending transaction cancellation email',
     'invalid_or_processed_transaction' => 'Invalid or already processed transaction',
-    // Configuration messages
     'bank_config_not_found' => 'Bank configuration not found',
     'confirm_bulk_activate_users' => 'Are you sure you want to activate :count user(s)?',
     'confirm_remove_transfer_group' => 'Are you sure you want to remove this transfer group?',
@@ -142,11 +128,9 @@ return [
     'confirm_delete_transfer_step' => 'Are you sure you want to delete this transfer step? This action is irreversible.',
     'confirm_transaction_confirmation' => 'Are you sure you want to confirm this transaction?',
     'confirm_transaction_cancellation' => 'Are you sure you want to cancel this transaction?',
-    'user_deleted_successfully' => 'User deleted successfully',
     'invalid_otp' => 'Invalid OTP',
     'otp_sent_successfully' => 'OTP sent successfully',
     'newsletter_subscription_success' => 'You have successfully subscribed to our newsletter.',
-    // Contact Form messages
     'contact_form' => [
         'name_required' => 'The name is required.',
         'name_min' => 'The name must contain at least 2 characters.',
@@ -157,11 +141,15 @@ return [
         'message_required' => 'The message is required.',
         'message_min' => 'The message must contain at least 10 characters.',
         'send_error' => 'An error occurred while sending the message. Please try again.',
+        'email_invalid' => '[TO TRANSLATE] contact_form.email_invalid',
     ],
-    // Transfer messages
     'transfer_confirmed_successfully' => 'Transfer confirmed successfully',
     'external_transfer_confirmed_subject' => 'Your external transfer confirmation',
-    // Configuration messages
     'config_updated_successfully' => 'Configuration updated successfully',
     'config_update_failed' => 'Configuration update failed',
+    'newsletter_subscription_error' => '[TO TRANSLATE] newsletter_subscription_error',
+    'email_required' => '[TO TRANSLATE] email_required',
+    'email_invalid' => '[TO TRANSLATE] email_invalid',
+    'email_already_subscribed' => '[TO TRANSLATE] email_already_subscribed',
+    'password_reset_success' => '[TO TRANSLATE] password_reset_success',
 ];

@@ -16,11 +16,9 @@ return [
     'success_message_with_name' => 'Bonjour :name ! Inscription réussie ! Cliquez sur le lien dans le mail pour activer votre compte. Vérifiez dans les spams si vous ne voyez pas le mail.',
     'go_to_login' => 'Aller à la connexion',
     'email_already_exists' => 'Cette adresse e-mail est déjà enregistrée. Veuillez utiliser une adresse e-mail différente ou vous connecter.',
-    // Messages de vérification d'email
-    'email_verification_required' => "Vérification d'email requise",
-    'email_verification_message' => "Un email de vérification a été envoyé à votre adresse. Cliquez sur le lien pour activer votre compte. Vérifiez dans les spams si vous ne voyez pas le mail.",
+    'email_verification_required' => 'Vérification d\'email requise',
+    'email_verification_message' => 'Un email de vérification a été envoyé à votre adresse. Cliquez sur le lien pour activer votre compte. Vérifiez dans les spams si vous ne voyez pas le mail.',
     'check_spam_message' => 'Vérifiez dans les spams si vous ne voyez pas le mail.',
-    // Étape 1 - Informations personnelles
     'first_name' => 'Prénom',
     'last_name' => 'Nom',
     'gender' => 'Genre',
@@ -34,7 +32,6 @@ return [
     'divorced' => 'Divorcé(e)',
     'widowed' => 'Veuf / Veuve',
     'profession' => 'Profession',
-    // Étape 2 - Coordonnées
     'select_country' => 'Sélectionnez un pays',
     'phone_placeholder' => 'Entrez votre numéro de téléphone',
     'phone_hint' => 'Exemple',
@@ -45,13 +42,12 @@ return [
     'city' => 'Ville',
     'postal_code' => 'Code postal',
     'address' => 'Adresse',
-    // Étape 3 - Informations du compte
     'email' => 'Adresse email',
     'password' => 'Mot de passe',
     'password_confirmation' => 'Confirmation du mot de passe',
     'currency' => 'Devise',
     'account_type' => 'Type de compte',
-    'identity_document' => "Document d'identité",
+    'identity_document' => 'Document d\'identité',
     'address_document' => 'Justificatif de domicile',
     'download' => 'Télécharger',
     'cancel' => 'Annuler',
@@ -62,30 +58,22 @@ return [
     'hide' => 'Masquer',
     'help' => [
         'password' => 'Le mot de passe doit contenir au moins 8 caractères.',
-        'identity_document' => "Téléchargez une copie de votre carte d'identité, passeport ou permis de conduire. Formats acceptés : PDF, JPG, PNG (maximum 2 Mo).",
-        'address_document' => 'Téléchargez une facture récente (électricité, gaz, téléphone) ou un justificatif de domicile. Formats acceptés : PDF, JPG, PNG (maximum 2 Mo).',
-        'file_formats' => 'Formats acceptés : PDF, JPG, PNG (maximum 2 Mo)',
+        'identity_document' => 'Téléchargez une copie de votre carte d\'identité, passeport ou permis de conduire. Formats acceptés : PDF, JPG, PNG (maximum 10 Mo).',
+        'address_document' => 'Téléchargez une facture récente (électricité, gaz, téléphone) ou un justificatif de domicile. Formats acceptés : PDF, JPG, PNG (maximum 10 Mo).',
+        'file_formats' => 'Formats acceptés : PDF, JPG, PNG (maximum 10 Mo)',
     ],
-    // Types de comptes
     'savings' => 'Compte épargne',
     'checking' => 'Compte courant',
     'business' => 'Compte professionnel',
-    // Devises
     'eur' => 'Euro (EUR)',
     'usd' => 'Dollar américain (USD)',
     'gbp' => 'Livre sterling (GBP)',
     'cad' => 'Dollar canadien (CAD)',
     'chf' => 'Franc suisse (CHF)',
-    // Interface
     'select' => 'Sélectionner',
     'next' => 'Suivant',
     'previous' => 'Précédent',
     'submit' => 'Soumettre',
-    'cancel' => 'Annuler',
-    'upload' => 'Télécharger',
-    'choose_file' => 'Choisir un fichier',
-    'no_file_chosen' => 'Aucun fichier sélectionné',
-    // Messages de validation
     'validation' => [
         'required' => 'Ce champ est obligatoire.',
         'string' => 'Ce champ doit être une chaîne de caractères.',
@@ -98,7 +86,7 @@ return [
         'before' => 'Cette date doit être antérieure au :date.',
         'after' => 'Cette date doit être postérieure au :date.',
         'in' => 'La valeur sélectionnée est invalide.',
-        'exists' => "La valeur sélectionnée n'existe pas.",
+        'exists' => 'La valeur sélectionnée n\'existe pas.',
         'mimes' => 'Le fichier doit être de type : :values.',
         'file' => 'Le fichier sélectionné est invalide.',
         'max_file_size' => 'Le fichier ne doit pas dépasser :max Ko.',
@@ -118,13 +106,12 @@ return [
         'different' => 'Ce champ doit être différent de :other.',
         'same' => 'Ce champ doit être identique à :other.',
         'accepted' => 'Ce champ doit être accepté.',
-        'active_url' => "Ce champ n'est pas une URL valide.",
+        'active_url' => 'Ce champ n\'est pas une URL valide.',
         'url' => 'Le format de ce champ est invalide.',
         'timezone' => 'Ce champ doit être un fuseau horaire valide.',
         'ip' => 'Ce champ doit être une adresse IP valide.',
         'json' => 'Ce champ doit être une chaîne JSON valide.',
     ],
-    // Messages d'erreur spécifiques aux champs
     'field_errors' => [
         'first_name' => [
             'required' => 'Le prénom est obligatoire.',
@@ -137,10 +124,10 @@ return [
             'max' => 'Le nom ne peut pas dépasser 255 caractères.',
         ],
         'email' => [
-            'required' => "L'adresse email est obligatoire.",
+            'required' => 'L\'adresse email est obligatoire.',
             'email' => 'Veuillez entrer une adresse email valide.',
             'unique' => 'Cette adresse email est déjà utilisée.',
-            'max' => "L'adresse email ne peut pas dépasser 255 caractères.",
+            'max' => 'L\'adresse email ne peut pas dépasser 255 caractères.',
         ],
         'password' => [
             'required' => 'Le mot de passe est obligatoire.',
@@ -154,7 +141,7 @@ return [
         'birth_date' => [
             'required' => 'La date de naissance est obligatoire.',
             'date' => 'Veuillez entrer une date de naissance valide.',
-            'before' => "Vous devez être né(e) avant aujourd'hui.",
+            'before' => 'Vous devez être né(e) avant aujourd\'hui.',
         ],
         'gender' => [
             'required' => 'Le genre est obligatoire.',
@@ -162,34 +149,27 @@ return [
         ],
         'country_id' => [
             'required' => 'Le pays est obligatoire.',
-            'exists' => "Le pays sélectionné n'existe pas.",
+            'exists' => 'Le pays sélectionné n\'existe pas.',
         ],
         'identity_document' => [
-            'required' => "Le document d'identité est obligatoire.",
-            'file' => "Le fichier du document d'identité n'a pu être téléversé. Veuillez vérifier que le fichier n'est pas corrompu et réessayer.",
-            'mimes' => "Le document d'identité doit être un fichier PDF, JPG ou PNG.",
-            'max' => "Le document d'identité ne doit pas dépasser 2 Mo.",
-            'upload_failed' => "Échec du téléversement du document d'identité. Le fichier est peut-être trop volumineux (maximum 2 Mo) ou dans un format non supporté (PDF, JPG, PNG uniquement).",
+            'required' => 'Le document d\'identité est obligatoire.',
+            'file' => 'Le fichier du document d\'identité n\'a pu être téléversé. Veuillez vérifier que le fichier n\'est pas corrompu et réessayer.',
+            'mimes' => 'Le document d\'identité doit être un fichier PDF, JPG ou PNG.',
+            'max' => 'Le document d\'identité ne doit pas dépasser 2 Mo.',
+            'upload_failed' => 'Échec du téléversement du document d\'identité. Le fichier est peut-être trop volumineux (maximum 2 Mo) ou dans un format non supporté (PDF, JPG, PNG uniquement).',
         ],
         'address_document' => [
             'required' => 'Le justificatif de domicile est obligatoire.',
-            'file' => "Le fichier du justificatif de domicile n'a pu être téléversé. Veuillez vérifier que le fichier n'est pas corrompu et réessayer.",
+            'file' => 'Le fichier du justificatif de domicile n\'a pu être téléversé. Veuillez vérifier que le fichier n\'est pas corrompu et réessayer.',
             'mimes' => 'Le justificatif de domicile doit être un fichier PDF, JPG ou PNG.',
             'max' => 'Le justificatif de domicile ne doit pas dépasser 2 Mo.',
             'upload_failed' => 'Échec du téléversement du justificatif de domicile. Le fichier est peut-être trop volumineux (maximum 2 Mo) ou dans un format non supporté (PDF, JPG, PNG uniquement).',
         ],
     ],
-    // Instructions et aide
-    'help' => [
-        'password' => 'Le mot de passe doit contenir au moins 8 caractères.',
-        'identity_document' => "Téléchargez une copie de votre carte d'identité, passeport ou permis de conduire. Formats acceptés : PDF, JPG, PNG (maximum 10 Mo).",
-        'address_document' => 'Téléchargez une facture récente (électricité, gaz, téléphone) ou un justificatif de domicile. Formats acceptés : PDF, JPG, PNG (maximum 10 Mo).',
-        'file_formats' => 'Formats acceptés : PDF, JPG, PNG (maximum 10 Mo)',
-    ],
-    // Messages de succès
     'success' => [
         'step1_completed' => 'Informations personnelles enregistrées avec succès.',
         'step2_completed' => 'Coordonnées enregistrées avec succès.',
         'registration_completed' => 'Inscription terminée avec succès ! Bienvenue !',
     ],
+    'check_email_activation' => 'Please check your email and click on the activation link to complete your account setup.',
 ];

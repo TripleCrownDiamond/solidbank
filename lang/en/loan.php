@@ -78,7 +78,7 @@ return [
     'submit_button' => [
         'default' => 'Submit Request',
         'loading' => 'Submitting...',
-        'success' => 'Request Sent!'
+        'success' => 'Request Sent!',
     ],
     'select_currency' => 'Select currency',
     'documents_optional_note' => 'Uploading documents is optional but recommended for faster processing.',
@@ -91,8 +91,6 @@ return [
     'calculator_description' => 'Get a quick and secure loan tailored to your financial needs',
     'success_message' => 'Your loan request has been sent successfully! We will contact you soon.',
     'file_types' => 'Accepted file types: PDF, JPG, PNG',
-    
-    // Confirmation email
     'confirmation' => [
         'subject' => 'Confirmation of your loan request',
         'title' => 'Loan request received',
@@ -107,7 +105,6 @@ return [
         'contact_info' => 'If you have any questions, please feel free to contact us by email or phone.',
         'thanks' => 'Thank you for your trust!',
     ],
-    
     'months' => 'months',
     'employment_statuses' => [
         'employed' => 'Employed',
@@ -116,12 +113,18 @@ return [
         'retired' => 'Retired',
         'student' => 'Student',
     ],
-    
-    // Loan simulator
-    'currency' => 'Currency',
     'amount' => 'Amount',
     'duration_months' => 'Duration (months)',
     'estimated_monthly' => 'Estimated monthly payment',
     'fixed_apr' => 'Fixed APR',
     'indicative_simulation' => 'Indicative simulation',
+    'submit_request' => 'Submit Request',
+    
+    // Loan types
+    'personal_loans' => 'Personal Loans',
+    'personal_loans_desc' => 'Flexible personal loans for your projects and needs',
+    'business_loans' => 'Business Loans',
+    'business_loans_desc' => 'Financing solutions to develop your business',
+    'mortgage_loans' => 'Mortgage Loans',
+    'mortgage_loans_desc' => 'Real estate financing at competitive rates',
 ];

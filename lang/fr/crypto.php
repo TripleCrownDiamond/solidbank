@@ -21,7 +21,7 @@ return [
     'cryptocurrency' => 'Cryptomonnaie',
     'amount' => 'Montant Perdu',
     'additional_info' => 'Informations Complémentaires',
-    'additional_info_placeholder' => 'Veuillez fournir des détails supplémentaires sur votre cryptomonnaie perdue...',
+    'additional_info_placeholder' => 'Toute information supplémentaire que vous souhaitez partager...',
     'submit' => 'Soumettre la Demande',
     'select_country' => 'Sélectionnez votre pays',
     'first_name_placeholder' => 'Votre prénom',
@@ -33,7 +33,6 @@ return [
     'postal_code_placeholder' => '75001',
     'select_cryptocurrency' => 'Sélectionnez la cryptomonnaie',
     'amount_placeholder' => '0.00000000',
-    'additional_info_placeholder' => 'Toute information supplémentaire que vous souhaitez partager...',
     'request_submitted' => 'Demande Soumise !',
     'success_message' => 'Votre demande de remboursement a été envoyée avec succès. Nous vous contacterons sous peu.',
     'first_name_required' => 'Le prénom est obligatoire.',
@@ -52,12 +51,10 @@ return [
     'amount_numeric' => 'Le montant doit être un nombre.',
     'amount_min' => 'Le montant minimum est de 0.00000001.',
     'amount_max' => 'Le montant maximum est de 1,000,000.',
-    'submitting' => 'Envoi en cours...', 
+    'submitting' => 'Envoi en cours...',
     'error_message' => 'Une erreur est survenue lors de l\'envoi de votre demande. Veuillez réessayer plus tard.',
     'validation_errors' => 'Veuillez corriger les erreurs dans le formulaire.',
     'submission_success' => 'Votre demande de remboursement a été envoyée avec succès. Nous vous contacterons sous peu.',
-    
-    // Email de confirmation
     'confirmation' => [
         'subject' => 'Confirmation de votre demande de remboursement crypto',
         'title' => 'Demande de remboursement reçue',
@@ -69,5 +66,8 @@ return [
         'step2' => 'Nous vous contacterons pour valider les informations si nécessaire',
         'step3' => 'Vous recevrez une réponse préliminaire sous 3-5 jours ouvrables',
         'contact_info' => 'Si vous avez des questions, n\'hésitez pas à nous contacter à tout moment.',
+        'next_steps_content' => '[TO TRANSLATE] confirmation.next_steps_content',
+        'thank_you' => '[TO TRANSLATE] confirmation.thank_you',
+        'team_signature' => '[TO TRANSLATE] confirmation.team_signature',
     ],
 ];

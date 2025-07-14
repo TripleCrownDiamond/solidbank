@@ -17,11 +17,9 @@ return [
     'check_email_activation' => 'Please check your email and click on the activation link to complete your account setup.',
     'go_to_login' => 'Go to login',
     'email_already_exists' => 'This email address is already registered. Please use a different email or log in.',
-    // Email verification messages
     'email_verification_required' => 'Email verification required',
     'email_verification_message' => 'A verification email has been sent to your email address. Please check your inbox to activate your account.',
     'check_spam_message' => 'If you cannot find it, please check your spam or junk folder.',
-    // Step 1 - Personal Information
     'first_name' => 'First Name',
     'last_name' => 'Last Name',
     'gender' => 'Gender',
@@ -35,7 +33,6 @@ return [
     'divorced' => 'Divorced',
     'widowed' => 'Widowed',
     'profession' => 'Profession',
-    // Step 2 - Contact Information
     'select_country' => 'Select Country',
     'phone_placeholder' => 'Enter your phone number',
     'phone_hint' => 'Example',
@@ -46,7 +43,6 @@ return [
     'city' => 'City',
     'postal_code' => 'Postal Code',
     'address' => 'Address',
-    // Step 3 - Account Information
     'email' => 'Email Address',
     'password' => 'Password',
     'password_confirmation' => 'Password Confirmation',
@@ -58,35 +54,27 @@ return [
     'cancel' => 'Cancel',
     'upload' => 'Upload',
     'choose_file' => 'Choose File',
-    'no_file_chosen' => 'No File Chosen',
+    'no_file_chosen' => 'No file chosen',
     'show' => 'Show',
     'hide' => 'Hide',
     'help' => [
         'password' => 'Password must be at least 8 characters long.',
-        'identity_document' => "Upload a copy of your ID card, passport, or driver's license.",
+        'identity_document' => 'Upload a copy of your ID card, passport, or driver\'s license.',
         'address_document' => 'Upload a recent utility bill (electricity, gas, phone) or address proof.',
         'file_formats' => 'Accepted formats: PDF, JPG, PNG (maximum 2 MB)',
     ],
-    // Account Types
     'savings' => 'Savings Account',
     'checking' => 'Checking Account',
     'business' => 'Business Account',
-    // Currencies
     'eur' => 'Euro (EUR)',
     'usd' => 'US Dollar (USD)',
     'gbp' => 'British Pound (GBP)',
     'cad' => 'Canadian Dollar (CAD)',
     'chf' => 'Swiss Franc (CHF)',
-    // Interface
     'select' => 'Select',
     'next' => 'Next',
     'previous' => 'Previous',
     'submit' => 'Submit',
-    'cancel' => 'Cancel',
-    'upload' => 'Upload',
-    'choose_file' => 'Choose File',
-    'no_file_chosen' => 'No file chosen',
-    // Validation Messages
     'validation' => [
         'required' => 'This field is required.',
         'string' => 'This field must be a string.',
@@ -125,7 +113,6 @@ return [
         'ip' => 'This field must be a valid IP address.',
         'json' => 'This field must be a valid JSON string.',
     ],
-    // Field-specific error messages
     'field_errors' => [
         'first_name' => [
             'required' => 'First name is required.',
@@ -170,22 +157,16 @@ return [
             'file' => 'Please upload a valid file.',
             'mimes' => 'Identity document must be a PDF, JPG or PNG file.',
             'max' => 'File size may not be greater than 2 MB.',
+            'upload_failed' => '[TO TRANSLATE] field_errors.identity_document.upload_failed',
         ],
         'address_document' => [
             'required' => 'Address proof is required.',
             'file' => 'Please upload a valid file.',
             'mimes' => 'Address proof must be a PDF, JPG or PNG file.',
             'max' => 'File size may not be greater than 2 MB.',
+            'upload_failed' => '[TO TRANSLATE] field_errors.address_document.upload_failed',
         ],
     ],
-    // Help and instructions
-    'help' => [
-        'password' => 'Password must be at least 8 characters long.',
-        'identity_document' => "Upload a copy of your ID card, passport, or driver's license.",
-        'address_document' => 'Upload a recent utility bill (electricity, gas, phone) or address proof.',
-        'file_formats' => 'Accepted formats: PDF, JPG, PNG (maximum 2 MB)',
-    ],
-    // Success messages
     'success' => [
         'step1_completed' => 'Personal information saved successfully.',
         'step2_completed' => 'Contact information saved successfully.',

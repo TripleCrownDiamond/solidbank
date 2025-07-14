@@ -1,7 +1,6 @@
 <?php
 
 return [
-    // Admin Account Management
     'management' => 'Verwaltung',
     'user_management' => 'Kontoverwaltung',
     'administrator_space' => 'Administratorbereich',
@@ -46,7 +45,6 @@ return [
     'cannot_modify_self' => 'Das eigene Konto kann nicht geändert werden.',
     'email_send_failed' => 'E-Mail-Benachrichtigung konnte nicht gesendet werden.',
     'confirm_delete_selected' => 'Möchten Sie die ausgewählten Benutzer wirklich löschen? Diese Aktion ist unwiderruflich.',
-    // System Configuration
     'system_configuration' => 'Systemkonfiguration',
     'iban_configuration' => 'IBAN-Konfiguration',
     'iban_country_code' => 'IBAN-Ländercode',
@@ -87,7 +85,6 @@ return [
     'saving' => 'Wird gespeichert',
     'configuration_updated_success' => 'Konfiguration erfolgreich aktualisiert.',
     'configuration_update_failed' => 'Konfigurationsupdate fehlgeschlagen.',
-    // User Details Management
     'user_details' => 'Benutzerdetails',
     'personal_information' => 'Persönliche Informationen',
     'contact_information' => 'Kontaktinformationen',
@@ -122,7 +119,6 @@ return [
     'enabled' => 'Aktiviert',
     'disabled' => 'Deaktiviert',
     'user_not_found' => 'Benutzer nicht gefunden',
-    // Transfer Step Groups Management
     'transfer_step_management' => 'Überweisungsschritte',
     'transfer_step_groups' => 'Überweisungsschrittgruppen',
     'create_group' => 'Gruppe erstellen',
@@ -140,11 +136,9 @@ return [
     'group_deleted_success' => 'Gruppe erfolgreich gelöscht.',
     'group_status_updated' => 'Gruppenstatus erfolgreich aktualisiert.',
     'group_created_successfully' => 'Gruppe erfolgreich erstellt.',
-    // RIB, Cards and Wallets
     'rib_information' => 'RIB-Informationen',
     'iban' => 'IBAN',
     'swift' => 'SWIFT-Code',
-    'bank_name' => 'Bankname',
     'account_number' => 'Kontonummer',
     'no_rib_found' => 'Kein RIB gefunden',
     'cards' => 'Karten',
@@ -198,30 +192,14 @@ return [
     'select_group_first' => 'Bitte wählen Sie zuerst eine Gruppe aus, um deren Schritte anzuzeigen.',
     'search_groups' => 'Gruppen suchen...',
     'filter_by_status' => 'Nach Status filtern',
-    'all_statuses' => 'Alle Status',
     'save' => 'Speichern',
     'cancel' => 'Abbrechen',
     'actions' => 'Aktionen',
     'toggle_status' => 'Status umschalten',
     'edit' => 'Bearbeiten',
     'delete' => 'Löschen',
-    // Table headers and content
-    'no_users_found' => 'Keine Benutzer gefunden',
-    'name' => 'Name',
-    'email' => 'E-Mail',
-    'type' => 'Typ',
-    'accounts' => 'Konten',
-    'registration' => 'Registrierung',
     'you' => 'Sie',
-    'admin' => 'Admin',
-    'user' => 'Benutzer',
-    'no_accounts' => 'Keine Konten',
-    // Action confirmations
-    'confirm_activate_user' => 'Möchten Sie diesen Benutzer wirklich aktivieren?',
-    'confirm_delete_user' => 'Möchten Sie diesen Benutzer wirklich löschen? Diese Aktion ist unwiderruflich.',
-    // Suspension modal
     'suspend_selected_users' => 'Ausgewählte Benutzer sperren',
-    'suspend_user' => 'Benutzer sperren',
     'suspension_reason' => 'Sperrgrund',
     'enter_suspension_reason' => 'Grund für die Sperrung eingeben',
     'suspension_instructions' => 'Sperranweisungen',
@@ -246,7 +224,6 @@ return [
     'order' => 'Reihenfolge',
     'code' => 'Code',
     'create_step' => 'Schritt erstellen',
-    // User Management Actions
     'show_card_details' => 'Kartendetails anzeigen',
     'hide_card_details' => 'Kartendetails ausblenden',
     'copy_card_number' => 'Kartennummer kopieren',
@@ -255,10 +232,8 @@ return [
     'copy_wallet_address' => 'Wallet-Adresse kopieren',
     'copied_to_clipboard' => 'In die Zwischenablage kopiert',
     'copy_failed' => 'Kopieren fehlgeschlagen',
-    // Transfer Groups
     'transfer_groups' => 'Überweisungsgruppen',
     'apply_transfer_group' => 'Überweisungsgruppe anwenden',
-    'select_account' => 'Konto auswählen',
     'select_transfer_group' => 'Überweisungsgruppe auswählen',
     'apply_group' => 'Gruppe anwenden',
     'close' => 'Schließen',
@@ -267,7 +242,6 @@ return [
     'no_transfer_groups_applied' => 'Keine Überweisungsgruppen angewendet',
     'applied_to_account' => 'Auf Konto angewendet',
     'applied_to_wallet' => 'Auf Wallet angewendet',
-    // User Status Management
     'activating' => 'Wird aktiviert...',
     'deleting' => 'Wird gelöscht...',
     'confirm_delete_card_request' => 'Möchten Sie diese Kartenanfrage wirklich löschen?',
@@ -283,7 +257,6 @@ return [
     'delete_card' => 'Karte löschen',
     'confirm_delete_card' => 'Möchten Sie diese Karte wirklich löschen?',
     'toggle_card_details' => 'Kartendetails ein-/ausblenden',
-    'copy_card_number' => 'Kartennummer kopieren',
     'card_deleted_success' => 'Karte erfolgreich gelöscht',
     'card_delete_failed' => 'Löschen der Karte fehlgeschlagen',
     'account_must_be_active' => 'Konto muss aktiv sein, um diese Operation durchzuführen',
@@ -297,7 +270,6 @@ return [
     'applying' => 'Wird angewendet...',
     'remove_transfer_group' => 'Überweisungsgruppe entfernen',
     'removing' => 'Wird entfernt...',
-    // Card Request Management
     'delete_request' => 'Anfrage löschen',
     'card_request_not_found' => 'Kartenanfrage nicht gefunden',
     'unauthorized_action' => 'Nicht autorisierte Aktion',
@@ -310,4 +282,5 @@ return [
     'or' => 'oder',
     'no_pending_card_requests' => 'Keine ausstehenden Kartenanfragen',
     'confirm_delete_wallet' => 'Möchten Sie dieses Wallet wirklich löschen?',
+    'no_transfer_groups' => '[TO TRANSLATE] no_transfer_groups',
 ];

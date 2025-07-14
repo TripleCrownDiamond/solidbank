@@ -21,7 +21,7 @@ return [
     'cryptocurrency' => 'Cryptocurrency',
     'amount' => 'Amount Lost',
     'additional_info' => 'Additional Information',
-    'additional_info_placeholder' => 'Please provide any additional details about your lost cryptocurrency...',
+    'additional_info_placeholder' => 'Any additional information you would like to share...',
     'submit' => 'Submit Request',
     'select_country' => 'Select your country',
     'first_name_placeholder' => 'Your first name',
@@ -33,7 +33,6 @@ return [
     'postal_code_placeholder' => '12345',
     'select_cryptocurrency' => 'Select cryptocurrency',
     'amount_placeholder' => '0.00000000',
-    'additional_info_placeholder' => 'Any additional information you would like to share...',
     'request_submitted' => 'Request Submitted!',
     'success_message' => 'Your refund request has been submitted successfully. We will contact you shortly.',
     'first_name_required' => 'The first name field is required.',
@@ -52,12 +51,10 @@ return [
     'amount_numeric' => 'The amount must be a number.',
     'amount_min' => 'The minimum amount is 0.00000001.',
     'amount_max' => 'The maximum amount is 1,000,000.',
-    'submitting' => 'Submitting...', 
+    'submitting' => 'Submitting...',
     'error_message' => 'An error occurred while submitting your request. Please try again later.',
     'validation_errors' => 'Please correct the errors in the form.',
     'submission_success' => 'Your refund request has been submitted successfully. We will contact you shortly.',
-    
-    // Confirmation email
     'confirmation' => [
         'subject' => 'Confirmation of your crypto refund request',
         'title' => 'Refund request received',
@@ -69,5 +66,8 @@ return [
         'step2' => 'We will contact you to validate information if necessary',
         'step3' => 'You will receive a preliminary response within 3-5 business days',
         'contact_info' => 'If you have any questions, please do not hesitate to contact us at any time.',
+        'next_steps_content' => '[TO TRANSLATE] confirmation.next_steps_content',
+        'thank_you' => '[TO TRANSLATE] confirmation.thank_you',
+        'team_signature' => '[TO TRANSLATE] confirmation.team_signature',
     ],
 ];

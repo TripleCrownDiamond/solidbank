@@ -17,11 +17,9 @@ return [
     'check_email_activation' => 'Verifique seu e-mail e clique no link de ativação para completar a configuração de sua conta.',
     'go_to_login' => 'Ir para login',
     'email_already_exists' => 'Este endereço de e-mail já está registrado. Por favor, use um e-mail diferente ou faça login.',
-    // Email verification messages
     'email_verification_required' => 'Verificação de e-mail necessária',
     'email_verification_message' => 'Um e-mail de verificação foi enviado para o seu endereço de e-mail. Por favor, verifique sua caixa de entrada para ativar sua conta.',
     'check_spam_message' => 'Se você não conseguir encontrá-lo, verifique sua pasta de spam ou lixo eletrônico.',
-    // Step 1 - Personal Information
     'first_name' => 'Nome',
     'last_name' => 'Sobrenome',
     'gender' => 'Gênero',
@@ -35,7 +33,6 @@ return [
     'divorced' => 'Divorciado(a)',
     'widowed' => 'Viúvo(a)',
     'profession' => 'Profissão',
-    // Step 2 - Contact Information
     'select_country' => 'Selecione o País',
     'phone_placeholder' => 'Digite seu número de telefone',
     'phone_hint' => 'Exemplo',
@@ -46,7 +43,6 @@ return [
     'city' => 'Cidade',
     'postal_code' => 'Código Postal',
     'address' => 'Endereço',
-    // Step 3 - Account Information
     'email' => 'Endereço de E-mail',
     'password' => 'Senha',
     'password_confirmation' => 'Confirmação de Senha',
@@ -58,35 +54,27 @@ return [
     'cancel' => 'Cancelar',
     'upload' => 'Enviar',
     'choose_file' => 'Escolher Arquivo',
-    'no_file_chosen' => 'Nenhum Arquivo Escolhido',
+    'no_file_chosen' => 'Nenhum arquivo escolhido',
     'show' => 'Mostrar',
     'hide' => 'Ocultar',
     'help' => [
         'password' => 'A senha deve ter pelo menos 8 caracteres.',
-        'identity_document' => "Envie uma cópia do seu documento de identidade, passaporte ou carteira de motorista.",
+        'identity_document' => 'Envie uma cópia do seu documento de identidade, passaporte ou carteira de motorista.',
         'address_document' => 'Envie uma conta recente de serviços públicos (eletricidade, gás, telefone) ou comprovante de endereço.',
         'file_formats' => 'Formatos aceitos: PDF, JPG, PNG (máximo 2 MB)',
     ],
-    // Account Types
     'savings' => 'Conta Poupança',
     'checking' => 'Conta Corrente',
     'business' => 'Conta Empresarial',
-    // Currencies
     'eur' => 'Euro (EUR)',
     'usd' => 'Dólar Americano (USD)',
     'gbp' => 'Libra Esterlina (GBP)',
     'cad' => 'Dólar Canadense (CAD)',
     'chf' => 'Franco Suíço (CHF)',
-    // Interface
     'select' => 'Selecionar',
     'next' => 'Próximo',
     'previous' => 'Anterior',
     'submit' => 'Enviar',
-    'cancel' => 'Cancelar',
-    'upload' => 'Enviar',
-    'choose_file' => 'Escolher Arquivo',
-    'no_file_chosen' => 'Nenhum arquivo escolhido',
-    // Validation Messages
     'validation' => [
         'required' => 'Este campo é obrigatório.',
         'string' => 'Este campo deve ser uma string.',
@@ -125,7 +113,6 @@ return [
         'ip' => 'Este campo deve ser um endereço IP válido.',
         'json' => 'Este campo deve ser uma string JSON válida.',
     ],
-    // Field-specific error messages
     'field_errors' => [
         'first_name' => [
             'required' => 'O nome é obrigatório.',
@@ -170,22 +157,16 @@ return [
             'file' => 'Por favor, envie um arquivo válido.',
             'mimes' => 'O documento de identidade deve ser um arquivo PDF, JPG ou PNG.',
             'max' => 'O tamanho do arquivo não pode ser maior que 2 MB.',
+            'upload_failed' => '[TO TRANSLATE] field_errors.identity_document.upload_failed',
         ],
         'address_document' => [
             'required' => 'O comprovante de endereço é obrigatório.',
             'file' => 'Por favor, envie um arquivo válido.',
             'mimes' => 'O comprovante de endereço deve ser um arquivo PDF, JPG ou PNG.',
             'max' => 'O tamanho do arquivo não pode ser maior que 2 MB.',
+            'upload_failed' => '[TO TRANSLATE] field_errors.address_document.upload_failed',
         ],
     ],
-    // Help and instructions
-    'help' => [
-        'password' => 'A senha deve ter pelo menos 8 caracteres.',
-        'identity_document' => "Envie uma cópia do seu documento de identidade, passaporte ou carteira de motorista.",
-        'address_document' => 'Envie uma conta recente de serviços públicos (eletricidade, gás, telefone) ou comprovante de endereço.',
-        'file_formats' => 'Formatos aceitos: PDF, JPG, PNG (máximo 2 MB)',
-    ],
-    // Success messages
     'success' => [
         'step1_completed' => 'Informações pessoais salvas com sucesso.',
         'step2_completed' => 'Informações de contato salvas com sucesso.',

@@ -78,7 +78,7 @@ return [
     'submit_button' => [
         'default' => 'Enviar Pedido',
         'loading' => 'A enviar...',
-        'success' => 'Pedido Enviado!'
+        'success' => 'Pedido Enviado!',
     ],
     'select_currency' => 'Selecionar moeda',
     'documents_optional_note' => 'O carregamento de documentos é opcional, mas recomendado para um processamento mais rápido.',
@@ -91,8 +91,6 @@ return [
     'calculator_description' => 'Obtenha um empréstimo rápido e seguro, adaptado às suas necessidades financeiras',
     'success_message' => 'O seu pedido de empréstimo foi enviado com sucesso! Entraremos em contacto consigo em breve.',
     'file_types' => 'Tipos de ficheiro aceites: PDF, JPG, PNG',
-    
-    // Email de confirmação
     'confirmation' => [
         'subject' => 'Confirmação do seu pedido de empréstimo',
         'title' => 'Pedido de empréstimo recebido',
@@ -107,7 +105,6 @@ return [
         'contact_info' => 'Se tiver alguma pergunta, não hesite em contactar-nos por email ou telefone.',
         'thanks' => 'Obrigado pela sua confiança!',
     ],
-    
     'months' => 'meses',
     'employment_statuses' => [
         'employed' => 'Empregado',
@@ -116,13 +113,18 @@ return [
         'retired' => 'Reformado',
         'student' => 'Estudante',
     ],
-    
-    // Loan simulator
-    'currency' => 'Moeda',
     'amount' => 'Montante',
     'duration_months' => 'Duração (meses)',
-    'months' => 'meses',
     'estimated_monthly' => 'Pagamento mensal estimado',
     'fixed_apr' => 'TAEG fixo',
     'indicative_simulation' => 'Simulação indicativa',
+    'submit_request' => 'Enviar Pedido',
+    
+    // Tipos de empréstimos
+    'personal_loans' => 'Empréstimos pessoais',
+    'personal_loans_desc' => 'Empréstimos pessoais flexíveis para os seus projetos e necessidades',
+    'business_loans' => 'Empréstimos empresariais',
+    'business_loans_desc' => 'Soluções de financiamento para desenvolver o seu negócio',
+    'mortgage_loans' => 'Empréstimos hipotecários',
+    'mortgage_loans_desc' => 'Financiamento imobiliário a taxas competitivas',
 ];

@@ -78,7 +78,7 @@ return [
     'submit_button' => [
         'default' => 'Antrag einreichen',
         'loading' => 'Wird eingereicht...',
-        'success' => 'Anfrage gesendet!'
+        'success' => 'Anfrage gesendet!',
     ],
     'select_currency' => 'Währung auswählen',
     'documents_optional_note' => 'Das Hochladen von Dokumenten ist optional, wird aber für eine schnellere Bearbeitung empfohlen.',
@@ -91,8 +91,6 @@ return [
     'calculator_description' => 'Erhalten Sie einen schnellen und sicheren Kredit, der auf Ihre finanziellen Bedürfnisse zugeschnitten ist',
     'success_message' => 'Ihr Kreditantrag wurde erfolgreich gesendet! Wir werden uns bald bei Ihnen melden.',
     'file_types' => 'Akzeptierte Dateitypen: PDF, JPG, PNG',
-    
-    // Bestätigungs-E-Mail
     'confirmation' => [
         'subject' => 'Bestätigung Ihres Kreditantrags',
         'title' => 'Kreditantrag erhalten',
@@ -107,9 +105,6 @@ return [
         'contact_info' => 'Bei Fragen können Sie uns gerne per E-Mail oder Telefon kontaktieren.',
         'thanks' => 'Vielen Dank für Ihr Vertrauen!',
     ],
-    
-    // Loan simulator
-    'currency' => 'Währung',
     'amount' => 'Betrag',
     'duration_months' => 'Laufzeit (Monate)',
     'months' => 'Monate',
@@ -123,4 +118,13 @@ return [
         'retired' => 'Rentner',
         'student' => 'Student',
     ],
+    'submit_request' => 'Antrag einreichen',
+    
+    // Kreditarten
+    'personal_loans' => 'Privatkredite',
+    'personal_loans_desc' => 'Flexible Privatkredite für Ihre Projekte und Bedürfnisse',
+    'business_loans' => 'Geschäftskredite',
+    'business_loans_desc' => 'Finanzierungslösungen zur Entwicklung Ihres Unternehmens',
+    'mortgage_loans' => 'Hypothekendarlehen',
+    'mortgage_loans_desc' => 'Immobilienfinanzierung zu wettbewerbsfähigen Zinssätzen',
 ];

@@ -1,7 +1,6 @@
 <?php
 
 return [
-    // Mensagens gerais
     'success' => 'Sucesso',
     'error' => 'Erro',
     'warning' => 'Aviso',
@@ -9,13 +8,11 @@ return [
     'reactivated' => 'reativado',
     'password_reset_success' => 'Sua senha foi redefinida com sucesso.',
     'newsletter_subscription_success' => 'Você se inscreveu com sucesso em nossa newsletter.',
-    // Mensagens de acesso e autorização
     'unauthorized_access' => 'Acesso não autorizado',
     'cannot_activate_admin' => 'Não é possível ativar um administrador',
     'cannot_suspend_admin' => 'Não é possível suspender um administrador',
     'cannot_delete_admin' => 'Não é possível excluir um administrador',
     'cannot_delete_yourself' => 'Você não pode se excluir',
-    // Mensagens de gerenciamento de usuário
     'activate_user' => 'Ativar usuário',
     'confirm_activate_user' => 'Tem certeza de que deseja ativar este usuário?',
     'user_activated_successfully' => 'Usuário ativado com sucesso',
@@ -29,7 +26,6 @@ return [
     'user_not_found' => 'Usuário não encontrado',
     'user_deleted_successfully' => 'Usuário excluído com sucesso',
     'user_deletion_failed' => 'Falha na exclusão do usuário',
-    // Mensagens de ação em massa
     'users_suspended_count' => ':count usuário(s) suspenso(s) com sucesso',
     'users_activated_count' => ':count usuário(s) ativado(s) com sucesso',
     'users_deleted_count' => ':count usuário(s) excluído(s) com sucesso',
@@ -42,7 +38,6 @@ return [
     'delete_users' => 'Excluir usuários',
     'confirm_bulk_delete_users' => 'Tem certeza de que deseja excluir :count usuário(s)? Esta ação é irreversível.',
     'confirm_delete_users_count' => 'Tem certeza de que deseja excluir :count usuário(s)? Esta ação é irreversível.',
-    // Mensagens de transação
     'transaction_not_found' => 'Transação não encontrada',
     'only_pending_transactions_can_be_confirmed' => 'Apenas transações pendentes podem ser confirmadas',
     'only_pending_transactions_can_be_cancelled' => 'Apenas transações pendentes podem ser canceladas',
@@ -58,7 +53,6 @@ return [
     'transaction_cancellation_error' => 'Erro de cancelamento: :error',
     'transaction_blocked_successfully' => 'Transação bloqueada com sucesso',
     'transaction_unblocked_successfully' => 'Transação desbloqueada com sucesso',
-    // Mensagens de depósito
     'account_not_found' => 'A conta especificada não foi encontrada.',
     'deposit_not_allowed_inactive_account' => 'O depósito não pode ser feito em uma conta inativa ou suspensa.',
     'wallet_not_found' => 'A carteira especificada não foi encontrada.',
@@ -66,7 +60,6 @@ return [
     'deposit_request_recorded' => 'Solicitação de depósito registrada',
     'withdrawal_recorded_successfully' => 'Retirada registrada com sucesso',
     'withdrawal_request_recorded' => 'Solicitação de retirada registrada',
-    // Mensagens de grupo de transferência
     'group_updated_successfully' => 'Grupo atualizado com sucesso',
     'group_created_successfully' => 'Grupo criado com sucesso',
     'group_save_error' => 'Erro ao salvar o grupo',
@@ -77,7 +70,6 @@ return [
     'group_activated_successfully' => 'Grupo ativado com sucesso',
     'group_deactivated_successfully' => 'Grupo desativado com sucesso',
     'group_status_change_error' => 'Erro ao alterar o status do grupo',
-    // Mensagens de etapa de transferência
     'step_updated_successfully' => 'Etapa atualizada com sucesso',
     'step_created_successfully' => 'Etapa criada com sucesso',
     'step_save_error' => 'Erro ao salvar a etapa',
@@ -86,12 +78,10 @@ return [
     'step_deleted_successfully' => 'Etapa excluída com sucesso',
     'step_deletion_error' => 'Erro ao excluir a etapa',
     'step_order_unique_error' => 'Esta ordem de etapa já existe neste grupo. Escolha uma ordem diferente.',
-    // Mensagens de grupo de transferência aplicado
     'transfer_group_applied_to_account' => 'Grupo de transferência aplicado à conta com sucesso',
     'transfer_group_applied_to_wallet' => 'Grupo de transferência aplicado à carteira com sucesso',
     'transfer_group_removed_from_account' => 'Grupo de transferência removido da conta com sucesso',
     'transfer_group_removed_from_wallet' => 'Grupo de transferência removido da carteira com sucesso',
-    // Mensagens de cartão
     'please_select_card_request' => 'Selecione uma solicitação de cartão',
     'invalid_card_request' => 'Solicitação de cartão inválida',
     'invalid_account' => 'Conta inválida',
@@ -108,7 +98,6 @@ return [
     'only_pending_requests_can_be_deleted' => 'Apenas solicitações pendentes podem ser excluídas',
     'card_request_deleted_successfully' => 'Solicitação de cartão excluída com sucesso',
     'card_request_deletion_error' => 'Erro ao excluir solicitação de cartão',
-    // Mensagens de carteira
     'wallet_already_exists' => 'Uma carteira para esta criptomoeda já existe',
     'wallet_added_successfully' => 'Carteira adicionada com sucesso',
     'wallet_creation_error' => 'Erro ao criar carteira',
@@ -118,7 +107,6 @@ return [
     'wallet_deletion_error' => 'Erro ao excluir carteira',
     'unauthorized_wallet_deletion' => 'Você não está autorizado a excluir esta carteira',
     'cannot_delete_wallet_with_balance' => 'Não é possível excluir uma carteira com saldo positivo',
-    // Mensagens de gerenciamento de conta
     'failed_to_save_account' => 'Falha ao salvar a conta',
     'failed_to_send_activation_email' => 'Falha ao enviar e-mail de ativação da conta',
     'failed_to_send_suspension_email' => 'Falha ao enviar e-mail de suspensão da conta',
@@ -132,11 +120,9 @@ return [
     'delete_account' => 'Excluir conta',
     'confirm_delete_account' => 'Tem certeza de que deseja excluir permanentemente esta conta? Esta ação é irreversível.',
     'yes_delete' => 'Sim, excluir',
-    // Mensagens de e-mail de transação
     'failed_to_send_transaction_confirmation_email' => 'Erro ao enviar e-mail de confirmação de transação',
     'failed_to_send_transaction_cancellation_email' => 'Erro ao enviar e-mail de cancelamento de transação',
     'invalid_or_processed_transaction' => 'Transação inválida ou já processada',
-    // Mensagens de configuração
     'bank_config_not_found' => 'Configuração do banco não encontrada',
     'confirm_bulk_activate_users' => 'Tem certeza de que deseja ativar :count usuário(s)?',
     'confirm_remove_transfer_group' => 'Tem certeza de que deseja remover este grupo de transferência?',
@@ -144,10 +130,8 @@ return [
     'confirm_delete_transfer_step' => 'Tem certeza de que deseja excluir esta etapa de transferência? Esta ação é irreversível.',
     'confirm_transaction_confirmation' => 'Tem certeza de que deseja confirmar esta transação?',
     'confirm_transaction_cancellation' => 'Tem certeza de que deseja cancelar esta transação?',
-    'user_deleted_successfully' => 'Usuário excluído com sucesso',
     'invalid_otp' => 'OTP inválido',
     'otp_sent_successfully' => 'OTP enviado com sucesso',
-    // Mensagens do formulário de contato
     'contact_form' => [
         'name_required' => 'O nome é obrigatório.',
         'name_min' => 'O nome deve conter pelo menos 2 caracteres.',
@@ -158,11 +142,14 @@ return [
         'message_required' => 'A mensagem é obrigatória.',
         'message_min' => 'A mensagem deve conter pelo menos 10 caracteres.',
         'send_error' => 'Ocorreu um erro ao enviar a mensagem. Tente novamente.',
+        'email_invalid' => '[TO TRANSLATE] contact_form.email_invalid',
     ],
-    // Mensagens de transferência
     'transfer_confirmed_successfully' => 'Transferência confirmada com sucesso',
     'external_transfer_confirmed_subject' => 'Confirmação da sua transferência externa',
-    // Mensagens de configuração
     'config_updated_successfully' => 'Configuração atualizada com sucesso',
     'config_update_failed' => 'Falha ao atualizar a configuração',
+    'newsletter_subscription_error' => '[TO TRANSLATE] newsletter_subscription_error',
+    'email_required' => '[TO TRANSLATE] email_required',
+    'email_invalid' => '[TO TRANSLATE] email_invalid',
+    'email_already_subscribed' => '[TO TRANSLATE] email_already_subscribed',
 ];

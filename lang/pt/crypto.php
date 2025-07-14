@@ -21,7 +21,7 @@ return [
     'cryptocurrency' => 'Criptomoeda',
     'amount' => 'Valor Perdido',
     'additional_info' => 'Informações Adicionais',
-    'additional_info_placeholder' => 'Por favor, forneça quaisquer detalhes adicionais sobre sua criptomoeda perdida...',
+    'additional_info_placeholder' => 'Qualquer informação adicional que você gostaria de compartilhar...',
     'submit' => 'Enviar Solicitação',
     'select_country' => 'Selecione seu país',
     'first_name_placeholder' => 'Seu primeiro nome',
@@ -33,7 +33,6 @@ return [
     'postal_code_placeholder' => '12345',
     'select_cryptocurrency' => 'Selecione a criptomoeda',
     'amount_placeholder' => '0.00000000',
-    'additional_info_placeholder' => 'Qualquer informação adicional que você gostaria de compartilhar...',
     'request_submitted' => 'Solicitação Enviada!',
     'success_message' => 'Sua solicitação de reembolso foi enviada com sucesso. Entraremos em contato em breve.',
     'first_name_required' => 'O campo do primeiro nome é obrigatório.',
@@ -56,7 +55,6 @@ return [
     'error_message' => 'Ocorreu um erro ao enviar sua solicitação. Por favor, tente novamente mais tarde.',
     'validation_errors' => 'Por favor, corrija os erros no formulário.',
     'submission_success' => 'Sua solicitação de reembolso foi enviada com sucesso. Entraremos em contato em breve.',
-    // Crypto refund confirmation email
     'confirmation' => [
         'subject' => 'Confirmação da sua solicitação de reembolso de cripto',
         'title' => 'Solicitação recebida com sucesso',
@@ -67,6 +65,9 @@ return [
         'next_steps_content' => 'Nossa equipe especializada revisará sua solicitação de reembolso e entrará em contato dentro de 2-3 dias úteis. Mantenha todos os documentos relacionados à sua transação de criptomoeda para acelerar o processo.',
         'contact_info' => 'Informações de contato:',
         'thank_you' => 'Obrigado pela sua confiança.',
-        'team_signature' => 'A equipe :app_name'
+        'team_signature' => 'A equipe :app_name',
+        'step1' => 'Our team will review your request within 24-48 hours',
+        'step2' => 'We will contact you to validate information if necessary',
+        'step3' => 'You will receive a preliminary response within 3-5 business days',
     ],
 ];

@@ -17,11 +17,9 @@ return [
     'check_email_activation' => 'Bitte überprüfen Sie Ihre E-Mail und klicken Sie auf den Aktivierungslink, um die Einrichtung Ihres Kontos abzuschließen.',
     'go_to_login' => 'Zur Anmeldung',
     'email_already_exists' => 'Diese E-Mail-Adresse ist bereits registriert. Bitte verwenden Sie eine andere E-Mail oder melden Sie sich an.',
-    // Email verification messages
     'email_verification_required' => 'E-Mail-Verifizierung erforderlich',
     'email_verification_message' => 'Eine Bestätigungs-E-Mail wurde an Ihre E-Mail-Adresse gesendet. Bitte überprüfen Sie Ihren Posteingang, um Ihr Konto zu aktivieren.',
     'check_spam_message' => 'Falls Sie die E-Mail nicht finden, überprüfen Sie bitte Ihren Spam- oder Junk-Ordner.',
-    // Step 1 - Personal Information
     'first_name' => 'Vorname',
     'last_name' => 'Nachname',
     'gender' => 'Geschlecht',
@@ -35,7 +33,6 @@ return [
     'divorced' => 'Geschieden',
     'widowed' => 'Verwitwet',
     'profession' => 'Beruf',
-    // Step 2 - Contact Information
     'select_country' => 'Land auswählen',
     'phone_placeholder' => 'Ihre Telefonnummer eingeben',
     'phone_hint' => 'Beispiel',
@@ -46,7 +43,6 @@ return [
     'city' => 'Stadt',
     'postal_code' => 'Postleitzahl',
     'address' => 'Adresse',
-    // Step 3 - Account Information
     'email' => 'E-Mail-Adresse',
     'password' => 'Passwort',
     'password_confirmation' => 'Passwort bestätigen',
@@ -67,26 +63,18 @@ return [
         'address_document' => 'Laden Sie eine aktuelle Rechnung (Strom, Gas, Telefon) oder einen Adressnachweis hoch.',
         'file_formats' => 'Akzeptierte Formate: PDF, JPG, PNG (maximal 2 MB)',
     ],
-    // Account Types
     'savings' => 'Sparkonto',
     'checking' => 'Girokonto',
     'business' => 'Geschäftskonto',
-    // Currencies
     'eur' => 'Euro (EUR)',
     'usd' => 'US-Dollar (USD)',
     'gbp' => 'Britisches Pfund (GBP)',
     'cad' => 'Kanadischer Dollar (CAD)',
     'chf' => 'Schweizer Franken (CHF)',
-    // Interface
     'select' => 'Auswählen',
     'next' => 'Weiter',
     'previous' => 'Zurück',
     'submit' => 'Absenden',
-    'cancel' => 'Abbrechen',
-    'upload' => 'Hochladen',
-    'choose_file' => 'Datei auswählen',
-    'no_file_chosen' => 'Keine Datei ausgewählt',
-    // Validation Messages
     'validation' => [
         'required' => 'Dieses Feld ist erforderlich.',
         'string' => 'Dieses Feld muss eine Zeichenkette sein.',
@@ -125,7 +113,6 @@ return [
         'ip' => 'Dieses Feld muss eine gültige IP-Adresse sein.',
         'json' => 'Dieses Feld muss eine gültige JSON-Zeichenkette sein.',
     ],
-    // Field-specific error messages
     'field_errors' => [
         'first_name' => [
             'required' => 'Vorname ist erforderlich.',
@@ -170,22 +157,16 @@ return [
             'file' => 'Bitte laden Sie eine gültige Datei hoch.',
             'mimes' => 'Identitätsnachweis muss eine PDF-, JPG- oder PNG-Datei sein.',
             'max' => 'Dateigröße darf nicht größer als 2 MB sein.',
+            'upload_failed' => '[TO TRANSLATE] field_errors.identity_document.upload_failed',
         ],
         'address_document' => [
             'required' => 'Adressnachweis ist erforderlich.',
             'file' => 'Bitte laden Sie eine gültige Datei hoch.',
             'mimes' => 'Adressnachweis muss eine PDF-, JPG- oder PNG-Datei sein.',
             'max' => 'Dateigröße darf nicht größer als 2 MB sein.',
+            'upload_failed' => '[TO TRANSLATE] field_errors.address_document.upload_failed',
         ],
     ],
-    // Help and instructions
-    'help' => [
-        'password' => 'Das Passwort muss mindestens 8 Zeichen lang sein.',
-        'identity_document' => 'Laden Sie eine Kopie Ihres Personalausweises, Reisepasses oder Führerscheins hoch.',
-        'address_document' => 'Laden Sie eine aktuelle Rechnung (Strom, Gas, Telefon) oder einen Adressnachweis hoch.',
-        'file_formats' => 'Akzeptierte Formate: PDF, JPG, PNG (maximal 2 MB)',
-    ],
-    // Success messages
     'success' => [
         'step1_completed' => 'Persönliche Informationen erfolgreich gespeichert.',
         'step2_completed' => 'Kontaktinformationen erfolgreich gespeichert.',

@@ -115,6 +115,7 @@ class Login extends Component
                     $account = $user->accounts()->first();
                     if (!$account || $account->status !== 'ACTIVE') {
                         Auth::logout();
+                        $this->isSubmitting = false;
                         $this->dispatch('alert', ['type' => 'error', 'message' => __('auth.account_inactive')]);
                         return;
                     }
@@ -124,13 +125,18 @@ class Login extends Component
                 session()->regenerate();
                 $this->dispatch('alert', ['type' => 'success', 'message' => __('login.success')]);
 
+                // Maintenir l'état de chargement pendant la redirection
+                // Ne pas réinitialiser $isSubmitting ici pour garder le bouton en état de chargement
+                
                 // Redirection immédiate vers le dashboard
                 $locale = app()->getLocale() ?? 'fr';
                 return $this->redirectRoute('dashboard', ['locale' => $locale]);
             } else {
+                $this->isSubmitting = false;
                 $this->dispatch('alert', ['type' => 'error', 'message' => __('login.failed')]);
             }
         } catch (\Illuminate\Validation\ValidationException $e) {
+            $this->isSubmitting = false;
             $this->validationErrors = $e->errors();
             $firstError = collect($e->errors())->flatten()->first();
             $errorMessage = __('login.validation_error_message');
@@ -140,6 +146,7 @@ class Login extends Component
             $this->dispatch('alert', ['type' => 'error', 'message' => $errorMessage]);
             throw $e;
         } catch (\Illuminate\Session\TokenMismatchException $e) {
+            $this->isSubmitting = false;
             // Gérer l'erreur CSRF - régénérer la session
             Log::warning('CSRF Token Mismatch in Login', [
                 'user_email' => $this->email,
@@ -151,6 +158,7 @@ class Login extends Component
             $this->dispatch('alert', ['type' => 'error', 'message' => __('Session expirée. Veuillez réessayer.')]);
             return;
         } catch (\Exception $e) {
+            $this->isSubmitting = false;
             // Log l'erreur pour le débogage
             Log::error('Login error: ' . $e->getMessage(), [
                 'user_email' => $this->email,
@@ -158,8 +166,6 @@ class Login extends Component
                 'exception' => $e->getTraceAsString()
             ]);
             $this->dispatch('alert', ['type' => 'error', 'message' => __("Une erreur s'est produite. Veuillez réessayer.")]);
-        } finally {
-            $this->isSubmitting = false;
         }
     }
 

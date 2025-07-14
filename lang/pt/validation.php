@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 
 return [
     'accepted' => 'O campo :attribute deve ser aceito.',
@@ -286,5 +286,10 @@ return [
         'stepDescription' => 'descrição da etapa',
         'stepCode' => 'código da etapa',
         'stepType' => 'tipo da etapa',
+        'secret' => '[TO TRANSLATE] attributes.secret',
     ],
+    'account_number_not_found' => '[TO TRANSLATE] account_number_not_found',
+    'wallet_address_not_found' => '[TO TRANSLATE] wallet_address_not_found',
+    'account_not_found' => '[TO TRANSLATE] account_not_found',
+    'wallet_not_found' => '[TO TRANSLATE] wallet_not_found',
 ];

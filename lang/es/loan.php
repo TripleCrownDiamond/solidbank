@@ -78,7 +78,7 @@ return [
     'submit_button' => [
         'default' => 'Enviar Solicitud',
         'loading' => 'Enviando...',
-        'success' => '¡Solicitud Enviada!'
+        'success' => '¡Solicitud Enviada!',
     ],
     'select_currency' => 'Seleccionar moneda',
     'documents_optional_note' => 'La carga de documentos es opcional pero recomendada para un procesamiento más rápido.',
@@ -91,8 +91,6 @@ return [
     'calculator_description' => 'Obtén un préstamo rápido y seguro adaptado a tus necesidades financieras',
     'success_message' => '¡Tu solicitud de préstamo ha sido enviada con éxito! Nos pondremos en contacto contigo en breve.',
     'file_types' => 'Tipos de archivo aceptados: PDF, JPG, PNG',
-    
-    // Email de confirmación
     'confirmation' => [
         'subject' => 'Confirmación de tu solicitud de préstamo',
         'title' => 'Solicitud de préstamo recibida',
@@ -107,16 +105,12 @@ return [
         'contact_info' => 'Si tienes alguna pregunta, no dudes en contactarnos por email o teléfono.',
         'thanks' => '¡Gracias por tu confianza!',
     ],
-    
-    // Loan simulator
-    'currency' => 'Moneda',
     'amount' => 'Cantidad',
     'duration_months' => 'Duración (meses)',
     'months' => 'meses',
     'estimated_monthly' => 'Pago mensual estimado',
     'fixed_apr' => 'TAE fijo',
     'indicative_simulation' => 'Simulación indicativa',
-    
     'employment_statuses' => [
         'employed' => 'Empleado',
         'self_employed' => 'Autónomo',
@@ -124,4 +118,13 @@ return [
         'retired' => 'Jubilado',
         'student' => 'Estudiante',
     ],
+    'submit_request' => 'Enviar Solicitud',
+    
+    // Tipos de préstamos
+    'personal_loans' => 'Préstamos personales',
+    'personal_loans_desc' => 'Préstamos personales flexibles para tus proyectos y necesidades',
+    'business_loans' => 'Préstamos empresariales',
+    'business_loans_desc' => 'Soluciones de financiación para desarrollar tu negocio',
+    'mortgage_loans' => 'Préstamos hipotecarios',
+    'mortgage_loans_desc' => 'Financiación inmobiliaria a tasas competitivas',
 ];

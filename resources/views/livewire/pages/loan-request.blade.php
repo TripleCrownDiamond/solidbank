@@ -18,7 +18,11 @@
             <div class="text-center">
                 <span class="inline-block bg-blue-500 text-white px-3 py-1 rounded-full mb-4 font-medium text-sm sm:text-base">@lang('loan.request_loan')</span>
                 <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold mb-4 leading-tight">@lang('loan.request_title')</h1>
-                <p class="mb-6 text-base sm:text-lg text-blue-100 max-w-3xl mx-auto">@lang('loan.calculator_description')</p>
+                <p class="mb-4 text-base sm:text-lg text-blue-100 max-w-3xl mx-auto">@lang('loan.calculator_description')</p>
+                <div class="bg-green-500/20 border border-green-400/30 rounded-lg p-4 mb-6 max-w-2xl mx-auto">
+                    <p class="text-lg font-semibold text-green-100">{{ __('common.lending_capacity') }}</p>
+                    <p class="text-sm text-green-200 mt-1">{{ __('common.lending_capacity_description') }}</p>
+                </div>
             </div>
         </div>
     </section>

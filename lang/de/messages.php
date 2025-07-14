@@ -1,19 +1,16 @@
 <?php
 
 return [
-    // Allgemeine Nachrichten
     'success' => 'Erfolg',
     'error' => 'Fehler',
     'warning' => 'Warnung',
     'suspended' => 'gesperrt',
     'reactivated' => 'reaktiviert',
-    // Zugriffs- und Berechtigungsnachrichten
     'unauthorized_access' => 'Unautorisierter Zugriff',
     'cannot_activate_admin' => 'Administrator kann nicht aktiviert werden',
     'cannot_suspend_admin' => 'Administrator kann nicht gesperrt werden',
     'cannot_delete_admin' => 'Administrator kann nicht gelöscht werden',
     'cannot_delete_yourself' => 'Sie können sich nicht selbst löschen',
-    // Benutzerverwaltungsnachrichten
     'activate_user' => 'Benutzer aktivieren',
     'confirm_activate_user' => 'Sind Sie sicher, dass Sie diesen Benutzer aktivieren möchten?',
     'user_activated_successfully' => 'Benutzer erfolgreich aktiviert',
@@ -27,7 +24,6 @@ return [
     'user_not_found' => 'Benutzer nicht gefunden',
     'user_deleted_successfully' => 'Benutzer erfolgreich gelöscht',
     'user_deletion_failed' => 'Löschen des Benutzers fehlgeschlagen',
-    // Massenaktionen
     'users_suspended_count' => ':count Benutzer erfolgreich gesperrt',
     'users_activated_count' => ':count Benutzer erfolgreich aktiviert',
     'users_deleted_count' => ':count Benutzer erfolgreich gelöscht',
@@ -40,7 +36,6 @@ return [
     'delete_users' => 'Benutzer löschen',
     'confirm_bulk_delete_users' => 'Sind Sie sicher, dass Sie :count Benutzer löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.',
     'confirm_delete_users_count' => 'Sind Sie sicher, dass Sie :count Benutzer löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.',
-    // Transaktionsnachrichten
     'transaction_not_found' => 'Transaktion nicht gefunden',
     'only_pending_transactions_can_be_confirmed' => 'Nur ausstehende Transaktionen können bestätigt werden',
     'only_pending_transactions_can_be_cancelled' => 'Nur ausstehende Transaktionen können storniert werden',
@@ -56,7 +51,6 @@ return [
     'transaction_cancellation_error' => 'Stornierungsfehler: :error',
     'transaction_blocked_successfully' => 'Transaktion erfolgreich blockiert',
     'transaction_unblocked_successfully' => 'Transaktionsblockade erfolgreich aufgehoben',
-    // Einzahlungsnachrichten
     'account_not_found' => 'Das angegebene Konto wurde nicht gefunden.',
     'deposit_not_allowed_inactive_account' => 'Einzahlung auf inaktive oder gesperrte Konten nicht möglich.',
     'wallet_not_found' => 'Die angegebene Wallet wurde nicht gefunden.',
@@ -64,7 +58,6 @@ return [
     'deposit_request_recorded' => 'Einzahlungsanfrage registriert',
     'withdrawal_recorded_successfully' => 'Auszahlung erfolgreich verbucht',
     'withdrawal_request_recorded' => 'Auszahlungsanfrage registriert',
-    // Transfergruppen
     'group_updated_successfully' => 'Gruppe erfolgreich aktualisiert',
     'group_created_successfully' => 'Gruppe erfolgreich erstellt',
     'group_save_error' => 'Fehler beim Speichern der Gruppe',
@@ -75,7 +68,6 @@ return [
     'group_activated_successfully' => 'Gruppe erfolgreich aktiviert',
     'group_deactivated_successfully' => 'Gruppe erfolgreich deaktiviert',
     'group_status_change_error' => 'Fehler beim Ändern des Gruppenstatus',
-    // Transferschritte
     'step_updated_successfully' => 'Schritt erfolgreich aktualisiert',
     'step_created_successfully' => 'Schritt erfolgreich erstellt',
     'step_save_error' => 'Fehler beim Speichern des Schrittes',
@@ -84,12 +76,10 @@ return [
     'step_deleted_successfully' => 'Schritt erfolgreich gelöscht',
     'step_deletion_error' => 'Fehler beim Löschen des Schrittes',
     'step_order_unique_error' => 'Diese Schrittreihenfolge existiert bereits in dieser Gruppe. Bitte wählen Sie eine andere Reihenfolge.',
-    // Angewandte Transfergruppen
     'transfer_group_applied_to_account' => 'Transfergruppe erfolgreich auf Konto angewendet',
     'transfer_group_applied_to_wallet' => 'Transfergruppe erfolgreich auf Wallet angewendet',
     'transfer_group_removed_from_account' => 'Transfergruppe erfolgreich vom Konto entfernt',
     'transfer_group_removed_from_wallet' => 'Transfergruppe erfolgreich von Wallet entfernt',
-    // Karten
     'please_select_card_request' => 'Bitte wählen Sie eine Kartenanfrage aus',
     'invalid_card_request' => 'Ungültige Kartenanfrage',
     'invalid_account' => 'Ungültiges Konto',
@@ -106,7 +96,6 @@ return [
     'only_pending_requests_can_be_deleted' => 'Nur ausstehende Anfragen können gelöscht werden',
     'card_request_deleted_successfully' => 'Kartenanfrage erfolgreich gelöscht',
     'card_request_deletion_error' => 'Fehler beim Löschen der Kartenanfrage',
-    // Wallets
     'wallet_already_exists' => 'Eine Wallet für diese Kryptowährung existiert bereits',
     'wallet_added_successfully' => 'Wallet erfolgreich hinzugefügt',
     'wallet_creation_error' => 'Fehler beim Erstellen der Wallet',
@@ -116,7 +105,6 @@ return [
     'wallet_deletion_error' => 'Fehler beim Löschen der Wallet',
     'unauthorized_wallet_deletion' => 'Sie sind nicht berechtigt, diese Wallet zu löschen',
     'cannot_delete_wallet_with_balance' => 'Wallet mit Guthaben kann nicht gelöscht werden',
-    // Kontoverwaltung
     'failed_to_save_account' => 'Speichern des Kontos fehlgeschlagen',
     'failed_to_send_activation_email' => 'Senden der Aktivierungs-E-Mail fehlgeschlagen',
     'failed_to_send_suspension_email' => 'Senden der Sperrungs-E-Mail fehlgeschlagen',
@@ -130,11 +118,9 @@ return [
     'delete_account' => 'Konto löschen',
     'confirm_delete_account' => 'Sind Sie sicher, dass Sie dieses Konto dauerhaft löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.',
     'yes_delete' => 'Ja, löschen',
-    // Transaktions-E-Mails
     'failed_to_send_transaction_confirmation_email' => 'Fehler beim Senden der Transaktionsbestätigungs-E-Mail',
     'failed_to_send_transaction_cancellation_email' => 'Fehler beim Senden der Transaktionsstornierungs-E-Mail',
     'invalid_or_processed_transaction' => 'Ungültige oder bereits bearbeitete Transaktion',
-    // Konfiguration
     'bank_config_not_found' => 'Bankkonfiguration nicht gefunden',
     'confirm_bulk_activate_users' => 'Sind Sie sicher, dass Sie :count Benutzer aktivieren möchten?',
     'confirm_remove_transfer_group' => 'Sind Sie sicher, dass Sie diese Transfergruppe entfernen möchten?',
@@ -142,11 +128,9 @@ return [
     'confirm_delete_transfer_step' => 'Sind Sie sicher, dass Sie diesen Transferschritt löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.',
     'confirm_transaction_confirmation' => 'Sind Sie sicher, dass Sie diese Transaktion bestätigen möchten?',
     'confirm_transaction_cancellation' => 'Sind Sie sicher, dass Sie diese Transaktion stornieren möchten?',
-    'user_deleted_successfully' => 'Benutzer erfolgreich gelöscht',
     'invalid_otp' => 'Ungültiges OTP',
     'otp_sent_successfully' => 'OTP erfolgreich gesendet',
     'newsletter_subscription_success' => 'Sie haben sich erfolgreich für unseren Newsletter angemeldet.',
-    // Kontaktformular
     'contact_form' => [
         'name_required' => 'Name ist erforderlich.',
         'name_min' => 'Der Name muss mindestens 2 Zeichen enthalten.',
@@ -157,8 +141,15 @@ return [
         'message_required' => 'Nachricht ist erforderlich.',
         'message_min' => 'Die Nachricht muss mindestens 10 Zeichen enthalten.',
         'send_error' => 'Beim Senden der Nachricht ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.',
+        'email_invalid' => '[TO TRANSLATE] contact_form.email_invalid',
     ],
-    // Transfers
     'transfer_confirmed_successfully' => 'Überweisung erfolgreich bestätigt',
     'external_transfer_confirmed_subject' => 'Bestätigung Ihrer externen Überweisung',
+    'newsletter_subscription_error' => '[TO TRANSLATE] newsletter_subscription_error',
+    'email_required' => '[TO TRANSLATE] email_required',
+    'email_invalid' => '[TO TRANSLATE] email_invalid',
+    'email_already_subscribed' => '[TO TRANSLATE] email_already_subscribed',
+    'config_updated_successfully' => 'Configuration updated successfully',
+    'config_update_failed' => 'Configuration update failed',
+    'password_reset_success' => '[TO TRANSLATE] password_reset_success',
 ];

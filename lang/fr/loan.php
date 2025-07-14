@@ -125,4 +125,12 @@ return [
         'retired' => 'Retraité',
         'student' => 'Étudiant',
     ],
+    
+    // Types de prêts
+    'personal_loans' => 'Prêts personnels',
+    'personal_loans_desc' => 'Prêts personnels flexibles pour vos projets et besoins',
+    'business_loans' => 'Prêts professionnels',
+    'business_loans_desc' => 'Solutions de financement pour développer votre entreprise',
+    'mortgage_loans' => 'Crédits immobiliers',
+    'mortgage_loans_desc' => 'Financement immobilier à taux compétitifs',
 ];

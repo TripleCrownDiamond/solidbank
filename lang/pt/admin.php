@@ -1,12 +1,11 @@
 <?php
 
 return [
-    // Admin Account Management
     'management' => 'Gestão',
     'user_management' => 'Gestão de Contas',
     'administrator_space' => 'Área de Administrador',
     'search_placeholder' => 'Pesquisar por nome, email ou número de conta...',
-    'all_statuses' => 'Todos os Estados',
+    'all_statuses' => 'Todos os estados',
     'all_types' => 'Todos os Tipos',
     'administrators' => 'Administradores',
     'users' => 'Utilizadores',
@@ -28,7 +27,7 @@ return [
     'no_accounts' => 'Sem contas',
     'manage_user' => 'Gerir Utilizador',
     'activate_user' => 'Ativar Utilizador',
-    'suspend_user' => 'Suspender Utilizador',
+    'suspend_user' => 'Suspender utilizador',
     'delete_user' => 'Eliminar Utilizador',
     'confirm_activate_user' => 'Tem a certeza que deseja ativar este utilizador?',
     'confirm_suspend_user' => 'Tem a certeza que deseja suspender este utilizador?',
@@ -46,7 +45,6 @@ return [
     'cannot_modify_self' => 'Não é possível modificar a sua própria conta.',
     'email_send_failed' => 'Falha ao enviar notificação por email.',
     'confirm_delete_selected' => 'Tem a certeza que deseja eliminar os utilizadores selecionados? Esta ação é irreversível.',
-    // System Configuration
     'system_configuration' => 'Configuração do Sistema',
     'iban_configuration' => 'Configuração IBAN',
     'iban_country_code' => 'Código de País IBAN',
@@ -87,7 +85,6 @@ return [
     'saving' => 'A guardar',
     'configuration_updated_success' => 'Configuração atualizada com sucesso.',
     'configuration_update_failed' => 'Falha ao atualizar configuração.',
-    // User Details Management
     'user_details' => 'Detalhes do Utilizador',
     'personal_information' => 'Informação Pessoal',
     'contact_information' => 'Informação de Contacto',
@@ -122,7 +119,6 @@ return [
     'enabled' => 'Ativado',
     'disabled' => 'Desativado',
     'user_not_found' => 'Utilizador não encontrado',
-    // Transfer Step Groups Management
     'transfer_step_management' => 'Passos de Transferência',
     'transfer_step_groups' => 'Grupos de Passos de Transferência',
     'create_group' => 'Criar Grupo',
@@ -140,11 +136,9 @@ return [
     'group_deleted_success' => 'Grupo eliminado com sucesso.',
     'group_status_updated' => 'Estado do grupo atualizado com sucesso.',
     'group_created_successfully' => 'Grupo criado com sucesso.',
-    // RIB, Cards and Wallets
     'rib_information' => 'Informação RIB',
     'iban' => 'IBAN',
     'swift' => 'Código SWIFT',
-    'bank_name' => 'Nome do Banco',
     'account_number' => 'Número de Conta',
     'no_rib_found' => 'Nenhum RIB encontrado',
     'cards' => 'Cartões',
@@ -157,7 +151,7 @@ return [
     'card_holder_name' => 'Nome do Titular do Cartão',
     'enter_card_holder_name' => 'Insira o nome do titular do cartão',
     'card_type' => 'Tipo de Cartão',
-    'select_account' => 'Selecionar Conta',
+    'select_account' => 'Selecionar conta',
     'adding' => 'A adicionar...',
     'expiry' => 'Validade',
     'wallets' => 'Carteiras',
@@ -198,30 +192,14 @@ return [
     'select_group_first' => 'Por favor, selecione um grupo primeiro para ver os seus passos.',
     'search_groups' => 'Pesquisar grupos...',
     'filter_by_status' => 'Filtrar por estado',
-    'all_statuses' => 'Todos os estados',
     'save' => 'Guardar',
     'cancel' => 'Cancelar',
     'actions' => 'Ações',
     'toggle_status' => 'Alternar Estado',
     'edit' => 'Editar',
     'delete' => 'Eliminar',
-    // Table headers and content
-    'no_users_found' => 'Nenhum utilizador encontrado',
-    'name' => 'Nome',
-    'email' => 'Email',
-    'type' => 'Tipo',
-    'accounts' => 'Contas',
-    'registration' => 'Registo',
     'you' => 'Você',
-    'admin' => 'Admin',
-    'user' => 'Utilizador',
-    'no_accounts' => 'Sem contas',
-    // Action confirmations
-    'confirm_activate_user' => 'Tem a certeza que deseja ativar este utilizador?',
-    'confirm_delete_user' => 'Tem a certeza que deseja eliminar este utilizador? Esta ação é irreversível.',
-    // Suspension modal
     'suspend_selected_users' => 'Suspender utilizadores selecionados',
-    'suspend_user' => 'Suspender utilizador',
     'suspension_reason' => 'Motivo da suspensão',
     'enter_suspension_reason' => 'Insira o motivo da suspensão',
     'suspension_instructions' => 'Instruções de suspensão',
@@ -246,7 +224,6 @@ return [
     'order' => 'Ordem',
     'code' => 'Código',
     'create_step' => 'Criar Passo',
-    // User Management Actions
     'show_card_details' => 'Mostrar detalhes do cartão',
     'hide_card_details' => 'Ocultar detalhes do cartão',
     'copy_card_number' => 'Copiar número do cartão',
@@ -255,10 +232,8 @@ return [
     'copy_wallet_address' => 'Copiar endereço da carteira',
     'copied_to_clipboard' => 'Copiado para a área de transferência',
     'copy_failed' => 'Falha ao copiar',
-    // Transfer Groups
     'transfer_groups' => 'Grupos de Transferência',
     'apply_transfer_group' => 'Aplicar Grupo de Transferência',
-    'select_account' => 'Selecionar conta',
     'select_transfer_group' => 'Selecionar grupo de transferência',
     'apply_group' => 'Aplicar grupo',
     'close' => 'Fechar',
@@ -267,7 +242,6 @@ return [
     'no_transfer_groups_applied' => 'Nenhum grupo de transferência aplicado',
     'applied_to_account' => 'Aplicado à conta',
     'applied_to_wallet' => 'Aplicado à carteira',
-    // User Status Management
     'activating' => 'A ativar...',
     'deleting' => 'A eliminar...',
     'confirm_delete_card_request' => 'Tem a certeza que deseja eliminar este pedido de cartão?',
@@ -283,7 +257,6 @@ return [
     'delete_card' => 'Eliminar cartão',
     'confirm_delete_card' => 'Tem a certeza que deseja eliminar este cartão?',
     'toggle_card_details' => 'Mostrar/Ocultar detalhes do cartão',
-    'copy_card_number' => 'Copiar número do cartão',
     'card_deleted_success' => 'Cartão eliminado com sucesso',
     'card_delete_failed' => 'Falha ao eliminar cartão',
     'account_must_be_active' => 'A conta deve estar ativa para realizar esta operação',
@@ -297,7 +270,6 @@ return [
     'applying' => 'A aplicar...',
     'remove_transfer_group' => 'Remover Grupo de Transferência',
     'removing' => 'A remover...',
-    // Card Request Management
     'delete_request' => 'Eliminar pedido',
     'card_request_not_found' => 'Pedido de cartão não encontrado',
     'unauthorized_action' => 'Ação não autorizada',
@@ -310,4 +282,5 @@ return [
     'or' => 'ou',
     'no_pending_card_requests' => 'Nenhum pedido de cartão pendente',
     'confirm_delete_wallet' => 'Tem a certeza que deseja eliminar esta carteira?',
+    'no_transfer_groups' => '[TO TRANSLATE] no_transfer_groups',
 ];

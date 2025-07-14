@@ -73,6 +73,10 @@
                             <p class="mt-2 text-base text-gray-500 dark:text-gray-300">
                                 {{ __('common.personal_loans_mortgages_competitive_rates') }}
                             </p>
+                            <div class="mt-3 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-700">
+                                <p class="text-sm font-semibold text-blue-800 dark:text-blue-200">{{ __('common.lending_capacity') }}</p>
+                                <p class="text-xs text-blue-600 dark:text-blue-300">{{ __('common.lending_capacity_description') }}</p>
+                            </div>
                             <ul class="text-sm text-gray-500 dark:text-gray-400 space-y-1 mt-3">
                                 <li class="flex items-center"><span class="text-brand-success mr-2">✓</span> {{ __('common.personal_loans') }}</li>
                                 <li class="flex items-center"><span class="text-brand-success mr-2">✓</span> {{ __('common.mortgage_loans') }}</li>

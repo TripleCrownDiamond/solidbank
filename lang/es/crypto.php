@@ -21,7 +21,7 @@ return [
     'cryptocurrency' => 'Criptomoneda',
     'amount' => 'Cantidad Perdida',
     'additional_info' => 'Información Adicional',
-    'additional_info_placeholder' => 'Por favor, proporcione cualquier detalle adicional sobre su criptomoneda perdida...',
+    'additional_info_placeholder' => 'Cualquier información adicional que desee compartir...',
     'submit' => 'Enviar Solicitud',
     'select_country' => 'Seleccione su país',
     'first_name_placeholder' => 'Su nombre',
@@ -33,7 +33,6 @@ return [
     'postal_code_placeholder' => '12345',
     'select_cryptocurrency' => 'Seleccionar criptomoneda',
     'amount_placeholder' => '0.00000000',
-    'additional_info_placeholder' => 'Cualquier información adicional que desee compartir...',
     'request_submitted' => '¡Solicitud Enviada!',
     'success_message' => 'Su solicitud de reembolso ha sido enviada exitosamente. Nos pondremos en contacto con usted en breve.',
     'first_name_required' => 'El campo del nombre es obligatorio.',
@@ -56,7 +55,6 @@ return [
     'error_message' => 'Ocurrió un error al enviar su solicitud. Por favor, inténtelo de nuevo más tarde.',
     'validation_errors' => 'Por favor, corrija los errores en el formulario.',
     'submission_success' => 'Su solicitud de reembolso ha sido enviada exitosamente. Nos pondremos en contacto con usted en breve.',
-    // Crypto refund confirmation email
     'confirmation' => [
         'subject' => 'Confirmación de solicitud de reembolso de criptomoneda',
         'title' => 'Solicitud recibida con éxito',
@@ -67,6 +65,9 @@ return [
         'next_steps_content' => 'Nuestro equipo especializado revisará su solicitud de reembolso y se pondrá en contacto con usted dentro de 2-3 días hábiles. Mantenga todos los documentos relacionados con su transacción de criptomoneda para acelerar el proceso.',
         'contact_info' => 'Información de contacto:',
         'thank_you' => 'Gracias por su confianza.',
-        'team_signature' => 'El equipo :app_name'
+        'team_signature' => 'El equipo :app_name',
+        'step1' => 'Our team will review your request within 24-48 hours',
+        'step2' => 'We will contact you to validate information if necessary',
+        'step3' => 'You will receive a preliminary response within 3-5 business days',
     ],
 ];

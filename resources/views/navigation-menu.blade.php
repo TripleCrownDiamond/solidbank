@@ -135,7 +135,7 @@
 
                         <x-slot name="content">
                             <!-- Account Management -->
-                            <div class="block px-4 py-2 text-xs text-brand-secondary/60">
+                            <div class="block px-4 py-2 text-xs text-brand-secondary/60 dark:text-white">
                                 {{ __('common.manage_account') }}
                             </div>
 
@@ -160,13 +160,14 @@
                             <div class="border-t border-brand-secondary/20 dark:border-brand-secondary/40"></div>
 
                             <!-- Authentication -->
-                                <form method="POST" action="{{ route('logout', app()->getLocale()) }}" x-data>
-                                    @csrf
-                                    <x-dropdown-link href="{{ route('logout', app()->getLocale()) }}"
-                                                     @click.prevent="$root.submit();">
-                                        {{ __('auth.log_out') }}
-                                    </x-dropdown-link>
-                                </form>
+                            <form method="POST" action="{{ route('logout', app()->getLocale()) }}" x-data>
+                                @csrf
+                                <x-dropdown-link href="{{ route('logout', app()->getLocale()) }}"
+                                        onclick="event.preventDefault();
+                                                this.closest('form').submit();">
+                                    {{ __('auth.log_out') }}
+                                </x-dropdown-link>
+                            </form>
                         </x-slot>
                     </x-dropdown>
                 </div>
@@ -250,9 +251,9 @@
                 <!-- Authentication -->
                 <form method="POST" action="{{ route('logout', app()->getLocale()) }}" x-data>
                     @csrf
-
                     <x-responsive-nav-link href="{{ route('logout', app()->getLocale()) }}"
-                                           @click.prevent="$root.submit();">
+                            onclick="event.preventDefault();
+                                    this.closest('form').submit();">
                         {{ __('auth.log_out') }}
                     </x-responsive-nav-link>
                 </form>

@@ -274,15 +274,17 @@
                                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent dark:bg-gray-700 dark:text-gray-100">
                         @error('account_length') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                     </div>
+
                     <div class="md:col-span-2">
                         <label class="flex items-center">
-                            <input type="checkbox" wire:model="two_factor_auth" 
+                            <input type="checkbox" wire:model="activate_crypto_features" 
                                    class="rounded border-gray-300 text-brand-primary shadow-sm focus:ring-brand-primary">
                             <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">
-                                {{ __('admin.enable_two_factor_auth') }}
+                                <i class="fa-solid fa-coins mr-1 text-brand-primary"></i>
+                                Activer les fonctionnalités crypto
                             </span>
                         </label>
-                        @error('two_factor_auth') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                        @error('activate_crypto_features') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                     </div>
                 </div>
             </div>

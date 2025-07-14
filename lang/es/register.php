@@ -17,11 +17,9 @@ return [
     'check_email_activation' => 'Por favor revise su correo electrónico y haga clic en el enlace de activación para completar la configuración de su cuenta.',
     'go_to_login' => 'Ir a iniciar sesión',
     'email_already_exists' => 'Esta dirección de correo electrónico ya está registrada. Por favor, use un correo diferente o inicie sesión.',
-    // Email verification messages
     'email_verification_required' => 'Verificación de correo electrónico requerida',
     'email_verification_message' => 'Se ha enviado un correo electrónico de verificación a su dirección de correo. Por favor, revise su bandeja de entrada para activar su cuenta.',
     'check_spam_message' => 'Si no lo encuentra, por favor, revise su carpeta de spam o correo no deseado.',
-    // Step 1 - Personal Information
     'first_name' => 'Nombre',
     'last_name' => 'Apellido',
     'gender' => 'Género',
@@ -35,7 +33,6 @@ return [
     'divorced' => 'Divorciado',
     'widowed' => 'Viudo',
     'profession' => 'Profesión',
-    // Step 2 - Contact Information
     'select_country' => 'Seleccionar País',
     'phone_placeholder' => 'Ingrese su número de teléfono',
     'phone_hint' => 'Ejemplo',
@@ -46,7 +43,6 @@ return [
     'city' => 'Ciudad',
     'postal_code' => 'Código Postal',
     'address' => 'Dirección',
-    // Step 3 - Account Information
     'email' => 'Dirección de Correo Electrónico',
     'password' => 'Contraseña',
     'password_confirmation' => 'Confirmación de Contraseña',
@@ -58,7 +54,7 @@ return [
     'cancel' => 'Cancelar',
     'upload' => 'Subir',
     'choose_file' => 'Elegir Archivo',
-    'no_file_chosen' => 'Ningún Archivo Seleccionado',
+    'no_file_chosen' => 'Ningún archivo elegido',
     'show' => 'Mostrar',
     'hide' => 'Ocultar',
     'help' => [
@@ -67,26 +63,18 @@ return [
         'address_document' => 'Suba una factura de servicios reciente (electricidad, gas, teléfono) o comprobante de domicilio.',
         'file_formats' => 'Formatos aceptados: PDF, JPG, PNG (máximo 2 MB)',
     ],
-    // Account Types
     'savings' => 'Cuenta de Ahorros',
     'checking' => 'Cuenta Corriente',
     'business' => 'Cuenta de Negocios',
-    // Currencies
     'eur' => 'Euro (EUR)',
     'usd' => 'Dólar Estadounidense (USD)',
     'gbp' => 'Libra Esterlina (GBP)',
     'cad' => 'Dólar Canadiense (CAD)',
     'chf' => 'Franco Suizo (CHF)',
-    // Interface
     'select' => 'Seleccionar',
     'next' => 'Siguiente',
     'previous' => 'Anterior',
     'submit' => 'Enviar',
-    'cancel' => 'Cancelar',
-    'upload' => 'Subir',
-    'choose_file' => 'Elegir Archivo',
-    'no_file_chosen' => 'Ningún archivo elegido',
-    // Validation Messages
     'validation' => [
         'required' => 'Este campo es obligatorio.',
         'string' => 'Este campo debe ser una cadena de texto.',
@@ -125,7 +113,6 @@ return [
         'ip' => 'Este campo debe ser una dirección IP válida.',
         'json' => 'Este campo debe ser una cadena JSON válida.',
     ],
-    // Field-specific error messages
     'field_errors' => [
         'first_name' => [
             'required' => 'El nombre es obligatorio.',
@@ -170,22 +157,16 @@ return [
             'file' => 'Por favor, suba un archivo válido.',
             'mimes' => 'El documento de identidad debe ser un archivo PDF, JPG o PNG.',
             'max' => 'El tamaño del archivo no debe ser mayor de 2 MB.',
+            'upload_failed' => '[TO TRANSLATE] field_errors.identity_document.upload_failed',
         ],
         'address_document' => [
             'required' => 'El comprobante de domicilio es obligatorio.',
             'file' => 'Por favor, suba un archivo válido.',
             'mimes' => 'El comprobante de domicilio debe ser un archivo PDF, JPG o PNG.',
             'max' => 'El tamaño del archivo no debe ser mayor de 2 MB.',
+            'upload_failed' => '[TO TRANSLATE] field_errors.address_document.upload_failed',
         ],
     ],
-    // Help and instructions
-    'help' => [
-        'password' => 'La contraseña debe tener al menos 8 caracteres.',
-        'identity_document' => 'Suba una copia de su documento de identidad, pasaporte o licencia de conducir.',
-        'address_document' => 'Suba una factura de servicios reciente (electricidad, gas, teléfono) o comprobante de domicilio.',
-        'file_formats' => 'Formatos aceptados: PDF, JPG, PNG (máximo 2 MB)',
-    ],
-    // Success messages
     'success' => [
         'step1_completed' => 'Información personal guardada exitosamente.',
         'step2_completed' => 'Información de contacto guardada exitosamente.',

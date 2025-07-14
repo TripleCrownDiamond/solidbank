@@ -1,12 +1,11 @@
 <?php
 
 return [
-    // Admin Account Management
     'management' => 'Management',
     'user_management' => 'Account Management',
     'administrator_space' => 'Administrator Space',
     'search_placeholder' => 'Search by name, email or account number...',
-    'all_statuses' => 'All Statuses',
+    'all_statuses' => 'All statuses',
     'all_types' => 'All Types',
     'administrators' => 'Administrators',
     'users' => 'Users',
@@ -28,7 +27,7 @@ return [
     'no_accounts' => 'No accounts',
     'manage_user' => 'Manage User',
     'activate_user' => 'Activate User',
-    'suspend_user' => 'Suspend User',
+    'suspend_user' => 'Suspend user',
     'delete_user' => 'Delete User',
     'confirm_activate_user' => 'Are you sure you want to activate this user?',
     'confirm_suspend_user' => 'Are you sure you want to suspend this user?',
@@ -46,8 +45,6 @@ return [
     'cannot_modify_self' => 'Cannot modify your own account.',
     'email_send_failed' => 'Failed to send email notification.',
     'confirm_delete_selected' => 'Are you sure you want to delete the selected users? This action is irreversible.',
-    
-    // System Configuration
     'system_configuration' => 'System Configuration',
     'iban_configuration' => 'IBAN Configuration',
     'iban_country_code' => 'IBAN Country Code',
@@ -88,8 +85,6 @@ return [
     'saving' => 'Saving',
     'configuration_updated_success' => 'Configuration updated successfully.',
     'configuration_update_failed' => 'Failed to update configuration.',
-    
-    // User Details Management
     'user_details' => 'User Details',
     'personal_information' => 'Personal Information',
     'contact_information' => 'Contact Information',
@@ -124,7 +119,6 @@ return [
     'enabled' => 'Enabled',
     'disabled' => 'Disabled',
     'user_not_found' => 'User not found',
-    // Transfer Step Groups Management
     'transfer_step_management' => 'Transfer Steps',
     'transfer_step_groups' => 'Transfer Step Groups',
     'create_group' => 'Create Group',
@@ -142,11 +136,9 @@ return [
     'group_deleted_success' => 'Group deleted successfully.',
     'group_status_updated' => 'Group status updated successfully.',
     'group_created_successfully' => 'Group created successfully.',
-    // RIB, Cards and Wallets
     'rib_information' => 'RIB Information',
     'iban' => 'IBAN',
     'swift' => 'SWIFT Code',
-    'bank_name' => 'Bank Name',
     'account_number' => 'Account Number',
     'no_rib_found' => 'No RIB found',
     'cards' => 'Cards',
@@ -159,7 +151,7 @@ return [
     'card_holder_name' => 'Card Holder Name',
     'enter_card_holder_name' => 'Enter card holder name',
     'card_type' => 'Card Type',
-    'select_account' => 'Select Account',
+    'select_account' => 'Select account',
     'adding' => 'Adding...',
     'expiry' => 'Expiry',
     'wallets' => 'Wallets',
@@ -200,30 +192,14 @@ return [
     'select_group_first' => 'Please select a group first to view its steps.',
     'search_groups' => 'Search groups...',
     'filter_by_status' => 'Filter by status',
-    'all_statuses' => 'All statuses',
     'save' => 'Save',
     'cancel' => 'Cancel',
     'actions' => 'Actions',
     'toggle_status' => 'Toggle Status',
     'edit' => 'Edit',
     'delete' => 'Delete',
-    // Table headers and content
-    'no_users_found' => 'No users found',
-    'name' => 'Name',
-    'email' => 'Email',
-    'type' => 'Type',
-    'accounts' => 'Accounts',
-    'registration' => 'Registration',
     'you' => 'You',
-    'admin' => 'Admin',
-    'user' => 'User',
-    'no_accounts' => 'No accounts',
-    // Action confirmations
-    'confirm_activate_user' => 'Are you sure you want to activate this user?',
-    'confirm_delete_user' => 'Are you sure you want to delete this user? This action is irreversible.',
-    // Suspension modal
     'suspend_selected_users' => 'Suspend selected users',
-    'suspend_user' => 'Suspend user',
     'suspension_reason' => 'Suspension reason',
     'enter_suspension_reason' => 'Enter the suspension reason',
     'suspension_instructions' => 'Suspension instructions',
@@ -248,7 +224,6 @@ return [
     'order' => 'Order',
     'code' => 'Code',
     'create_step' => 'Create Step',
-    // User Management Actions
     'show_card_details' => 'Show card details',
     'hide_card_details' => 'Hide card details',
     'copy_card_number' => 'Copy card number',
@@ -257,10 +232,8 @@ return [
     'copy_wallet_address' => 'Copy wallet address',
     'copied_to_clipboard' => 'Copied to clipboard',
     'copy_failed' => 'Copy failed',
-    // Transfer Groups
     'transfer_groups' => 'Transfer Groups',
     'apply_transfer_group' => 'Apply Transfer Group',
-    'select_account' => 'Select account',
     'select_transfer_group' => 'Select transfer group',
     'apply_group' => 'Apply group',
     'close' => 'Close',
@@ -269,7 +242,6 @@ return [
     'no_transfer_groups_applied' => 'No transfer groups applied',
     'applied_to_account' => 'Applied to account',
     'applied_to_wallet' => 'Applied to wallet',
-    // User Status Management
     'activating' => 'Activating...',
     'deleting' => 'Deleting...',
     'confirm_delete_card_request' => 'Are you sure you want to delete this card request?',
@@ -285,7 +257,6 @@ return [
     'delete_card' => 'Delete card',
     'confirm_delete_card' => 'Are you sure you want to delete this card?',
     'toggle_card_details' => 'Show/Hide card details',
-    'copy_card_number' => 'Copy card number',
     'card_deleted_success' => 'Card deleted successfully',
     'card_delete_failed' => 'Failed to delete card',
     'account_must_be_active' => 'Account must be active to perform this operation',
@@ -299,7 +270,6 @@ return [
     'applying' => 'Applying...',
     'remove_transfer_group' => 'Remove Transfer Group',
     'removing' => 'Removing...',
-    // Card Request Management
     'delete_request' => 'Delete request',
     'card_request_not_found' => 'Card request not found',
     'unauthorized_action' => 'Unauthorized action',
@@ -312,4 +282,5 @@ return [
     'or' => 'or',
     'no_pending_card_requests' => 'No pending card requests',
     'confirm_delete_wallet' => 'Are you sure you want to delete this wallet?',
+    'no_transfer_groups' => '[TO TRANSLATE] no_transfer_groups',
 ];
