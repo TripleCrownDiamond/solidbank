@@ -16,7 +16,7 @@ Seuls les emails d'activation de compte finissent dans les spams, contrairement 
 
 **Après :**
 
--   Sujet : "Confirmation de votre adresse e-mail - Privedyme Bank"
+-   Sujet : "Confirmation de votre adresse e-mail - Bred Fin"
 -   Message : "Votre inscription a été enregistrée. Pour finaliser la configuration..."
 -   Bouton : "Confirmer mon adresse e-mail"
 
@@ -60,7 +60,7 @@ $message->getHeaders()
 
 -   Host: smtp.hostinger.com
 -   Port: 465
--   From: contact@privedyme-bank.com
+-   From: contact@bred-fin.com
 -   En-têtes anti-spam déjà configurés dans `config/mail_headers.php`
 
 ## Recommandations supplémentaires
@@ -69,7 +69,7 @@ $message->getHeaders()
 
 ```
 SPF: v=spf1 include:_spf.hostinger.com ~all
-DMARC: v=DMARC1; p=quarantine; rua=mailto:dmarc@privedyme-bank.com
+DMARC: v=DMARC1; p=quarantine; rua=mailto:dmarc@bred-fin.com
 DKIM: À configurer dans le panneau Hostinger
 ```
 

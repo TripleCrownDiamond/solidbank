@@ -17,7 +17,7 @@ SESSION_DRIVER=database
 SESSION_LIFETIME=120
 SESSION_ENCRYPT=true
 SESSION_PATH=/
-SESSION_DOMAIN=.privedyme-bank.com
+SESSION_DOMAIN=.bred-fin.com
 SESSION_SECURE_COOKIE=true
 SESSION_HTTP_ONLY=true
 SESSION_SAME_SITE=lax
@@ -52,6 +52,7 @@ php artisan optimize
 ### 5. Test de la configuration
 
 Après application des modifications :
+
 1. Testez la connexion
 2. Vérifiez que les sessions persistent
 3. Testez l'accès aux documents
@@ -59,7 +60,7 @@ Après application des modifications :
 
 ## Notes importantes
 
-- La durée de session a été réduite à 120 minutes (2 heures)
-- Le chiffrement des sessions est activé pour plus de sécurité
-- Les cookies sont configurés pour HTTPS uniquement
-- Le domaine inclut les sous-domaines avec le préfixe point
+-   La durée de session a été réduite à 120 minutes (2 heures)
+-   Le chiffrement des sessions est activé pour plus de sécurité
+-   Les cookies sont configurés pour HTTPS uniquement
+-   Le domaine inclut les sous-domaines avec le préfixe point

@@ -46,7 +46,7 @@ class ContactForm extends Component
         try {
             // Récupérer l'email de support depuis la configuration
             $config = Config::first();
-            $supportEmail = $config && $config->notification_email ? $config->notification_email : \App\Helpers\BankConfigHelper::get('bank_email', 'support@privedyme-bank.com');
+            $supportEmail = $config && $config->notification_email ? $config->notification_email : \App\Helpers\BankConfigHelper::get('bank_email', 'support@bred-fin.com');
 
             // Envoyer l'email de notification à l'admin
             Mail::to($supportEmail)->send(new ContactFormMail([

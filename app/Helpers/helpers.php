@@ -47,7 +47,7 @@ function getAppName()
     $appName = ($config && !empty($config->bank_name)) ? $config->bank_name : config('app.name');
 
     if (empty($appName)) {
-        return 'SolidBank'; // Fallback to a sensible default
+        return 'SolidBank';  // Fallback to a sensible default
     }
 
     return $appName;
@@ -56,27 +56,27 @@ function getAppName()
 function bank_config($key = null, $default = null)
 {
     $config = getBrandingConfig();
-    
+
     if ($key === null) {
         return $config;
     }
-    
+
     if ($config && isset($config->{$key})) {
         return $config->{$key};
     }
-    
+
     // Fallback to default values
     $defaults = [
-        'bank_name' => 'Privedyme Bank',
-        'app_name' => 'Privedyme Bank',
+        'bank_name' => 'Bred Fin',
+        'app_name' => 'Bred Fin',
         'bank_swift' => 'BREDFRPP',
         'bank_country' => 'FR',
         'bank_address' => '29 Rue du Faubourg, Paris, France',
         'bank_phone' => '+33123456789',
-        'bank_email' => 'contact@privedyme-bank.com',
-        'bank_website' => 'https://www.privedyme-bank.com',
+        'bank_email' => 'contact@bred-fin.com',
+        'bank_website' => 'https://www.bred-fin.com',
     ];
-    
+
     return $defaults[$key] ?? $default;
 }
 

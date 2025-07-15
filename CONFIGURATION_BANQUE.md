@@ -4,99 +4,106 @@ Ce système permet de configurer rapidement toutes les informations de la banque
 
 ## Fichiers créés
 
-- `configure-bank.php` : Script principal de configuration
-- `configure-bank.bat` : Script batch pour Windows
-- `bank-config.json` : Fichier de configuration des paramètres
-- `CONFIGURATION_BANQUE.md` : Ce fichier d'aide
+-   `configure-bank.php` : Script principal de configuration
+-   `configure-bank.bat` : Script batch pour Windows
+-   `bank-config.json` : Fichier de configuration des paramètres
+-   `CONFIGURATION_BANQUE.md` : Ce fichier d'aide
 
 ## Utilisation
 
 ### Méthode 1 : Via le fichier batch (Windows)
 
 1. **Modifiez la configuration** :
-   - Ouvrez le fichier `bank-config.json`
-   - Modifiez les valeurs selon vos besoins :
-     ```json
-     {
-         "bank_name": "Ma Nouvelle Banque",
-         "bank_name_hyphen": "ma-nouvelle-banque",
-         "bank_email": "contact@ma-nouvelle-banque.com",
-         "bank_phone": "+33987654321",
-         "bank_address": "456 Avenue des Finances, Lyon, France",
-         "bank_swift": "MANVFRPP",
-         "account_prefix": "MANV",
-         "logo_url": "img/ma-nouvelle-banque.svg"
-     }
-     ```
+
+    - Ouvrez le fichier `bank-config.json`
+    - Modifiez les valeurs selon vos besoins :
+        ```json
+        {
+            "bank_name": "Ma Nouvelle Banque",
+            "bank_name_hyphen": "ma-nouvelle-banque",
+            "bank_email": "contact@ma-nouvelle-banque.com",
+            "bank_phone": "+33987654321",
+            "bank_address": "456 Avenue des Finances, Lyon, France",
+            "bank_swift": "MANVFRPP",
+            "account_prefix": "MANV",
+            "logo_url": "img/ma-nouvelle-banque.svg"
+        }
+        ```
 
 2. **Exécutez la configuration** :
-   - Double-cliquez sur `configure-bank.bat`
-   - Suivez les instructions à l'écran
-   - Confirmez avec 'y' quand demandé
+    - Double-cliquez sur `configure-bank.bat`
+    - Suivez les instructions à l'écran
+    - Confirmez avec 'y' quand demandé
 
 ### Méthode 2 : Via la ligne de commande
 
 1. Modifiez `bank-config.json` comme ci-dessus
 2. Exécutez :
-   ```bash
-   php configure-bank.php
-   ```
+    ```bash
+    php configure-bank.php
+    ```
 
 ## Ce qui est modifié
 
 Le script modifie automatiquement :
 
 ### Fichiers de configuration
-- `database/seeders/ConfigSeeder.php` : Toutes les informations de la banque
-- `.env` : Nom de l'application et emails
+
+-   `database/seeders/ConfigSeeder.php` : Toutes les informations de la banque
+-   `.env` : Nom de l'application et emails
 
 ### Remplacement global dans le projet
-- `Privedyme Bank` → Votre nom de banque
-- `Privedyme-Bank` → Votre nom avec tirets
-- `privedyme-bank` → Votre nom en minuscules
-- `contact@privedyme-bank.com` → Votre email
-- `contact@bred-fin.com` → Votre email
+
+-   `Bred Fin` → Votre nom de banque
+-   `Bred-Fin` → Votre nom avec tirets
+-   `privedyme-bank` → Votre nom en minuscules
+-   `contact@bred-fin.com` → Votre email
+-   `contact@bred-fin.com` → Votre email
 
 ### Actions automatiques
-- Migration fresh de la base de données
-- Exécution des seeders
-- Mise à jour de la configuration
+
+-   Migration fresh de la base de données
+-   Exécution des seeders
+-   Mise à jour de la configuration
 
 ## Paramètres de configuration
 
-| Paramètre | Description | Exemple |
-|-----------|-------------|---------|
-| `bank_name` | Nom complet de la banque | "Ma Banque" |
-| `bank_name_hyphen` | Nom avec tirets (pour URLs, etc.) | "ma-banque" |
-| `bank_email` | Email de contact principal | "contact@ma-banque.com" |
-| `bank_phone` | Numéro de téléphone | "+33123456789" |
-| `bank_address` | Adresse complète | "123 Rue Example, Paris" |
-| `bank_swift` | Code SWIFT/BIC | "MBANFRPP" |
-| `account_prefix` | Préfixe des comptes | "MBAN" |
-| `logo_url` | Chemin vers le logo | "img/ma-banque.svg" |
+| Paramètre          | Description                       | Exemple                  |
+| ------------------ | --------------------------------- | ------------------------ |
+| `bank_name`        | Nom complet de la banque          | "Ma Banque"              |
+| `bank_name_hyphen` | Nom avec tirets (pour URLs, etc.) | "ma-banque"              |
+| `bank_email`       | Email de contact principal        | "contact@ma-banque.com"  |
+| `bank_phone`       | Numéro de téléphone               | "+33123456789"           |
+| `bank_address`     | Adresse complète                  | "123 Rue Example, Paris" |
+| `bank_swift`       | Code SWIFT/BIC                    | "MBANFRPP"               |
+| `account_prefix`   | Préfixe des comptes               | "MBAN"                   |
+| `logo_url`         | Chemin vers le logo               | "img/ma-banque.svg"      |
 
 ## Notes importantes
 
-- ⚠️ **Sauvegardez votre base de données** avant d'exécuter le script (il fait un `migrate:fresh`)
-- Le script recherche et remplace dans tous les fichiers `.php`, `.blade.php`, `.js`, `.vue`
-- Assurez-vous que votre fichier logo existe dans le dossier `public/img/`
-- Le script demande confirmation avant d'appliquer les changements
+-   ⚠️ **Sauvegardez votre base de données** avant d'exécuter le script (il fait un `migrate:fresh`)
+-   Le script recherche et remplace dans tous les fichiers `.php`, `.blade.php`, `.js`, `.vue`
+-   Assurez-vous que votre fichier logo existe dans le dossier `public/img/`
+-   Le script demande confirmation avant d'appliquer les changements
 
 ## Dépannage
 
 ### Erreur "Le fichier bank-config.json n'existe pas"
-- Vérifiez que le fichier `bank-config.json` est présent dans le dossier racine
-- Créez-le s'il n'existe pas en copiant l'exemple ci-dessus
+
+-   Vérifiez que le fichier `bank-config.json` est présent dans le dossier racine
+-   Créez-le s'il n'existe pas en copiant l'exemple ci-dessus
 
 ### Erreur "JSON invalide"
-- Vérifiez la syntaxe de votre fichier JSON
-- Utilisez un validateur JSON en ligne si nécessaire
-- Assurez-vous que toutes les chaînes sont entre guillemets
+
+-   Vérifiez la syntaxe de votre fichier JSON
+-   Utilisez un validateur JSON en ligne si nécessaire
+-   Assurez-vous que toutes les chaînes sont entre guillemets
 
 ### Erreur de migration
-- Vérifiez que votre base de données est accessible
-- Assurez-vous que PHP et Artisan fonctionnent correctement
-- Vérifiez les permissions d'écriture sur les fichiers
+
+-   Vérifiez que votre base de données est accessible
+-   Assurez-vous que PHP et Artisan fonctionnent correctement
+-   Vérifiez les permissions d'écriture sur les fichiers
 
 ## Exemple complet
 

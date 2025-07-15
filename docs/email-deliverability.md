@@ -1,4 +1,4 @@
-# Configuration de Délivrabilité Email pour Privedyme Bank
+# Configuration de Délivrabilité Email pour Bred Fin
 
 ## Problèmes Résolus
 
@@ -35,7 +35,7 @@ Valeur: v=spf1 include:_spf.hostinger.com ~all
 ```
 Type: TXT
 Nom: _dmarc
-Valeur: v=DMARC1; p=quarantine; rua=mailto:dmarc@privedyme-bank.com; ruf=mailto:dmarc@privedyme-bank.com; fo=1
+Valeur: v=DMARC1; p=quarantine; rua=mailto:dmarc@bred-fin.com; ruf=mailto:dmarc@bred-fin.com; fo=1
 ```
 
 ### 3. Enregistrement DKIM

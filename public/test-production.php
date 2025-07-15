@@ -1,6 +1,6 @@
 <?php
 // Test simple pour vérifier le fonctionnement en production
-// Accès via: https://privedyme-bank.com/test-production.php
+// Accès via: https://bred-fin.com/test-production.php
 
 require_once __DIR__ . '/../vendor/autoload.php';
 

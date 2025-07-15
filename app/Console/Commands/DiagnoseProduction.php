@@ -3,11 +3,11 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Config;
 
 class DiagnoseProduction extends Command
 {
@@ -38,9 +38,9 @@ class DiagnoseProduction extends Command
         $fixes = [];
 
         // 1. Vérification de l'environnement
-        $this->info('📋 Vérification de l\'environnement...');
+        $this->info("📋 Vérification de l'environnement...");
         if (app()->environment() !== 'production') {
-            $warnings[] = 'L\'application n\'est pas en mode production (APP_ENV=' . app()->environment() . ')';
+            $warnings[] = "L'application n'est pas en mode production (APP_ENV=" . app()->environment() . ')';
         } else {
             $this->line('✅ Mode production activé');
         }
@@ -56,7 +56,7 @@ class DiagnoseProduction extends Command
 
         // 3. Vérification de la configuration de session
         $this->info('🍪 Vérification de la configuration de session...');
-        
+
         $sessionDriver = config('session.driver');
         if ($sessionDriver !== 'database') {
             $issues[] = 'SESSION_DRIVER devrait être "database" (actuellement: ' . $sessionDriver . ')';
@@ -74,8 +74,8 @@ class DiagnoseProduction extends Command
 
         $sessionDomain = config('session.domain');
         if (empty($sessionDomain) && app()->environment('production')) {
-            $warnings[] = 'SESSION_DOMAIN n\'est pas défini (recommandé: .privedyme-bank.com)';
-            $fixes[] = 'Ajouter SESSION_DOMAIN=.privedyme-bank.com dans .env';
+            $warnings[] = "SESSION_DOMAIN n'est pas défini (recommandé: .bred-fin.com)";
+            $fixes[] = 'Ajouter SESSION_DOMAIN=.bred-fin.com dans .env';
         }
 
         // 4. Vérification de la table sessions
@@ -85,7 +85,7 @@ class DiagnoseProduction extends Command
                 $sessionCount = DB::table('sessions')->count();
                 $this->line('✅ Table sessions existe (' . $sessionCount . ' sessions actives)');
             } else {
-                $issues[] = 'Table sessions n\'existe pas';
+                $issues[] = "Table sessions n'existe pas";
                 $fixes[] = 'Exécuter: php artisan session:table && php artisan migrate';
             }
         } catch (\Exception $e) {
@@ -94,7 +94,7 @@ class DiagnoseProduction extends Command
 
         // 5. Vérification du stockage
         $this->info('📁 Vérification du stockage...');
-        
+
         $publicPath = public_path('storage');
         if (!File::exists($publicPath)) {
             $issues[] = 'Lien symbolique storage manquant';
@@ -105,7 +105,7 @@ class DiagnoseProduction extends Command
 
         $storagePath = storage_path('app/public');
         if (!File::isWritable($storagePath)) {
-            $issues[] = 'Dossier storage/app/public n\'est pas accessible en écriture';
+            $issues[] = "Dossier storage/app/public n'est pas accessible en écriture";
             $fixes[] = 'Exécuter: chmod -R 755 storage && chown -R www-data:www-data storage';
         } else {
             $this->line('✅ Dossier storage accessible en écriture');
@@ -153,16 +153,16 @@ class DiagnoseProduction extends Command
         if (File::exists($logPath)) {
             $logSize = File::size($logPath);
             $this->line('✅ Fichier de log existe (' . $this->formatBytes($logSize) . ')');
-            
+
             // Vérifier les erreurs récentes
             $logContent = File::get($logPath);
             $csrfErrors = substr_count($logContent, 'CSRF Token Mismatch');
             $storageErrors = substr_count($logContent, 'Storage file not found');
-            
+
             if ($csrfErrors > 0) {
                 $warnings[] = $csrfErrors . ' erreurs CSRF détectées dans les logs';
             }
-            
+
             if ($storageErrors > 0) {
                 $warnings[] = $storageErrors . ' erreurs de fichiers storage détectées dans les logs';
             }
@@ -222,8 +222,8 @@ class DiagnoseProduction extends Command
                 $this->info('Création du lien symbolique storage...');
                 $this->call('storage:link');
             }
-            
-            if (str_contains($issue, 'Table sessions n\'existe pas')) {
+
+            if (str_contains($issue, "Table sessions n'existe pas")) {
                 $this->info('Création de la table sessions...');
                 $this->call('session:table');
                 $this->call('migrate', ['--force' => true]);

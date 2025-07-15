@@ -57,9 +57,9 @@ class MailServiceProvider extends ServiceProvider
 
             // En-têtes de traçabilité
             $headers->addTextHeader('X-Message-ID', uniqid(strtolower(str_replace(' ', '', \App\Helpers\BankConfigHelper::get('bank_name', 'solidbank'))) . '_', true));
-            
+
             // Extraire le domaine de l'email de manière sécurisée
-            $bankEmail = \App\Helpers\BankConfigHelper::get('bank_email', 'contact@privedyme-bank.com');
+            $bankEmail = \App\Helpers\BankConfigHelper::get('bank_email', 'contact@bred-fin.com');
             $domain = null;
             if (filter_var($bankEmail, FILTER_VALIDATE_EMAIL)) {
                 $domain = substr(strrchr($bankEmail, '@'), 1);

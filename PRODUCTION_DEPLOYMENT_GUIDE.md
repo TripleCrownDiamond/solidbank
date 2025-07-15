@@ -6,12 +6,12 @@
 
 ```env
 # Configuration de base
-APP_NAME="Privedyme-Bank"
+APP_NAME="Bred-Fin"
 APP_DESCRIPTION="A modern banking application."
 APP_ENV=production
 APP_KEY=base64:X5+xaETYgid+LwSqBrPSvrO4QgZ4U6ctutbG/2bSQlY=
 APP_DEBUG=false
-APP_URL=https://privedyme-bank.com
+APP_URL=https://bred-fin.com
 
 APP_LOCALE=fr
 APP_FALLBACK_LOCALE=en
@@ -34,7 +34,7 @@ SESSION_DRIVER=database
 SESSION_LIFETIME=120  # Réduit à 2 heures
 SESSION_ENCRYPT=true  # Activé pour la sécurité
 SESSION_PATH=/
-SESSION_DOMAIN=.privedyme-bank.com  # Avec point pour inclure les sous-domaines
+SESSION_DOMAIN=.bred-fin.com  # Avec point pour inclure les sous-domaines
 SESSION_SECURE_COOKIE=true  # OBLIGATOIRE pour HTTPS
 SESSION_HTTP_ONLY=true
 SESSION_SAME_SITE=lax
@@ -155,23 +155,29 @@ php artisan route:list | grep csrf
 ### 5. Résolution des problèmes spécifiques
 
 #### Problème : "Page expirée" lors de la connexion
+
 **Cause** : Configuration CSRF/Session incorrecte pour HTTPS
 **Solution** :
+
 1. Vérifier `SESSION_SECURE_COOKIE=true`
-2. Vérifier `SESSION_DOMAIN=.privedyme-bank.com`
+2. Vérifier `SESSION_DOMAIN=.bred-fin.com`
 3. S'assurer que le site fonctionne en HTTPS
 4. Vider le cache : `php artisan config:clear`
 
 #### Problème : Erreur 404 sur les documents
+
 **Cause** : Lien symbolique manquant ou route de fallback non fonctionnelle
 **Solution** :
+
 1. Recréer le lien symbolique : `php artisan storage:link`
 2. Vérifier les permissions sur le dossier storage
 3. Tester la route de fallback : `/storage/test.jpg`
 
 #### Problème : Session qui expire trop rapidement
+
 **Cause** : Configuration de durée de session
 **Solution** :
+
 1. Augmenter `SESSION_LIFETIME` si nécessaire
 2. Vérifier que la table sessions existe
 3. S'assurer que le driver de session est `database`
@@ -192,19 +198,21 @@ grep "Session" storage/logs/laravel.log
 ### 7. Tests de validation
 
 1. **Test de connexion** :
-   - Se connecter avec un utilisateur valide
-   - Vérifier que la session persiste
-   - Tester la déconnexion
+
+    - Se connecter avec un utilisateur valide
+    - Vérifier que la session persiste
+    - Tester la déconnexion
 
 2. **Test des documents** :
-   - Accéder à la page de gestion utilisateur
-   - Cliquer sur "Voir document"
-   - Vérifier que le document s'affiche
+
+    - Accéder à la page de gestion utilisateur
+    - Cliquer sur "Voir document"
+    - Vérifier que le document s'affiche
 
 3. **Test CSRF** :
-   - Soumettre un formulaire
-   - Vérifier qu'aucune erreur 419 n'apparaît
-   - Tester avec une session expirée
+    - Soumettre un formulaire
+    - Vérifier qu'aucune erreur 419 n'apparaît
+    - Tester avec une session expirée
 
 ### 8. Optimisations supplémentaires
 
@@ -234,21 +242,22 @@ php artisan db:optimize
 
 ## Checklist de déploiement
 
-- [ ] Configuration .env mise à jour
-- [ ] HTTPS activé et fonctionnel
-- [ ] Lien symbolique storage créé
-- [ ] Table sessions créée
-- [ ] Cache optimisé
-- [ ] Assets compilés
-- [ ] Permissions correctes
-- [ ] Tests de connexion réussis
-- [ ] Tests d'accès aux documents réussis
-- [ ] Logs surveillés
-- [ ] Monitoring en place
+-   [ ] Configuration .env mise à jour
+-   [ ] HTTPS activé et fonctionnel
+-   [ ] Lien symbolique storage créé
+-   [ ] Table sessions créée
+-   [ ] Cache optimisé
+-   [ ] Assets compilés
+-   [ ] Permissions correctes
+-   [ ] Tests de connexion réussis
+-   [ ] Tests d'accès aux documents réussis
+-   [ ] Logs surveillés
+-   [ ] Monitoring en place
 
 ## Support et dépannage
 
 En cas de problème persistant :
+
 1. Vérifier les logs Laravel
 2. Vérifier les logs du serveur web
 3. Tester en mode debug temporairement

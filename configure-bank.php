@@ -30,8 +30,8 @@ echo "Préfixe compte: {$bankConfig['account_prefix']}\n";
 echo "Logo: {$bankConfig['logo_url']}\n\n";
 
 // Confirmation
-echo "Voulez-vous continuer avec cette configuration ? (y/N): ";
-$handle = fopen("php://stdin", "r");
+echo 'Voulez-vous continuer avec cette configuration ? (y/N): ';
+$handle = fopen('php://stdin', 'r');
 $line = fgets($handle);
 fclose($handle);
 
@@ -124,17 +124,18 @@ echo "✓ Fichier .env mis à jour\n";
 echo "Recherche et remplacement dans tout le projet...\n";
 
 // Fonction pour remplacer dans les fichiers
-function replaceInFiles($directory, $search, $replace, $extensions = ['php', 'blade.php', 'js', 'vue']) {
+function replaceInFiles($directory, $search, $replace, $extensions = ['php', 'blade.php', 'js', 'vue'])
+{
     $iterator = new RecursiveIteratorIterator(
         new RecursiveDirectoryIterator($directory, RecursiveDirectoryIterator::SKIP_DOTS)
     );
-    
+
     $count = 0;
     foreach ($iterator as $file) {
         if ($file->isFile()) {
             $extension = pathinfo($file->getFilename(), PATHINFO_EXTENSION);
             $fullName = $file->getFilename();
-            
+
             // Vérifier les extensions
             $shouldProcess = false;
             foreach ($extensions as $ext) {
@@ -143,11 +144,11 @@ function replaceInFiles($directory, $search, $replace, $extensions = ['php', 'bl
                     break;
                 }
             }
-            
+
             if ($shouldProcess) {
                 $content = file_get_contents($file->getPathname());
                 $newContent = str_replace($search, $replace, $content);
-                
+
                 if ($content !== $newContent) {
                     file_put_contents($file->getPathname(), $newContent);
                     $count++;
@@ -155,16 +156,16 @@ function replaceInFiles($directory, $search, $replace, $extensions = ['php', 'bl
             }
         }
     }
-    
+
     return $count;
 }
 
 // Remplacements globaux
 $replacements = [
-    'Privedyme Bank' => $bankConfig['bank_name'],
-    'Privedyme-Bank' => $bankConfig['bank_name_hyphen'],
+    'Bred Fin' => $bankConfig['bank_name'],
+    'Bred-Fin' => $bankConfig['bank_name_hyphen'],
     'privedyme-bank' => $bankConfig['bank_name_hyphen'],
-    'contact@privedyme-bank.com' => $bankConfig['bank_email'],
+    'contact@bred-fin.com' => $bankConfig['bank_email'],
     'contact@bred-fin.com' => $bankConfig['bank_email']
 ];
 

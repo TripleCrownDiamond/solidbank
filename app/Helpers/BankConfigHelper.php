@@ -28,17 +28,17 @@ class BankConfigHelper
     private static function getDefaultConfig()
     {
         return (object) [
-            'bank_name' => 'Privedyme Bank',
+            'bank_name' => 'Bred Fin',
             'bank_swift' => 'BREDFRPP',
             'bank_country' => 'FR',
             'bank_address' => '29 Rue du Faubourg, Paris, France',
             'bank_phone' => '+33123456789',
-            'bank_email' => 'contact@privedyme-bank.com',
-            'bank_website' => 'https://www.privedyme-bank.com',
+            'bank_email' => 'contact@bred-fin.com',
+            'bank_website' => 'https://www.bred-fin.com',
             'logo_url' => 'img/logo_blue.svg',
             'icon_url' => 'img/icon_blue.svg',
             'favicon_url' => 'favicon.ico',
-            'notification_email' => 'contact@privedyme-bank.com',
+            'notification_email' => 'contact@bred-fin.com',
             'brand_color' => '#3B82F6',
             'brand_primary_hover' => '#2563EB',
             'brand_primary_light' => '#DBEAFE',
