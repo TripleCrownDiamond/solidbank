@@ -1,38 +1,79 @@
 <div class="flex flex-col items-center mb-8" id="transfer-progress-container" wire:init="$refresh">
-    <div class="relative w-48 h-48 mb-6" x-data="{ progress: {{ $progress }} }" 
-         x-init="
-            // Mettre à jour la progression lorsque la propriété Livewire change
-            Livewire.on('progress-updated', (event) => {
-                // Animation fluide avec GSAP si disponible, sinon avec l'API Web Animations
+    <div class="relative w-48 h-48 mb-6" x-data="{ progress: {{ $progress }}, animatedProgress: 0, isLoading: true }" 
+        x-init="
+            // Animation initiale au chargement
+            const animateToProgress = (targetProgress) => {
                 const progressCircle = $el.querySelector('.progress-circle');
+                const targetOffset = 282.6 - (targetProgress * 2.826);
+                const currentOffset = parseFloat(progressCircle.style.strokeDashoffset || '282.6');
+                
+                $data.isLoading = true;
+
                 if (progressCircle) {
-                    const currentOffset = parseFloat(progressCircle.style.strokeDashoffset || '282.6');
-                    const targetOffset = 282.6 - (event.progress * 2.826);
-                    
                     if (window.gsap) {
                         gsap.to(progressCircle, {
                             'stroke-dashoffset': targetOffset,
-                            duration: 30,
+                            duration: 2,
                             ease: 'power2.out',
-                            onUpdate: function() {
-                                progress = event.progress;
-                            }
+                            onComplete: () => { $data.isLoading = false; }
+                        });
+
+                        gsap.to($data, {
+                            animatedProgress: targetProgress,
+                            duration: 2,
+                            ease: 'power2.out'
                         });
                     } else if (progressCircle.animate) {
                         progressCircle.animate(
-                            [{ 'stroke-dashoffset': currentOffset }, { 'stroke-dashoffset': targetOffset }],
-                            { duration: 30000, easing: 'ease-out', fill: 'forwards' }
+                            [{ 'strokeDashoffset': currentOffset }, { 'strokeDashoffset': targetOffset }],
+                            { duration: 2000, easing: 'ease-out', fill: 'forwards' }
                         );
-                        progress = event.progress;
+
+                        const start = $data.animatedProgress;
+                        const diff = targetProgress - start;
+                        const duration = 2000;
+                        const stepTime = 50;
+                        let elapsed = 0;
+
+                        const interval = setInterval(() => {
+                            elapsed += stepTime;
+                            $data.animatedProgress = Math.min(targetProgress, Math.round(start + (diff * (elapsed / duration))));
+                            if (elapsed >= duration) {
+                                clearInterval(interval);
+                                $data.isLoading = false;
+                            }
+                        }, stepTime);
                     } else {
-                        // Fallback pour les navigateurs plus anciens
-                        progressCircle.style.transition = 'stroke-dashoffset 30s ease-out';
+                        progressCircle.style.transition = 'stroke-dashoffset 2s ease-out';
                         progressCircle.style.strokeDashoffset = targetOffset;
-                        progress = event.progress;
+
+                        const start = $data.animatedProgress;
+                        const diff = targetProgress - start;
+                        const duration = 2000;
+                        const stepTime = 50;
+                        let elapsed = 0;
+
+                        const interval = setInterval(() => {
+                            elapsed += stepTime;
+                            $data.animatedProgress = Math.min(targetProgress, Math.round(start + (diff * (elapsed / duration))));
+                            if (elapsed >= duration) {
+                                clearInterval(interval);
+                                $data.isLoading = false;
+                            }
+                        }, stepTime);
                     }
                 }
+            };
+
+            // Démarrer l'animation avec la valeur initiale
+            setTimeout(() => animateToProgress(progress), 100);
+
+            // Écouter les mises à jour de progression
+            Livewire.on('progress-updated', (event) => {
+                animateToProgress(event.progress);
             });
-        ">
+        "
+        >
         <!-- Background Circle -->
         <svg class="w-48 h-48 transform -rotate-90" viewBox="0 0 100 100">
             <circle
@@ -61,8 +102,9 @@
         <!-- Percentage Text -->
         <div class="absolute inset-0 flex items-center justify-center">
             <div class="text-center">
-                <div class="text-4xl font-bold text-gray-900 dark:text-white">
-                    {{ $progress }}%
+                 <div class="text-4xl font-bold text-gray-900 dark:text-white">
+                     <span x-show="!isLoading" x-text="Math.round(animatedProgress) + '%'"></span>
+                     <span x-show="isLoading" class="text-lg">Chargement...</span>
                 </div>
                 <div class="text-sm text-gray-500 dark:text-gray-400 mt-1">
                     {{ __('transfers.progress_label') }}

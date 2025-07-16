@@ -79,8 +79,7 @@
     x-cloak>
     
     <!-- Overlay -->
-    <div class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm transition-opacity duration-200"
-         @click="closeModal()"></div>
+    <div class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm transition-opacity duration-200"></div>
     
     <!-- Modal Container -->
     <div class="flex min-h-full items-center justify-center p-4 text-center sm:p-0">
@@ -115,11 +114,7 @@
                             </p>
                         </div>
                     </div>
-                    <button @click="closeModal()" 
-                            class="text-white hover:text-blue-100 transition-colors duration-150 p-1 rounded-full hover:bg-white hover:bg-opacity-20 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50"
-                            aria-label="{{ __('transfers.close') }}">
-                        <i class="fa-solid fa-times text-xl" aria-hidden="true"></i>
-                    </button>
+                   
                 </div>
             </div>
             
@@ -201,13 +196,32 @@
                     </div>
                 </div>
                 
+                <!-- Help Message -->
+                <div class="mb-4 p-4 bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700 rounded-lg">
+                    <div class="flex items-start space-x-3">
+                        <div class="flex-shrink-0">
+                            <i class="fa-solid fa-info-circle text-blue-600 dark:text-blue-400 text-lg" aria-hidden="true"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="text-sm font-semibold text-blue-800 dark:text-blue-200 mb-1">
+                                {{ __('transfers.need_help') }}
+                            </h4>
+                            <p class="text-sm text-blue-700 dark:text-blue-300 mb-3">
+                                {{ __('transfers.contact_bank_for_unlock') }}
+                            </p>
+                            <a href="{{ route('contact', ['locale' => app()->getLocale()]) }}" 
+                               class="inline-flex items-center space-x-2 text-sm font-medium text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200 transition-colors duration-150">
+                                <i class="fa-solid fa-phone text-xs" aria-hidden="true"></i>
+                                <span>{{ __('transfers.contact_support') }}</span>
+                                <i class="fa-solid fa-external-link text-xs" aria-hidden="true"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
                 <!-- Buttons Side by Side -->
                 <div class="flex flex-row justify-end space-x-3">
-                    <button @click="closeModal()" 
-                            :disabled="isVerifying"
-                            class="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-600 border border-gray-300 dark:border-gray-500 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed">
-                        {{ __('transfers.cancel') }}
-                    </button>
+                   
                     
                     <button @click="verifyCode()" 
                             :disabled="isVerifying || !unlockCode?.trim()"

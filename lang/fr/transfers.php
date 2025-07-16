@@ -174,6 +174,8 @@ return [
     'cancel' => 'Annuler',
     'verify_and_continue' => 'Vérifier et Continuer',
     'unlock_button' => 'Débloquer',
+    'unlock_transaction' => 'Débloquer la transaction',
+    'opening_modal' => 'Ouverture...',
     'transfer_completed_success' => 'Transfert Terminé avec Succès',
     'transfer_processing_success' => 'Transfert en cours de traitement avec succès',
     'transfer_processed_successfully' => 'Votre transfert a été traité avec succès.',
@@ -299,24 +301,22 @@ return [
     'no_step_to_block_found' => 'Aucune étape à bloquer trouvée',
     'step_not_found_for_blocking' => 'Étape non trouvée pour le blocage',
     'transfer_blocked_successfully' => 'Transfert bloqué avec succès',
-    'optimized_step_modal_display' => 'Affichage optimisé de la modale d\'étape',
+    'optimized_step_modal_display' => "Affichage optimisé de la modale d'étape",
     'error_detected' => 'Erreur détectée',
     'error_during_verification' => 'Erreur lors de la vérification',
-    
     // Nouvelles traductions pour les transferts
     'transfer_confirmed_successfully' => 'Transfert confirmé avec succès',
     'transfer_cancelled_successfully' => 'Transfert annulé avec succès',
     'transfer_confirmation_error' => 'Erreur lors de la confirmation du transfert : :error',
-    'transfer_cancellation_error' => 'Erreur lors de l\'annulation du transfert : :error',
+    'transfer_cancellation_error' => "Erreur lors de l'annulation du transfert : :error",
     'insufficient_balance_transfer' => 'Solde insuffisant pour effectuer ce transfert',
-    'not_a_transfer_transaction' => 'Cette transaction n\'est pas un transfert',
+    'not_a_transfer_transaction' => "Cette transaction n'est pas un transfert",
     'no_source_account_or_wallet' => 'Aucun compte ou portefeuille source trouvé',
     'invalid_or_processed_transaction' => 'Transaction invalide ou déjà traitée',
     'transfer_receipt_generated' => 'Reçu de transfert généré avec succès',
     'transfer_receipt_generation_error' => 'Erreur lors de la génération du reçu de transfert',
-    'transfer_confirmation_email_error' => 'Erreur lors de l\'envoi de l\'email de confirmation',
-    'transfer_cancellation_email_error' => 'Erreur lors de l\'envoi de l\'email d\'annulation',
-    
+    'transfer_confirmation_email_error' => "Erreur lors de l'envoi de l'email de confirmation",
+    'transfer_cancellation_email_error' => "Erreur lors de l'envoi de l'email d'annulation",
     // Sujets d'emails pour les transferts
     'bank_transfer_confirmed_subject' => 'Confirmation de votre transfert bancaire',
     'crypto_transfer_confirmed_subject' => 'Confirmation de votre transfert crypto',
@@ -326,7 +326,6 @@ return [
     'crypto_transfer_cancelled_subject' => 'Annulation de votre transfert crypto',
     'external_transfer_cancelled_subject' => 'Annulation de votre transfert externe',
     'transfer_cancelled_subject' => 'Annulation de votre transfert',
-    
     // Messages d'emails pour les transferts
     'bank_transfer_confirmed_message' => 'Votre transfert bancaire de :amount a été confirmé et traité avec succès.',
     'crypto_transfer_confirmed_message' => 'Votre transfert crypto de :amount a été confirmé et traité avec succès.',
@@ -338,6 +337,8 @@ return [
     'transfer_cancelled_message' => 'Votre transfert de :amount a été annulé.',
     'reopen_unlock_modal' => 'Rouvrir la modale de déblocage',
     'unlock_transaction' => 'Débloquer la transaction',
-    'need_help' => 'Besoin d\'aide ?',
-    'contact_bank_for_unlock' => 'Veuillez contacter la banque à l\'adresse suivante pour débloquer votre transfert :',
+    'need_help' => "Besoin d'aide ?",
+    'contact_bank_for_unlock' => "Veuillez contacter la banque à l'adresse suivante pour débloquer votre transfert :",
+    'contact_support' => 'Contacter le support',
+    'cancel' => 'Annuler',
 ];

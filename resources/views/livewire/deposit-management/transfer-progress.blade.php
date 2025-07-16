@@ -12,6 +12,7 @@
             :transferStatus="$transferStatus" 
             :showStartButton="$showStartButton" 
             :isTransferBlocked="$isTransferBlocked" 
+            :showStepModal="$showStepModal"
         />
 
         
@@ -144,7 +145,20 @@
         });
 
         Livewire.on('show-step-modal', () => {
-            console.log(window.translations?.transfers?.optimized_step_modal_display || 'Affichage optimisé de la modale d\'étape');
+            console.log('DEBUG: Événement show-step-modal reçu');
+            console.log('DEBUG: État actuel du composant:', {
+                transferStatus: @this.transferStatus,
+                showStepModal: @this.showStepModal,
+                currentStepData: @this.currentStepData ? 'présent' : 'absent'
+            });
+            
+            @this.call('showStepModal').then(() => {
+                console.log('DEBUG: Méthode showStepModal terminée, nouvel état:', {
+                    showStepModal: @this.showStepModal
+                });
+            }).catch((error) => {
+                console.error('DEBUG: Erreur lors de l\'appel showStepModal:', error);
+            });
         });
 
         Livewire.on('close-step-modal', () => {

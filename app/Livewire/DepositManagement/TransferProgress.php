@@ -749,6 +749,38 @@ class TransferProgress extends Component
         $this->isVerifying = false;
     }
 
+    /**
+     * Ouvrir la modale de déblocage
+     */
+    public function showStepModal()
+    {
+        Log::info('DEBUG: showStepModal appelée', [
+            'transferStatus' => $this->transferStatus,
+            'currentStepData' => $this->currentStepData ? 'présent' : 'absent',
+            'showStepModal_avant' => $this->showStepModal
+        ]);
+
+        // Vérifier que le transfert est bloqué
+        if ($this->transferStatus === 'blocked' && $this->currentStepData) {
+            $this->showStepModal = true;
+            $this->unlockCode = '';
+            $this->unlockError = '';
+            $this->isVerifying = false;
+
+            Log::info('DEBUG: Modal de déblocage ouverte avec succès', [
+                'stepId' => $this->currentStepData['step']->id ?? null,
+                'stepTitle' => $this->currentStepData['step']->title ?? null,
+                'showStepModal_après' => $this->showStepModal
+            ]);
+        } else {
+            Log::warning('DEBUG: Conditions non remplies pour ouvrir la modal', [
+                'transferStatus' => $this->transferStatus,
+                'currentStepData_exists' => $this->currentStepData ? true : false,
+                'showStepModal_actuel' => $this->showStepModal
+            ]);
+        }
+    }
+
     public function verifyUnlockCode()
     {
         $this->isVerifying = true;
