@@ -14,7 +14,7 @@ class AccountFactory extends Factory
     {
         // Get config for account number generation
         $config = Config::first();
-        $prefix = $config ? $config->account_prefix : 'BRED';
+        $prefix = $config ? $config->account_prefix : 'WOLF';
         $length = $config ? $config->account_length : 10;
 
         // Generate unique account number with prefix and random digits

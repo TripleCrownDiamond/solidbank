@@ -28,17 +28,17 @@ class BankConfigHelper
     private static function getDefaultConfig()
     {
         return (object) [
-            'bank_name' => 'Bred Fin',
-            'bank_swift' => 'BREDFRPP',
+            'bank_name' => 'Wolf Developpe',
+            'bank_swift' => 'WOLFFRPP',
             'bank_country' => 'FR',
             'bank_address' => '29 Rue du Faubourg, Paris, France',
             'bank_phone' => '+33123456789',
-            'bank_email' => 'contact@bred-fin.com',
-            'bank_website' => 'https://www.bred-fin.com',
+            'bank_email' => 'contact@wolf-developpe.com',
+            'bank_website' => 'https://www.wolf-developpe.com',
             'logo_url' => 'img/logo_blue.svg',
             'icon_url' => 'img/icon_blue.svg',
             'favicon_url' => 'favicon.ico',
-            'notification_email' => 'contact@bred-fin.com',
+            'notification_email' => 'contact@wolf-developpe.com',
             'brand_color' => '#3B82F6',
             'brand_primary_hover' => '#2563EB',
             'brand_primary_light' => '#DBEAFE',

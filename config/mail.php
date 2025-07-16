@@ -114,11 +114,11 @@ return [
      * |
      */
     'headers' => [
-        'X-Mailer' => \App\Helpers\BankConfigHelper::get('bank_name', 'Bred Fin') . ' Banking System',
+        'X-Mailer' => \App\Helpers\BankConfigHelper::get('bank_name', 'Wolf Developpe') . ' Banking System',
         'X-Priority' => '1',
         'Importance' => 'High',
         'List-Unsubscribe' => function () {
-            $bankEmail = \App\Helpers\BankConfigHelper::get('bank_email', 'contact@bred-fin.com');
+            $bankEmail = \App\Helpers\BankConfigHelper::get('bank_email', 'contact@wolf-developpe.com');
             $domain = 'example.com';  // fallback
             if (filter_var($bankEmail, FILTER_VALIDATE_EMAIL)) {
                 $domain = substr(strrchr($bankEmail, '@'), 1);

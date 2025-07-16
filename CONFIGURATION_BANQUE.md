@@ -54,11 +54,11 @@ Le script modifie automatiquement :
 
 ### Remplacement global dans le projet
 
--   `Bred Fin` → Votre nom de banque
--   `Bred-Fin` → Votre nom avec tirets
+-   `Wolf Developpe` → Votre nom de banque
+-   `Wolf-Developpe` → Votre nom avec tirets
 -   `privedyme-bank` → Votre nom en minuscules
--   `contact@bred-fin.com` → Votre email
--   `contact@bred-fin.com` → Votre email
+-   `contact@wolf-developpe.com` → Votre email
+-   `contact@wolf-developpe.com` → Votre email
 
 ### Actions automatiques
 

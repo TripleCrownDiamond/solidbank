@@ -16,7 +16,7 @@ Seuls les emails d'activation de compte finissent dans les spams, contrairement 
 
 **Après :**
 
--   Sujet : "Confirmation de votre adresse e-mail - Bred Fin"
+-   Sujet : "Confirmation de votre adresse e-mail - Wolf Developpe"
 -   Message : "Votre inscription a été enregistrée. Pour finaliser la configuration..."
 -   Bouton : "Confirmer mon adresse e-mail"
 
@@ -60,7 +60,7 @@ $message->getHeaders()
 
 -   Host: smtp.hostinger.com
 -   Port: 465
--   From: contact@bred-fin.com
+-   From: contact@wolf-developpe.com
 -   En-têtes anti-spam déjà configurés dans `config/mail_headers.php`
 
 ## Recommandations supplémentaires
@@ -69,7 +69,7 @@ $message->getHeaders()
 
 ```
 SPF: v=spf1 include:_spf.hostinger.com ~all
-DMARC: v=DMARC1; p=quarantine; rua=mailto:dmarc@bred-fin.com
+DMARC: v=DMARC1; p=quarantine; rua=mailto:dmarc@wolf-developpe.com
 DKIM: À configurer dans le panneau Hostinger
 ```
 

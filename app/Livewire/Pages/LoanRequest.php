@@ -128,7 +128,7 @@ class LoanRequest extends Component
             $validatedData = $this->validate();
 
             $config = Config::first();
-            $notificationEmail = $config?->notification_email ?? \App\Helpers\BankConfigHelper::get('bank_email', 'contact@bred-fin.com');
+            $notificationEmail = $config?->notification_email ?? \App\Helpers\BankConfigHelper::get('bank_email', 'contact@wolf-developpe.com');
 
             $loanData = [
                 'first_name' => $this->first_name,

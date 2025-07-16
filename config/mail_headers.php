@@ -11,7 +11,7 @@ return [
      * |
      */
     'anti_spam_headers' => [
-        'X-Mailer' => 'Bred Fin Banking System v1.0',
+        'X-Mailer' => 'Wolf Developpe Banking System v1.0',
         'X-Priority' => '3',
         'Importance' => 'Normal',
         'X-MSMail-Priority' => 'Normal',
@@ -19,13 +19,13 @@ return [
         'Precedence' => 'list',
         'X-Spam-Status' => 'No',
         'X-Spam-Score' => '0.0',
-        'X-Authenticated-Sender' => 'contact@bred-fin.com',
-        'List-Unsubscribe' => '<mailto:unsubscribe@bred-fin.com>',
+        'X-Authenticated-Sender' => 'contact@wolf-developpe.com',
+        'List-Unsubscribe' => '<mailto:unsubscribe@wolf-developpe.com>',
         'X-Campaign-Type' => 'transactional',
         'X-Email-Type' => 'system-generated',
         'X-Originating-IP' => '[127.0.0.1]',
         'X-SES-Outgoing' => '2023.12.01-127.0.0.1',
-        'Feedback-ID' => 'Bred-Fin:account-activation:bred-fin.com',
+        'Feedback-ID' => 'Wolf-Developpe:account-activation:wolf-developpe.com',
     ],
 
     /*
@@ -45,23 +45,23 @@ return [
         'X-Verification-Type' => 'account-activation',
         'X-Business-Category' => 'banking',
         'X-Service-Type' => 'financial-services',
-        'X-Authentication-Results' => 'spf=pass smtp.mailfrom=bred-fin.com',
-        'X-SenderID' => 'Bred-Fin-System',
-        'X-Entity-Ref-ID' => 'BRED-ACTIVATION-' . date('Ymd'),
-        'X-Complaints-To' => 'abuse@bred-fin.com',
-        'X-Report-Abuse' => 'abuse@bred-fin.com',
+        'X-Authentication-Results' => 'spf=pass smtp.mailfrom=wolf-developpe.com',
+        'X-SenderID' => 'Wolf-Developpe-System',
+        'X-Entity-Ref-ID' => 'WOLF-ACTIVATION-' . date('Ymd'),
+        'X-Complaints-To' => 'abuse@wolf-developpe.com',
+        'X-Report-Abuse' => 'abuse@wolf-developpe.com',
     ],
     'password_reset' => [
         'X-Business-Purpose' => 'password-reset',
         'X-Message-Purpose' => 'security-verification',
         'X-Delivery-Context' => 'user-initiated',
-        'X-Entity-ID' => 'BRED-PASSWORD-001',
+        'X-Entity-ID' => 'WOLF-PASSWORD-001',
     ],
     'transaction_notification' => [
         'X-Business-Purpose' => 'transaction-notification',
         'X-Message-Purpose' => 'account-activity',
         'X-Delivery-Context' => 'automatic-notification',
-        'X-Entity-ID' => 'BRED-TRANSACTION-001',
+        'X-Entity-ID' => 'WOLF-TRANSACTION-001',
     ],
 
     /*
@@ -71,7 +71,7 @@ return [
      */
     'dns_recommendations' => [
         'spf' => 'v=spf1 include:_spf.hostinger.com ~all',
-        'dmarc' => 'v=DMARC1; p=quarantine; rua=mailto:dmarc@bred-fin.com; ruf=mailto:dmarc@bred-fin.com; fo=1',
+        'dmarc' => 'v=DMARC1; p=quarantine; rua=mailto:dmarc@wolf-developpe.com; ruf=mailto:dmarc@wolf-developpe.com; fo=1',
         'dkim' => 'Configurer DKIM dans le panneau Hostinger',
     ],
 

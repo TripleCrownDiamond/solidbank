@@ -1,6 +1,6 @@
 <?php
 // Laravel route debugging script
-// Access via: https://bred-fin.com/laravel-debug.php
+// Access via: https://wolf-developpe.com/laravel-debug.php
 
 require_once __DIR__ . '/../vendor/autoload.php';
 

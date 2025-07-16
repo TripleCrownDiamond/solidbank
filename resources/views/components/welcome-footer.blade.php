@@ -4,7 +4,7 @@
                 <div>
                     <h3 class="text-sm font-semibold text-gray-400 tracking-wider uppercase">{{ __('common.about_us') }}</h3>
                     <p class="mt-4 text-base text-gray-500">
-                        {{ __('common.about_us_description', ['app_name' => $config->app_name ?? bank_config('bank_name', 'Bred Fin')]) }}
+                        {{ __('common.about_us_description', ['app_name' => $config->app_name ?? bank_config('bank_name', 'Wolf Developpe')]) }}
                     </p>
                 </div>
                 <div>
@@ -59,7 +59,7 @@
             </div>
             <div class="mt-8 border-t border-gray-100 pt-8">
                 <p class="text-base text-gray-400 text-center">
-                &copy; {{ date('Y') }} {{ $config->app_name ?? bank_config('bank_name', 'Bred Fin') }}. {{ __('All rights reserved.') }}
+                &copy; {{ date('Y') }} {{ $config->app_name ?? bank_config('bank_name', 'Wolf Developpe') }}. {{ __('All rights reserved.') }}
             </p>
         </div>
     </div>

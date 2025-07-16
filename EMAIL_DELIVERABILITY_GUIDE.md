@@ -140,7 +140,7 @@ v=spf1 include:_spf.hostinger.com ~all
 **DMARC (Domain-based Message Authentication)**
 
 ```
-v=DMARC1; p=quarantine; rua=mailto:dmarc@bred-fin.com; ruf=mailto:dmarc@bred-fin.com; fo=1
+v=DMARC1; p=quarantine; rua=mailto:dmarc@wolf-developpe.com; ruf=mailto:dmarc@wolf-developpe.com; fo=1
 ```
 
 ### 2. Optimisations avancées anti-spam
@@ -182,7 +182,7 @@ v=DMARC1; p=quarantine; rua=mailto:dmarc@bred-fin.com; ruf=mailto:dmarc@bred-fin
 **Reverse DNS (PTR) :**
 
 -   Configurer un enregistrement PTR pour l'IP du serveur
--   Format : `mail.bred-fin.com`
+-   Format : `mail.wolf-developpe.com`
 
 **Certificat SSL/TLS :**
 
@@ -200,7 +200,7 @@ v=DMARC1; p=quarantine; rua=mailto:dmarc@bred-fin.com; ruf=mailto:dmarc@bred-fin
 
 **Sous-domaine dédié :**
 
--   Utiliser `mail.bred-fin.com` ou `noreply.bred-fin.com`
+-   Utiliser `mail.wolf-developpe.com` ou `noreply.wolf-developpe.com`
 -   Séparer les e-mails transactionnels des e-mails marketing
 
 ## Support technique

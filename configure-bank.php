@@ -162,11 +162,11 @@ function replaceInFiles($directory, $search, $replace, $extensions = ['php', 'bl
 
 // Remplacements globaux
 $replacements = [
-    'Bred Fin' => $bankConfig['bank_name'],
-    'Bred-Fin' => $bankConfig['bank_name_hyphen'],
+    'Wolf Developpe' => $bankConfig['bank_name'],
+    'Wolf-Developpe' => $bankConfig['bank_name_hyphen'],
     'privedyme-bank' => $bankConfig['bank_name_hyphen'],
-    'contact@bred-fin.com' => $bankConfig['bank_email'],
-    'contact@bred-fin.com' => $bankConfig['bank_email']
+    'contact@wolf-developpe.com' => $bankConfig['bank_email'],
+    'contact@wolf-developpe.com' => $bankConfig['bank_email']
 ];
 
 $totalFiles = 0;

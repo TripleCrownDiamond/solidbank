@@ -67,14 +67,14 @@ function bank_config($key = null, $default = null)
 
     // Fallback to default values
     $defaults = [
-        'bank_name' => 'Bred Fin',
-        'app_name' => 'Bred Fin',
-        'bank_swift' => 'BREDFRPP',
+        'bank_name' => 'Wolf Developpe',
+        'app_name' => 'Wolf Developpe',
+        'bank_swift' => 'WOLFFRPP',
         'bank_country' => 'FR',
         'bank_address' => '29 Rue du Faubourg, Paris, France',
         'bank_phone' => '+33123456789',
-        'bank_email' => 'contact@bred-fin.com',
-        'bank_website' => 'https://www.bred-fin.com',
+        'bank_email' => 'contact@wolf-developpe.com',
+        'bank_website' => 'https://www.wolf-developpe.com',
     ];
 
     return $defaults[$key] ?? $default;
