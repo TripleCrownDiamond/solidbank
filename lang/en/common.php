@@ -54,6 +54,7 @@ return [
     'insufficient_balance_recharge' => 'Insufficient balance to recharge the card',
     'card_recharged_successfully' => 'Card recharged successfully',
     'account_number' => 'Account Number',
+    'account_details' => 'Account Details',
     'username' => 'Username',
     'registration_date' => 'Registration Date',
     'status' => 'Status',

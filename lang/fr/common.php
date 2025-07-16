@@ -62,6 +62,7 @@ return [
     'request_refund' => 'Demander un remboursement',
     'view_all_requests' => 'Voir toutes les demandes',
     'account_number' => 'Numéro de Compte',
+    'account_details' => 'Détails du Compte',
     'username' => 'Nom d\'Utilisateur',
     'registration_date' => 'Date d\'Enregistrement',
     'status' => 'Statut',

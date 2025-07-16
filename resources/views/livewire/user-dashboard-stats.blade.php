@@ -3,25 +3,13 @@
     
     // Only show stats for non-admin users
     if (!$user->is_admin) {
-        // Account Balance Card (only if account is active)
-        if ($account && $account->status === 'ACTIVE') {
+        // Account Balance will be displayed separately in full-width section
+        $hasActiveAccount = $account && $account->status === 'ACTIVE';
+        
+        if ($hasActiveAccount) {
             $currency = $account->currency ?? 'USD';
             $currencySymbol = $currency === 'EUR' ? '€' : ($currency === 'USD' ? '$' : $currency);
-            $amountOnly = \App\Helpers\NumberHelper::formatCompactNoRounding($accountBalance, 1);
-            $formattedBalance = number_format($accountBalance, 2) . ' ' . $currency;
-            $displayBalance = strlen($formattedBalance) > 12 ? substr($formattedBalance, 0, 9) . '...' : $formattedBalance;
-            
-            $statsCards[] = [
-                'title' => __('common.account_balance'),
-                'value' => $amountOnly,
-                'amountValue' => $amountOnly,
-                'exactValue' => $formattedBalance,
-                'currencySymbol' => $currencySymbol,
-                'icon' => 'fa-wallet',
-                'color' => 'brand-primary',
-                'gradient' => 'from-brand-primary to-brand-primary-light',
-                'isBalance' => true
-            ];
+            $formattedBalance = number_format($accountBalance, 2);
         }
         
         // Latest Transaction Card (only if account is active and has transactions)
@@ -95,7 +83,7 @@
     }
 @endphp
 
-@if(!$user->is_admin && !empty($statsCards))
+@if(!$user->is_admin)
 <div class="space-y-6">
     <div class="flex items-center justify-between">
         <h2 class="text-2xl font-bold text-gray-900 dark:text-white">{{ __('common.my_stats') }}</h2>
@@ -104,7 +92,87 @@
         </div>
     </div>
     
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+    @if($hasActiveAccount)
+    <!-- Account Balance Card -->
+    <div class="mb-6 p-6 rounded-xl bg-gradient-to-r from-blue-600 to-blue-800 text-white shadow-lg">
+        <h3 class="text-lg font-medium mb-2">{{ __('common.account_balance') }}</h3>
+        <div class="flex items-baseline gap-2">
+            <span class="text-xl font-bold">{{ $currency }}</span>
+            <span class="text-2xl font-bold">{{ $formattedBalance }}</span>
+        </div>
+    </div>
+    
+    <!-- Account Details Card -->
+    <div class="mb-6 bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-6">
+        <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">{{ __('common.account_details') }}</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <!-- Account Number -->
+            <div class="group">
+                <div class="flex items-center justify-between mb-2">
+                    <label class="text-sm font-medium text-gray-600 dark:text-gray-400">{{ __('common.account_number') }}</label>
+                    <button onclick="copyToClipboard('{{ $account->account_number }}', this)" class="opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+                        <i class="fa-solid fa-copy text-xs"></i>
+                    </button>
+                </div>
+                <div class="flex items-center space-x-2 bg-gray-50 dark:bg-gray-700 rounded-lg px-3 py-2">
+                    <i class="fa-solid fa-hashtag text-gray-500 dark:text-gray-400 text-sm"></i>
+                    <span class="text-sm font-mono text-gray-900 dark:text-white break-all">{{ $account->account_number }}</span>
+                </div>
+            </div>
+            
+            @if($account->rib && $account->rib->iban)
+            <!-- IBAN -->
+            <div class="group">
+                <div class="flex items-center justify-between mb-2">
+                    <label class="text-sm font-medium text-gray-600 dark:text-gray-400">IBAN</label>
+                    <button onclick="copyToClipboard('{{ $account->rib->iban }}', this)" class="opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+                        <i class="fa-solid fa-copy text-xs"></i>
+                    </button>
+                </div>
+                <div class="flex items-center space-x-2 bg-gray-50 dark:bg-gray-700 rounded-lg px-3 py-2">
+                    <i class="fa-solid fa-university text-gray-500 dark:text-gray-400 text-sm"></i>
+                    <span class="text-sm font-mono text-gray-900 dark:text-white break-all">{{ $account->rib->iban }}</span>
+                </div>
+            </div>
+            @endif
+            
+            @if($account->rib && $account->rib->swift)
+            <!-- SWIFT/BIC -->
+            <div class="group">
+                <div class="flex items-center justify-between mb-2">
+                    <label class="text-sm font-medium text-gray-600 dark:text-gray-400">SWIFT/BIC</label>
+                    <button onclick="copyToClipboard('{{ $account->rib->swift }}', this)" class="opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+                        <i class="fa-solid fa-copy text-xs"></i>
+                    </button>
+                </div>
+                <div class="flex items-center space-x-2 bg-gray-50 dark:bg-gray-700 rounded-lg px-3 py-2">
+                    <i class="fa-solid fa-code text-gray-500 dark:text-gray-400 text-sm"></i>
+                    <span class="text-sm font-mono text-gray-900 dark:text-white">{{ $account->rib->swift }}</span>
+                </div>
+            </div>
+            @endif
+            
+            @if($account->rib && $account->rib->bank_name)
+            <!-- Bank Name -->
+            <div class="group">
+                <div class="flex items-center justify-between mb-2">
+                    <label class="text-sm font-medium text-gray-600 dark:text-gray-400">{{ __('common.bank_name') }}</label>
+                    <button onclick="copyToClipboard('{{ $account->rib->bank_name }}', this)" class="opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+                        <i class="fa-solid fa-copy text-xs"></i>
+                    </button>
+                </div>
+                <div class="flex items-center space-x-2 bg-gray-50 dark:bg-gray-700 rounded-lg px-3 py-2">
+                    <i class="fa-solid fa-building text-gray-500 dark:text-gray-400 text-sm"></i>
+                    <span class="text-sm text-gray-900 dark:text-white">{{ $account->rib->bank_name }}</span>
+                </div>
+            </div>
+            @endif
+        </div>
+    </div>
+    @endif
+    
+    @if(!empty($statsCards))
+     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         @foreach($statsCards as $card)
             <div class="group relative bg-white dark:bg-gray-800 rounded-xl shadow-sm hover:shadow-xl hover:shadow-{{ $card['color'] }}/20 hover:-translate-y-1 transition-all duration-300 border border-gray-100 dark:border-gray-700 hover:border-{{ $card['color'] }}/30 overflow-hidden cursor-pointer">
                 <!-- Gradient top border -->
@@ -120,15 +188,7 @@
                         
                         <!-- Value container -->
                         <div class="text-right">
-                            @if(isset($card['isBalance']) && $card['isBalance'])
-                                <p class="text-2xl font-bold text-gray-900 dark:text-white group-hover:text-{{ $card['color'] }} transition-colors duration-300 leading-tight">
-                                    {{ $card['value'] }}
-                                   
-                                    @if(isset($card['exactValue']))
-                                        <span class="block text-xs font-medium text-gray-500 dark:text-gray-400 group-hover:text-{{ $card['color'] }}/70 mt-1">{{ $card['exactValue'] }}</span>
-                                    @endif
-                                </p>
-                            @elseif(isset($card['isTransaction']) && $card['isTransaction'])
+                            @if(isset($card['isTransaction']) && $card['isTransaction'])
                                 <p class="text-lg font-bold text-gray-900 dark:text-white group-hover:text-{{ $card['color'] }} transition-colors duration-300 leading-tight">
                                     {{ $card['value'] }}
                                     @if(isset($card['subtitle']))
@@ -167,16 +227,9 @@
             </div>
         @endforeach
     </div>
-</div>
-@elseif(!$user->is_admin)
-<div class="space-y-6">
-    <div class="flex items-center justify-between">
-        <h2 class="text-2xl font-bold text-gray-900 dark:text-white">{{ __('common.my_stats') }}</h2>
-        <div class="flex items-center space-x-4">
-            <div class="h-1 w-16 bg-gradient-to-r from-brand-primary to-brand-accent rounded-full"></div>
-        </div>
-    </div>
+    @endif
     
+    @if(!$hasActiveAccount && empty($statsCards))
     <div class="text-center py-12">
         <div class="w-16 h-16 mx-auto mb-4 bg-brand-secondary/10 rounded-full flex items-center justify-center">
             <i class="fa-solid fa-chart-line text-2xl text-brand-secondary"></i>
@@ -184,5 +237,78 @@
         <p class="text-brand-secondary font-medium">{{ __('common.no_active_account_stats') }}</p>
         <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">{{ __('common.activate_account_to_view_stats') }}</p>
     </div>
+    @endif
 </div>
+
+<script>
+function copyToClipboard(text, button) {
+    // Create a temporary textarea element
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    document.body.appendChild(textarea);
+    
+    // Select and copy the text
+    textarea.select();
+    textarea.setSelectionRange(0, 99999); // For mobile devices
+    
+    try {
+        document.execCommand('copy');
+        
+        // Visual feedback
+        const originalIcon = button.innerHTML;
+        button.innerHTML = '<i class="fa-solid fa-check"></i>';
+        button.classList.add('text-green-400');
+        
+        // Show success message
+        showCopyNotification('Copié dans le presse-papiers!');
+        
+        // Reset button after 2 seconds
+        setTimeout(() => {
+            button.innerHTML = originalIcon;
+            button.classList.remove('text-green-400');
+        }, 2000);
+        
+    } catch (err) {
+        console.error('Erreur lors de la copie:', err);
+        showCopyNotification('Erreur lors de la copie', 'error');
+    }
+    
+    // Remove the temporary textarea
+    document.body.removeChild(textarea);
+}
+
+function showCopyNotification(message, type = 'success') {
+    // Remove existing notification if any
+    const existingNotification = document.getElementById('copy-notification');
+    if (existingNotification) {
+        existingNotification.remove();
+    }
+    
+    // Create notification element
+    const notification = document.createElement('div');
+    notification.id = 'copy-notification';
+    notification.className = `fixed top-4 right-4 z-50 px-4 py-2 rounded-lg shadow-lg text-white text-sm font-medium transition-all duration-300 transform translate-x-full ${
+        type === 'success' ? 'bg-green-500' : 'bg-red-500'
+    }`;
+    notification.textContent = message;
+    
+    // Add to document
+    document.body.appendChild(notification);
+    
+    // Animate in
+    setTimeout(() => {
+        notification.classList.remove('translate-x-full');
+    }, 100);
+    
+    // Animate out and remove after 3 seconds
+    setTimeout(() => {
+        notification.classList.add('translate-x-full');
+        setTimeout(() => {
+            if (notification.parentNode) {
+                notification.parentNode.removeChild(notification);
+            }
+        }, 300);
+    }, 3000);
+}
+</script>
 @endif

@@ -8,63 +8,27 @@
                 if (progressCircle) {
                     const currentOffset = parseFloat(progressCircle.style.strokeDashoffset || '282.6');
                     const targetOffset = 282.6 - (event.progress * 2.826);
-                    const currentProgress = progress;
-                    const targetProgress = event.progress;
                     
                     if (window.gsap) {
                         gsap.to(progressCircle, {
                             'stroke-dashoffset': targetOffset,
-                            duration: 5,
-                            ease: 'power2.out'
-                        });
-                        // Animation synchronisée du pourcentage
-                        gsap.to({ value: currentProgress }, {
-                            value: targetProgress,
-                            duration: 5,
+                            duration: 30,
                             ease: 'power2.out',
                             onUpdate: function() {
-                                progress = this.targets()[0].value;
+                                progress = event.progress;
                             }
                         });
                     } else if (progressCircle.animate) {
                         progressCircle.animate(
                             [{ 'stroke-dashoffset': currentOffset }, { 'stroke-dashoffset': targetOffset }],
-                            { duration: 5000, easing: 'ease-out', fill: 'forwards' }
+                            { duration: 30000, easing: 'ease-out', fill: 'forwards' }
                         );
-                        // Animation du pourcentage avec requestAnimationFrame
-                        const startTime = performance.now();
-                        const animateProgress = (currentTime) => {
-                            const elapsed = currentTime - startTime;
-                            const duration = 5000;
-                            const progressRatio = Math.min(elapsed / duration, 1);
-                            progress = currentProgress + (targetProgress - currentProgress) * progressRatio;
-                            
-                            if (progressRatio < 1) {
-                                requestAnimationFrame(animateProgress);
-                            } else {
-                                progress = targetProgress;
-                            }
-                        };
-                        requestAnimationFrame(animateProgress);
+                        progress = event.progress;
                     } else {
                         // Fallback pour les navigateurs plus anciens
-                        progressCircle.style.transition = 'stroke-dashoffset 5s ease-out';
+                        progressCircle.style.transition = 'stroke-dashoffset 30s ease-out';
                         progressCircle.style.strokeDashoffset = targetOffset;
-                        // Animation simple du pourcentage
-                        const startTime = Date.now();
-                        const animateProgress = () => {
-                            const elapsed = Date.now() - startTime;
-                            const duration = 5000;
-                            const progressRatio = Math.min(elapsed / duration, 1);
-                            progress = currentProgress + (targetProgress - currentProgress) * progressRatio;
-                            
-                            if (progressRatio < 1) {
-                                setTimeout(animateProgress, 16);
-                            } else {
-                                progress = targetProgress;
-                            }
-                        };
-                        animateProgress();
+                        progress = event.progress;
                     }
                 }
             });
@@ -94,11 +58,11 @@
             />
         </svg>
         
-        <!-- Percentage Text - Synchronized with circle animation -->
+        <!-- Percentage Text -->
         <div class="absolute inset-0 flex items-center justify-center">
             <div class="text-center">
-                <div class="text-4xl font-bold text-gray-900 dark:text-white progress-percentage">
-                    <span x-text="Math.round(progress)">{{ $progress }}</span>%
+                <div class="text-4xl font-bold text-gray-900 dark:text-white">
+                    {{ $progress }}%
                 </div>
                 <div class="text-sm text-gray-500 dark:text-gray-400 mt-1">
                     {{ __('transfers.progress_label') }}

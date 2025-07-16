@@ -54,6 +54,7 @@ return [
     'insufficient_balance_recharge' => 'Saldo insuficiente para recargar la tarjeta',
     'card_recharged_successfully' => 'Tarjeta recargada exitosamente',
     'account_number' => 'Número de Cuenta',
+    'account_details' => 'Detalles de la Cuenta',
     'username' => 'Nombre de Usuario',
     'registration_date' => 'Fecha de Registro',
     'status' => 'Estado',

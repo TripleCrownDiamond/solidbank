@@ -551,13 +551,13 @@ class TransferProgress extends Component
             $this->transaction->blockAtTransferStep(
                 $currentStep['step']->id,
                 $currentStep['step']->transfer_step_group_id ?? null,
-__('transfers.transfer_blocked') . ': ' . $currentStep['step']->title
+                __('transfers.transfer_blocked') . ': ' . $currentStep['step']->title
             );
         }
 
         // Déclencher immédiatement la mise à jour de la progression
         $this->dispatch('progress-updated', progress: $this->progress);
-        
+
         // Ne programmer l'affichage de la popup que si ce n'est pas la dernière étape
         if (!$this->areAllStepsCompleted() && $this->progress >= $targetPercentage && $this->showProgressBar === true) {
             $this->dispatch('proceed-to-next-step-with-delay',
@@ -574,16 +574,9 @@ __('transfers.transfer_blocked') . ': ' . $currentStep['step']->title
      */
     public function animateProgressToStep($targetPercentage)
     {
-        // Envoyer un événement pour l'animation progressive côté client
-        $this->dispatch('animate-progress-to', [
-            'startValue' => $this->progress,
-            'targetValue' => $targetPercentage,
-            'duration' => 2000
-        ]);
-        
-        // Mettre à jour la valeur finale côté serveur (sera mise à jour progressivement côté client)
         $this->progress = $targetPercentage;
         $this->updateTransactionProgress($this->progress);
+        $this->dispatch('progress-updated', progress: $this->progress);
     }
 
     public function blockTransfer($transactionId, $stepId, $stepTitle)
@@ -1088,7 +1081,7 @@ __('transfers.transfer_blocked') . ': ' . $currentStep['step']->title
 
             // Préparer les données de l'étape pour la modale
             $this->currentStepData = $currentStepData;
-            
+
             // Afficher la modale seulement si le transfert n'est pas en cours de chargement
             // et que la progression est visible (showProgressBar = true)
             if ($this->transferStatus !== 'starting' && $this->showProgressBar === true) {
@@ -1105,54 +1098,6 @@ __('transfers.transfer_blocked') . ': ' . $currentStep['step']->title
                 'exception' => $e
             ]);
             $this->statusMessage = __('transfers.error_blocking_transfer');
-        }
-    }
-
-    /**
-     * Rouvrir la modale de déblocage pour un transfert bloqué
-     */
-    public function reopenStepModal()
-    {
-        try {
-            // Vérifier que le transfert est bloqué
-            if ($this->transferStatus !== 'blocked') {
-                Log::warning('Tentative de réouverture de la modale sur un transfert non bloqué', [
-                    'transferStatus' => $this->transferStatus,
-                    'transaction_id' => $this->transaction ? $this->transaction->id : null
-                ]);
-                return;
-            }
-
-            // S'assurer que les données de l'étape courante sont disponibles
-            if (!$this->currentStepData) {
-                // Essayer de récupérer les données de l'étape courante
-                if (empty($this->stepsWithPercentages)) {
-                    $this->prepareStepsWithPercentages();
-                }
-
-                $nextStepIndex = $this->findNextIncompleteStep();
-                if ($nextStepIndex !== null && isset($this->stepsWithPercentages[$nextStepIndex])) {
-                    $this->currentStepData = $this->stepsWithPercentages[$nextStepIndex];
-                }
-            }
-
-            // Réinitialiser les erreurs et le code
-            $this->unlockError = '';
-            $this->unlockCode = '';
-            $this->isVerifying = false;
-
-            // Afficher la modale
-            $this->showStepModal = true;
-
-            Log::info('Modale de déblocage rouverte avec succès', [
-                'transaction_id' => $this->transaction ? $this->transaction->id : null,
-                'currentStepData' => $this->currentStepData ? $this->currentStepData['step']->title : 'Non disponible'
-            ]);
-        } catch (\Exception $e) {
-            Log::error('Erreur lors de la réouverture de la modale de déblocage: ' . $e->getMessage(), [
-                'exception' => $e,
-                'transaction_id' => $this->transaction ? $this->transaction->id : null
-            ]);
         }
     }
 

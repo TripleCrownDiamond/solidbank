@@ -54,6 +54,7 @@ return [
     'insufficient_balance_recharge' => 'Nicht genügend Guthaben zum Aufladen der Karte',
     'card_recharged_successfully' => 'Karte erfolgreich aufgeladen',
     'account_number' => 'Kontonummer',
+    'account_details' => 'Kontodetails',
     'username' => 'Benutzername',
     'registration_date' => 'Registrierungsdatum',
     'status' => 'Status',

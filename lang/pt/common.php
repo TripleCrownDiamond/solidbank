@@ -707,6 +707,7 @@ return [
     'expert_team_recovery_support' => 'Our team of experts supports you in recovering your lost funds.',
     'request_refund' => 'Request a refund',
     'account_number' => 'Account Number',
+    'account_details' => 'Detalhes da Conta',
     'username' => 'Username',
     'registration_date' => 'Registration Date',
     'actions' => 'Actions',
