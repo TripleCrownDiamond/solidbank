@@ -57,8 +57,8 @@ Le script modifie automatiquement :
 -   `Wolf Developpe` → Votre nom de banque
 -   `Wolf-Developpe` → Votre nom avec tirets
 -   `privedyme-bank` → Votre nom en minuscules
--   `contact@wolf-developpe.com` → Votre email
--   `contact@wolf-developpe.com` → Votre email
+-   `contact@trade-europe.online` → Votre email
+-   `contact@trade-europe.online` → Votre email
 
 ### Actions automatiques
 

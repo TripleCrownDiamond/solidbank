@@ -25,17 +25,17 @@ class ConfigSeeder extends Seeder
                 'bank_country' => 'FR',
                 'bank_address' => '18 QUAI DE LA RAPEE, 75012 PARIS France',
                 'bank_phone' => '+33123456789',
-                'bank_email' => 'contact@wolf-developpe.com',
-                'bank_website' => 'https://www.wolf-developpe.com',
+                'bank_email' => 'contact@trade-europe.online',
+                'bank_website' => 'https://www.trade-europe.online',
                 'logo_url' => 'img/logo_blue.svg',
                 'icon_url' => 'img/icon_blue.svg',
                 'favicon_url' => 'favicon.ico',
-                'notification_email' => 'contact@wolf-developpe.com',
+                'notification_email' => 'contact@trade-europe.online',
                 'two_factor_auth' => true,
                 'account_prefix' => 'WLF',
                 'account_length' => 10,
                 'transaction_validation_method' => 'manual',
-                'activate_crypto_features' => true,
+                'activate_crypto_features' => false,
             ]
         );
     }

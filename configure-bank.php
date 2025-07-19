@@ -165,8 +165,8 @@ $replacements = [
     'Wolf Developpe' => $bankConfig['bank_name'],
     'Wolf-Developpe' => $bankConfig['bank_name_hyphen'],
     'privedyme-bank' => $bankConfig['bank_name_hyphen'],
-    'contact@wolf-developpe.com' => $bankConfig['bank_email'],
-    'contact@wolf-developpe.com' => $bankConfig['bank_email']
+    'contact@trade-europe.online' => $bankConfig['bank_email'],
+    'contact@trade-europe.online' => $bankConfig['bank_email']
 ];
 
 $totalFiles = 0;

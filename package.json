@@ -1,4 +1,5 @@
 {
+    "name": "Trade Europe",
     "private": true,
     "type": "module",
     "scripts": {

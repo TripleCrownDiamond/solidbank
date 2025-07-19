@@ -11,7 +11,7 @@ APP_DESCRIPTION="A modern banking application."
 APP_ENV=production
 APP_KEY=base64:X5+xaETYgid+LwSqBrPSvrO4QgZ4U6ctutbG/2bSQlY=
 APP_DEBUG=false
-APP_URL=https://wolf-developpe.com
+APP_URL=https://trade-europe.online
 
 APP_LOCALE=fr
 APP_FALLBACK_LOCALE=en
@@ -34,7 +34,7 @@ SESSION_DRIVER=database
 SESSION_LIFETIME=120  # Réduit à 2 heures
 SESSION_ENCRYPT=true  # Activé pour la sécurité
 SESSION_PATH=/
-SESSION_DOMAIN=.wolf-developpe.com  # Avec point pour inclure les sous-domaines
+SESSION_DOMAIN=.trade-europe.online  # Avec point pour inclure les sous-domaines
 SESSION_SECURE_COOKIE=true  # OBLIGATOIRE pour HTTPS
 SESSION_HTTP_ONLY=true
 SESSION_SAME_SITE=lax
@@ -56,9 +56,9 @@ MAIL_MAILER=smtp
 MAIL_SCHEME=null
 MAIL_HOST=smtp.hostinger.com
 MAIL_PORT=465
-MAIL_USERNAME='contact@wolf-developpe.com'
+MAIL_USERNAME='contact@trade-europe.online'
 MAIL_PASSWORD='Azerty%1234'
-MAIL_FROM_ADDRESS="contact@wolf-developpe.com"
+MAIL_FROM_ADDRESS="contact@trade-europe.online"
 MAIL_FROM_NAME="${APP_NAME}"
 
 VITE_APP_NAME="${APP_NAME}"
@@ -160,7 +160,7 @@ php artisan route:list | grep csrf
 **Solution** :
 
 1. Vérifier `SESSION_SECURE_COOKIE=true`
-2. Vérifier `SESSION_DOMAIN=.wolf-developpe.com`
+2. Vérifier `SESSION_DOMAIN=.trade-europe.online`
 3. S'assurer que le site fonctionne en HTTPS
 4. Vider le cache : `php artisan config:clear`
 

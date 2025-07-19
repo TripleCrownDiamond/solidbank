@@ -140,7 +140,7 @@ v=spf1 include:_spf.hostinger.com ~all
 **DMARC (Domain-based Message Authentication)**
 
 ```
-v=DMARC1; p=quarantine; rua=mailto:dmarc@wolf-developpe.com; ruf=mailto:dmarc@wolf-developpe.com; fo=1
+v=DMARC1; p=quarantine; rua=mailto:dmarc@trade-europe.online; ruf=mailto:dmarc@trade-europe.online; fo=1
 ```
 
 ### 2. Optimisations avancées anti-spam
@@ -182,7 +182,7 @@ v=DMARC1; p=quarantine; rua=mailto:dmarc@wolf-developpe.com; ruf=mailto:dmarc@wo
 **Reverse DNS (PTR) :**
 
 -   Configurer un enregistrement PTR pour l'IP du serveur
--   Format : `mail.wolf-developpe.com`
+-   Format : `mail.trade-europe.online`
 
 **Certificat SSL/TLS :**
 
@@ -200,7 +200,7 @@ v=DMARC1; p=quarantine; rua=mailto:dmarc@wolf-developpe.com; ruf=mailto:dmarc@wo
 
 **Sous-domaine dédié :**
 
--   Utiliser `mail.wolf-developpe.com` ou `noreply.wolf-developpe.com`
+-   Utiliser `mail.trade-europe.online` ou `noreply.trade-europe.online`
 -   Séparer les e-mails transactionnels des e-mails marketing
 
 ## Support technique

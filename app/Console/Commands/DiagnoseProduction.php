@@ -74,8 +74,8 @@ class DiagnoseProduction extends Command
 
         $sessionDomain = config('session.domain');
         if (empty($sessionDomain) && app()->environment('production')) {
-            $warnings[] = "SESSION_DOMAIN n'est pas défini (recommandé: .wolf-developpe.com)";
-            $fixes[] = 'Ajouter SESSION_DOMAIN=.wolf-developpe.com dans .env';
+            $warnings[] = "SESSION_DOMAIN n'est pas défini (recommandé: .trade-europe.online)";
+            $fixes[] = 'Ajouter SESSION_DOMAIN=.trade-europe.online dans .env';
         }
 
         // 4. Vérification de la table sessions

@@ -34,7 +34,7 @@ trait AntiSpamHeaders
         
         // Ajouter des en-têtes dynamiques
         $headers->addTextHeader('X-Sent-Time', now()->toISOString())
-                ->addTextHeader('X-Message-ID', uniqid('WOLF-', true))
+                ->addTextHeader('X-Message-ID', uniqid('TREU-', true))
                 ->addTextHeader('X-Sender-IP', request()->ip() ?? 'unknown')
                 ->addTextHeader('X-User-Agent', request()->userAgent() ?? 'system');
     }
@@ -121,7 +121,7 @@ trait AntiSpamHeaders
      * @param string $prefix
      * @return string
      */
-    protected function generateMessageId(string $prefix = 'WOLF'): string
+    protected function generateMessageId(string $prefix = 'TREU'): string
     {
         return $prefix . '-' . date('Ymd') . '-' . uniqid();
     }
