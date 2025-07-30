@@ -175,6 +175,16 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
+     * Get all account blocks for the user's accounts.
+     */
+    public function accountBlocks()
+    {
+        return AccountBlock::whereHas('accounts', function ($query) {
+            $query->whereIn('accounts.id', $this->accounts->pluck('id'));
+        });
+    }
+
+    /**
      * Generate a new two-factor authentication code.
      */
     public function generateTwoFactorCode()

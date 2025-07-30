@@ -29,10 +29,12 @@
                                     <input type="radio" wire:model.live="depositType" value="account" name="depositType" class="mr-2 text-brand-primary focus:ring-brand-primary">
                                     <span class="text-sm text-gray-700 dark:text-gray-300">{{ __('admin.account') }}</span>
                                 </label>
-                                <label class="flex items-center">
-                                    <input type="radio" wire:model.live="depositType" value="wallet" name="depositType" class="mr-2 text-brand-primary focus:ring-brand-primary">
-                                    <span class="text-sm text-gray-700 dark:text-gray-300">{{ __('admin.wallet') }}</span>
-                                </label>
+                                @if($cryptoFeaturesEnabled)
+                                    <label class="flex items-center">
+                                        <input type="radio" wire:model.live="depositType" value="wallet" name="depositType" class="mr-2 text-brand-primary focus:ring-brand-primary">
+                                        <span class="text-sm text-gray-700 dark:text-gray-300">{{ __('admin.wallet') }}</span>
+                                    </label>
+                                @endif
                             </div>
                         </div>
 

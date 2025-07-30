@@ -26,6 +26,8 @@ return [
     // Types de transfert
     'transfer_type' => 'Type de transfert',
     'internal_transfer' => 'Transfert interne',
+    'bank_transfer' => 'Transfert bancaire',
+    'crypto_transfer' => 'Transfert crypto',
     'external_transfer' => 'Transfert externe',
     'step_source' => 'Source',
     'step_recipient' => 'Bénéficiaire',

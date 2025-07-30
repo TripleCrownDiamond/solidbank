@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reçu de Transfert - {{ $reference }}</title>
+    <title>{{ __('common.transfer_receipt') }} - {{ $reference }}</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -78,8 +78,8 @@
 </head>
 <body>
     <div class="header">
-        <h1>REÇU DE TRANSFERT</h1>
-        <h2>{{ $config->bank_name ?? bank_config('bank_name', 'Trade Europe') }}</h2>
+        <h1>{{ strtoupper(__('common.transfer_receipt')) }}</h1>
+        <h2>{{ $config->bank_name ?? bank_config('bank_name', 'DBQIC') }}</h2>
         <p>{{ $config->bank_address ?? '' }}</p>
         @if($config->bank_phone)
             <p>Tél: {{ $config->bank_phone }}</p>
@@ -90,112 +90,152 @@
     </div>
 
     <div class="bank-info">
-        <h3>Informations Bancaires</h3>
+        <h3>{{ __('common.bank_information') }}</h3>
         @if($config->bank_swift_code)
-            <p><strong>Code SWIFT:</strong> {{ $config->bank_swift_code }}</p>
+            <p><strong>{{ __('common.swift_code') }}:</strong> {{ $config->bank_swift_code }}</p>
         @endif
         @if($config->bank_country)
-            <p><strong>Pays:</strong> {{ $config->bank_country }}</p>
+            <p><strong>{{ __('common.country') }}:</strong> {{ $config->bank_country }}</p>
         @endif
         @if($config->bank_website)
-            <p><strong>Site Web:</strong> {{ $config->bank_website }}</p>
+            <p><strong>{{ __('common.website') }}:</strong> {{ $config->bank_website }}</p>
         @endif
     </div>
 
     <div class="transaction-details">
-        <h3>Détails de la Transaction</h3>
+        <h3>{{ __('common.transaction_details') }}</h3>
         
         <div class="detail-row">
-            <span class="detail-label">Référence:</span>
+            <span class="detail-label">{{ __('common.reference') }}:</span>
             <span class="detail-value">{{ $reference }}</span>
         </div>
         
         <div class="detail-row">
-            <span class="detail-label">Date:</span>
+            <span class="detail-label">{{ __('common.date') }}:</span>
             <span class="detail-value">{{ $date }}</span>
         </div>
         
         <div class="detail-row">
-            <span class="detail-label">Type de Transaction:</span>
+            <span class="detail-label">{{ __('common.transaction_type') }}:</span>
             <span class="detail-value">
                 @switch($transaction->type)
                     @case('TRANSFER_BANK')
-                        Transfert Bancaire
+                        {{ __('common.bank_transfer') }}
                         @break
                     @case('TRANSFER_CRYPTO')
-                        Transfert Crypto
+                        {{ __('common.crypto_transfer') }}
                         @break
                     @case('TRANSFER_EXTERNAL')
-                        Transfert Externe
+                        {{ __('common.external_transfer') }}
                         @break
                     @default
-                        Transfert
+                        {{ __('common.transfer') }}
                 @endswitch
             </span>
         </div>
         
         <div class="detail-row">
-            <span class="detail-label">Client:</span>
+            <span class="detail-label">{{ __('common.client') }}:</span>
             <span class="detail-value">{{ $user->first_name }} {{ $user->last_name }}</span>
         </div>
         
         <div class="detail-row">
-            <span class="detail-label">Email:</span>
+            <span class="detail-label">{{ __('common.email') }}:</span>
             <span class="detail-value">{{ $user->email }}</span>
         </div>
         
         @if($transaction->account)
             <div class="detail-row">
-                <span class="detail-label">Compte Source:</span>
+                <span class="detail-label">{{ __('common.source_account') }}:</span>
                 <span class="detail-value">{{ $transaction->account->account_number }}</span>
             </div>
         @endif
         
         @if($transaction->wallet)
             <div class="detail-row">
-                <span class="detail-label">Portefeuille Source:</span>
+                <span class="detail-label">{{ __('common.source_wallet') }}:</span>
                 <span class="detail-value">{{ $transaction->wallet->cryptocurrency->name }} ({{ $transaction->wallet->cryptocurrency->symbol }})</span>
             </div>
         @endif
         
         @if($transaction->recipient_name)
             <div class="detail-row">
-                <span class="detail-label">Bénéficiaire:</span>
+                <span class="detail-label">{{ __('common.beneficiary') }}:</span>
                 <span class="detail-value">{{ $transaction->recipient_name }}</span>
             </div>
         @endif
         
         @if($transaction->recipient_account)
             <div class="detail-row">
-                <span class="detail-label">Compte Bénéficiaire:</span>
+                <span class="detail-label">{{ __('common.beneficiary_account') }}:</span>
                 <span class="detail-value">{{ $transaction->recipient_account }}</span>
             </div>
         @endif
         
+    </div>
+
+    {{-- Section dédiée aux informations du bénéficiaire --}}
+    @if($transaction->external_bank_info && (isset($transaction->external_bank_info['recipient_name']) || isset($transaction->external_bank_info['recipient_iban']) || isset($transaction->external_bank_info['recipient_bank']) || isset($transaction->external_bank_info['recipient_country'])))
+    <div class="transaction-details">
+        <h3>{{ __('common.beneficiary_information') }}</h3>
+        
+        @if(isset($transaction->external_bank_info['recipient_name']))
+            <div class="detail-row">
+                <span class="detail-label">{{ __('common.recipient_name') }}:</span>
+                <span class="detail-value">{{ $transaction->external_bank_info['recipient_name'] }}</span>
+            </div>
+        @endif
+        
+        @if(isset($transaction->external_bank_info['recipient_iban']))
+            <div class="detail-row">
+                <span class="detail-label">{{ __('common.recipient_iban') }}:</span>
+                <span class="detail-value">{{ $transaction->external_bank_info['recipient_iban'] }}</span>
+            </div>
+        @endif
+        
+        @if(isset($transaction->external_bank_info['recipient_bank']))
+            <div class="detail-row">
+                <span class="detail-label">{{ __('common.recipient_bank') }}:</span>
+                <span class="detail-value">{{ $transaction->external_bank_info['recipient_bank'] }}</span>
+            </div>
+        @endif
+        
+        @if(isset($transaction->external_bank_info['recipient_country']))
+            <div class="detail-row">
+                <span class="detail-label">{{ __('common.recipient_country') }}:</span>
+                <span class="detail-value">{{ $transaction->external_bank_info['recipient_country'] }}</span>
+            </div>
+        @endif
+    </div>
+    @endif
+
+    <div class="transaction-details">
+        <h3>{{ __('common.additional_information') }}</h3>
+        
         @if($transaction->description)
             <div class="detail-row">
-                <span class="detail-label">Description:</span>
+                <span class="detail-label">{{ __('common.description') }}:</span>
                 <span class="detail-value">{{ $transaction->description }}</span>
             </div>
         @endif
         
         <div class="detail-row">
-            <span class="detail-label">Statut:</span>
+            <span class="detail-label">{{ __('common.status') }}:</span>
             <span class="detail-value">
-                <span class="status status-completed">Confirmé</span>
+                <span class="status status-completed">{{ __('common.confirmed') }}</span>
             </span>
         </div>
     </div>
 
     <div class="amount-highlight">
-        Montant Transféré: {{ $amount }} {{ $currency }}
+        {{ __('common.transferred_amount') }}: {{ $amount }} {{ $currency }}
     </div>
 
     <div class="footer">
-        <p>Ce reçu confirme que votre transfert a été traité avec succès.</p>
-        <p>Conservez ce document pour vos archives.</p>
-        <p>Généré le {{ now()->format('d/m/Y à H:i') }}</p>
-        <p>{{ $config->bank_name ?? bank_config('bank_name', 'Trade Europe') }} - Tous droits réservés</p>
+        <p>{{ __('common.transfer_success_confirmation') }}</p>
+        <p>{{ __('common.keep_for_records') }}</p>
+        <p>{{ __('common.generated_on') }} {{ now()->format('d/m/Y à H:i') }}</p>
+        <p>{{ $config->bank_name ?? bank_config('bank_name', 'DBQIC') }} - {{ __('common.all_rights_reserved') }}</p>
     </div>
 </body>
 </html>

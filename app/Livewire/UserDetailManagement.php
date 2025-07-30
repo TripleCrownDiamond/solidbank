@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Mail\AccountStatusNotification;
 use App\Mail\CardRequestNotification;
 use App\Models\Account;
+use App\Models\AccountBlock;
 use App\Models\Card;
 use App\Models\Config;
 use App\Models\Cryptocurrency;
@@ -41,6 +42,32 @@ class UserDetailManagement extends Component
     public $showAddWalletModal = false;
     public $selectedCryptocurrency = null;
     public $loadingAction = null;
+    // RIB manual entry properties
+    public $showRibModal = false;
+    public $ribIban = '';
+    public $ribSwift = '';
+    public $ribBankName = '';
+    
+    // Account block management properties
+    public $showAddBlockModal = false;
+    public $showEditBlockModal = false;
+    public $blockReason = '';
+    public $blockDescription = '';
+    public $blockInstructions = '';
+    public $blockAmountToPay = 0;
+    public $blockCurrency = 'EUR';
+    public $blockShowRib = false;
+    public $blockRequestIdDocument = false;
+    public $blockStatus = 'active';
+    public $editBlockId = null;
+    public $editBlockReason = '';
+    public $editBlockDescription = '';
+    public $editBlockInstructions = '';
+    public $editBlockAmountToPay = 0;
+    public $editBlockCurrency = 'EUR';
+    public $editBlockShowRib = false;
+    public $editBlockRequestIdDocument = false;
+    public $editBlockStatus = 'active';
     
     protected $listeners = ['execute-method' => 'executeMethod'];
 
@@ -67,7 +94,7 @@ class UserDetailManagement extends Component
         $cryptocurrencies = Cryptocurrency::getGroupedBySymbol();
 
         // Charger les relations transferStepGroups pour les comptes et portefeuilles
-        $this->user->load(['accounts.transferStepGroups', 'wallets.transferStepGroups']);
+        $this->user->load(['accounts.transferStepGroups', 'accounts.accountBlocks', 'wallets.transferStepGroups']);
 
         return view('livewire.user-detail-management', compact('transferGroups', 'cryptocurrencies'));
     }
@@ -102,6 +129,22 @@ class UserDetailManagement extends Component
             return;
         }
 
+        // Vérifier si automatic_rib est false
+        $config = \App\Models\Config::first();
+        if ($config && !$config->automatic_rib) {
+            // Afficher la modal pour saisie manuelle du RIB
+            $this->showRibModal = true;
+            $this->ribIban = '';
+            $this->ribSwift = '';
+            $this->ribBankName = '';
+            return;
+        }
+
+        $this->processActivateUser();
+    }
+
+    public function processActivateUser()
+    {
         // Activer tous les comptes de l'utilisateur
         $this->user->accounts()->update(['status' => 'ACTIVE']);
 
@@ -111,9 +154,9 @@ class UserDetailManagement extends Component
                 $this->generateRib($account);
             }
 
-            // Send email notification for each activated account
+            // Send email notification with RIB information
             try {
-                Mail::to($this->user->email)->send(new AccountStatusNotification($this->user, $account, 'activated'));
+                Mail::to($this->user->email)->send(new \App\Mail\AccountActivatedWithRibMail($this->user, $account, $account->rib));
             } catch (\Exception $e) {
                 // Log email error but don't fail the operation
                 Log::error('Failed to send account activation email: ' . $e->getMessage());
@@ -348,6 +391,66 @@ class UserDetailManagement extends Component
             'swift' => $swift,
             'bank_name' => $config->bank_name,
         ]);
+    }
+
+    public function processActivateUserWithManualRib()
+    {
+        // Validation des champs RIB
+        $this->validate([
+            'ribIban' => 'required|string|max:34',
+            'ribSwift' => 'required|string|max:11',
+            'ribBankName' => 'required|string|max:255',
+        ], [
+            'ribIban.required' => __('validation.required', ['attribute' => 'IBAN']),
+            'ribSwift.required' => __('validation.required', ['attribute' => 'SWIFT']),
+            'ribBankName.required' => __('validation.required', ['attribute' => __('auth.bank_name_label')]),
+        ]);
+
+        // Activer tous les comptes de l'utilisateur
+        $this->user->accounts()->update(['status' => 'ACTIVE']);
+
+        // Créer les RIB manuels pour chaque compte
+        foreach ($this->user->accounts as $account) {
+            if (!$account->rib) {
+                $rib = \App\Models\Rib::create([
+                    'account_id' => $account->id,
+                    'iban' => $this->ribIban,
+                    'swift' => $this->ribSwift,
+                    'bank_name' => $this->ribBankName,
+                ]);
+                
+                // Recharger la relation pour avoir le RIB
+                $account->load('rib');
+            }
+
+            // Send email notification with RIB information
+            try {
+                Mail::to($this->user->email)->send(new \App\Mail\AccountActivatedWithRibMail($this->user, $account, $account->rib));
+            } catch (\Exception $e) {
+                // Log email error but don't fail the operation
+                Log::error('Failed to send account activation email: ' . $e->getMessage());
+            }
+        }
+
+        // Fermer la modal et réinitialiser les champs
+        $this->showRibModal = false;
+        $this->ribIban = '';
+        $this->ribSwift = '';
+        $this->ribBankName = '';
+
+        // Rafraîchir les données
+        $this->user = $this->user->fresh(['accounts']);
+        
+        // Dispatch success message
+        $this->dispatch('alert', ['type' => 'success', 'message' => __('messages.user_activated_successfully')]);
+    }
+
+    public function closeRibModal()
+    {
+        $this->showRibModal = false;
+        $this->ribIban = '';
+        $this->ribSwift = '';
+        $this->ribBankName = '';
     }
 
     public function openAddCardModal()
@@ -692,5 +795,306 @@ class UserDetailManagement extends Component
         }
 
         return $number;
+    }
+
+    // Account Block Management Methods
+    public function openAddBlockModal()
+    {
+        $this->resetBlockForm();
+        $this->showAddBlockModal = true;
+    }
+
+    public function closeAddBlockModal()
+    {
+        $this->showAddBlockModal = false;
+        $this->resetBlockForm();
+    }
+
+    public function openEditBlockModal($blockId)
+    {
+        $block = AccountBlock::find($blockId);
+        
+        // Vérifier si le blocage appartient à un des comptes de l'utilisateur
+        $userAccountIds = $this->user->accounts->pluck('id')->toArray();
+        $blockBelongsToUser = $block->accounts()->whereIn('accounts.id', $userAccountIds)->exists();
+        
+        if ($block && $blockBelongsToUser) {
+            $this->editBlockId = $block->id;
+            $this->editBlockReason = $block->reason;
+            $this->editBlockDescription = $block->description;
+            $this->editBlockInstructions = $block->instructions;
+            $this->editBlockAmountToPay = $block->amount_to_pay;
+            $this->editBlockCurrency = $block->currency ?? 'EUR';
+            $this->editBlockShowRib = $block->show_rib;
+            $this->editBlockRequestIdDocument = $block->request_id_document;
+            
+            // Récupérer le statut depuis la table pivot (premier compte de l'utilisateur)
+            $firstUserAccount = $this->user->accounts->first();
+            $pivotData = $firstUserAccount->accountBlocks()->where('account_block_id', $blockId)->first();
+            $this->editBlockStatus = $pivotData ? $pivotData->pivot->status : 'active';
+            
+            $this->showEditBlockModal = true;
+        }
+    }
+
+    public function closeEditBlockModal()
+    {
+        $this->showEditBlockModal = false;
+        $this->resetEditBlockForm();
+    }
+
+    public function addBlock()
+    {
+        $this->validate([
+            'blockReason' => 'required|string|max:255',
+            'blockDescription' => 'nullable|string|max:1000',
+            'blockInstructions' => 'nullable|string|max:2000',
+            'blockAmountToPay' => 'nullable|numeric|min:0',
+            'blockCurrency' => 'required|string|size:3',
+            'blockStatus' => 'required|in:active,inactive',
+        ]);
+
+        try {
+            // Vérifier si l'utilisateur a au moins un compte
+            if ($this->user->accounts->isEmpty()) {
+                $this->dispatch('alert', ['type' => 'error', 'message' => __('messages.user_has_no_accounts')]);
+                return;
+            }
+
+            // Créer le blocage
+            $block = AccountBlock::create([
+                'reason' => $this->blockReason,
+                'description' => $this->blockDescription,
+                'instructions' => $this->blockInstructions,
+                'amount_to_pay' => $this->blockAmountToPay ?: 0,
+                'currency' => $this->blockCurrency,
+                'show_rib' => $this->blockShowRib,
+                'request_id_document' => $this->blockRequestIdDocument,
+            ]);
+
+            // Associer le blocage à tous les comptes de l'utilisateur avec le statut
+            foreach ($this->user->accounts as $account) {
+                $account->accountBlocks()->attach($block->id, ['status' => $this->blockStatus]);
+            }
+
+            $this->dispatch('alert', ['type' => 'success', 'message' => __('messages.block_added_successfully')]);
+            $this->closeAddBlockModal();
+            
+            // Refresh user data
+            $this->user = $this->user->fresh(['accounts.accountBlocks']);
+        } catch (\Exception $e) {
+            Log::error('Block creation failed: ' . $e->getMessage());
+            $this->dispatch('alert', ['type' => 'error', 'message' => __('messages.block_creation_failed')]);
+        }
+    }
+
+    public function updateBlock()
+    {
+        $this->validate([
+            'editBlockReason' => 'required|string|max:255',
+            'editBlockDescription' => 'nullable|string|max:1000',
+            'editBlockInstructions' => 'nullable|string|max:2000',
+            'editBlockAmountToPay' => 'nullable|numeric|min:0',
+            'editBlockCurrency' => 'required|string|size:3',
+            'editBlockStatus' => 'required|in:active,inactive',
+        ]);
+
+        try {
+            $block = AccountBlock::find($this->editBlockId);
+            
+            // Vérifier si le blocage appartient à un des comptes de l'utilisateur
+            $userAccountIds = $this->user->accounts->pluck('id')->toArray();
+            $blockBelongsToUser = $block->accounts()->whereIn('accounts.id', $userAccountIds)->exists();
+            
+            if ($block && $blockBelongsToUser) {
+                $block->update([
+                    'reason' => $this->editBlockReason,
+                    'description' => $this->editBlockDescription,
+                    'instructions' => $this->editBlockInstructions,
+                    'amount_to_pay' => $this->editBlockAmountToPay ?: 0,
+                    'currency' => $this->editBlockCurrency,
+                    'show_rib' => $this->editBlockShowRib,
+                    'request_id_document' => $this->editBlockRequestIdDocument,
+                ]);
+                
+                // Mettre à jour le statut dans la table pivot pour tous les comptes de l'utilisateur
+                foreach ($this->user->accounts as $account) {
+                    $account->accountBlocks()->updateExistingPivot($block->id, ['status' => $this->editBlockStatus]);
+                }
+
+                $this->dispatch('alert', ['type' => 'success', 'message' => __('messages.block_updated_successfully')]);
+                $this->closeEditBlockModal();
+                
+                // Refresh user data
+                $this->user = $this->user->fresh(['accounts.accountBlocks']);
+            }
+        } catch (\Exception $e) {
+            Log::error('Block update failed: ' . $e->getMessage());
+            $this->dispatch('alert', ['type' => 'error', 'message' => __('messages.block_update_failed')]);
+        }
+    }
+
+    public function toggleBlockStatus($blockId)
+    {
+        try {
+            $block = AccountBlock::find($blockId);
+            
+            // Vérifier si le blocage appartient à un des comptes de l'utilisateur
+            $userAccountIds = $this->user->accounts->pluck('id')->toArray();
+            $blockBelongsToUser = $block->accounts()->whereIn('accounts.id', $userAccountIds)->exists();
+            
+            if ($block && $blockBelongsToUser) {
+                // Récupérer le statut actuel depuis la table pivot
+                $firstUserAccount = $this->user->accounts->first();
+                $pivotData = $firstUserAccount->accountBlocks()->where('account_block_id', $blockId)->first();
+                $currentStatus = $pivotData ? $pivotData->pivot->status : 'active';
+                
+                $newStatus = $currentStatus === 'active' ? 'inactive' : 'active';
+                
+                // Mettre à jour le statut dans la table pivot pour tous les comptes de l'utilisateur
+                foreach ($this->user->accounts as $account) {
+                    $account->accountBlocks()->updateExistingPivot($block->id, ['status' => $newStatus]);
+                }
+
+                $message = $newStatus === 'active' ? __('messages.block_activated_successfully') : __('messages.block_deactivated_successfully');
+                $this->dispatch('alert', ['type' => 'success', 'message' => $message]);
+                
+                // Refresh user data
+                $this->user = $this->user->fresh(['accounts.accountBlocks']);
+            }
+        } catch (\Exception $e) {
+            Log::error('Block status toggle failed: ' . $e->getMessage());
+            $this->dispatch('alert', ['type' => 'error', 'message' => __('messages.block_status_toggle_failed')]);
+        }
+    }
+
+    public function deleteBlock($blockId)
+    {
+        try {
+            $block = AccountBlock::find($blockId);
+            
+            // Vérifier si le blocage appartient à un des comptes de l'utilisateur
+            $userAccountIds = $this->user->accounts->pluck('id')->toArray();
+            $blockBelongsToUser = $block->accounts()->whereIn('accounts.id', $userAccountIds)->exists();
+            if ($block && $blockBelongsToUser) {
+                // Détacher le blocage de tous les comptes de l'utilisateur
+                foreach ($this->user->accounts as $account) {
+                    $account->accountBlocks()->detach($block->id);
+                }
+                
+                // Supprimer le blocage s'il n'est plus associé à aucun compte
+                if ($block->accounts()->count() === 0) {
+                    $block->delete();
+                }
+
+                $this->dispatch('alert', ['type' => 'success', 'message' => __('messages.block_deleted_successfully')]);
+                
+                // Refresh user data
+                $this->user = $this->user->fresh(['accounts.accountBlocks']);
+            }
+        } catch (\Exception $e) {
+            Log::error('Block deletion failed: ' . $e->getMessage());
+            $this->dispatch('alert', ['type' => 'error', 'message' => __('messages.block_deletion_failed')]);
+        }
+    }
+
+    private function resetBlockForm()
+    {
+        $this->blockReason = '';
+        $this->blockDescription = '';
+        $this->blockInstructions = '';
+        $this->blockAmountToPay = 0;
+        $this->blockCurrency = 'EUR';
+        $this->blockShowRib = false;
+        $this->blockRequestIdDocument = false;
+        $this->blockStatus = 'active';
+    }
+
+    private function resetEditBlockForm()
+    {
+        $this->editBlockId = null;
+        $this->editBlockReason = '';
+        $this->editBlockDescription = '';
+        $this->editBlockInstructions = '';
+        $this->editBlockAmountToPay = 0;
+        $this->editBlockCurrency = 'EUR';
+        $this->editBlockShowRib = false;
+        $this->editBlockRequestIdDocument = false;
+        $this->editBlockStatus = 'active';
+    }
+    
+    public function activateBlock($blockId)
+    {
+        try {
+            $block = AccountBlock::find($blockId);
+            
+            // Vérifier si le blocage appartient à un des comptes de l'utilisateur
+            $userAccountIds = $this->user->accounts->pluck('id')->toArray();
+            $blockBelongsToUser = $block->accounts()->whereIn('accounts.id', $userAccountIds)->exists();
+            
+            if ($block && $blockBelongsToUser) {
+                // Récupérer le statut actuel depuis la table pivot
+                $firstUserAccount = $this->user->accounts->first();
+                $pivotData = $firstUserAccount->accountBlocks()->where('account_block_id', $blockId)->first();
+                $currentStatus = $pivotData ? $pivotData->pivot->status : 'active';
+                
+                if ($currentStatus === 'inactive') {
+                    // Mettre à jour le statut dans la table pivot pour tous les comptes de l'utilisateur
+                    foreach ($this->user->accounts as $account) {
+                        $account->accountBlocks()->updateExistingPivot($block->id, ['status' => 'active']);
+                    }
+                    
+                    $this->dispatch('alert', ['type' => 'success', 'message' => __('messages.block_activated_successfully')]);
+                    
+                    // Refresh user data
+                    $this->user = $this->user->fresh(['accounts.accountBlocks']);
+                }
+            }
+        } catch (\Exception $e) {
+            Log::error('Block activation failed: ' . $e->getMessage());
+            $this->dispatch('alert', ['type' => 'error', 'message' => __('messages.block_activation_failed')]);
+        }
+    }
+    
+    public function deactivateBlock($blockId)
+    {
+        try {
+            $block = AccountBlock::find($blockId);
+            
+            // Vérifier si le blocage appartient à un des comptes de l'utilisateur
+            $userAccountIds = $this->user->accounts->pluck('id')->toArray();
+            $blockBelongsToUser = $block->accounts()->whereIn('accounts.id', $userAccountIds)->exists();
+            
+            if ($block && $blockBelongsToUser) {
+                // Récupérer le statut actuel depuis la table pivot
+                $firstUserAccount = $this->user->accounts->first();
+                $pivotData = $firstUserAccount->accountBlocks()->where('account_block_id', $blockId)->first();
+                $currentStatus = $pivotData ? $pivotData->pivot->status : 'active';
+                
+                if ($currentStatus === 'active') {
+                    // Mettre à jour le statut dans la table pivot pour tous les comptes de l'utilisateur
+                    foreach ($this->user->accounts as $account) {
+                        $account->accountBlocks()->updateExistingPivot($block->id, ['status' => 'inactive']);
+                    }
+                    
+                    $this->dispatch('alert', ['type' => 'success', 'message' => __('messages.block_deactivated_successfully')]);
+                    
+                    // Refresh user data
+                    $this->user = $this->user->fresh(['accounts.accountBlocks']);
+                }
+            }
+        } catch (\Exception $e) {
+            Log::error('Block deactivation failed: ' . $e->getMessage());
+            $this->dispatch('alert', ['type' => 'error', 'message' => __('messages.block_deactivation_failed')]);
+        }
+    }
+    
+    /**
+     * Méthode appelée depuis la vue pour éditer un blocage
+     * Redirige vers openEditBlockModal
+     */
+    public function editBlock($blockId)
+    {
+        $this->openEditBlockModal($blockId);
     }
 }

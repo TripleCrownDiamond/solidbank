@@ -40,8 +40,20 @@ class AdminConfigManagement extends Component
     public $account_length;
     public $transaction_validation_method;
     public $activate_crypto_features;
-    // Propriétés des couleurs de marque supprimées (colonnes supprimées de la DB)
-    // Les couleurs sont maintenant gérées via CSS avec des valeurs par défaut
+    public $two_factor_auth;
+    public $user_can_self_activate;
+    public $automatic_rib;
+    public $brand_color;
+    public $brand_primary_hover;
+    public $brand_primary_light;
+    public $brand_primary_dark;
+    public $brand_secondary;
+    public $brand_accent;
+    public $brand_success;
+    public $brand_warning;
+    public $brand_error;
+    public $loan_rate;
+    public $app_name;
 
     public function mount()
     {
@@ -75,8 +87,20 @@ class AdminConfigManagement extends Component
         $this->account_length = $this->config->account_length;
         $this->transaction_validation_method = $this->config->transaction_validation_method;
         $this->activate_crypto_features = $this->config->activate_crypto_features;
-        // Les couleurs de marque ont été supprimées de la base de données
-        // Utilisation des valeurs par défaut CSS
+        $this->two_factor_auth = $this->config->two_factor_auth;
+        $this->user_can_self_activate = $this->config->user_can_self_activate;
+        $this->automatic_rib = $this->config->automatic_rib;
+        $this->brand_color = $this->config->brand_color;
+        $this->brand_primary_hover = $this->config->brand_primary_hover;
+        $this->brand_primary_light = $this->config->brand_primary_light;
+        $this->brand_primary_dark = $this->config->brand_primary_dark;
+        $this->brand_secondary = $this->config->brand_secondary;
+        $this->brand_accent = $this->config->brand_accent;
+        $this->brand_success = $this->config->brand_success;
+        $this->brand_warning = $this->config->brand_warning;
+        $this->brand_error = $this->config->brand_error;
+        $this->loan_rate = $this->config->loan_rate;
+        $this->app_name = $this->config->app_name;
     }
 
     public function updateConfig()
@@ -106,7 +130,20 @@ class AdminConfigManagement extends Component
                 'account_length' => 'nullable|integer|min:1|max:50',
                 'transaction_validation_method' => 'nullable|string|in:manual,automatic',
                 'activate_crypto_features' => 'nullable|boolean',
-                // Validation des couleurs de marque supprimée (colonnes supprimées de la DB)
+                'two_factor_auth' => 'nullable|boolean',
+                'user_can_self_activate' => 'nullable|boolean',
+                'automatic_rib' => 'nullable|boolean',
+                'brand_color' => 'nullable|string|max:7',
+                'brand_primary_hover' => 'nullable|string|max:7',
+                'brand_primary_light' => 'nullable|string|max:7',
+                'brand_primary_dark' => 'nullable|string|max:7',
+                'brand_secondary' => 'nullable|string|max:7',
+                'brand_accent' => 'nullable|string|max:7',
+                'brand_success' => 'nullable|string|max:7',
+                'brand_warning' => 'nullable|string|max:7',
+                'brand_error' => 'nullable|string|max:7',
+                'loan_rate' => 'nullable|numeric|min:0|max:100',
+                'app_name' => 'nullable|string|max:255',
                 'logo' => 'nullable|image|max:2048',
                 'icon' => 'nullable|image|max:1024',
                 'favicon' => 'nullable|image|max:512',
@@ -183,7 +220,20 @@ class AdminConfigManagement extends Component
                 'account_length' => $this->account_length,
                 'transaction_validation_method' => $this->transaction_validation_method,
                 'activate_crypto_features' => $this->activate_crypto_features,
-                // Couleurs de marque supprimées de la base de données
+                'two_factor_auth' => $this->two_factor_auth,
+                'user_can_self_activate' => $this->user_can_self_activate,
+                'automatic_rib' => $this->automatic_rib,
+                'brand_color' => $this->brand_color,
+                'brand_primary_hover' => $this->brand_primary_hover,
+                'brand_primary_light' => $this->brand_primary_light,
+                'brand_primary_dark' => $this->brand_primary_dark,
+                'brand_secondary' => $this->brand_secondary,
+                'brand_accent' => $this->brand_accent,
+                'brand_success' => $this->brand_success,
+                'brand_warning' => $this->brand_warning,
+                'brand_error' => $this->brand_error,
+                'loan_rate' => $this->loan_rate,
+                'app_name' => $this->app_name,
             ];
 
             Log::info('AdminConfigManagement: Données de configuration préparées', [

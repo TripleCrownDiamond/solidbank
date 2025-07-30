@@ -31,6 +31,12 @@ class UserManagement extends Component
     public $suspensionUserId = null;
     public $suspensionReason = '';
     public $suspensionInstructions = '';
+    // RIB Modal states
+    public $showRibModal = false;
+    public $ribUserId = null;
+    public $ribIban = '';
+    public $ribSwift = '';
+    public $ribBankName = '';
     // Loading states
     public $loadingAction = null;
 
@@ -148,7 +154,19 @@ class UserManagement extends Component
 
     public function activateUser($userId)
     {
-        $this->processActivateUser($userId);
+        // Vérifier si automatic_rib est false
+        $config = \App\Models\Config::first();
+        if ($config && !$config->automatic_rib) {
+            // Afficher la modal pour saisie manuelle du RIB
+            $this->ribUserId = $userId;
+            $this->showRibModal = true;
+            $this->ribIban = '';
+            $this->ribSwift = '';
+            $this->ribBankName = '';
+        } else {
+            // Activation automatique avec génération automatique du RIB
+            $this->processActivateUser($userId);
+        }
     }
 
     public function processActivateUser($userId)
@@ -166,9 +184,9 @@ class UserManagement extends Component
                     $this->generateRib($account);
                 }
 
-                // Send email notification for each activated account
+                // Send email notification with RIB information
                 try {
-                    Mail::to($user->email)->send(new AccountStatusNotification($user, $account, 'activated'));
+                    Mail::to($user->email)->send(new \App\Mail\AccountActivatedWithRibMail($user, $account, $account->rib));
                 } catch (\Exception $e) {
                     // Log email error but don't fail the operation
                     Log::error('Failed to send account activation email: ' . $e->getMessage());
@@ -543,5 +561,70 @@ class UserManagement extends Component
             'swift' => $swift,
             'bank_name' => $config->bank_name,
         ]);
+    }
+
+    public function processActivateUserWithManualRib()
+    {
+        // Validation des champs RIB
+        $this->validate([
+            'ribIban' => 'required|string|max:34',
+            'ribSwift' => 'required|string|max:11',
+            'ribBankName' => 'required|string|max:255',
+        ], [
+            'ribIban.required' => __('validation.required', ['attribute' => 'IBAN']),
+            'ribSwift.required' => __('validation.required', ['attribute' => 'SWIFT']),
+            'ribBankName.required' => __('validation.required', ['attribute' => __('auth.bank_name_label')]),
+        ]);
+
+        $this->loadingAction = 'activate_' . $this->ribUserId;
+
+        $user = User::find($this->ribUserId);
+        if ($user && !$user->is_admin) {
+            // Activer tous les comptes de l'utilisateur
+            $user->accounts()->update(['status' => 'ACTIVE']);
+
+            // Créer les RIB manuels pour chaque compte
+            foreach ($user->accounts as $account) {
+                if (!$account->rib) {
+                    \App\Models\Rib::create([
+                        'account_id' => $account->id,
+                        'iban' => $this->ribIban,
+                        'swift' => $this->ribSwift,
+                        'bank_name' => $this->ribBankName,
+                    ]);
+                }
+
+                // Recharger le compte pour avoir le RIB
+                $account->refresh();
+
+                // Send email notification with RIB information
+                try {
+                    Mail::to($user->email)->send(new \App\Mail\AccountActivatedWithRibMail($user, $account, $account->rib));
+                } catch (\Exception $e) {
+                    // Log email error but don't fail the operation
+                    Log::error('Failed to send account activation email: ' . $e->getMessage());
+                }
+            }
+
+            $this->dispatch('show-alert', [
+                'type' => 'success',
+                'message' => __('messages.user_activated_successfully'),
+                'dismissible' => true
+            ]);
+        }
+
+        // Fermer la modal et réinitialiser les champs
+        $this->closeRibModal();
+        $this->loadingAction = null;
+        $this->dispatch('action-completed');
+    }
+
+    public function closeRibModal()
+    {
+        $this->showRibModal = false;
+        $this->ribUserId = null;
+        $this->ribIban = '';
+        $this->ribSwift = '';
+        $this->ribBankName = '';
     }
 }

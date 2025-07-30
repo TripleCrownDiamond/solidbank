@@ -7,6 +7,7 @@ use App\Models\Account;
 use App\Models\Config;
 use App\Models\Transaction;
 use App\Models\Wallet;
+use App\Services\TransactionReceiptService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -201,6 +202,18 @@ class TransactionList extends Component
                 if ($transaction->type === 'DEPOSIT') {
                     $emailSubject = 'common.deposit_confirmed_email_subject';
                     $messageKey = 'deposit_confirmed_email_message';
+                } elseif ($transaction->type === 'WITHDRAWAL') {
+                    $emailSubject = 'common.withdrawal_confirmed_email_subject';
+                    $messageKey = 'withdrawal_confirmed_email_message';
+                } elseif ($transaction->type === 'TRANSFER_BANK') {
+                    $emailSubject = 'transfers.bank_transfer_confirmed_subject';
+                    $messageKey = 'bank_transfer_confirmed_message';
+                } elseif ($transaction->type === 'TRANSFER_CRYPTO') {
+                    $emailSubject = 'transfers.crypto_transfer_confirmed_subject';
+                    $messageKey = 'crypto_transfer_confirmed_message';
+                } elseif ($transaction->type === 'TRANSFER_EXTERNAL') {
+                    $emailSubject = 'transfers.external_transfer_confirmed_subject';
+                    $messageKey = 'external_transfer_confirmed_message';
                 }
 
                 $emailMessage = __('common.' . $messageKey, ['amount' => "{$amount} {$currency}"]);
@@ -210,7 +223,8 @@ class TransactionList extends Component
                     $user,
                     $transaction,
                     $amount,
-                    $type === 'confirmed' ? 'emails.transaction-confirmed' : 'emails.transaction-cancelled'
+                    $type === 'confirmed' ? 'emails.transaction-confirmed' : 'emails.transaction-cancelled',
+                    $currency
                 ));
             } elseif ($type === 'cancelled') {
                 $emailSubject = 'common.transaction_cancelled_subject';  // Valeur par défaut
@@ -231,7 +245,8 @@ class TransactionList extends Component
                     $user,
                     $transaction,
                     $amount,
-                    $type === 'confirmed' ? 'emails.transaction-confirmed' : 'emails.transaction-cancelled'
+                    $type === 'confirmed' ? 'emails.transaction-confirmed' : 'emails.transaction-cancelled',
+                    $currency
                 ));
             }
         } catch (\Exception $e) {
@@ -424,11 +439,15 @@ class TransactionList extends Component
                     'processed_at' => now()
                 ]);
 
-                // Générer le reçu PDF
-                $this->generateTransferReceipt($transaction);
+                // Générer le bordereau PDF
+                $receiptService = new TransactionReceiptService();
+                $receiptPath = $receiptService->generateReceipt($transaction);
+                
+                // Sauvegarder le chemin du bordereau dans la transaction
+                $transaction->update(['receipt_path' => $receiptPath]);
 
-                // Envoyer l'email de confirmation
-                $this->sendTransferConfirmationEmail($transaction);
+                // Envoyer l'email de confirmation avec le bordereau
+                $this->sendTransactionEmailWithReceipt($transaction, $receiptPath);
             });
 
             $this->dispatch('alert', ['type' => 'success', 'message' => __('messages.transfer_confirmed_successfully')]);
@@ -464,6 +483,16 @@ class TransactionList extends Component
 
             // Utiliser la méthode confirm du modèle (qui gère automatiquement la mise à jour du solde et l'envoi d'email)
             $transaction->confirm(Auth::id());
+
+            // Générer le bordereau PDF
+            $receiptService = new TransactionReceiptService();
+            $receiptPath = $receiptService->generateReceipt($transaction);
+            
+            // Sauvegarder le chemin du bordereau dans la transaction
+            $transaction->update(['receipt_path' => $receiptPath]);
+
+            // Envoyer l'email avec le bordereau en pièce jointe
+            $this->sendTransactionEmailWithReceipt($transaction, $receiptPath);
 
             $this->dispatch('alert', ['type' => 'success', 'message' => __('messages.transaction_confirmed_successfully')]);
         } catch (\Exception $e) {
@@ -710,6 +739,7 @@ class TransactionList extends Component
                 $transaction,
                 $amount,
                 'emails.transaction-confirmed',
+                $currency,
                 $receiptUrl
             ));
         } catch (\Exception $e) {
@@ -758,7 +788,8 @@ class TransactionList extends Component
                 $user,
                 $transaction,
                 $amount,
-                'emails.transaction-cancelled'
+                'emails.transaction-cancelled',
+                $currency
             ));
         } catch (\Exception $e) {
             Log::error(__('messages.transfer_cancellation_email_error') . ': ' . $e->getMessage());
@@ -874,6 +905,91 @@ class TransactionList extends Component
         } elseif ($transaction->wallet_id) {
             $wallet = Wallet::findOrFail($transaction->wallet_id);
             $wallet->increment('balance', $transaction->amount);
+        }
+    }
+
+    /**
+     * Envoyer un email avec le bordereau PDF en pièce jointe
+     */
+    private function sendTransactionEmailWithReceipt($transaction, $receiptPath)
+    {
+        try {
+            $receiptFullPath = storage_path('app/public/' . $receiptPath);
+            
+            // Préparer les données pour l'email
+            $user = $transaction->user;
+            $currency = $transaction->currency ?: ($transaction->account ? $transaction->account->currency : ($transaction->wallet ? $transaction->wallet->cryptocurrency->symbol : 'EUR'));
+            $amount = number_format($transaction->amount, 2);
+            $amountWithCurrency = $amount . ' ' . $currency;
+            $emailSubject = __('common.transaction_confirmed_email_subject');
+            $emailMessage = __('common.transaction_confirmed_email_message', ['amount' => $amountWithCurrency]);
+            $viewName = 'emails.transaction-confirmed';
+            
+            if (file_exists($receiptFullPath)) {
+                Mail::to($user->email)->send(
+                    new TransactionNotification(
+                        $emailSubject,
+                        $emailMessage,
+                        $user,
+                        $transaction,
+                        $amount,
+                        $viewName,
+                        $currency,
+                        $receiptFullPath
+                    )
+                );
+            } else {
+                // Fallback: envoyer l'email sans pièce jointe
+                Mail::to($user->email)->send(
+                    new TransactionNotification(
+                        $emailSubject,
+                        $emailMessage,
+                        $user,
+                        $transaction,
+                        $amount,
+                        $viewName,
+                        $currency
+                    )
+                );
+            }
+        } catch (\Exception $e) {
+            Log::error('Erreur lors de l\'envoi de l\'email avec bordereau: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Télécharger le bordereau PDF d'une transaction
+     */
+    public function downloadReceipt($transactionId)
+    {
+        try {
+            $transaction = Transaction::findOrFail($transactionId);
+            
+            if (!$transaction->receipt_path) {
+                $this->dispatch('alert', [
+                    'type' => 'error',
+                    'message' => __('messages.receipt_not_available')
+                ]);
+                return;
+            }
+            
+            $receiptService = new TransactionReceiptService();
+            $fullPath = $receiptService->getReceiptPath($transaction->receipt_path);
+            
+            if (!$receiptService->receiptExists($transaction->receipt_path)) {
+                $this->dispatch('alert', [
+                    'type' => 'error',
+                    'message' => __('messages.receipt_file_not_found')
+                ]);
+                return;
+            }
+            
+            return response()->download($fullPath, 'bordereau_transaction_' . $transaction->id . '.pdf');
+        } catch (\Exception $e) {
+            $this->dispatch('alert', [
+                'type' => 'error',
+                'message' => __('messages.receipt_download_error')
+            ]);
         }
     }
 

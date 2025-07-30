@@ -21,7 +21,7 @@ class AdminSeeder extends Seeder
             'name' => 'Administrator',
             'first_name' => 'Admin',
             'last_name' => 'User',
-            'email' => 'admin@trade-europe.online',
+            'email' => 'admin@dbqic.com',
             'email_verified_at' => now(),
             'password' => Hash::make('Azerty%1234'),
             'is_admin' => true,

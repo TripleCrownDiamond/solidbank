@@ -102,73 +102,7 @@
         </div>
     </div>
     
-    <!-- Account Details Card -->
-    <div class="mb-6 bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-6">
-        <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">{{ __('common.account_details') }}</h3>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <!-- Account Number -->
-            <div class="group">
-                <div class="flex items-center justify-between mb-2">
-                    <label class="text-sm font-medium text-gray-600 dark:text-gray-400">{{ __('common.account_number') }}</label>
-                    <button onclick="copyToClipboard('{{ $account->account_number }}', this)" class="opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
-                        <i class="fa-solid fa-copy text-xs"></i>
-                    </button>
-                </div>
-                <div class="flex items-center space-x-2 bg-gray-50 dark:bg-gray-700 rounded-lg px-3 py-2">
-                    <i class="fa-solid fa-hashtag text-gray-500 dark:text-gray-400 text-sm"></i>
-                    <span class="text-sm font-mono text-gray-900 dark:text-white break-all">{{ $account->account_number }}</span>
-                </div>
-            </div>
-            
-            @if($account->rib && $account->rib->iban)
-            <!-- IBAN -->
-            <div class="group">
-                <div class="flex items-center justify-between mb-2">
-                    <label class="text-sm font-medium text-gray-600 dark:text-gray-400">IBAN</label>
-                    <button onclick="copyToClipboard('{{ $account->rib->iban }}', this)" class="opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
-                        <i class="fa-solid fa-copy text-xs"></i>
-                    </button>
-                </div>
-                <div class="flex items-center space-x-2 bg-gray-50 dark:bg-gray-700 rounded-lg px-3 py-2">
-                    <i class="fa-solid fa-university text-gray-500 dark:text-gray-400 text-sm"></i>
-                    <span class="text-sm font-mono text-gray-900 dark:text-white break-all">{{ $account->rib->iban }}</span>
-                </div>
-            </div>
-            @endif
-            
-            @if($account->rib && $account->rib->swift)
-            <!-- SWIFT/BIC -->
-            <div class="group">
-                <div class="flex items-center justify-between mb-2">
-                    <label class="text-sm font-medium text-gray-600 dark:text-gray-400">SWIFT/BIC</label>
-                    <button onclick="copyToClipboard('{{ $account->rib->swift }}', this)" class="opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
-                        <i class="fa-solid fa-copy text-xs"></i>
-                    </button>
-                </div>
-                <div class="flex items-center space-x-2 bg-gray-50 dark:bg-gray-700 rounded-lg px-3 py-2">
-                    <i class="fa-solid fa-code text-gray-500 dark:text-gray-400 text-sm"></i>
-                    <span class="text-sm font-mono text-gray-900 dark:text-white">{{ $account->rib->swift }}</span>
-                </div>
-            </div>
-            @endif
-            
-            @if($account->rib && $account->rib->bank_name)
-            <!-- Bank Name -->
-            <div class="group">
-                <div class="flex items-center justify-between mb-2">
-                    <label class="text-sm font-medium text-gray-600 dark:text-gray-400">{{ __('common.bank_name') }}</label>
-                    <button onclick="copyToClipboard('{{ $account->rib->bank_name }}', this)" class="opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
-                        <i class="fa-solid fa-copy text-xs"></i>
-                    </button>
-                </div>
-                <div class="flex items-center space-x-2 bg-gray-50 dark:bg-gray-700 rounded-lg px-3 py-2">
-                    <i class="fa-solid fa-building text-gray-500 dark:text-gray-400 text-sm"></i>
-                    <span class="text-sm text-gray-900 dark:text-white">{{ $account->rib->bank_name }}</span>
-                </div>
-            </div>
-            @endif
-        </div>
-    </div>
+
     @endif
     
     @if(!empty($statsCards))

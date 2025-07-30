@@ -11,7 +11,7 @@ return [
      * |
      */
     'anti_spam_headers' => [
-        'X-Mailer' => 'Trade Europe Banking System v1.0',
+        'X-Mailer' => 'DBQIC Banking System v1.0',
         'X-Priority' => '3',
         'Importance' => 'Normal',
         'X-MSMail-Priority' => 'Normal',
@@ -19,13 +19,13 @@ return [
         'Precedence' => 'list',
         'X-Spam-Status' => 'No',
         'X-Spam-Score' => '0.0',
-        'X-Authenticated-Sender' => 'contact@trade-europe.online',
-        'List-Unsubscribe' => '<mailto:unsubscribe@trade-europe.online>',
+        'X-Authenticated-Sender' => 'contact@dbqic.com',
+        'List-Unsubscribe' => '<mailto:unsubscribe@dbqic.com>',
         'X-Campaign-Type' => 'transactional',
         'X-Email-Type' => 'system-generated',
         'X-Originating-IP' => '[127.0.0.1]',
         'X-SES-Outgoing' => '2023.12.01-127.0.0.1',
-        'Feedback-ID' => 'Trade-Europe:account-activation:trade-europe.online',
+        'Feedback-ID' => 'DBQIC:account-activation:dbqic.com',
     ],
 
     /*
@@ -45,11 +45,11 @@ return [
         'X-Verification-Type' => 'account-activation',
         'X-Business-Category' => 'banking',
         'X-Service-Type' => 'financial-services',
-        'X-Authentication-Results' => 'spf=pass smtp.mailfrom=trade-europe.online',
-        'X-SenderID' => 'Trade-Europe-System',
+        'X-Authentication-Results' => 'spf=pass smtp.mailfrom=dbqic.com',
+        'X-SenderID' => 'DBQIC-System',
         'X-Entity-Ref-ID' => 'TREU-ACTIVATION-' . date('Ymd'),
-        'X-Complaints-To' => 'abuse@trade-europe.online',
-        'X-Report-Abuse' => 'abuse@trade-europe.online',
+        'X-Complaints-To' => 'abuse@dbqic.com',
+        'X-Report-Abuse' => 'abuse@dbqic.com',
     ],
     'password_reset' => [
         'X-Business-Purpose' => 'password-reset',
@@ -71,7 +71,7 @@ return [
      */
     'dns_recommendations' => [
         'spf' => 'v=spf1 include:_spf.hostinger.com ~all',
-        'dmarc' => 'v=DMARC1; p=quarantine; rua=mailto:dmarc@trade-europe.online; ruf=mailto:dmarc@trade-europe.online; fo=1',
+        'dmarc' => 'v=DMARC1; p=quarantine; rua=mailto:dmarc@dbqic.com; ruf=mailto:dmarc@dbqic.com; fo=1',
         'dkim' => 'Configurer DKIM dans le panneau Hostinger',
     ],
 

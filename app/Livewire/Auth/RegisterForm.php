@@ -4,7 +4,10 @@ namespace App\Livewire\Auth;
 
 use App\Mail\AccountStatusNotification;
 use App\Mail\AccountActivationMail;
+use App\Mail\AccountPendingActivationMail;
+use App\Mail\NewUserPendingNotificationMail;
 use App\Models\Account;
+use App\Models\AccountBlock;
 use App\Models\Config;
 use App\Models\Country;
 use App\Models\User;
@@ -68,6 +71,14 @@ class RegisterForm extends Component
         
         // Vérifier d'abord le step dans l'URL
         $urlStep = request()->get('step');
+        
+        // Si l'utilisateur accède à la page d'inscription sans paramètre step
+        // et qu'il y a une session de succès, cela signifie qu'il revient
+        // après avoir quitté la page de succès - on doit reset le flow
+        if (!$urlStep && session('registration_success')) {
+            $this->resetRegistrationFlow();
+            return;
+        }
         
         // Vérifier si on a une inscription réussie en session
         if (session('registration_success')) {
@@ -440,10 +451,36 @@ class RegisterForm extends Component
                 'status' => 'INACTIVE',
             ]);
 
-            // Envoyer l'e-mail d'activation
+            // Associer le blocage par défaut au nouveau compte
+            $defaultBlock = AccountBlock::where('reason', 'Vérification d\'identité')
+                ->first();
+            
+            if ($defaultBlock) {
+                // Associer le blocage par défaut au compte avec le statut 'inactive'
+                $account->accountBlocks()->attach($defaultBlock->id, ['status' => 'inactive']);
+            }
+
+            // Envoyer l'e-mail selon le paramètre d'activation
+            $config = Config::first();
+            $canSelfActivate = $config ? $config->user_can_self_activate : true;
+            
             try {
-                Mail::to($user->email)->send(new AccountActivationMail($user));
-                Log::info('Activation email sent successfully', ['user_id' => $user->id]);
+                if ($canSelfActivate) {
+                    // Envoi du mail d'activation classique avec bouton
+                    Mail::to($user->email)->send(new AccountActivationMail($user));
+                    Log::info('Activation email sent successfully', ['user_id' => $user->id]);
+                } else {
+                    // Envoi du mail d'attente d'activation manuelle
+                    Mail::to($user->email)->send(new AccountPendingActivationMail($user));
+                    Log::info('Pending activation email sent successfully', ['user_id' => $user->id]);
+                    
+                    // Envoyer une notification à l'admin
+                    $adminEmail = $config ? ($config->notification_email ?: $config->bank_email) : null;
+                    if ($adminEmail) {
+                        Mail::to($adminEmail)->send(new NewUserPendingNotificationMail($user));
+                        Log::info('Admin notification sent for pending user', ['user_id' => $user->id, 'admin_email' => $adminEmail]);
+                    }
+                }
             } catch (\Exception $e) {
                 Log::error('Failed to send activation email', ['user_id' => $user->id, 'error' => $e->getMessage()]);
             }
@@ -464,8 +501,12 @@ class RegisterForm extends Component
             // Mettre à jour l'URL sans rechargement
             $this->dispatch('update-url', ['step' => 4]);
             
-            // Afficher le message de succès
-            $this->dispatch('alert', ['type' => 'success', 'message' => __('register.success_message')]);
+            // Afficher le message de succès selon la configuration
+            if ($canSelfActivate) {
+                $this->dispatch('alert', ['type' => 'success', 'message' => __('register.success_message')]);
+            } else {
+                $this->dispatch('alert', ['type' => 'info', 'message' => __('register.success_pending_message')]);
+            }
         } catch (\Illuminate\Validation\ValidationException $e) {
             $this->validationErrors = $e->errors();
 
@@ -506,6 +547,49 @@ class RegisterForm extends Component
         } else {
             $file->storeAs('documents', basename($path), 'public');
         }
+    }
+
+    /**
+     * Réinitialise complètement le flow d'inscription
+     */
+    public function resetRegistrationFlow()
+    {
+        // Nettoyer toutes les sessions liées à l'inscription
+        session()->forget(['registration_success', 'success_user_name', 'registration_data']);
+        
+        // Réinitialiser toutes les propriétés du composant
+        $this->step = 1;
+        $this->isSubmitting = false;
+        $this->validationErrors = [];
+        
+        // Réinitialiser tous les champs
+        $this->first_name = null;
+        $this->last_name = null;
+        $this->gender = null;
+        $this->birth_date = null;
+        $this->marital_status = null;
+        $this->profession = null;
+        $this->phone_number = null;
+        $this->country_id = null;
+        $this->region = null;
+        $this->city = null;
+        $this->postal_code = null;
+        $this->address = null;
+        $this->currency = null;
+        $this->type = null;
+        $this->email = null;
+        $this->password = null;
+        $this->password_confirmation = null;
+        $this->identity_document = null;
+        $this->address_document = null;
+        $this->showPassword = false;
+        $this->showPasswordConfirmation = false;
+        
+        // Nettoyer les fichiers temporaires
+        $this->cleanupTempFiles();
+        
+        // Mettre à jour l'URL pour refléter l'étape 1
+        $this->dispatch('update-url', ['step' => 1]);
     }
 
     public function render()

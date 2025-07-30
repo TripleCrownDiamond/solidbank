@@ -15,7 +15,7 @@
             App::setLocale($locale);
         }
     @endphp
-    <h1 style="color: var(--brand-primary); font-size: 28px; margin-bottom: 20px;">✅ {{ __('loan.confirmation.title') }}</h1>
+    <h1 style="color: var(--brand-primary); font-size: 28px; margin-bottom: 20px;">{{ __('loan.confirmation.title') }}</h1>
     
     <p style="font-size: 16px; line-height: 1.6; margin-bottom: 25px; color: var(--text-primary);">
         {{ __('loan.confirmation.greeting', ['name' => $loanData['first_name'] . ' ' . $loanData['last_name']]) }}
@@ -57,7 +57,7 @@
     
     <!-- Prochaines étapes -->
     <div style="background: linear-gradient(135deg, var(--success-bg), var(--success-bg)); padding: 25px; border-radius: 12px; margin: 25px 0; border: 2px solid var(--success-border);">
-        <h3 style="color: var(--success-text); margin-top: 0; margin-bottom: 20px;">🚀 {{ __('loan.confirmation.next_steps') }}</h3>
+        <h3 style="color: var(--success-text); margin-top: 0; margin-bottom: 20px;">{{ __('loan.confirmation.next_steps') }}</h3>
         
         <ul style="color: var(--text-primary); line-height: 1.8; margin: 0; padding-left: 20px;">
             <li>{{ __('loan.confirmation.step1') }}</li>

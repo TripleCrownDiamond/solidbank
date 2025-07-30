@@ -11,7 +11,7 @@ return [
      * | other UI elements where an application name needs to be displayed.
      * |
      */
-    'name' => env('APP_NAME', 'Trade Europe'),
+    'name' => env('APP_NAME', 'DBQIC'),
 
     /*
      * |--------------------------------------------------------------------------
@@ -89,7 +89,7 @@ return [
     'company_address_line2' => env('COMPANY_ADDRESS_LINE2', 'Quartier Financier'),
     'company_address_line3' => env('COMPANY_ADDRESS_LINE3', '75001 Paris, France'),
     'company_phone' => env('COMPANY_PHONE', '+33 1 23 45 67 89'),
-    'company_email' => env('COMPANY_EMAIL', 'contact@trade-europe.online'),
+    'company_email' => env('COMPANY_EMAIL', 'contact@dbqic.com'),
 
     /*
      * |--------------------------------------------------------------------------

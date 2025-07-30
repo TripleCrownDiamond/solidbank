@@ -159,6 +159,87 @@
             </div>
         </div>
     @endif
-    
+
+    <!-- Modal RIB Manuel -->
+    @if($showRibModal)
+        <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div class="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-md mx-4">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                        {{ __('admin.manual_rib_entry') }}
+                    </h3>
+                    <button wire:click="closeRibModal" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+                        <i class="fa-solid fa-times"></i>
+                    </button>
+                </div>
+                
+                <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                    {{ __('admin.manual_rib_description') }}
+                </p>
+                
+                <div class="space-y-4">
+                    <div>
+                        <label for="ribIban" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            {{ __('admin.iban_label') }}
+                        </label>
+                        <input type="text" 
+                               wire:model="ribIban"
+                               id="ribIban"
+                               class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent dark:bg-gray-700 dark:text-gray-100"
+                               placeholder="{{ __('admin.iban_placeholder') }}">
+                        @error('ribIban')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+                    
+                    <div>
+                        <label for="ribSwift" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            {{ __('admin.swift_label') }}
+                        </label>
+                        <input type="text" 
+                               wire:model="ribSwift"
+                               id="ribSwift"
+                               class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent dark:bg-gray-700 dark:text-gray-100"
+                               placeholder="{{ __('admin.swift_placeholder') }}">
+                        @error('ribSwift')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+                    
+                    <div>
+                        <label for="ribBankName" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            {{ __('admin.bank_name_label') }}
+                        </label>
+                        <input type="text" 
+                               wire:model="ribBankName"
+                               id="ribBankName"
+                               class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent dark:bg-gray-700 dark:text-gray-100"
+                               placeholder="{{ __('admin.bank_name_placeholder') }}">
+                        @error('ribBankName')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+                </div>
+                
+                <div class="flex justify-end space-x-3 mt-6">
+                    <button wire:click="closeRibModal" 
+                            class="px-4 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 transition-colors">
+                        {{ __('common.cancel') }}
+                    </button>
+                    <button wire:click="processActivateAccountWithManualRib"
+                            class="px-4 py-2 bg-brand-primary text-white rounded-lg hover:bg-brand-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                            wire:loading.attr="disabled" 
+                            wire:target="processActivateAccountWithManualRib">
+                        <span wire:loading.remove wire:target="processActivateAccountWithManualRib">
+                            {{ __('admin.activate_with_rib') }}
+                        </span>
+                        <span wire:loading wire:target="processActivateAccountWithManualRib">
+                            <i class="fa-solid fa-spinner fa-spin mr-2"></i>{{ __('admin.activating') }}
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    @endif
 
 </div>

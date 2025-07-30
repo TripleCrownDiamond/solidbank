@@ -51,6 +51,12 @@ class WithdrawalModal extends Component
     {
         $this->loadUserAccounts();
         $this->cryptoCurrencies = Cryptocurrency::active()->get();
+        
+        // Force account type if crypto features are disabled
+        $cryptoFeaturesEnabled = bank_config('activate_crypto_features', false);
+        if (!$cryptoFeaturesEnabled && $this->withdrawalType === 'wallet') {
+            $this->withdrawalType = 'account';
+        }
     }
 
     public function loadUserAccounts()
@@ -380,10 +386,13 @@ class WithdrawalModal extends Component
 
     public function render()
     {
+        $cryptoFeaturesEnabled = bank_config('activate_crypto_features', false);
+        
         return view('livewire.deposit-management.withdrawal-modal', [
             'accounts' => $this->userAccounts,
             'wallets' => $this->userWallets,
             'cryptoCurrencies' => $this->cryptoCurrencies,
+            'cryptoFeaturesEnabled' => $cryptoFeaturesEnabled,
         ]);
     }
 

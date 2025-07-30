@@ -28,17 +28,17 @@ class BankConfigHelper
     private static function getDefaultConfig()
     {
         return (object) [
-            'bank_name' => 'Trade Europe',
-        'bank_swift' => 'TREUFRPP',
+            'bank_name' => 'DBQIC',
+            'bank_swift' => 'TREUFRPP',
             'bank_country' => 'FR',
             'bank_address' => '29 Rue du Faubourg, Paris, France',
             'bank_phone' => '+33123456789',
-            'bank_email' => 'contact@trade-europe.online',
-            'bank_website' => 'https://www.trade-europe.online',
+            'bank_email' => 'contact@dbqic.com',
+            'bank_website' => 'https://www.dbqic.com',
             'logo_url' => 'img/logo_blue.svg',
             'icon_url' => 'img/icon_blue.svg',
             'favicon_url' => 'favicon.ico',
-            'notification_email' => 'contact@trade-europe.online',
+            'notification_email' => 'contact@dbqic.com',
             'brand_color' => '#3B82F6',
             'brand_primary_hover' => '#2563EB',
             'brand_primary_light' => '#DBEAFE',

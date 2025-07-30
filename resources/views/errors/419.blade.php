@@ -20,8 +20,8 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
                         </svg>
                     </div>
-                    <h2 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">{{ __('Session expirée') }}</h2>
-                    <p class="text-gray-600 dark:text-gray-400">{{ __('Votre session a expiré. Vous allez être redirigé vers la page de connexion.') }}</p>
+                    <h2 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">{{ __('common.session_expired') }}</h2>
+                    <p class="text-gray-600 dark:text-gray-400">{{ __('common.session_expired_redirect') }}</p>
                 </div>
                 
                 <!-- Loading indicator -->
@@ -29,7 +29,7 @@
                     <div class="flex justify-center">
                         <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-primary"></div>
                     </div>
-                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">{{ __('Redirection en cours...') }}</p>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">{{ __('common.redirecting') }}</p>
                 </div>
                 
                 <!-- Manual redirect button -->
@@ -39,7 +39,7 @@
                         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path>
                         </svg>
-                        {{ __('Se reconnecter') }}
+                        {{ __('common.reconnect') }}
                     </a>
                     
                     <button onclick="history.back()" 
@@ -47,7 +47,7 @@
                         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
                         </svg>
-                        {{ __('Page précédente') }}
+                        {{ __('common.previous_page') }}
                     </button>
                 </div>
             </div>
@@ -56,7 +56,7 @@
         <!-- Additional Info -->
         <div class="mt-6 text-center">
             <p class="text-xs text-gray-500 dark:text-gray-400">
-                {{ __('Si le problème persiste, veuillez contacter le support technique.') }}
+                {{ __('common.contact_support_if_problem_persists') }}
             </p>
         </div>
     </div>

@@ -56,6 +56,12 @@ class TransferStepSource extends Component
 
     public function mount($sourceType, $userAccounts, $userWallets, $selectedSourceId = null)
     {
+        // Force account type if crypto features are disabled
+        $cryptoFeaturesEnabled = bank_config('activate_crypto_features', false);
+        if (!$cryptoFeaturesEnabled && $sourceType === 'wallet') {
+            $sourceType = 'account';
+        }
+        
         $this->sourceType = $sourceType;
         $this->userAccounts = $userAccounts;
         $this->userWallets = $userWallets;
@@ -110,6 +116,8 @@ class TransferStepSource extends Component
 
     public function render()
     {
-        return view('livewire.deposit-management.transfer-step-source');
+        $cryptoFeaturesEnabled = bank_config('activate_crypto_features', false);
+        
+        return view('livewire.deposit-management.transfer-step-source', compact('cryptoFeaturesEnabled'));
     }
 }

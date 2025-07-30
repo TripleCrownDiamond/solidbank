@@ -67,14 +67,14 @@ function bank_config($key = null, $default = null)
 
     // Fallback to default values
     $defaults = [
-        'bank_name' => 'Trade Europe',
-        'app_name' => 'Trade Europe',
+        'bank_name' => 'DBQIC',
+        'app_name' => 'DBQIC',
         'bank_swift' => 'TREUFRPP',
         'bank_country' => 'FR',
         'bank_address' => '29 Rue du Faubourg, Paris, France',
         'bank_phone' => '+33123456789',
-        'bank_email' => 'contact@trade-europe.online',
-        'bank_website' => 'https://www.trade-europe.online',
+        'bank_email' => 'contact@dbqic.com',
+        'bank_website' => 'https://www.dbqic.com',
     ];
 
     return $defaults[$key] ?? $default;

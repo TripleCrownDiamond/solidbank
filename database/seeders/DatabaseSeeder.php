@@ -24,6 +24,8 @@ class DatabaseSeeder extends Seeder
 
         $this->call(CryptocurrencySeeder::class);
 
+        $this->call(AccountBlockSeeder::class);
+
         // Create 30 users with accounts
 
         /*

@@ -14,7 +14,13 @@ return [
     'success_title' => 'Inscription réussie !',
     'success_message' => 'Inscription réussie ! Cliquez sur le lien dans le mail pour activer votre compte. Vérifiez dans les spams si vous ne voyez pas le mail.',
     'success_message_with_name' => 'Bonjour :name ! Inscription réussie ! Cliquez sur le lien dans le mail pour activer votre compte. Vérifiez dans les spams si vous ne voyez pas le mail.',
+    
+    // Messages pour l'activation manuelle
+    'success_pending_title' => 'Inscription réussie !',
+    'success_pending_message' => 'Votre compte a été créé avec succès ! Il est actuellement en cours de validation par notre équipe. Vous recevrez un e-mail de confirmation dès que votre compte sera activé.',
+    'success_pending_message_with_name' => 'Bonjour :name ! Votre compte a été créé avec succès ! Il est actuellement en cours de validation par notre équipe. Vous recevrez un e-mail de confirmation dès que votre compte sera activé.',
     'go_to_login' => 'Aller à la connexion',
+    'new_registration' => 'Nouvelle inscription',
     'email_already_exists' => 'Cette adresse e-mail est déjà enregistrée. Veuillez utiliser une adresse e-mail différente ou vous connecter.',
     'email_verification_required' => 'Vérification d\'email requise',
     'email_verification_message' => 'Un email de vérification a été envoyé à votre adresse. Cliquez sur le lien pour activer votre compte. Vérifiez dans les spams si vous ne voyez pas le mail.',

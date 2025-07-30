@@ -152,4 +152,6 @@ return [
     'email_required' => '[TO TRANSLATE] email_required',
     'email_invalid' => '[TO TRANSLATE] email_invalid',
     'email_already_subscribed' => '[TO TRANSLATE] email_already_subscribed',
+    'block_updated_successfully' => 'Bloqueio atualizado com sucesso',
+    'block_deactivated_successfully' => 'Bloqueio desativado com sucesso',
 ];

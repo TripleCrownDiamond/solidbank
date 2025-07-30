@@ -1,0 +1,91 @@
+<?php
+    $statsCards = [
+        [
+            'title' => __('common.total_accounts'),
+            'value' => $totalAccounts,
+            'icon' => 'fa-money-bill-transfer',
+            'color' => 'brand-primary',
+            'gradient' => 'from-brand-primary to-brand-primary-light'
+        ],
+        [
+            'title' => __('common.active_accounts'),
+            'value' => $activeAccounts,
+            'icon' => 'fa-check-circle',
+            'color' => 'brand-accent',
+            'gradient' => 'from-brand-accent to-brand-success'
+        ],
+        [
+            'title' => __('common.inactive_accounts_pending_review'),
+            'value' => $inactiveAccounts,
+            'icon' => 'fa-clock',
+            'color' => 'brand-warning',
+            'gradient' => 'from-brand-warning to-brand-error'
+        ],
+        [
+            'title' => __('common.total_users'),
+            'value' => $totalUsers,
+            'icon' => 'fa-users',
+            'color' => 'brand-secondary',
+            'gradient' => 'from-brand-secondary to-brand-primary-dark'
+        ],
+        [
+            'title' => __('common.top_country_by_users'),
+            'value' => $topCountryUsers ? $topCountryUsers->country->english_name . ' (' . $topCountryUsers->user_count . ')' : 'N/A',
+            'icon' => 'fa-globe',
+            'color' => 'brand-primary',
+            'gradient' => 'from-brand-primary to-brand-accent',
+            'isCountry' => true
+        ]
+    ];
+?>
+
+<div class="space-y-6">
+    <div class="flex items-center justify-between">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white"><?php echo e(__('common.stats')); ?></h2>
+        <div class="flex items-center space-x-4">
+            <div class="h-1 w-16 bg-gradient-to-r from-brand-primary to-brand-accent rounded-full"></div>
+        </div>
+    </div>
+    
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
+        <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $statsCards; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $card): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+            <div class="group relative bg-white dark:bg-gray-800 rounded-xl shadow-sm hover:shadow-xl hover:shadow-<?php echo e($card['color']); ?>/20 hover:-translate-y-1 transition-all duration-300 border border-gray-100 dark:border-gray-700 hover:border-<?php echo e($card['color']); ?>/30 overflow-hidden cursor-pointer">
+                <!-- Gradient top border -->
+                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r <?php echo e($card['gradient']); ?>"></div>
+                
+                <!-- Card content -->
+                <div class="p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <!-- Icon container -->
+                        <div class="p-3 bg-<?php echo e($card['color']); ?>/10 group-hover:bg-<?php echo e($card['color']); ?>/20 rounded-lg transition-all duration-300 group-hover:scale-110">
+                            <i class="fa-solid <?php echo e($card['icon']); ?> text-<?php echo e($card['color']); ?> text-xl group-hover:text-<?php echo e($card['color']); ?>-hover transition-colors duration-300"></i>
+                        </div>
+                        
+                        <!-- Value container -->
+                        <div class="text-right">
+                            <!--[if BLOCK]><![endif]--><?php if(isset($card['isCountry']) && $card['isCountry']): ?>
+                                <p class="text-lg font-bold text-gray-900 dark:text-white group-hover:text-<?php echo e($card['color']); ?> transition-colors duration-300 leading-tight">
+                                <!--[if BLOCK]><![endif]--><?php if($topCountryUsers): ?>
+                                    <?php echo e($topCountryUsers->country->english_name); ?>
+
+                                    <span class="block text-sm font-medium text-gray-500 dark:text-gray-400 group-hover:text-<?php echo e($card['color']); ?>/70">(<?php echo e($topCountryUsers->user_count); ?>)</span>
+                                <?php else: ?>
+                                    <span class="text-gray-500 dark:text-gray-400">N/A</span>
+                                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                            </p>
+                        <?php else: ?>
+                            <p class="text-2xl font-bold text-gray-900 dark:text-white group-hover:text-<?php echo e($card['color']); ?> transition-colors duration-300"><?php echo e($card['value']); ?></p>
+                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                        </div>
+                    </div>
+                    
+                    <!-- Title -->
+                    <h3 class="text-sm font-medium text-gray-600 dark:text-gray-300 group-hover:text-<?php echo e($card['color']); ?>/80 uppercase tracking-wide transition-colors duration-300"><?php echo e($card['title']); ?></h3>
+                </div>
+                
+                <!-- Hover glow effect -->
+                <div class="absolute inset-0 bg-gradient-to-r <?php echo e($card['gradient']); ?> opacity-0 group-hover:opacity-5 transition-opacity duration-300 pointer-events-none"></div>
+            </div>
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+    </div>
+</div><?php /**PATH D:\Backup Desktop\projets\solidbank\resources\views/livewire/admin-dashboard-stats.blade.php ENDPATH**/ ?>

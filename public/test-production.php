@@ -1,6 +1,6 @@
 <?php
 // Test simple pour vérifier le fonctionnement en production
-// Accès via: https://trade-europe.online/test-production.php
+// Accès via: https://dbqic.com/test-production.php
 
 require_once __DIR__ . '/../vendor/autoload.php';
 

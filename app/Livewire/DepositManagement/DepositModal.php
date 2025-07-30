@@ -55,14 +55,21 @@ class DepositModal extends Component
         if (!Auth::user()->is_admin) {
             $this->selectedAccountId = Auth::user()->accounts->first()->id ?? null;
         }
+        
+        // Force account type if crypto features are disabled
+        $cryptoFeaturesEnabled = bank_config('activate_crypto_features', false);
+        if (!$cryptoFeaturesEnabled && $this->depositType === 'wallet') {
+            $this->depositType = 'account';
+        }
     }
 
     public function render()
     {
         $accounts = Auth::user()->accounts;
         $wallets = Auth::user()->wallets;
+        $cryptoFeaturesEnabled = bank_config('activate_crypto_features', false);
 
-        return view('livewire.deposit-management.deposit-modal', compact('accounts', 'wallets'));
+        return view('livewire.deposit-management.deposit-modal', compact('accounts', 'wallets', 'cryptoFeaturesEnabled'));
     }
 
     public function openDepositModal()

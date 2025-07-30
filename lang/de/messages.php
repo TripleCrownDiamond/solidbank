@@ -152,4 +152,6 @@ return [
     'config_updated_successfully' => 'Configuration updated successfully',
     'config_update_failed' => 'Configuration update failed',
     'password_reset_success' => '[TO TRANSLATE] password_reset_success',
+    'block_updated_successfully' => 'Sperre erfolgreich aktualisiert',
+    'block_deactivated_successfully' => 'Sperre erfolgreich deaktiviert',
 ];

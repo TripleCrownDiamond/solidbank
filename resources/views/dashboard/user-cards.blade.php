@@ -1,4 +1,14 @@
 <x-app-layout>
+    @php
+        $hasActiveBlock = false;
+        if (!Auth::user()->is_admin) {
+            $hasActiveBlock = Auth::user()->accounts()->whereHas('activeAccountBlocks')->exists();
+        }
+        if ($hasActiveBlock) {
+            return redirect()->route('dashboard')->with('error', __('common.access_denied'));
+        }
+    @endphp
+
     <x-slot name="header">
         <div class="bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-700 dark:to-indigo-700 text-white p-6 rounded-lg shadow-lg">
             <div class="flex items-center justify-between">

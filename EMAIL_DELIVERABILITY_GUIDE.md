@@ -140,7 +140,7 @@ v=spf1 include:_spf.hostinger.com ~all
 **DMARC (Domain-based Message Authentication)**
 
 ```
-v=DMARC1; p=quarantine; rua=mailto:dmarc@trade-europe.online; ruf=mailto:dmarc@trade-europe.online; fo=1
+v=DMARC1; p=quarantine; rua=mailto:dmarc@dbqic.com; ruf=mailto:dmarc@dbqic.com; fo=1
 ```
 
 ### 2. Optimisations avancées anti-spam
@@ -182,7 +182,7 @@ v=DMARC1; p=quarantine; rua=mailto:dmarc@trade-europe.online; ruf=mailto:dmarc@t
 **Reverse DNS (PTR) :**
 
 -   Configurer un enregistrement PTR pour l'IP du serveur
--   Format : `mail.trade-europe.online`
+-   Format : `mail.dbqic.com`
 
 **Certificat SSL/TLS :**
 
@@ -200,7 +200,7 @@ v=DMARC1; p=quarantine; rua=mailto:dmarc@trade-europe.online; ruf=mailto:dmarc@t
 
 **Sous-domaine dédié :**
 
--   Utiliser `mail.trade-europe.online` ou `noreply.trade-europe.online`
+-   Utiliser `mail.dbqic.com` ou `noreply.dbqic.com`
 -   Séparer les e-mails transactionnels des e-mails marketing
 
 ## Support technique

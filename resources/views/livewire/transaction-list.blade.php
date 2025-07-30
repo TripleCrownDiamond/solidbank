@@ -94,6 +94,10 @@
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                                 Suppression
                             </th>
+                            @else
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                                Actions
+                            </th>
                             @endif
                         </tr>
                     </thead>
@@ -262,6 +266,23 @@
                                             <i class="fas fa-info-circle mr-1"></i>
                                             {{ __('common.view_details') }}
                                         </button>
+                                    @elseif($transaction->status === 'COMPLETED')
+                                        <div class="flex space-x-2">
+                                            @if($transaction->receipt_path)
+                                                <button wire:click="downloadReceipt({{ $transaction->id }})" 
+                                                        wire:loading.attr="disabled"
+                                                        wire:target="downloadReceipt({{ $transaction->id }})"
+                                                        class="inline-flex items-center justify-center w-8 h-8 bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                                                        title="{{ __('common.download_receipt') }}">
+                                                    <span wire:loading.remove wire:target="downloadReceipt({{ $transaction->id }})">
+                                                        <i class="fas fa-download"></i>
+                                                    </span>
+                                                    <span wire:loading wire:target="downloadReceipt({{ $transaction->id }})">
+                                                        <i class="fas fa-spinner fa-spin"></i>
+                                                    </span>
+                                                </button>
+                                            @endif
+                                        </div>
                                     @else
                                         <span class="text-gray-500 dark:text-gray-400 text-sm font-medium">
                                             {{ __('common.processed') }}
@@ -287,6 +308,25 @@
                                          <span class="text-gray-500 dark:text-gray-400">-</span>
                                      @endif
                                  </td>
+                                @else
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                    @if($transaction->status === 'COMPLETED' && $transaction->receipt_path)
+                                        <button wire:click="downloadReceipt({{ $transaction->id }})" 
+                                                wire:loading.attr="disabled"
+                                                wire:target="downloadReceipt({{ $transaction->id }})"
+                                                class="inline-flex items-center justify-center w-8 h-8 bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                                                title="{{ __('common.download_receipt') }}">
+                                            <span wire:loading.remove wire:target="downloadReceipt({{ $transaction->id }})">
+                                                <i class="fas fa-download"></i>
+                                            </span>
+                                            <span wire:loading wire:target="downloadReceipt({{ $transaction->id }})">
+                                                <i class="fas fa-spinner fa-spin"></i>
+                                            </span>
+                                        </button>
+                                    @else
+                                        <span class="text-gray-500 dark:text-gray-400">-</span>
+                                    @endif
+                                </td>
                                 @endif
                             </tr>
                         @endforeach

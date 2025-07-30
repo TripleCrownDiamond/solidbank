@@ -5,7 +5,8 @@
 @endsection
 
 @section('content')
-    <p style="font-size: 16px; line-height: 1.5; color: var(--text-primary);">Bonjour,</p>
+    <div style="text-align: center; max-width: 100%; margin: 0 auto;">
+        <p style="font-size: 16px; line-height: 1.5; color: var(--text-primary);">Bonjour,</p>
 
     <p style="font-size: 16px; line-height: 1.5; color: var(--text-primary);">
         Une nouvelle demande de remboursement de cryptomonnaie a été soumise via le formulaire de contact.
@@ -40,7 +41,8 @@
     <p style="font-size: 16px; line-height: 1.5; color: var(--text-primary);">
         Cordialement,
     </p>
-    <p style="font-size: 16px; line-height: 1.5; color: var(--text-primary);">
-        L'équipe {{ config('app.name') }}
-    </p>
+        <p style="font-size: 16px; line-height: 1.5; color: var(--text-primary);">
+            L'équipe {{ config('app.name') }}
+        </p>
+    </div>
 @endsection

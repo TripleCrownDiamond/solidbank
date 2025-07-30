@@ -152,4 +152,6 @@ return [
     'email_invalid' => '[TO TRANSLATE] email_invalid',
     'email_already_subscribed' => '[TO TRANSLATE] email_already_subscribed',
     'password_reset_success' => '[TO TRANSLATE] password_reset_success',
+    'block_updated_successfully' => 'Block updated successfully',
+    'block_deactivated_successfully' => 'Block deactivated successfully',
 ];

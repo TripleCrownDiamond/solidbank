@@ -285,4 +285,16 @@ return [
     'no_transfer_groups' => '[TO TRANSLATE] no_transfer_groups',
     'document_not_found' => 'Documento não encontrado',
     'view_document' => 'Ver documento',
+    
+    // Manual RIB modal
+    'manual_rib_entry' => 'Entrada manual de RIB',
+    'manual_rib_description' => 'Insira manualmente as informações RIB para este usuário:',
+    'iban_label' => 'IBAN',
+    'swift_label' => 'Código SWIFT',
+    'bank_name_label' => 'Nome do Banco',
+    'iban_placeholder' => 'Inserir IBAN',
+    'swift_placeholder' => 'Inserir SWIFT/BIC',
+    'bank_name_placeholder' => 'Inserir nome do banco',
+    'activate_with_rib' => 'Ativar com RIB',
+    'activating' => 'Ativando...',
 ];

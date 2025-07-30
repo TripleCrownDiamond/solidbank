@@ -14,8 +14,14 @@ return [
     'success_title' => 'Registration successful!',
     'success_message' => 'Registration successful! Please check your email to activate your account.',
     'success_message_with_name' => 'Hello :name! Your registration was successful. Please check your email to activate your account.',
+    
+    // Messages for manual activation
+    'success_pending_title' => 'Registration successful!',
+    'success_pending_message' => 'Your account has been successfully created! It is currently under review by our team. You will receive a confirmation email as soon as your account is activated.',
+    'success_pending_message_with_name' => 'Hello :name! Your account has been successfully created! It is currently under review by our team. You will receive a confirmation email as soon as your account is activated.',
     'check_email_activation' => 'Please check your email and click on the activation link to complete your account setup.',
     'go_to_login' => 'Go to login',
+    'new_registration' => 'New Registration',
     'email_already_exists' => 'This email address is already registered. Please use a different email or log in.',
     'email_verification_required' => 'Email verification required',
     'email_verification_message' => 'A verification email has been sent to your email address. Please check your inbox to activate your account.',

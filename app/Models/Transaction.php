@@ -19,7 +19,8 @@ class Transaction extends Model
         'user_id', 'account_id', 'wallet_id', 'currency',
         'blocked_at_transfer_step_id', 'blocked_at_transfer_step_group_id',
         'is_blocked', 'blocked_reason', 'blocked_at',
-        'processed_by_admin_id', 'processed_at', 'progress_percentage'
+        'processed_by_admin_id', 'processed_at', 'progress_percentage',
+        'receipt_path'
     ];
 
     protected $casts = [
@@ -118,8 +119,7 @@ class Transaction extends Model
             }
         }
 
-        // Envoyer un email de confirmation à l'utilisateur
-        $this->sendConfirmationEmail();
+        // Email de confirmation envoyé depuis TransactionList.php pour éviter la duplication
     }
 
     /**
@@ -134,8 +134,7 @@ class Transaction extends Model
             'blocked_reason' => $reason,
         ]);
 
-        // Envoyer un email d'annulation à l'utilisateur
-        $this->sendCancellationEmail();
+        // Email d'annulation envoyé depuis TransactionList.php pour éviter la duplication
     }
 
     /**
@@ -306,84 +305,10 @@ class Transaction extends Model
         return null;
     }
 
-    /**
-     * Envoyer un email de confirmation de transaction
-     */
-    private function sendConfirmationEmail()
-    {
-        try {
-            // Ne pas envoyer d'email pour les retraits (WITHDRAWAL)
-            if ($this->type === 'WITHDRAWAL') {
-                return;
-            }
-            
-            if ($this->user) {
-                // Déterminer le compte ou wallet concerné
-                $account = null;
-                if ($this->account_id) {
-                    $account = $this->account;
-                } elseif ($this->wallet_id) {
-                    // Pour les wallets, on peut passer null comme account
-                    $account = null;
-                }
+    // Méthode supprimée pour éviter la duplication d'emails
+    // L'envoi d'email est géré dans TransactionList.php
 
-                // Déterminer la devise
-                $currency = $this->currency ?: ($this->account ? $this->account->currency : ($this->wallet ? $this->wallet->cryptocurrency->symbol : 'EUR'));
-                $amountWithCurrency = number_format($this->amount, 2) . ' ' . $currency;
-                
-                // Envoyer l'email de confirmation de dépôt
-                \Illuminate\Support\Facades\Mail::to($this->user->email)
-                    ->send(new \App\Mail\AccountStatusNotification(
-                        $this->user,
-                        $account,
-                        'deposit_confirmed',
-                        $amountWithCurrency,
-                        $this->processed_by_admin_id
-                    ));
-            }
-        } catch (\Exception $e) {
-            \Illuminate\Support\Facades\Log::error(__('messages.failed_to_send_transaction_confirmation_email') . ': ' . $e->getMessage());
-        }
-    }
-
-    /**
-     * Envoyer un email d'annulation de transaction
-     */
-    private function sendCancellationEmail()
-    {
-        try {
-            // Ne pas envoyer d'email pour les retraits (WITHDRAWAL)
-            if ($this->type === 'WITHDRAWAL') {
-                return;
-            }
-            
-            if ($this->user) {
-                // Déterminer le compte ou wallet concerné
-                $account = null;
-                if ($this->account_id) {
-                    $account = $this->account;
-                } elseif ($this->wallet_id) {
-                    // Pour les wallets, on peut passer null comme account
-                    $account = null;
-                }
-
-                // Déterminer la devise
-                $currency = $this->currency ?: ($this->account ? $this->account->currency : ($this->wallet ? $this->wallet->cryptocurrency->symbol : 'EUR'));
-                $amountWithCurrency = number_format($this->amount, 2) . ' ' . $currency;
-                
-                // Envoyer l'email d'annulation de transaction
-                \Illuminate\Support\Facades\Mail::to($this->user->email)
-                    ->send(new \App\Mail\AccountStatusNotification(
-                        $this->user,
-                        $account,
-                        'transaction_cancelled',
-                        $amountWithCurrency,
-                        $this->processed_by_admin_id
-                    ));
-            }
-        } catch (\Exception $e) {
-            \Illuminate\Support\Facades\Log::error(__('messages.failed_to_send_transaction_cancellation_email') . ': ' . $e->getMessage());
-        }
-    }
+    // Méthodes d'envoi d'email supprimées pour éviter la duplication
+    // L'envoi d'email est maintenant géré uniquement dans TransactionList.php
 }
 

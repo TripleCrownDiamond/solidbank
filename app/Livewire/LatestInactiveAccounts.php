@@ -22,6 +22,12 @@ class LatestInactiveAccounts extends Component
     public $suspensionAccountId = null;
     public $suspensionReason = '';
     public $suspensionInstructions = '';
+    // RIB manual entry properties
+    public $showRibModal = false;
+    public $ribAccountId = null;
+    public $ribIban = '';
+    public $ribSwift = '';
+    public $ribBankName = '';
 
     protected $listeners = ['execute-method' => 'executeMethod'];
 
@@ -59,6 +65,18 @@ class LatestInactiveAccounts extends Component
 
     public function activateAccount($accountId)
     {
+        // Vérifier si automatic_rib est false
+        $config = \App\Models\Config::first();
+        if ($config && !$config->automatic_rib) {
+            // Afficher la modal pour saisie manuelle du RIB
+            $this->ribAccountId = $accountId;
+            $this->showRibModal = true;
+            $this->ribIban = '';
+            $this->ribSwift = '';
+            $this->ribBankName = '';
+            return;
+        }
+
         $this->performActivateAccount($accountId);
     }
 
@@ -86,17 +104,17 @@ class LatestInactiveAccounts extends Component
                     throw new \Exception(__('messages.failed_to_save_account'));
                 }
 
-                // Send email notification with fresh account data
-                try {
-                    $freshAccount = Account::with('user')->find($accountId);
-                    Mail::to($freshAccount->user->email)->send(new AccountStatusNotification($freshAccount->user, $freshAccount, 'activated'));
-                } catch (\Exception $e) {
-                    Log::error(__('messages.failed_to_send_activation_email') . ': ' . $e->getMessage());
-                }
-
                 // Check if RIB already exists for this account
                 if (!\App\Models\Rib::where('account_id', $account->id)->exists()) {
                     $this->generateRib($account);
+                }
+
+                // Send email notification with RIB information
+                try {
+                    $freshAccount = Account::with(['user', 'rib'])->find($accountId);
+                    Mail::to($freshAccount->user->email)->send(new \App\Mail\AccountActivatedWithRibMail($freshAccount->user, $freshAccount, $freshAccount->rib));
+                } catch (\Exception $e) {
+                    Log::error(__('messages.failed_to_send_activation_email') . ': ' . $e->getMessage());
                 }
             });
 
@@ -320,5 +338,86 @@ class LatestInactiveAccounts extends Component
     public function copyAccount($accountNumber)
     {
         $this->dispatch('copy-to-clipboard', ['accountNumber' => $accountNumber, 'message' => __('common.account_number_copied')]);
+    }
+
+    public function processActivateAccountWithManualRib()
+    {
+        // Validation des champs RIB
+        $this->validate([
+            'ribIban' => 'required|string|max:34',
+            'ribSwift' => 'required|string|max:11',
+            'ribBankName' => 'required|string|max:255',
+        ], [
+            'ribIban.required' => __('validation.required', ['attribute' => 'IBAN']),
+            'ribSwift.required' => __('validation.required', ['attribute' => 'SWIFT']),
+            'ribBankName.required' => __('validation.required', ['attribute' => __('auth.bank_name_label')]),
+        ]);
+
+        $this->loadingAction = 'activate_' . $this->ribAccountId;
+
+        try {
+            DB::transaction(function () {
+                $account = Account::lockForUpdate()->find($this->ribAccountId);
+                if (!$account) {
+                    throw new \Exception(__('messages.account_not_found'));
+                }
+
+                $account->status = 'ACTIVE';
+                $account->touch();
+                if (!$account->save()) {
+                    throw new \Exception(__('messages.failed_to_save_account'));
+                }
+
+                // Créer le RIB manuel
+                \App\Models\Rib::create([
+                    'account_id' => $account->id,
+                    'iban' => $this->ribIban,
+                    'swift' => $this->ribSwift,
+                    'bank_name' => $this->ribBankName,
+                ]);
+
+                // Send email notification with RIB information
+                try {
+                    $freshAccount = Account::with(['user', 'rib'])->find($this->ribAccountId);
+                    Mail::to($freshAccount->user->email)->send(new \App\Mail\AccountActivatedWithRibMail($freshAccount->user, $freshAccount, $freshAccount->rib));
+                } catch (\Exception $e) {
+                    Log::error(__('messages.failed_to_send_activation_email') . ': ' . $e->getMessage());
+                }
+            });
+
+            $this->dispatch('show-alert', [
+                'type' => 'success',
+                'message' => __('common.account_activated_successfully'),
+                'dismissible' => true
+            ]);
+
+            // Fermer la modal et réinitialiser les champs
+            $this->showRibModal = false;
+            $this->ribAccountId = null;
+            $this->ribIban = '';
+            $this->ribSwift = '';
+            $this->ribBankName = '';
+
+            // Force refresh without page reload
+            $this->resetPage();
+        } catch (\Exception $e) {
+            Log::error('Account activation failed: ' . $e->getMessage());
+            $this->dispatch('show-alert', [
+                'type' => 'error',
+                'message' => __('messages.failed_to_activate_account') . ': ' . $e->getMessage(),
+                'dismissible' => true
+            ]);
+        } finally {
+            $this->loadingAction = null;
+        }
+    }
+
+    public function closeRibModal()
+    {
+        $this->showRibModal = false;
+        $this->ribAccountId = null;
+        $this->ribIban = '';
+        $this->ribSwift = '';
+        $this->ribBankName = '';
     }
 }

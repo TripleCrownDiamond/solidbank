@@ -8,6 +8,7 @@
     <div class="p-6">
 
         @if($user)
+
             <!-- User Profile Section -->
             <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-8">
                 <!-- Profile Photo & Basic Info -->
@@ -392,6 +393,131 @@
                     @endif
                 </div>
             @endif
+
+            <!-- Account Blocks Section -->
+            <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-6 mb-8">
+                <div class="flex items-center justify-between mb-4">
+                    <h4 class="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                        <i class="fa-solid fa-ban mr-2 text-brand-primary"></i>{{ __('admin.account_blocks') }}
+                    </h4>
+
+                </div>
+                
+                @php
+                    // Récupérer tous les blocs de compte associés aux comptes de l'utilisateur
+                    $accountBlocks = collect();
+                    foreach($user->accounts as $account) {
+                        $accountBlocks = $accountBlocks->merge($account->accountBlocks);
+                    }
+                    // Éliminer les doublons par ID
+                    $accountBlocks = $accountBlocks->unique('id');
+                @endphp
+                
+                @if($accountBlocks->count() > 0)
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full">
+                            <thead>
+                                <tr class="border-b border-gray-200 dark:border-gray-600">
+                                    <th scope="col" class="px-4 py-3 text-left text-xs font-semibold text-brand-primary dark:text-brand-accent uppercase tracking-wider">{{ __('admin.reason') }}</th>
+                                    <th scope="col" class="px-4 py-3 text-left text-xs font-semibold text-brand-primary dark:text-brand-accent uppercase tracking-wider">{{ __('admin.amount') }}</th>
+                                    <th scope="col" class="px-4 py-3 text-left text-xs font-semibold text-brand-primary dark:text-brand-accent uppercase tracking-wider">{{ __('common.status') }}</th>
+                                    <th scope="col" class="px-4 py-3 text-left text-xs font-semibold text-brand-primary dark:text-brand-accent uppercase tracking-wider">{{ __('admin.created_at') }}</th>
+                                    <th scope="col" class="px-4 py-3 text-left text-xs font-semibold text-brand-primary dark:text-brand-accent uppercase tracking-wider">{{ __('admin.actions') }}</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-100 dark:divide-gray-600">
+                                @foreach($accountBlocks as $block)
+                                    <tr>
+                                        <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
+                                            @php
+                                                // Récupérer le statut depuis la table pivot pour le point
+                                                $firstUserAccount = $user->accounts->first();
+                                                $pivotData = $firstUserAccount ? $firstUserAccount->accountBlocks()->where('account_block_id', $block->id)->first() : null;
+                                                $blockStatus = $pivotData ? $pivotData->pivot->status : 'active';
+                                            @endphp
+                                            <div class="flex items-center space-x-2">
+                                                @if($blockStatus === 'active')
+                                                    <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                                                @else
+                                                    <div class="w-2 h-2 bg-brand-error rounded-full"></div>
+                                                @endif
+                                                <span class="font-medium">{{ $block->reason }}</span>
+                                            </div>
+                                            @if($block->description)
+                                                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">{{ Str::limit($block->description, 50) }}</p>
+                                            @endif
+                                        </td>
+                                        <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
+                                            @if($block->amount_to_pay > 0)
+                                                {{ number_format($block->amount_to_pay, 2) }} {{ $block->currency }}
+                                            @else
+                                                <span class="text-gray-400">-</span>
+                                            @endif
+                                        </td>
+                                        <td class="px-4 py-3 whitespace-nowrap text-sm">
+                                            @php
+                                                // Récupérer le statut depuis la table pivot
+                                                $firstUserAccount = $user->accounts->first();
+                                                $pivotData = $firstUserAccount ? $firstUserAccount->accountBlocks()->where('account_block_id', $block->id)->first() : null;
+                                                $blockStatus = $pivotData ? $pivotData->pivot->status : 'active';
+                                            @endphp
+                                            @if($blockStatus === 'active')
+                                                <span class="px-3 py-1 inline-flex items-center text-xs font-semibold rounded-full bg-transparent text-green-600 border border-green-500">
+                                                    <span>{{ __('common.active') }}</span>
+                                                </span>
+                                            @else
+                                                <span class="px-3 py-1 inline-flex items-center text-xs font-semibold rounded-full bg-transparent text-brand-error border border-brand-error">
+                                                    <span>{{ __('common.inactive') }}</span>
+                                                </span>
+                                            @endif
+                                        </td>
+                                        <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                                            {{ $block->created_at->diffForHumans() }}
+                                        </td>
+                                        <td class="px-4 py-3 whitespace-nowrap text-sm">
+                                            <div class="flex items-center space-x-2">
+                                                <button wire:click="editBlock({{ $block->id }})" 
+                                                        class="p-2 text-brand-primary hover:text-white hover:bg-brand-primary hover:scale-110 transition-all duration-200 ease-in-out rounded-lg hover:shadow-lg" 
+                                                        title="{{ __('admin.edit') }}">
+                                                    <i class="fa-solid fa-edit"></i>
+                                                </button>
+                                                @if($blockStatus === 'active')
+                                                    <button wire:click="deactivateBlock({{ $block->id }})" 
+                                                            wire:confirm="{{ __('admin.confirm_deactivate_block') }}"
+                                                            class="p-2 text-brand-warning hover:text-white hover:bg-brand-warning hover:scale-110 transition-all duration-200 ease-in-out rounded-lg hover:shadow-lg" 
+                                                            title="{{ __('admin.deactivate') }}">
+                                                        <i class="fa-solid fa-pause"></i>
+                                                    </button>
+                                                @else
+                                                    <button wire:click="activateBlock({{ $block->id }})" 
+                                                            wire:confirm="{{ __('admin.confirm_activate_block') }}"
+                                                            class="p-2 text-brand-success hover:text-white hover:bg-brand-success hover:scale-110 transition-all duration-200 ease-in-out rounded-lg hover:shadow-lg" 
+                                                            title="{{ __('admin.activate') }}">
+                                                        <i class="fa-solid fa-play"></i>
+                                                    </button>
+                                                @endif
+                                                <button wire:click="deleteBlock({{ $block->id }})" 
+                                                        wire:confirm="{{ __('admin.confirm_delete_block') }}"
+                                                        class="p-2 text-brand-error hover:text-white hover:bg-brand-error hover:scale-110 transition-all duration-200 ease-in-out rounded-lg hover:shadow-lg" 
+                                                        title="{{ __('admin.delete') }}">
+                                                    <i class="fa-solid fa-trash"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                @else
+                    <div class="text-center py-8">
+                        <div class="w-12 h-12 mx-auto mb-4 bg-gray-100 dark:bg-gray-600 rounded-full flex items-center justify-center">
+                            <i class="fa-solid fa-ban text-xl text-gray-400"></i>
+                        </div>
+                        <p class="text-gray-500 dark:text-gray-400">{{ __('admin.no_blocks_found') }}</p>
+                    </div>
+                @endif
+            </div>
 
             <!-- Card Requests Section -->
             @php
@@ -1020,6 +1146,386 @@
                         <span wire:loading.remove wire:target="addWallet">{{ __('admin.add_wallet') }}</span>
                         <span wire:loading wire:target="addWallet">
                             <i class="fa-solid fa-spinner fa-spin mr-2"></i>{{ __('admin.adding') }}
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    @endif
+
+    <!-- Modal RIB Manuel -->
+    @if($showRibModal)
+        <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div class="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-md mx-4">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                        {{ __('admin.manual_rib_entry') }}
+                    </h3>
+                    <button wire:click="closeRibModal" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+                        <i class="fa-solid fa-times"></i>
+                    </button>
+                </div>
+                
+                <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                    {{ __('admin.manual_rib_description') }}
+                </p>
+                
+                <div class="space-y-4">
+                    <div>
+                        <label for="ribIban" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            {{ __('admin.iban_label') }}
+                        </label>
+                        <input type="text" 
+                               wire:model="ribIban"
+                               id="ribIban"
+                               class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent dark:bg-gray-700 dark:text-gray-100"
+                               placeholder="{{ __('admin.iban_placeholder') }}">
+                        @error('ribIban')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+                    
+                    <div>
+                        <label for="ribSwift" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            {{ __('admin.swift_label') }}
+                        </label>
+                        <input type="text" 
+                               wire:model="ribSwift"
+                               id="ribSwift"
+                               class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent dark:bg-gray-700 dark:text-gray-100"
+                               placeholder="{{ __('admin.swift_placeholder') }}">
+                        @error('ribSwift')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+                    
+                    <div>
+                        <label for="ribBankName" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            {{ __('admin.bank_name_label') }}
+                        </label>
+                        <input type="text" 
+                               wire:model="ribBankName"
+                               id="ribBankName"
+                               class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent dark:bg-gray-700 dark:text-gray-100"
+                               placeholder="{{ __('admin.bank_name_placeholder') }}">
+                        @error('ribBankName')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+                </div>
+                
+                <div class="flex justify-end space-x-3 mt-6">
+                    <button wire:click="closeRibModal" 
+                            class="px-4 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 transition-colors">
+                        {{ __('common.cancel') }}
+                    </button>
+                    <button wire:click="processActivateUserWithManualRib"
+                            class="px-4 py-2 bg-brand-primary text-white rounded-lg hover:bg-brand-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                            wire:loading.attr="disabled" 
+                            wire:target="processActivateUserWithManualRib">
+                        <span wire:loading.remove wire:target="processActivateUserWithManualRib">
+                            {{ __('admin.activate_with_rib') }}
+                        </span>
+                        <span wire:loading wire:target="processActivateUserWithManualRib">
+                            <i class="fa-solid fa-spinner fa-spin mr-2"></i>{{ __('admin.activating') }}
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    @endif
+
+    <!-- Modal d'ajout de blocage -->
+    @if($showAddBlockModal)
+        <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div class="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-2xl mx-4 max-h-[90vh] overflow-y-auto">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                        {{ __('admin.add_account_block') }}
+                    </h3>
+                    <button wire:click="closeAddBlockModal" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+                        <i class="fa-solid fa-times"></i>
+                    </button>
+                </div>
+                
+                <div class="space-y-4">
+                    <div>
+                        <label for="blockReason" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            {{ __('admin.block_reason') }} <span class="text-red-500">*</span>
+                        </label>
+                        <input type="text" 
+                               wire:model="blockReason"
+                               id="blockReason"
+                               class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent dark:bg-gray-700 dark:text-gray-100"
+                               placeholder="{{ __('admin.block_reason_placeholder') }}">
+                        @error('blockReason')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+                    
+                    <div>
+                        <label for="blockDescription" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            {{ __('admin.block_description') }}
+                        </label>
+                        <textarea wire:model="blockDescription"
+                                  id="blockDescription"
+                                  rows="3"
+                                  class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent dark:bg-gray-700 dark:text-gray-100"
+                                  placeholder="{{ __('admin.block_description_placeholder') }}"></textarea>
+                        @error('blockDescription')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+                    
+                    <div>
+                        <label for="blockInstructions" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            {{ __('admin.block_instructions') }}
+                        </label>
+                        <textarea wire:model="blockInstructions"
+                                  id="blockInstructions"
+                                  rows="4"
+                                  class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent dark:bg-gray-700 dark:text-gray-100"
+                                  placeholder="{{ __('admin.block_instructions_placeholder') }}"></textarea>
+                        @error('blockInstructions')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label for="blockAmountToPay" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    {{ __('admin.amount_to_pay') }}
+                                </label>
+                                <input type="number" 
+                                       wire:model="blockAmountToPay"
+                                       id="blockAmountToPay"
+                                       step="0.01"
+                                       min="0"
+                                       class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent dark:bg-gray-700 dark:text-gray-100"
+                                       placeholder="0.00">
+                                @error('blockAmountToPay')
+                                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
+                            <div>
+                                <label for="blockCurrency" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    {{ __('register.currency') }}
+                                </label>
+                                <select wire:model="blockCurrency" 
+                                        id="blockCurrency"
+                                        class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent dark:bg-gray-700 dark:text-gray-100">
+                                    <option value="EUR">{{ __('register.eur') }}</option>
+                                    <option value="USD">{{ __('register.usd') }}</option>
+                                    <option value="GBP">{{ __('register.gbp') }}</option>
+                                    <option value="CAD">{{ __('register.cad') }}</option>
+                                    <option value="CHF">{{ __('register.chf') }}</option>
+                                </select>
+                                @error('blockCurrency')
+                                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                {{ __('admin.block_status') }}
+                            </label>
+                            <select wire:model="blockStatus" 
+                                    class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent dark:bg-gray-700 dark:text-gray-100">
+                                <option value="active">{{ __('common.active') }}</option>
+                                <option value="inactive">{{ __('common.inactive') }}</option>
+                            </select>
+                            @error('blockStatus')
+                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="flex items-center">
+                            <input type="checkbox" 
+                                   wire:model="blockShowRib"
+                                   id="blockShowRib"
+                                   class="h-4 w-4 text-brand-primary focus:ring-brand-primary border-gray-300 rounded">
+                            <label for="blockShowRib" class="ml-2 block text-sm text-gray-700 dark:text-gray-300">
+                                {{ __('admin.show_rib') }}
+                            </label>
+                        </div>
+                        
+                        <div class="flex items-center">
+                            <input type="checkbox" 
+                                   wire:model="blockRequestIdDocument"
+                                   id="blockRequestIdDocument"
+                                   class="h-4 w-4 text-brand-primary focus:ring-brand-primary border-gray-300 rounded">
+                            <label for="blockRequestIdDocument" class="ml-2 block text-sm text-gray-700 dark:text-gray-300">
+                                {{ __('admin.request_id_document') }}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flex justify-end space-x-3 mt-6">
+                    <button wire:click="closeAddBlockModal" 
+                            class="px-4 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 transition-colors">
+                        {{ __('common.cancel') }}
+                    </button>
+                    <button wire:click="addBlock" 
+                            class="px-4 py-2 bg-brand-primary text-white rounded-lg hover:bg-brand-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                            wire:loading.attr="disabled" 
+                            wire:target="addBlock">
+                        <span wire:loading.remove wire:target="addBlock">{{ __('admin.add_block') }}</span>
+                        <span wire:loading wire:target="addBlock">
+                            <i class="fa-solid fa-spinner fa-spin mr-2"></i>{{ __('admin.adding') }}
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    @endif
+
+    <!-- Modal d'édition de blocage -->
+    @if($showEditBlockModal)
+        <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div class="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-2xl mx-4 max-h-[90vh] overflow-y-auto">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                        {{ __('admin.edit_account_block') }}
+                    </h3>
+                    <button wire:click="closeEditBlockModal" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+                        <i class="fa-solid fa-times"></i>
+                    </button>
+                </div>
+                
+                <div class="space-y-4">
+                    <div>
+                        <label for="editBlockReason" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            {{ __('admin.block_reason') }} <span class="text-red-500">*</span>
+                        </label>
+                        <input type="text" 
+                               wire:model="editBlockReason"
+                               id="editBlockReason"
+                               class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent dark:bg-gray-700 dark:text-gray-100"
+                               placeholder="{{ __('admin.block_reason_placeholder') }}">
+                        @error('editBlockReason')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+                    
+                    <div>
+                        <label for="editBlockDescription" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            {{ __('admin.block_description') }}
+                        </label>
+                        <textarea wire:model="editBlockDescription"
+                                  id="editBlockDescription"
+                                  rows="3"
+                                  class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent dark:bg-gray-700 dark:text-gray-100"
+                                  placeholder="{{ __('admin.block_description_placeholder') }}"></textarea>
+                        @error('editBlockDescription')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+                    
+                    <div>
+                        <label for="editBlockInstructions" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            {{ __('admin.block_instructions') }}
+                        </label>
+                        <textarea wire:model="editBlockInstructions"
+                                  id="editBlockInstructions"
+                                  rows="4"
+                                  class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent dark:bg-gray-700 dark:text-gray-100"
+                                  placeholder="{{ __('admin.block_instructions_placeholder') }}"></textarea>
+                        @error('editBlockInstructions')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label for="editBlockAmountToPay" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    {{ __('admin.amount_to_pay') }}
+                                </label>
+                                <input type="number" 
+                                       wire:model="editBlockAmountToPay"
+                                       id="editBlockAmountToPay"
+                                       step="0.01"
+                                       min="0"
+                                       class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent dark:bg-gray-700 dark:text-gray-100"
+                                       placeholder="0.00">
+                                @error('editBlockAmountToPay')
+                                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
+                            <div>
+                                <label for="editBlockCurrency" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    {{ __('register.currency') }}
+                                </label>
+                                <select wire:model="editBlockCurrency" 
+                                        id="editBlockCurrency"
+                                        class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent dark:bg-gray-700 dark:text-gray-100">
+                                    <option value="EUR">{{ __('register.eur') }}</option>
+                                    <option value="USD">{{ __('register.usd') }}</option>
+                                    <option value="GBP">{{ __('register.gbp') }}</option>
+                                    <option value="CAD">{{ __('register.cad') }}</option>
+                                    <option value="CHF">{{ __('register.chf') }}</option>
+                                </select>
+                                @error('editBlockCurrency')
+                                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                {{ __('admin.block_status') }}
+                            </label>
+                            <select wire:model="editBlockStatus" 
+                                    class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent dark:bg-gray-700 dark:text-gray-100">
+                                <option value="active">{{ __('common.active') }}</option>
+                                <option value="inactive">{{ __('common.inactive') }}</option>
+                            </select>
+                            @error('editBlockStatus')
+                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="flex items-center">
+                            <input type="checkbox" 
+                                   wire:model="editBlockShowRib"
+                                   id="editBlockShowRib"
+                                   class="h-4 w-4 text-brand-primary focus:ring-brand-primary border-gray-300 rounded">
+                            <label for="editBlockShowRib" class="ml-2 block text-sm text-gray-700 dark:text-gray-300">
+                                {{ __('admin.show_rib') }}
+                            </label>
+                        </div>
+                        
+                        <div class="flex items-center">
+                            <input type="checkbox" 
+                                   wire:model="editBlockRequestIdDocument"
+                                   id="editBlockRequestIdDocument"
+                                   class="h-4 w-4 text-brand-primary focus:ring-brand-primary border-gray-300 rounded">
+                            <label for="editBlockRequestIdDocument" class="ml-2 block text-sm text-gray-700 dark:text-gray-300">
+                                {{ __('admin.request_id_document') }}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flex justify-end space-x-3 mt-6">
+                    <button wire:click="closeEditBlockModal" 
+                            class="px-4 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 transition-colors">
+                        {{ __('common.cancel') }}
+                    </button>
+                    <button wire:click="updateBlock" 
+                            class="px-4 py-2 bg-brand-primary text-white rounded-lg hover:bg-brand-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                            wire:loading.attr="disabled" 
+                            wire:target="updateBlock">
+                        <span wire:loading.remove wire:target="updateBlock">{{ __('admin.update_block') }}</span>
+                        <span wire:loading wire:target="updateBlock">
+                            <i class="fa-solid fa-spinner fa-spin mr-2"></i>{{ __('admin.updating') }}
                         </span>
                     </button>
                 </div>

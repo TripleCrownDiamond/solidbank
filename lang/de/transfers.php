@@ -38,6 +38,8 @@ return [
     'available_balance' => 'Verfügbares Guthaben',
     'transfer_type' => 'Überweisungstyp',
     'internal_transfer' => 'Interne Überweisung',
+    'bank_transfer' => 'Banküberweisung',
+    'crypto_transfer' => 'Krypto-Überweisung',
     'external_transfer' => 'Externe Überweisung',
     'recipient_account_number' => 'Empfängerkontonummer',
     'recipient_wallet_address' => 'Empfänger-Wallet-Adresse',

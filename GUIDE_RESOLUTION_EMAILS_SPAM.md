@@ -60,7 +60,7 @@ $message->getHeaders()
 
 -   Host: smtp.hostinger.com
 -   Port: 465
--   From: contact@trade-europe.online
+-   From: contact@dbqic.com
 -   En-têtes anti-spam déjà configurés dans `config/mail_headers.php`
 
 ## Recommandations supplémentaires
@@ -69,7 +69,7 @@ $message->getHeaders()
 
 ```
 SPF: v=spf1 include:_spf.hostinger.com ~all
-DMARC: v=DMARC1; p=quarantine; rua=mailto:dmarc@trade-europe.online
+DMARC: v=DMARC1; p=quarantine; rua=mailto:dmarc@dbqic.com
 DKIM: À configurer dans le panneau Hostinger
 ```
 

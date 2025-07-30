@@ -46,11 +46,7 @@
             </table>
         </div>
         
-        <div class="mt-4 text-center">
-            <p class="text-sm text-gray-600 dark:text-gray-400">
-                {{ __('crypto.auto_update_message') }}
-            </p>
-        </div>
+
     </div>
 
     <script>

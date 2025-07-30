@@ -1,76 +1,23 @@
-<!DOCTYPE html>
-<html lang="{{ app()->getLocale() }}">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ __('transfers.transfer_notification') }}</title>
+@extends('emails.layout')
+
+@section('title', __('transfers.transfer_notification'))
+
+@section('content')
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            color: var(--text-primary);
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        .header {
-            background-color: var(--bg-light);
-            padding: 20px;
-            text-align: center;
-            border-radius: 8px 8px 0 0;
-        }
-        .content {
-            background-color: var(--color-white);
-            padding: 30px;
-            border: 1px solid var(--border-light);
-        }
-        .footer {
-            background-color: var(--bg-light);
-            padding: 20px;
-            text-align: center;
-            border-radius: 0 0 8px 8px;
-            font-size: 14px;
-            color: var(--text-secondary);
-        }
-        .transaction-details {
-            background-color: var(--bg-light);
-            padding: 20px;
-            border-radius: 8px;
-            margin: 20px 0;
-        }
-        .detail-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid var(--border-light);
-        }
-        .detail-row:last-child {
-            border-bottom: none;
-            margin-bottom: 0;
-            padding-bottom: 0;
-        }
-        .detail-label {
-            font-weight: bold;
-            color: var(--text-primary);
-        }
-        .detail-value {
-            color: var(--text-primary);
-        }
         .alert {
             padding: 15px;
             border-radius: 8px;
             margin: 20px 0;
         }
         .alert-info {
-            background-color: var(--info-bg);
-                border: 1px solid var(--info-border);
-            color: var(--info-text);
+            background-color: var(--brand-light);
+            border: 1px solid var(--brand-primary);
+            color: var(--brand-dark);
         }
         .alert-warning {
-            background-color: var(--warning-bg);
-            border: 1px solid var(--warning-border);
-            color: var(--warning-text);
+            background-color: #fef3c7;
+            border: 1px solid #f59e0b;
+            color: #92400e;
         }
         .alert-success {
             background-color: var(--success-bg);
@@ -78,9 +25,9 @@
             color: var(--success-text);
         }
         .alert-danger {
-            background-color: var(--error-bg);
-            border: 1px solid var(--error-border);
-            color: var(--error-text);
+            background-color: #fef2f2;
+            border: 1px solid #ef4444;
+            color: #dc2626;
         }
         .btn {
             display: inline-block;
@@ -92,21 +39,16 @@
             margin: 10px 0;
         }
         .step-info {
-            background-color: var(--info-bg);
+            background-color: var(--brand-light);
             border-left: 4px solid var(--brand-primary);
             padding: 15px;
             margin: 20px 0;
         }
     </style>
-</head>
-<body>
-    <div class="header">
-        <h1>{{ config('app.name') }}</h1>
-        <h2>{{ __('transfers.transfer_notification') }}</h2>
-    </div>
 
-    <div class="content">
-        <p>{{ __('common.hello') }} {{ $user->name }},</p>
+    <h1>{{ __('transfers.transfer_notification') }}</h1>
+    
+    <p>{{ __('common.hello') }} {{ $user->name }},</p>
 
         @if($notificationType === 'transfer_created')
             <div class="alert alert-info">
@@ -219,10 +161,4 @@
         @endif
 
         <p>{{ __('transfers.email_footer_message') }}</p>
-    </div>
-
-    <div class="footer">
-        <p>&copy; {{ date('Y') }} {{ config('app.name') }}. {{ __('common.all_rights_reserved') }}</p>
-    </div>
-</body>
-</html>
+@endsection

@@ -44,5 +44,40 @@ return [
     'activation_link_invalid' => 'Der Aktivierungslink ist ungültig oder abgelaufen.',
     'account_already_activated' => 'Ihr Konto ist bereits aktiviert.',
     'account_activated_successfully' => 'Ihr Konto wurde erfolgreich aktiviert! Sie können sich jetzt anmelden.',
-    'account_inactive' => 'Ihr Konto ist noch nicht aktiviert. Bitte überprüfen Sie Ihre E-Mail und klicken Sie auf den Aktivierungslink.'
+    'account_inactive' => 'Ihr Konto ist noch nicht aktiviert. Bitte überprüfen Sie Ihre E-Mail und klicken Sie auf den Aktivierungslink.',
+    'account_pending_manual_activation' => 'Ihr Konto wird von unserem Team überprüft. Sie erhalten eine E-Mail, sobald Ihr Konto aktiviert ist.',
+    
+    // Pending activation messages
+    'account_pending_activation_title' => 'Konto wartet auf Aktivierung',
+    'greeting_pending' => 'Hallo :name,',
+    'account_pending_message' => 'Vielen Dank für Ihre Registrierung! Ihr Konto wurde erfolgreich erstellt und wartet nun auf die Validierung durch unser Team.',
+    'pending_status_title' => 'Status: Validierung ausstehend',
+    'pending_status_message' => 'Unser Team überprüft Ihre Informationen. Sie erhalten eine E-Mail, sobald Ihr Konto aktiviert ist.',
+    'pending_benefits_title' => 'Was passiert als nächstes?',
+    'pending_benefits_message' => 'Sobald Ihr Konto validiert ist, haben Sie Zugang zu allen unseren Bankdienstleistungen: Kontoverwaltung, Überweisungen, Bankkarten und vieles mehr.',
+    'pending_security_note' => 'Ihre Daten sind sicher und werden gemäß unseren Datenschutzrichtlinien behandelt.',
+    'pending_thank_you' => 'Vielen Dank für Ihr Vertrauen und Ihre Geduld.',
+    
+    // Admin notifications
+    'new_user_pending_title' => 'Neuer Benutzer wartet auf Aktivierung',
+    'admin_greeting' => 'Hallo Administrator,',
+    'new_user_pending_message' => 'Ein neuer Benutzer hat sich registriert und wartet auf die Aktivierung seines Kontos.',
+    'user_details_title' => 'Benutzerdetails',
+    'registration_date' => 'Registrierungsdatum',
+    'manage_users_button' => 'Benutzer verwalten',
+    'admin_action_required' => 'Eine Aktion Ihrerseits ist erforderlich, um dieses Konto zu aktivieren.',
+    
+    // Account activation with RIB
+    'account_activated_with_rib_subject' => 'Ihr Konto ist aktiviert - Bankdaten verfügbar',
+    'account_activated_with_rib_title' => 'Willkommen! Ihr Konto ist aktiviert',
+    'greeting_activated' => 'Hallo :name,',
+    'account_activated_with_rib_message' => 'Großartige Neuigkeiten! Ihr Konto wurde erfolgreich aktiviert. Sie können jetzt auf alle unsere Bankdienstleistungen zugreifen.',
+    'rib_information_title' => 'Ihre Bankdaten (RIB)',
+    'rib_iban' => 'IBAN',
+    'rib_swift' => 'SWIFT/BIC',
+    'rib_bank_name' => 'Bankname',
+    'login_instructions_title' => 'Anmeldung bei Ihrem Konto',
+    'login_instructions_message' => 'Sie können sich jetzt mit Ihrer E-Mail-Adresse und Ihrem Passwort anmelden:',
+    'login_button' => 'Bei meinem Konto anmelden',
+    'activated_security_note' => 'Bewahren Sie Ihre Bankdaten sicher auf und teilen Sie sie niemals mit Dritten.'
 ];

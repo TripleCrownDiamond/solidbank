@@ -28,6 +28,8 @@ class Config extends Model
         'favicon_url',
         'notification_email',
         'two_factor_auth',
+        'user_can_self_activate',
+        'automatic_rib',
         'account_prefix',
         'account_length',
         'transaction_validation_method',

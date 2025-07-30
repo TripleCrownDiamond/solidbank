@@ -38,8 +38,17 @@ class LoginController extends Controller
                 $account = $user->accounts()->first();
                 if (!$account || $account->status !== 'ACTIVE') {
                     Auth::logout();
+                    
+                    // Check configuration to determine appropriate message
+                    $config = \App\Models\Config::first();
+                    $canSelfActivate = $config ? $config->user_can_self_activate : true;
+                    
+                    $errorMessage = $canSelfActivate 
+                        ? __('auth.account_inactive') 
+                        : __('auth.account_pending_manual_activation');
+                    
                     return back()->withErrors([
-                        'email' => __('auth.account_inactive'),
+                        'email' => $errorMessage,
                     ])->onlyInput('email');
                 }
             }

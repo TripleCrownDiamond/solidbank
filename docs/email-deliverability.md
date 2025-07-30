@@ -35,7 +35,7 @@ Valeur: v=spf1 include:_spf.hostinger.com ~all
 ```
 Type: TXT
 Nom: _dmarc
-Valeur: v=DMARC1; p=quarantine; rua=mailto:dmarc@trade-europe.online; ruf=mailto:dmarc@trade-europe.online; fo=1
+Valeur: v=DMARC1; p=quarantine; rua=mailto:dmarc@dbqic.com; ruf=mailto:dmarc@dbqic.com; fo=1
 ```
 
 ### 3. Enregistrement DKIM

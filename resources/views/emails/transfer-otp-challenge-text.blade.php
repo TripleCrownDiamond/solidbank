@@ -3,29 +3,31 @@
 @section('title', __('transfers.otp_email_title'))
 
 @section('content')
-    <h1>{{ __('transfers.otp_email_title') }}</h1>
-    
-    <p style="margin-bottom: 20px;">
-        {{ __('transfers.otp_email_greeting', ['name' => $user->first_name ?? $user->name]) }}
-    </p>
-    
-    <p style="margin-bottom: 20px;">
-        {{ __('transfers.otp_email_intro') }}
-    </p>
+    <div style="text-align: center; max-width: 100%; margin: 0 auto;">
+        <h1>{{ __('transfers.otp_email_title') }}</h1>
+        
+        <p style="margin-bottom: 20px;">
+            {{ __('transfers.otp_email_greeting', ['name' => $user->first_name ?? $user->name]) }}
+        </p>
+        
+        <p style="margin-bottom: 20px;">
+            {{ __('transfers.otp_email_intro') }}
+        </p>
 
-    <div class="code-box">
-        {{ $otp }}
+        <div class="code-box">
+            {{ $otp }}
+        </div>
+
+        <p style="margin-top: 20px; color: #dc2626; font-weight: bold;">
+            {{ __('transfers.otp_email_expiry') }}
+        </p>
+
+        <p style="margin-top: 10px; font-style: italic;">
+            {{ __('transfers.otp_email_security_note') }}
+        </p>
+        
+        <p style="margin-top: 10px; font-style: italic;">
+            {{ __('transfers.otp_email_no_action') }}
+        </p>
     </div>
-
-    <p style="margin-top: 20px; color: #e74c3c; font-weight: bold;">
-        {{ __('transfers.otp_email_expiry') }}
-    </p>
-
-    <p style="margin-top: 10px; font-style: italic;">
-        {{ __('transfers.otp_email_security_note') }}
-    </p>
-    
-    <p style="margin-top: 10px; font-style: italic;">
-        {{ __('transfers.otp_email_no_action') }}
-    </p>
 @endsection

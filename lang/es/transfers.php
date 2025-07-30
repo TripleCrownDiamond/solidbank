@@ -38,6 +38,8 @@ return [
     'available_balance' => 'Saldo disponible',
     'transfer_type' => 'Tipo de Transferencia',
     'internal_transfer' => 'Transferencia Interna',
+    'bank_transfer' => 'Transferencia Bancaria',
+    'crypto_transfer' => 'Transferencia Cripto',
     'external_transfer' => 'Transferencia Externa',
     'recipient_account_number' => 'Número de Cuenta del Destinatario',
     'recipient_wallet_address' => 'Dirección de Billetera del Destinatario',

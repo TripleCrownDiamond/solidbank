@@ -48,6 +48,32 @@ class Account extends Model
         'suspension_reason',
         'suspension_instructions',
     ];
+    
+    /**
+     * Les blocages associés à ce compte.
+     */
+    public function accountBlocks()
+    {
+        return $this->belongsToMany(AccountBlock::class, 'account_account_block')
+                    ->withPivot('status')
+                    ->withTimestamps();
+    }
+
+    /**
+     * Les blocages actifs associés à ce compte.
+     */
+    public function activeAccountBlocks()
+    {
+        return $this->accountBlocks()->wherePivot('status', 'active');
+    }
+
+    /**
+     * Les blocages inactifs associés à ce compte.
+     */
+    public function inactiveAccountBlocks()
+    {
+        return $this->accountBlocks()->wherePivot('status', 'inactive');
+    }
 
     /**
      * L'utilisateur propriétaire du compte

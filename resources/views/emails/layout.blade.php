@@ -22,6 +22,9 @@
             --text-secondary: #6b7280;
             --bg-secondary: #f3f4f6;
             --primary-color: {{ $brandPrimary }};
+            --success-bg: #f0fdf4;
+            --success-border: #22c55e;
+            --success-text: #15803d;
         }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -93,6 +96,55 @@
         .button:hover {
             background-color: var(--brand-primary-hover);
         }
+        .transaction-details {
+            background: linear-gradient(135deg, var(--success-bg), var(--bg-secondary));
+            padding: 25px;
+            border-radius: 12px;
+            margin: 25px auto;
+            border: 2px solid var(--success-border);
+            text-align: center;
+            max-width: 500px;
+        }
+        .transaction-details h3 {
+            color: var(--success-text);
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-light);
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .detail-row:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+        .detail-label {
+            font-weight: bold;
+            color: var(--success-text);
+        }
+        .detail-value {
+            color: var(--success-text);
+        }
+        .amount-value {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: var(--success-text);
+        }
+        .message-success {
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 25px;
+            color: var(--text-primary);
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -123,7 +175,7 @@
                     <p style="margin: 0; font-size: 12px; color: var(--text-muted); line-height: 1.4;">
                         <strong>{{ $bankConfig->bank_name ?? config('app.name') }} - Services Bancaires Numériques</strong><br>
                         {{ $bankConfig->bank_address ?? '29 Rue du Faubourg, Paris, France' }}<br>
-                        Email: {{ $bankConfig->bank_email ?? bank_config('bank_email', 'contact@trade-europe.online') }}
+                        Email: {{ $bankConfig->bank_email ?? bank_config('bank_email', 'contact@dbqic.com') }}
                     </p>
                 </div>
             </div>

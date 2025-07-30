@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-    <h1 style="color: var(--brand-primary); font-size: 28px; margin-bottom: 20px;">💰 Nouvelle demande de prêt</h1>
+    <h1 style="color: var(--brand-primary); font-size: 28px; margin-bottom: 20px;">Nouvelle demande de prêt</h1>
     
     <p style="font-size: 16px; line-height: 1.6; margin-bottom: 25px; color: var(--text-primary);">
         Vous avez reçu une nouvelle demande de prêt depuis votre site web.
@@ -13,7 +13,7 @@
     
     <!-- Informations personnelles -->
     <div style="background: linear-gradient(135deg, var(--info-bg), var(--info-bg)); padding: 25px; border-radius: 12px; margin: 25px 0; border: 2px solid var(--brand-primary);">
-        <h3 style="color: var(--brand-primary-dark); margin-top: 0; margin-bottom: 20px;">👤 Informations personnelles</h3>
+        <h3 style="color: var(--brand-primary-dark); margin-top: 0; margin-bottom: 20px;">Informations personnelles</h3>
         
         <div style="margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid var(--info-border);">
             <span style="font-weight: bold; color: var(--brand-primary-dark);">Nom complet :</span>
@@ -53,7 +53,7 @@
     
     <!-- Informations de prêt -->
     <div style="background: linear-gradient(135deg, var(--success-bg), var(--success-bg)); padding: 25px; border-radius: 12px; margin: 25px 0; border: 2px solid var(--brand-accent);">
-        <h3 style="color: var(--success-text); margin-top: 0; margin-bottom: 20px;">💳 Informations de prêt</h3>
+        <h3 style="color: var(--success-text); margin-top: 0; margin-bottom: 20px;">Informations de prêt</h3>
         
         <div style="margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid var(--success-border);">
             <span style="font-weight: bold; color: var(--success-text);">Montant demandé :</span>
@@ -95,7 +95,7 @@
     @if($loanData['additional_info'])
     <!-- Informations supplémentaires -->
     <div style="background: linear-gradient(135deg, var(--info-bg), var(--info-bg)); padding: 25px; border-radius: 12px; margin: 25px 0; border: 2px solid var(--brand-primary);">
-        <h3 style="color: var(--brand-primary); margin-top: 0; margin-bottom: 20px;">📝 Informations supplémentaires</h3>
+        <h3 style="color: var(--brand-primary); margin-top: 0; margin-bottom: 20px;">Informations supplémentaires</h3>
         
         <div style="padding: 15px 0; color: var(--brand-primary); white-space: pre-wrap;">
             {{ $loanData['additional_info'] }}

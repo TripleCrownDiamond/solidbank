@@ -38,6 +38,8 @@ return [
     'available_balance' => 'Available balance',
     'transfer_type' => 'Transfer Type',
     'internal_transfer' => 'Internal Transfer',
+    'bank_transfer' => 'Bank Transfer',
+    'crypto_transfer' => 'Crypto Transfer',
     'external_transfer' => 'External Transfer',
     'recipient_account_number' => 'Recipient Account Number',
     'recipient_wallet_address' => 'Recipient Wallet Address',

@@ -1,6 +1,6 @@
 <?php
 // Laravel route debugging script
-// Access via: https://trade-europe.online/laravel-debug.php
+// Access via: https://dbqic.com/laravel-debug.php
 
 require_once __DIR__ . '/../vendor/autoload.php';
 

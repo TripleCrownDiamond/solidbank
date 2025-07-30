@@ -10,38 +10,38 @@
     <x-slot name="form">
         <div class="col-span-6 sm:col-span-4">
             <x-label for="current_password" value="{{ __('profile.current_password') }}" />
-            <x-input id="current_password" type="password" class="mt-1 block w-full" wire:model="state.current_password" autocomplete="current-password" />
-            <x-input-error for="current_password" class="mt-2" />
+            <input id="current_password" type="password" class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm" wire:model="state.current_password" autocomplete="current-password" />
+            <x-input-error for="state.current_password" class="mt-2" />
         </div>
 
-        <div class="col-span-6 sm:col-span-4" x-data="{ showPassword: false }">
+        <div class="col-span-6 sm:col-span-4">
             <x-label for="password" value="{{ __('profile.new_password') }}" />
-            <div class="relative">
-                <x-input id="password" type="password" class="mt-1 block w-full pr-20" wire:model="state.password" autocomplete="new-password" x-bind:type="showPassword ? 'text' : 'password'" />
-                <button type="button" class="absolute inset-y-0 right-0 pr-3 flex items-center text-sm font-medium text-brand-primary hover:text-brand-primary/80" x-on:click="showPassword = !showPassword">
-                    <span x-show="!showPassword">Afficher</span>
-                    <span x-show="showPassword" style="display: none;">Masquer</span>
-                </button>
-            </div>
-            <x-input-error for="password" class="mt-2" />
+            <input id="password" type="password" class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm" wire:model="state.password" autocomplete="new-password" />
+            <x-input-error for="state.password" class="mt-2" />
         </div>
 
-        <div class="col-span-6 sm:col-span-4" x-data="{ showPasswordConfirmation: false }">
+        <div class="col-span-6 sm:col-span-4">
             <x-label for="password_confirmation" value="{{ __('profile.confirm_password') }}" />
-            <div class="relative">
-                <x-input id="password_confirmation" type="password" class="mt-1 block w-full pr-20" wire:model="state.password_confirmation" autocomplete="new-password" x-bind:type="showPasswordConfirmation ? 'text' : 'password'" />
-                <button type="button" class="absolute inset-y-0 right-0 pr-3 flex items-center text-sm font-medium text-brand-primary hover:text-brand-primary/80" x-on:click="showPasswordConfirmation = !showPasswordConfirmation">
-                    <span x-show="!showPasswordConfirmation">Afficher</span>
-                    <span x-show="showPasswordConfirmation" style="display: none;">Masquer</span>
-                </button>
-            </div>
-            <x-input-error for="password_confirmation" class="mt-2" />
+            <input id="password_confirmation" type="password" class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm" wire:model="state.password_confirmation" autocomplete="new-password" />
+            <x-input-error for="state.password_confirmation" class="mt-2" />
         </div>
     </x-slot>
 
     <x-slot name="actions">
+        @if ($this->showSuccess)
+            <div class="me-3 text-sm text-green-600 dark:text-green-400" 
+                 x-data="{ show: @entangle('showSuccess') }" 
+                 x-show="show" 
+                 x-init="setTimeout(() => { show = false; $wire.set('showSuccess', false); }, 5000)"
+                 x-transition:leave="transition ease-in duration-300"
+                 x-transition:leave-start="opacity-100"
+                 x-transition:leave-end="opacity-0">
+                {{ $this->successMessage }}
+            </div>
+        @endif
+        
         <x-action-message class="me-3" on="saved">
-            {{ __('profile.saved') }}
+            {{ __("profile.saved") }}
         </x-action-message>
 
         <button type="submit" class="px-4 py-2 bg-brand-primary text-white rounded-md hover:bg-brand-primary-hover transition flex items-center" wire:loading.attr="disabled" wire:target="updatePassword">

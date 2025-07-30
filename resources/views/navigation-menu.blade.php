@@ -11,14 +11,22 @@
                 </div>
 
                 <!-- Navigation Links -->
+                @php
+                    $hasActiveBlock = false;
+                    if (!Auth::user()->is_admin) {
+                        $hasActiveBlock = Auth::user()->accounts()->whereHas('activeAccountBlocks')->exists();
+                    }
+                @endphp
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link href="{{ route('dashboard', ['locale' => app()->getLocale()]) }}" :active="request()->routeIs('dashboard')">
                         <i class="fa-solid fa-chart-line mr-2"></i>{{ __('nav.dashboard') }}
                     </x-nav-link>
                     
-                    <x-nav-link href="{{ route('transactions', ['locale' => app()->getLocale()]) }}" :active="request()->routeIs('transactions')">
-                        <i class="fa-solid fa-exchange-alt mr-2"></i>{{ __('common.transactions') }}
-                    </x-nav-link>
+                    @if(!$hasActiveBlock)
+                        <x-nav-link href="{{ route('transactions', ['locale' => app()->getLocale()]) }}" :active="request()->routeIs('transactions')">
+                            <i class="fa-solid fa-exchange-alt mr-2"></i>{{ __('common.transactions') }}
+                        </x-nav-link>
+                    @endif
                     
                     @if(Auth::user()->is_admin)
                         <x-nav-link href="{{ route('admin.users', ['locale' => app()->getLocale()]) }}" :active="request()->routeIs('admin.users') || request()->routeIs('users.manage')">
@@ -28,7 +36,7 @@
                         <x-nav-link href="{{ route('transfer-steps', ['locale' => app()->getLocale()]) }}" :active="request()->routeIs('transfer-steps')">
                             <i class="fa-solid fa-layer-group mr-2"></i>{{ __('admin.transfer_step_management') }}
                         </x-nav-link>
-                    @else
+                    @elseif(!$hasActiveBlock)
                         <x-nav-link href="{{ route('user.cards', ['locale' => app()->getLocale()]) }}" :active="request()->routeIs('user.cards')">
                             <i class="fa-solid fa-credit-card mr-2"></i>{{ __('common.bank_cards') }}
                         </x-nav-link>
@@ -196,9 +204,11 @@
                 <i class="fa-solid fa-chart-line mr-2"></i>{{ __('nav.dashboard') }}
             </x-responsive-nav-link>
             
-            <x-responsive-nav-link href="{{ route('transactions', ['locale' => app()->getLocale()]) }}" :active="request()->routeIs('transactions')">
-                <i class="fa-solid fa-exchange-alt mr-2"></i>{{ __('common.transactions') }}
-            </x-responsive-nav-link>
+            @if(!$hasActiveBlock)
+                <x-responsive-nav-link href="{{ route('transactions', ['locale' => app()->getLocale()]) }}" :active="request()->routeIs('transactions')">
+                    <i class="fa-solid fa-exchange-alt mr-2"></i>{{ __('common.transactions') }}
+                </x-responsive-nav-link>
+            @endif
             
             @if(Auth::user()->is_admin)
                 <x-responsive-nav-link href="{{ route('admin.users', ['locale' => app()->getLocale()]) }}" :active="request()->routeIs('admin.users') || request()->routeIs('users.manage')">
@@ -208,7 +218,7 @@
                 <x-responsive-nav-link href="{{ route('transfer-steps', ['locale' => app()->getLocale()]) }}" :active="request()->routeIs('transfer-steps')">
                     <i class="fa-solid fa-layer-group mr-2"></i>{{ __('admin.transfer_step_management') }}
                 </x-responsive-nav-link>
-            @else
+            @elseif(!$hasActiveBlock)
                 <x-responsive-nav-link href="{{ route('user.cards', ['locale' => app()->getLocale()]) }}" :active="request()->routeIs('user.cards')">
                     <i class="fa-solid fa-credit-card mr-2"></i>{{ __('common.bank_cards') }}
                 </x-responsive-nav-link>
