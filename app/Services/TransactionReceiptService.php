@@ -31,11 +31,11 @@ class TransactionReceiptService
             'currency' => $currency,
             'date' => $transaction->created_at->format('d/m/Y H:i'),
             'reference' => $transaction->reference ?: $this->generateReference($transaction),
-            'bank_name' => bank_config('bank_name', 'DBQIC'),
-            'bank_address' => bank_config('bank_address', '29 Rue du Faubourg, Paris, France'),
-            'bank_phone' => bank_config('bank_phone', '+33123456789'),
-            'bank_email' => bank_config('bank_email', 'contact@dbqic.com'),
-            'bank_swift' => bank_config('bank_swift', 'TREUFRPP'),
+            'bank_name' => bank_config('bank_name'),
+            'bank_address' => bank_config('bank_address'),
+            'bank_phone' => bank_config('bank_phone'),
+            'bank_email' => bank_config('bank_email'),
+            'bank_swift' => bank_config('bank_swift'),
         ];
         
         // Générer le PDF

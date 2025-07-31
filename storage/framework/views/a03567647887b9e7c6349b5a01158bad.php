@@ -4,7 +4,7 @@
                 <div>
                     <h3 class="text-sm font-semibold text-gray-400 tracking-wider uppercase"><?php echo e(__('common.about_us')); ?></h3>
                     <p class="mt-4 text-base text-gray-500">
-                        <?php echo e(__('common.about_us_description', ['app_name' => $config->app_name ?? bank_config('bank_name', 'DBQIC')])); ?>
+                        <?php echo e(__('common.about_us_description', ['app_name' => $config->app_name ?? $config->bank_name ?? ''])); ?>
 
                     </p>
                 </div>
@@ -69,8 +69,10 @@
             </div>
             <div class="mt-8 border-t border-gray-100 pt-8">
                 <p class="text-base text-gray-400 text-center">
-                &copy; <?php echo e(date('Y')); ?> <?php echo e($config->app_name ?? bank_config('bank_name', 'DBQIC')); ?>. <?php echo e(__('All rights reserved.')); ?>
+                <?php if($config && ($config->app_name || $config->bank_name)): ?>
+&copy; <?php echo e(date('Y')); ?> <?php echo e($config->app_name ?? $config->bank_name); ?>. <?php echo e(__('All rights reserved.')); ?>
 
+<?php endif; ?>
             </p>
         </div>
     </div>

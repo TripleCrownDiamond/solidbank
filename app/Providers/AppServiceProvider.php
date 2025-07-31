@@ -76,7 +76,10 @@ class AppServiceProvider extends ServiceProvider
         View::addNamespace('mail', resource_path('views/vendor/mail'));
 
         // Définir le thème mail par défaut
-        Mail::alwaysFrom(env('MAIL_FROM_ADDRESS', 'hello@example.com'), env('MAIL_FROM_NAME', 'Example'));
+        $bankConfig = \App\Helpers\BankConfigHelper::getConfig();
+        $defaultEmail = $bankConfig ? $bankConfig->bank_email : 'contact@dbqic.com';
+        $defaultName = $bankConfig ? $bankConfig->bank_name : config('app.name');
+        Mail::alwaysFrom(env('MAIL_FROM_ADDRESS', $defaultEmail), env('MAIL_FROM_NAME', $defaultName));
 
         // Définir le chemin des composants mail
         $this->loadViewsFrom(resource_path('views/vendor/mail'), 'mail');

@@ -25,7 +25,7 @@ return new class extends Migration {
             $table->string('bank_name')->default(config('app.name'));
             $table->string('bank_swift')->default('SOGEFRPP');
             $table->string('bank_country')->default('FR');
-            $table->string('bank_address')->default('29 Rue du Faubourg, Paris, France');
+            $table->string('bank_address')->default('');
             $table->string('bank_phone')->default('+33123456789');
             $table->string('bank_email')->default('support@bank.fr');
             $table->string('bank_website')->default('https://www.bank.fr');

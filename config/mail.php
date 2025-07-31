@@ -101,8 +101,8 @@ return [
      * |
      */
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', \App\Helpers\BankConfigHelper::get('bank_email', 'hello@example.com')),
-        'name' => env('MAIL_FROM_NAME', \App\Helpers\BankConfigHelper::get('bank_name', 'Example')),
+        'address' => env('MAIL_FROM_ADDRESS', \App\Helpers\BankConfigHelper::get('bank_email', 'contact@dbqic.com')),
+        'name' => env('MAIL_FROM_NAME', \App\Helpers\BankConfigHelper::get('bank_name', config('app.name'))),
     ],
 
     /*
@@ -118,12 +118,12 @@ return [
         'X-Priority' => '1',
         'Importance' => 'High',
         'List-Unsubscribe' => function () {
-            $bankEmail = \App\Helpers\BankConfigHelper::get('bank_email', 'contact@dbqic.com');
-            $domain = 'example.com';  // fallback
-            if (filter_var($bankEmail, FILTER_VALIDATE_EMAIL)) {
+            $bankEmail = \App\Helpers\BankConfigHelper::get('bank_email');
+            if ($bankEmail && filter_var($bankEmail, FILTER_VALIDATE_EMAIL)) {
                 $domain = substr(strrchr($bankEmail, '@'), 1);
+                return '<mailto:unsubscribe@' . $domain . '>';
             }
-            return '<mailto:unsubscribe@' . $domain . '>';
+            return null;
         },
     ],
 ];

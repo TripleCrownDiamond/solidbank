@@ -79,7 +79,9 @@
 <body>
     <div class="header">
         <h1>{{ strtoupper(__('common.transfer_receipt')) }}</h1>
-        <h2>{{ $config->bank_name ?? bank_config('bank_name', 'DBQIC') }}</h2>
+        @if($config && $config->bank_name)
+<h2>{{ $config->bank_name }}</h2>
+@endif
         <p>{{ $config->bank_address ?? '' }}</p>
         @if($config->bank_phone)
             <p>Tél: {{ $config->bank_phone }}</p>
@@ -235,7 +237,9 @@
         <p>{{ __('common.transfer_success_confirmation') }}</p>
         <p>{{ __('common.keep_for_records') }}</p>
         <p>{{ __('common.generated_on') }} {{ now()->format('d/m/Y à H:i') }}</p>
-        <p>{{ $config->bank_name ?? bank_config('bank_name', 'DBQIC') }} - {{ __('common.all_rights_reserved') }}</p>
+        @if($config && $config->bank_name)
+<p>{{ $config->bank_name }} - {{ __('common.all_rights_reserved') }}</p>
+@endif
     </div>
 </body>
 </html>

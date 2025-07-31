@@ -173,9 +173,15 @@
                 @endphp
                 <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border-light);">
                     <p style="margin: 0; font-size: 12px; color: var(--text-muted); line-height: 1.4;">
-                        <strong>{{ $bankConfig->bank_name ?? config('app.name') }} - Services Bancaires Numériques</strong><br>
-                        {{ $bankConfig->bank_address ?? '29 Rue du Faubourg, Paris, France' }}<br>
-                        Email: {{ $bankConfig->bank_email ?? bank_config('bank_email', 'contact@dbqic.com') }}
+                        @if($bankConfig && $bankConfig->bank_name)
+                        <strong>{{ $bankConfig->bank_name }} - Services Bancaires Numériques</strong><br>
+                        @endif
+                        @if($bankConfig && $bankConfig->bank_address && trim($bankConfig->bank_address) !== '')
+                        {{ $bankConfig->bank_address }}<br>
+                        @endif
+                        @if($bankConfig && $bankConfig->bank_email)
+                        Email: {{ $bankConfig->bank_email }}
+                        @endif
                     </p>
                 </div>
             </div>

@@ -3,8 +3,7 @@
         <!-- Header -->
         <x-transfer.progress-header />
 
-        <!-- Transaction Details Card -->
-        <x-transfer.transaction-details :transaction="$transaction" />
+        
 
      
         <!-- Start Button -->
@@ -24,6 +23,9 @@
             :isTransferStarted="$isTransferStarted" 
         />
         @endif
+
+        <!-- Transaction Details Card -->
+        <x-transfer.transaction-details :transaction="$transaction" />
 
        
     </div>

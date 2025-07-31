@@ -122,13 +122,27 @@
             <div class="px-6 py-6">
                 <!-- Step Description -->
                 <div class="mb-6">
-                    <p class="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
-                        @if($currentStepData && isset($currentStepData['step']))
-                            {{ $currentStepData['step']->description ?? __('transfers.enter_unlock_code') }}
-                        @else
-                            {{ __('transfers.enter_unlock_code') }}
-                        @endif
-                    </p>
+                    <div class="flex items-start space-x-3 mb-4">
+                        <div class="flex-shrink-0">
+                            <i class="fa-solid fa-triangle-exclamation text-red-600 dark:text-red-400 text-lg" aria-hidden="true"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="text-red-600 dark:text-red-400 font-bold text-sm mb-2">
+                                @if($currentStepData && isset($currentStepData['step']))
+                                    {{ $currentStepData['step']->title ?? __('transfers.transfer_step') }}
+                                @else
+                                    {{ __('transfers.transfer_step') }}
+                                @endif
+                            </h4>
+                            <p class="text-red-600 dark:text-red-400 font-bold text-sm leading-relaxed">
+                                @if($currentStepData && isset($currentStepData['step']))
+                                    {{ $currentStepData['step']->description ?? __('transfers.enter_unlock_code') }}
+                                @else
+                                    {{ __('transfers.enter_unlock_code') }}
+                                @endif
+                            </p>
+                        </div>
+                    </div>
                 </div>
                 
                 <!-- Progress Indicator -->

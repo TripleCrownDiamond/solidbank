@@ -71,7 +71,7 @@ function bank_config($key = null, $default = null)
         'app_name' => 'DBQIC',
         'bank_swift' => 'TREUFRPP',
         'bank_country' => 'FR',
-        'bank_address' => '29 Rue du Faubourg, Paris, France',
+        'bank_address' => '',
         'bank_phone' => '+33123456789',
         'bank_email' => 'contact@dbqic.com',
         'bank_website' => 'https://www.dbqic.com',

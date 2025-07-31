@@ -832,4 +832,5 @@ return [
     'wallet' => 'Portefeuille',
     'document_generated_automatically' => 'Ce document a été généré automatiquement le',
     'all_rights_reserved' => 'Tous droits réservés',
+    'instructions' => 'Comment réactiver mon compte ?',
 ];

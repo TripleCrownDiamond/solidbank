@@ -86,7 +86,7 @@ class CryptoRefund extends Component
             \Log::info('CryptoRefund - Données validées :', $validatedData);
 
             $config = Config::first();
-            $notificationEmail = $config?->notification_email ?? 'contact@example.com';
+            $notificationEmail = $config?->notification_email ?? \App\Helpers\BankConfigHelper::get('bank_email', 'contact@dbqic.com');
 
             $country = Country::find($this->country_id);
             $crypto = Cryptocurrency::find($this->cryptocurrency_id);

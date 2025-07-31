@@ -19,7 +19,7 @@
             <!-- Mobile Layout (Single Column) -->
             <div class="flex flex-col items-center text-center lg:hidden">
                 <span class="inline-block bg-blue-500 text-white px-3 py-1 rounded-full mb-4 font-medium text-sm sm:text-base">{{ __('common.contact_us') }}</span>
-                <h1 class="text-3xl sm:text-4xl font-extrabold mb-4 leading-tight">{{ __('common.contact_us') }}&nbsp;: <span class="text-blue-100">{{ bank_config('bank_name', 'DBQIC') }}</span></h1>
+                <h1 class="text-3xl sm:text-4xl font-extrabold mb-4 leading-tight">{{ __('common.contact_us') }}@if(bank_config('bank_name'))&nbsp;: <span class="text-blue-100">{{ bank_config('bank_name') }}</span>@endif</h1>
                 <p class="mb-6 text-base sm:text-lg text-blue-100">{{ __('common.get_in_touch_desc') }}</p>
                 <div class="flex flex-col sm:flex-row gap-4 mb-6">
                     <a href="#contact-info" class="px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-lg shadow transition duration-200 text-center">{{ __('common.contact_info') }}</a>
@@ -32,7 +32,7 @@
                 <!-- Left Column: Content -->
                 <div class="flex-1 text-left pr-6">
                     <span class="inline-block bg-blue-500 text-white px-3 py-1 rounded-full mb-4 font-medium text-base">{{ __('common.contact_us') }}</span>
-                    <h1 class="text-5xl font-extrabold mb-4 leading-tight">{{ __('common.contact_us') }}&nbsp;: <span class="text-blue-100">{{ bank_config('bank_name', 'DBQIC') }}</span></h1>
+                    <h1 class="text-5xl font-extrabold mb-4 leading-tight">{{ __('common.contact_us') }}@if(bank_config('bank_name'))&nbsp;: <span class="text-blue-100">{{ bank_config('bank_name') }}</span>@endif</h1>
                     <p class="mb-6 text-lg text-blue-100">{{ __('common.get_in_touch_desc') }}</p>
                     
                     <!-- CTA Buttons Side by Side -->
@@ -84,7 +84,9 @@
                             <p class="mt-2 text-base text-gray-500 dark:text-gray-300">
                                 {{ __('common.send_email_anytime') }}
                             </p>
-                            <a href="mailto:{{ bank_config('bank_email', 'contact@dbqic.com') }}" class="text-brand-primary hover:text-blue-500 font-medium break-all">{{ bank_config('bank_email', 'contact@dbqic.com') }}</a>
+                            @if(bank_config('bank_email'))
+<a href="mailto:{{ bank_config('bank_email') }}" class="text-brand-primary hover:text-blue-500 font-medium break-all">{{ bank_config('bank_email') }}</a>
+@endif
                         </div>
                     </div>
                     

@@ -831,4 +831,5 @@ return [
     'phone_number' => 'Telefonnummer',
     'email' => 'E-Mail',
     'transaction_details' => 'Transaktionsdetails',
+    'instructions' => 'Wie kann ich mein Konto reaktivieren?',
 ];
