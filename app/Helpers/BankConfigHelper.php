@@ -4,6 +4,7 @@ namespace App\Helpers;
 
 use App\Models\Config;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Schema;
 
 class BankConfigHelper
 {
@@ -13,6 +14,11 @@ class BankConfigHelper
     public static function getConfig()
     {
         try {
+            // Vérifier si la base de données est accessible
+            if (!\Schema::hasTable('configs')) {
+                return null;
+            }
+            
             return Cache::remember('bank_config', 3600, function () {
                 return Config::first();
             });

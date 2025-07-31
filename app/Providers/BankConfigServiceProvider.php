@@ -25,8 +25,13 @@ class BankConfigServiceProvider extends ServiceProvider
     {
         // Partager la configuration bancaire avec toutes les vues
         View::composer('*', function ($view) {
-            $bankConfig = BankConfigHelper::getConfig();
-            $view->with('bankConfig', $bankConfig);
+            try {
+                $bankConfig = BankConfigHelper::getConfig();
+                $view->with('bankConfig', $bankConfig);
+            } catch (\Exception $e) {
+                // En cas d'erreur (ex: base de données non disponible), utiliser une config par défaut
+                $view->with('bankConfig', null);
+            }
         });
     }
 }
