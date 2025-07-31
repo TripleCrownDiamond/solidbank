@@ -153,5 +153,6 @@ return [
     'config_update_failed' => 'Échec de la mise à jour de la configuration',
     'password_reset_success' => '[TO TRANSLATE] password_reset_success',
     'block_updated_successfully' => 'Blocage mis à jour avec succès',
+    'block_activated_successfully' => 'Blocage activé avec succès',
     'block_deactivated_successfully' => 'Blocage désactivé avec succès',
 ];

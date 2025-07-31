@@ -23,7 +23,7 @@ class ConfigSeeder extends Seeder
                 'bank_name' => config('app.name'),
                 'bank_swift' => 'DBFFRPP',
                 'bank_country' => 'FR',
-                'bank_address' => env('BANK_ADDRESS', ''),
+                'bank_address' => env('BANK_ADDRESS', '09 Avenue Camille Pujol, 31500 Toulouse, France'),
                 'bank_phone' => '+33123456789',
                 'bank_email' => env('BANK_EMAIL', 'contact@dbqic.com'),
                 'bank_website' => env('BANK_WEBSITE', 'https://www.dbqic.com'),
