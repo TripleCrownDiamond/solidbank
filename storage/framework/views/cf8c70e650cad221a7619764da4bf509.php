@@ -1,1 +1,0 @@
-<img src="<?php echo e(getIconUrl()); ?>" alt="<?php echo e(getAppName()); ?>" class="h-8"><?php /**PATH D:\Backup Desktop\projets\solidbank\resources\views/components/application-logo.blade.php ENDPATH**/ ?>

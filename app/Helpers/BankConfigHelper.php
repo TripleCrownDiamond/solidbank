@@ -15,7 +15,7 @@ class BankConfigHelper
     {
         try {
             // Vérifier si la base de données est accessible
-            if (!\Schema::hasTable('configs')) {
+            if (!Schema::hasTable('configs')) {
                 return null;
             }
             
