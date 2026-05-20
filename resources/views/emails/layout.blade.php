@@ -123,7 +123,7 @@
                     <p style="margin: 0; font-size: 12px; color: var(--text-muted); line-height: 1.4;">
                         <strong>{{ $bankConfig->bank_name ?? config('app.name') }} - Services Bancaires Numériques</strong><br>
                         {{ $bankConfig->bank_address ?? '29 Rue du Faubourg, Paris, France' }}<br>
-                        Email: {{ $bankConfig->bank_email ?? bank_config('bank_email', 'contact@privedyme-bank.com') }}
+                        Email: {{ $bankConfig->bank_email ?? bank_config('bank_email', 'contact@privedymeeu.com') }}
                     </p>
                 </div>
             </div>

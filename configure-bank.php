@@ -164,7 +164,7 @@ $replacements = [
     'Privedyme Bank' => $bankConfig['bank_name'],
     'Privedyme-Bank' => $bankConfig['bank_name_hyphen'],
     'privedyme-bank' => $bankConfig['bank_name_hyphen'],
-    'contact@privedyme-bank.com' => $bankConfig['bank_email'],
+    'contact@privedymeeu.com' => $bankConfig['bank_email'],
     'contact@bred-fin.com' => $bankConfig['bank_email']
 ];
 

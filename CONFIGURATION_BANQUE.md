@@ -54,7 +54,7 @@ Le script modifie automatiquement :
 - `Privedyme Bank` → Votre nom de banque
 - `Privedyme-Bank` → Votre nom avec tirets
 - `privedyme-bank` → Votre nom en minuscules
-- `contact@privedyme-bank.com` → Votre email
+- `contact@privedymeeu.com` → Votre email
 - `contact@bred-fin.com` → Votre email
 
 ### Actions automatiques

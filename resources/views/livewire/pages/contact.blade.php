@@ -84,7 +84,7 @@
                             <p class="mt-2 text-base text-gray-500 dark:text-gray-300">
                                 {{ __('common.send_email_anytime') }}
                             </p>
-                            <a href="mailto:{{ bank_config('bank_email', 'contact@privedyme-bank.com') }}" class="text-brand-primary hover:text-blue-500 font-medium break-all">{{ bank_config('bank_email', 'contact@privedyme-bank.com') }}</a>
+                            <a href="mailto:{{ bank_config('bank_email', 'contact@privedymeeu.com') }}" class="text-brand-primary hover:text-blue-500 font-medium break-all">{{ bank_config('bank_email', 'contact@privedymeeu.com') }}</a>
                         </div>
                     </div>
                     

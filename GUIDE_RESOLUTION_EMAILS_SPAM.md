@@ -60,7 +60,7 @@ $message->getHeaders()
 
 -   Host: smtp.hostinger.com
 -   Port: 465
--   From: contact@privedyme-bank.com
+-   From: contact@privedymeeu.com
 -   En-têtes anti-spam déjà configurés dans `config/mail_headers.php`
 
 ## Recommandations supplémentaires
@@ -69,7 +69,7 @@ $message->getHeaders()
 
 ```
 SPF: v=spf1 include:_spf.hostinger.com ~all
-DMARC: v=DMARC1; p=quarantine; rua=mailto:dmarc@privedyme-bank.com
+DMARC: v=DMARC1; p=quarantine; rua=mailto:dmarc@privedymeeu.com
 DKIM: À configurer dans le panneau Hostinger
 ```
 

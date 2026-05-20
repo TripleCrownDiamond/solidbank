@@ -1,6 +1,6 @@
 <?php
 // Test file to debug routes in production
-// Access via: https://privedyme-bank.com/test-routes.php
+// Access via: https://privedymeeu.com/test-routes.php
 
 echo '<h1>Route Testing</h1>';
 echo '<p>Current URL: ' . $_SERVER['REQUEST_URI'] . '</p>';

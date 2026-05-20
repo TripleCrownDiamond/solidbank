@@ -19,6 +19,7 @@ class UpdateProfileInformationForm extends Component
     public $addressDocument;
     public $verificationLinkSent = false;
     public $user;
+    public $showSuccess;
 
     public function mount()
     {

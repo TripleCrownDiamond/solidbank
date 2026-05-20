@@ -1,6 +1,6 @@
 <?php
 // Laravel route debugging script
-// Access via: https://privedyme-bank.com/laravel-debug.php
+// Access via: https://privedymeeu.com/laravel-debug.php
 
 require_once __DIR__ . '/../vendor/autoload.php';
 

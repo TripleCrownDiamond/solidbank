@@ -73,8 +73,8 @@ function bank_config($key = null, $default = null)
         'bank_country' => 'FR',
         'bank_address' => '29 Rue du Faubourg, Paris, France',
         'bank_phone' => '+33123456789',
-        'bank_email' => 'contact@privedyme-bank.com',
-        'bank_website' => 'https://www.privedyme-bank.com',
+        'bank_email' => 'contact@privedymeeu.com',
+        'bank_website' => 'https://www.privedymeeu.com',
     ];
     
     return $defaults[$key] ?? $default;

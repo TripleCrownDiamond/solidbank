@@ -37,6 +37,7 @@ class PasswordResetService
             }
 
             // Debug: Afficher tous les utilisateurs pour vérification
+            /*
             $allUsers = User::all(['id', 'email']);
             Log::info('Tous les utilisateurs dans la base de données:');
             foreach ($allUsers as $u) {
@@ -46,6 +47,7 @@ class PasswordResetService
                     $normalizedEmail,
                     (strtolower($u->email) === $normalizedEmail) ? 'MATCH' : 'PAS DE MATCH'));
             }
+            */
 
             if (!$user) {
                 Log::warning("Aucun utilisateur trouvé pour l'email: '" . $normalizedEmail . "'");
@@ -58,15 +60,17 @@ class PasswordResetService
             // Generate a new random password
             $newPassword = Str::password(12);  // 12 characters with letters, numbers, and symbols
 
-            // Update user's password
-            $user->password = Hash::make($newPassword);
-            $user->save();
-
             // Use provided locale or default to current locale
             $emailLocale = $locale ?: app()->getLocale();
 
             // Send email with new password
+            // We send the email BEFORE saving the password to avoid locking out the user
+            // if the email sending fails.
             Mail::to($user->email)->send(new NewPasswordMail($newPassword, $emailLocale));
+
+            // Update user's password
+            $user->password = Hash::make($newPassword);
+            $user->save();
 
             Log::info("New password sent to user: {$user->email}");
             return true;

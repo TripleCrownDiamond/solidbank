@@ -28,7 +28,17 @@
     </x-slot>
 
     <x-slot name="actions">
-       
+        @if ($showSuccess)
+            <div class="me-3 text-sm text-green-600 dark:text-green-400" 
+                 x-data="{ show: @entangle('showSuccess') }" 
+                 x-show="show" 
+                 x-init="setTimeout(() => { show = false; $wire.set('showSuccess', false); }, 5000)"
+                 x-transition:leave="transition ease-in duration-300"
+                 x-transition:leave-start="opacity-100"
+                 x-transition:leave-end="opacity-0">
+                {{ $successMessage }}
+            </div>
+        @endif
         
         <x-action-message class="me-3" on="saved">
             {{ __("profile.saved") }}

@@ -140,7 +140,7 @@ v=spf1 include:_spf.hostinger.com ~all
 **DMARC (Domain-based Message Authentication)**
 
 ```
-v=DMARC1; p=quarantine; rua=mailto:dmarc@privedyme-bank.com; ruf=mailto:dmarc@privedyme-bank.com; fo=1
+v=DMARC1; p=quarantine; rua=mailto:dmarc@privedymeeu.com; ruf=mailto:dmarc@privedymeeu.com; fo=1
 ```
 
 ### 2. Optimisations avancées anti-spam
@@ -182,7 +182,7 @@ v=DMARC1; p=quarantine; rua=mailto:dmarc@privedyme-bank.com; ruf=mailto:dmarc@pr
 **Reverse DNS (PTR) :**
 
 -   Configurer un enregistrement PTR pour l'IP du serveur
--   Format : `mail.privedyme-bank.com`
+-   Format : `mail.privedymeeu.com`
 
 **Certificat SSL/TLS :**
 
@@ -200,7 +200,7 @@ v=DMARC1; p=quarantine; rua=mailto:dmarc@privedyme-bank.com; ruf=mailto:dmarc@pr
 
 **Sous-domaine dédié :**
 
--   Utiliser `mail.privedyme-bank.com` ou `noreply.privedyme-bank.com`
+-   Utiliser `mail.privedymeeu.com` ou `noreply.privedymeeu.com`
 -   Séparer les e-mails transactionnels des e-mails marketing
 
 ## Support technique

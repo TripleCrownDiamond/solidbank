@@ -118,7 +118,7 @@ return [
         'X-Priority' => '1',
         'Importance' => 'High',
         'List-Unsubscribe' => function() {
-            $bankEmail = \App\Helpers\BankConfigHelper::get('bank_email', 'contact@privedyme-bank.com');
+            $bankEmail = \App\Helpers\BankConfigHelper::get('bank_email', 'contact@privedymeeu.com');
             $domain = 'example.com'; // fallback
             if (filter_var($bankEmail, FILTER_VALIDATE_EMAIL)) {
                 $domain = substr(strrchr($bankEmail, '@'), 1);
